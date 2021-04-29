@@ -53,16 +53,15 @@ phpmd:
   needs:
     - composer
   script:
-    - vendor/bin/phpmd app/ text phpmd.xml
-  allow_failure: true
+    - phpmd --standard=PSR2 --extensions=php --ignore=app/Support/helpers.php app
 
-phpcs:
+codestyle:
   stage: static-analysis
   needs:
     - composer
   script:
-    - vendor/bin/phpcs --standard=psr2 app
-  allow_failure: true
+    - phpcs --standard=PSR2 --extensions=php --ignore=app/Support/helpers.php app
+
 
 build-assets:
   stage: build
@@ -80,11 +79,6 @@ build-assets:
     expire_in: 1 days
     when: always
 
-codestyle:
-  stage: test
-  dependencies: []
-  script:
-    - phpcs --standard=PSR2 --extensions=php --ignore=app/Support/helpers.php app
 
 phpunit:
   stage: test
