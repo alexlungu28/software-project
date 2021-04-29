@@ -1,0 +1,103 @@
+image: lorisleiva/laravel-docker:latest
+
+stages:
+  - preparation
+  - build
+  - static-analysis
+  - test
+
+before_script:
+  - export PATH="~/.composer/vendor/bin:$PATH"
+
+include:
+  - template: Dependency-Scanning.gitlab-ci.yml
+  - template: SAST.gitlab-ci.yml
+
+variables:
+  SAST_EXCLUDED_PATHS: "node_modules/**,vendor/**"
+
+composer:
+  stage: preparation
+  script:
+    - php -v
+    - composer --version
+    - composer install --prefer-dist --no-ansi --no-interaction --no-progress --no-scripts
+    - cp .env.testing .env
+    - php artisan key:generate
+  artifacts:
+    paths:
+      - vendor/
+      - .env
+    expire_in: 1 days
+    when: always
+  cache:
+    paths:
+      - vendor/
+
+npm:
+  stage: preparation
+  script:
+    - npm --version
+    - npm ci --pure-lockfile --no-progress
+  artifacts:
+    paths:
+      - node_modules/
+    expire_in: 1 days
+    when: always
+  cache:
+    paths:
+      - node_modules/
+
+phpmd:
+  stage: static-analysis
+  needs:
+    - composer
+  script:
+    - vendor/bin/phpmd app/ text phpmd.xml
+  allow_failure: true
+
+phpcs:
+  stage: static-analysis
+  needs:
+    - composer
+  script:
+    - vendor/bin/phpcs --standard=psr2 app
+  allow_failure: true
+
+build-assets:
+  stage: build
+  needs:
+    - npm
+  script:
+    - npm --version
+    - npm run prod --progress false
+  artifacts:
+    paths:
+      - public/css/
+      - public/js/
+      - public/fonts/
+      - public/mix-manifest.json
+    expire_in: 1 days
+    when: always
+
+codestyle:
+  stage: test
+  dependencies: []
+  script:
+    - phpcs --standard=PSR2 --extensions=php --ignore=app/Support/helpers.php app
+
+phpunit:
+  stage: test
+  needs:
+    - composer
+    - build-assets
+  script:
+    - php -v
+    - php artisan migrate:fresh --seed
+    - ./vendor/bin/phpunit --version
+    - ./vendor/bin/phpunit -v --coverage-text --colors=never --stderr
+  artifacts:
+    paths:
+      - storage/logs # for debugging
+    expire_in: 1 days
+    when: always
