@@ -22,7 +22,7 @@ composer:
     - php -v
     - composer --version
     - composer install --prefer-dist --no-ansi --no-interaction --no-progress --no-scripts
-    - cp .env.testing .env
+    - cp .env.example .env
     - php artisan key:generate
   artifacts:
     paths:
