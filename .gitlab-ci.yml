@@ -24,6 +24,7 @@ composer:
     - composer install --prefer-dist --no-ansi --no-interaction --no-progress --no-scripts
     - cp .env.testing .env
     - php artisan key:generate
+    - touch database/database.sqlite
   artifacts:
     paths:
       - vendor/
