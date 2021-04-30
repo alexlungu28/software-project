@@ -1,8 +1,5 @@
 image: lorisleiva/laravel-docker:latest
 
-services:
-  - mysql:latest
-
 stages:
   - preparation
   - build
@@ -18,9 +15,6 @@ include:
 
 variables:
   SAST_EXCLUDED_PATHS: "node_modules/**,vendor/**"
-  # Configure mysql environment variables (https://hub.docker.com/_/mysql/)
-  MYSQL_DATABASE: "root"
-  MYSQL_ROOT_PASSWORD: ""
 
 composer:
   stage: preparation
@@ -59,7 +53,7 @@ phpmd:
   needs:
     - composer
   script:
-    - phpmd app/ text phpmd.xml
+    - php vendor/bin/phpmd app/ text phpmd.xml
   allow_failure: true
 
 codestyle:
