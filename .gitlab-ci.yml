@@ -1,5 +1,8 @@
 image: lorisleiva/laravel-docker:latest
 
+services:
+  - mysql:latest
+
 stages:
   - preparation
   - build
@@ -15,6 +18,9 @@ include:
 
 variables:
   SAST_EXCLUDED_PATHS: "node_modules/**,vendor/**"
+  # Configure mysql environment variables (https://hub.docker.com/_/mysql/)
+  MYSQL_DATABASE: "root"
+  MYSQL_ROOT_PASSWORD: ""
 
 composer:
   stage: preparation
@@ -22,7 +28,7 @@ composer:
     - php -v
     - composer --version
     - composer install --prefer-dist --no-ansi --no-interaction --no-progress --no-scripts
-    - cp .env.example .env
+    - cp .env.testing .env
     - php artisan key:generate
   artifacts:
     paths:
@@ -53,7 +59,8 @@ phpmd:
   needs:
     - composer
   script:
-    - phpmd --standard=PSR2 --extensions=php --ignore=app/Support/helpers.php app
+    - phpmd app/ text phpmd.xml
+  allow_failure: true
 
 codestyle:
   stage: static-analysis
@@ -61,6 +68,7 @@ codestyle:
     - composer
   script:
     - phpcs --standard=PSR2 --extensions=php --ignore=app/Support/helpers.php app
+  allow_failure: true
 
 
 build-assets:
