@@ -25,6 +25,7 @@ composer:
     - cp .env.testing .env
     - php artisan key:generate
     - touch database/database.sqlite
+    - php artisan config:cache
   artifacts:
     paths:
       - vendor/
