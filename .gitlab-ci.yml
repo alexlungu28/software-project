@@ -91,8 +91,8 @@ phpunit:
   script:
     - php -v
     - php artisan migrate:fresh --seed
-    - ./vendor/bin/phpunit --version
-    - ./vendor/bin/phpunit -v --coverage-text --colors=never --stderr
+    - php ./vendor/bin/phpunit --version
+    - php ./vendor/bin/phpunit -v --coverage-text --colors=never --stderr
   artifacts:
     paths:
       - storage/logs # for debugging
