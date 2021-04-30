@@ -9,10 +9,6 @@ stages:
 before_script:
   - export PATH="~/.composer/vendor/bin:$PATH"
 
-include:
-  - template: Dependency-Scanning.gitlab-ci.yml
-  - template: SAST.gitlab-ci.yml
-
 variables:
   SAST_EXCLUDED_PATHS: "node_modules/**,vendor/**"
 
