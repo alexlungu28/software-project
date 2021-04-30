@@ -24,8 +24,8 @@ composer:
     - composer install --prefer-dist --no-ansi --no-interaction --no-progress --no-scripts
     - cp .env.testing .env
     - php artisan key:generate
-    - touch database/database.sqlite
     - php artisan config:cache
+    - touch database/database.sqlite
   artifacts:
     paths:
       - vendor/
@@ -90,6 +90,8 @@ phpunit:
     - composer
     - build-assets
   script:
+    - php artisan key:generate
+    - php artisan config:cache
     - php -v
     - php artisan migrate:fresh --seed
     - php ./vendor/bin/phpunit --version
