@@ -15,7 +15,8 @@ class CreateCourseEditionTable extends Migration
     {
         Schema::create('course_edition', function (Blueprint $table) {
             $table->string('course_id');
-            $table->string('course_edition');
+            $table->string('course_edition')->unique();
+            $table->foreign('course_id')->references('course_id')->on('course')->cascadeOnDelete();
         });
     }
 

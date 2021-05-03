@@ -16,6 +16,8 @@ class CreateInterventionGroupNotesTable extends Migration
         Schema::create('intervention_group_notes', function (Blueprint $table) {
             $table->integer('intervention_id');
             $table->integer('notes_id');
+            $table->foreign('intervention_id')->references('intervention_id')->on('intervention')->cascadeOnDelete();
+            $table->foreign('notes_id')->references('notes_id')->on('group_notes')->cascadeOnDelete();
         });
     }
 

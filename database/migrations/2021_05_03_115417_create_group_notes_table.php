@@ -17,6 +17,7 @@ class CreateGroupNotesTable extends Migration
             $table->integer('notes_id')->primary();
             $table->integer('group_id');
             $table->string('content');
+            $table->foreign('group_id')->references('group_id')->on('group')->cascadeOnDelete();
         });
     }
 

@@ -17,6 +17,9 @@ class CreateUserCoursesTable extends Migration
             $table->string('user_id');
             $table->string('course_id');
             $table->string('course_edition');
+            $table->foreign('user_id')->references('org_defined_id')->on('user')->cascadeOnDelete();
+            $table->foreign('course_id')->references('course_id')->on('course')->cascadeOnDelete();
+            $table->foreign('course_edition')->references('course_edition')->on('course_edition')->cascadeOnDelete();
         });
     }
 

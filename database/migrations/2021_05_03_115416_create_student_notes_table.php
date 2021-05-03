@@ -18,6 +18,7 @@ class CreateStudentNotesTable extends Migration
             $table->integer('student_id');
             $table->string('content');
             $table->integer('problem_signal');
+            $table->foreign('student_id')->references('org_defined_id')->on('student')->cascadeOnDelete();
         });
     }
 

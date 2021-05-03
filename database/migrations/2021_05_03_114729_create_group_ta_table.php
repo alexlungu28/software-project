@@ -16,6 +16,8 @@ class CreateGroupTaTable extends Migration
         Schema::create('group_ta', function (Blueprint $table) {
             $table->integer('group_id');
             $table->string('user_id');
+            $table->foreign('group_id')->references('group_id')->on('group')->cascadeOnDelete();
+            $table->foreign('user_id')->references('org_defined_id')->on('user')->cascadeOnDelete();
         });
     }
 
