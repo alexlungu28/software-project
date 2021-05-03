@@ -9,7 +9,7 @@
 <div class="container">
     <div class="card bg-light mt-3">
         <div class="card-header">
-            Laravel 5.8 Import Export Excel to database Example - ItSolutionStuff.com
+            Import Export Excel
         </div>
         <div class="card-body">
             <form action="{{ route('import') }}" method="POST" enctype="multipart/form-data">
