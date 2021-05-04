@@ -2,10 +2,11 @@
 
 namespace App\Imports;
 
-use App\User;
+use App\Models\User;
 use Maatwebsite\Excel\Concerns\ToModel;
+use Maatwebsite\Excel\Concerns\WithHeadingRow;
 
-class UsersImport implements ToModel
+class UsersImport implements ToModel, WithHeadingRow
 {
     /**
     * @param array $row
@@ -14,10 +15,14 @@ class UsersImport implements ToModel
      */
     public function model(array $row)
     {
+        foreach ($row as $key => $elem) {
+            echo $key . " " . $elem . "\n";
+        }
         return new User([
-            'name'     => $row['name'],
-            'org_defined_id'    => \Hash::make($row['org_defined_id']),
+            'org_defined_id'    => $row['orgdefinedid'],
+            'name'     => $row['username'],
             'email' => $row['email'],
+            'user_role' => 'student',
         ]);
     }
 }

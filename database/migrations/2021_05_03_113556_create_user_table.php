@@ -18,7 +18,7 @@ class CreateUserTable extends Migration
             $table->string('org_defined_id')->primary();
             $table->string('email')->unique();
             $table->string('user_role');
-            $table->string('password');
+            $table->string('password')->nullable();
         });
     }
 
