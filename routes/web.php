@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\RubricController;
+use App\Http\Controllers\RubricEntryController;
 use Illuminate\Support\Facades\Route;
 use App\Models\Rubric;
 /*
@@ -54,4 +56,22 @@ Route::get('/rubricName/{id}', function ($id){
 
 });
 
+/*
+|--------------------------------------------------------------------------
+| Create Rubric Routes
+|--------------------------------------------------------------------------
+*/
+//shows the form to create a rubric
+Route::get('/rubricCreate', [RubricController::class, 'create']);
+//post route for the Store method in the controller
+Route::post('/rubricStore',[RubricController::class,'store']);
 
+/*
+|--------------------------------------------------------------------------
+| Create RubricEntryController Routes
+|--------------------------------------------------------------------------
+*/
+//shows the form to create a rubric
+Route::get('/rubricEntryCreate',[RubricEntryController::class,'create']);
+//post route for the Store method in the controller
+Route::post('/rubricEntryStore',[RubricEntryController::class,'store']);
