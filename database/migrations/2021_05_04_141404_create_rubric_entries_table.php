@@ -14,10 +14,10 @@ class CreateRubricEntriesTable extends Migration
     public function up()
     {
         Schema::create('rubric_entries', function (Blueprint $table) {
-            $table->id();
             $table->integer('rubric_id');
             $table->integer('distance');
             $table->boolean('is_row');
+            $table->primary(array('rubric_id', 'is_row', 'distance'));
             $table->text('description');
             $table->timestamps();
         });

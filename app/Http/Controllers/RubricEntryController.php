@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Models\Rubric;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -90,5 +91,12 @@ class RubricEntryController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function view($id) {
+        $rubric = Rubric::find($id);
+        return view('rubric', ['rubric' => $rubric,
+            'rubricEntries' => $rubric->rubricEntry,
+            'rubricData' => $rubric->rubricData]);
     }
 }

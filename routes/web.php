@@ -75,3 +75,12 @@ Route::post('/rubricStore',[RubricController::class,'store']);
 Route::get('/rubricEntryCreate',[RubricEntryController::class,'create']);
 //post route for the Store method in the controller
 Route::post('/rubricEntryStore',[RubricEntryController::class,'store']);
+
+/*
+|--------------------------------------------------------------------------
+| Show RubricEntryController Routes
+|--------------------------------------------------------------------------
+*/
+//Gives a visual presentation of the rubric
+Route::get('/viewRubric/{id}', [RubricEntryController::class,'view']);
+
