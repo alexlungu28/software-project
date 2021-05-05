@@ -20,8 +20,11 @@ class UsersImport implements ToModel, WithHeadingRow
         }
         return new User([
             'org_defined_id'    => $row['orgdefinedid'],
-            'name'     => $row['username'],
+            'net_id'     => $row['username'],
+            'last_name'  => $row['last_name'],
+            'first_name'  => $row['first_name'],
             'email' => $row['email'],
+            'group' => $row['first_category'],
             'user_role' => 'student',
         ]);
     }
