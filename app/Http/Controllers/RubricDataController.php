@@ -38,7 +38,7 @@ class RubricDataController extends Controller
     public function store(Request $request, $id)
     {
         $i = 0;
-        foreach(Rubric::find($id)->rubricData as $entry) {
+        foreach (Rubric::find($id)->rubricData as $entry) {
             $value = $request->input("" . $i);
             if ($value === null) {
                 $value = -1;
