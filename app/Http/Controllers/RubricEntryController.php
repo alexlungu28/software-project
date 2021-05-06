@@ -27,7 +27,7 @@ class RubricEntryController extends Controller
             if (RubricEntry::where('is_row', '=', $isRow)->exists()) {
                 $rubricEntrySameId = RubricEntry::where('is_row', '=', $isRow)->where('rubric_id', '=', $id)->get();
                 $max = 0;
-                foreach ($rubricEntrySameId as $value){
+                foreach ($rubricEntrySameId as $value) {
                     if ($value->distance>$max) {
                         $max=$value->distance;
                     }
@@ -62,7 +62,7 @@ class RubricEntryController extends Controller
         $rubricId = $request->input('rubric_id');
         /*$distance = $request->input('distance');*/
         $isRow = $request->input('is_row');
-        $distance = $this->autoIncrementDistance($rubricId,$isRow) + 1;
+        $distance = $this->autoIncrementDistance($rubricId, $isRow) + 1;
         $description = $request->input('description');
 
         $data=array("rubric_id"=>$rubricId, "distance" =>$distance, 'is_row'=>$isRow,
