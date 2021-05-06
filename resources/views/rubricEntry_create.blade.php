@@ -29,8 +29,8 @@
         <input type="text" class="form-control" placeholder="Row/Column number" name="distance">
         <label class="form-group"></label>
         <select class="form-control" name="is_row">
-            <option value="0">Row</option>
-            <option value="1">Column</option>
+            <option value="1">Row</option>
+            <option value="0">Column</option>
         </select>
         <label class="form-group"></label>
         <input type="text" class="form-control" placeholder="Description" name="description">

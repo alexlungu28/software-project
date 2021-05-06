@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Models\Rubric;
+use App\Models\RubricEntry;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -42,7 +43,7 @@ class RubricEntryController extends Controller
         $isRow = $request->input('is_row');
         $description = $request->input('description');
 
-        $data=array("rubric_id"=>$rubricId,"distance"=>$distance,'is_row'=>$isRow, "description" =>$description,'created_at' =>now(), 'updated_at' => now());
+        $data=array("rubric_id"=>$rubricId,"distance"=>$distance,'is_row'=>$isRow, "description" =>$description, 'created_at' =>now(), 'updated_at' => now());
         DB::table('rubric_entries')->insert($data);
         echo "Record inserted successfully.<br/>";
         echo '<a href = "/rubricEntryCreate">Click Here</a> to go back.';
@@ -95,8 +96,18 @@ class RubricEntryController extends Controller
 
     public function view($id) {
         $rubric = Rubric::find($id);
+        $rubricColumnEntries = RubricEntry::all()->where('rubric_id', '=', $id)->where('is_row', '=', '0');
+        $rubricRowEntries = RubricEntry::all()->where('rubric_id', '=', $id)->where('is_row', '=', '1');
+//        return $rubricRowEntries;
         return view('rubric', ['rubric' => $rubric,
-            'rubricEntries' => $rubric->rubricEntry,
+            'rubricColumnEntries' => $rubricColumnEntries,
+            'width' => $rubricColumnEntries->count(),
+            'rubricRowEntries' => $rubricRowEntries,
+            'length' => $rubricRowEntries->count(),
             'rubricData' => $rubric->rubricData]);
     }
+
+//    public function saveRubric(Request $request) {
+//
+//    }
 }

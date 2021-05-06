@@ -15,8 +15,6 @@ class CreateRubricsTable extends Migration
     {
         Schema::create('rubrics', function (Blueprint $table) {
             $table->id();
-            $table->integer('width')->unsigned();
-            $table->integer('length')->unsigned();
             $table->text('name');
             $table->timestamps();
         });
