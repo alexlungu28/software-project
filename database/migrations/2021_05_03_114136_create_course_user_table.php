@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateInterventionTable extends Migration
+class CreateCourseUserTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,10 @@ class CreateInterventionTable extends Migration
      */
     public function up()
     {
-        Schema::create('intervention', function (Blueprint $table) {
-            $table->integer('intervention_id')->primary();
-            $table->string('group_name');
+        Schema::create('course_user', function (Blueprint $table) {
+            $table->string('user_id');
             $table->integer('edition_id');
-            $table->string('content');
-            $table->foreign('group_name')->references('group_name')->on('group')->cascadeOnDelete();
+            $table->foreign('user_id')->references('org_defined_id')->on('user')->cascadeOnDelete();
             $table->foreign('edition_id')->references('edition_id')->on('course_edition')->cascadeOnDelete();
         });
     }
@@ -30,6 +28,6 @@ class CreateInterventionTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('intervention');
+        Schema::dropIfExists('course_user');
     }
 }

@@ -19,8 +19,7 @@ class CreateUserTable extends Migration
             $table->string('last_name');
             $table->string('first_name');
             $table->string('email')->unique();
-            $table->string('group');
-            $table->string('user_role');
+            $table->string('affiliation');
             $table->string('password')->nullable();
         });
     }

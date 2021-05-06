@@ -15,9 +15,9 @@ class CreateGroupNotesTable extends Migration
     {
         Schema::create('group_notes', function (Blueprint $table) {
             $table->integer('notes_id')->primary();
-            $table->integer('group_id');
+            $table->string('group_name');
             $table->string('content');
-            $table->foreign('group_id')->references('group_id')->on('group')->cascadeOnDelete();
+            $table->foreign('group_name')->references('group_name')->on('group')->cascadeOnDelete();
         });
     }
 

@@ -15,17 +15,13 @@ class UsersImport implements ToModel, WithHeadingRow
      */
     public function model(array $row)
     {
-        foreach ($row as $key => $elem) {
-            echo $key . " " . $elem . "\n";
-        }
         return new User([
-            'org_defined_id'    => $row['orgdefinedid'],
-            'net_id'     => $row['username'],
+            'org_defined_id'    => trim($row['orgdefinedid'], "#"),
+            'net_id'     => trim($row['username'], "#"),
             'last_name'  => $row['last_name'],
             'first_name'  => $row['first_name'],
             'email' => $row['email'],
-            'group' => $row['first_category'],
-            'user_role' => 'student',
+            'affiliation' => 'student',
         ]);
     }
 }

@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Imports\GroupsImport;
+use App\Imports\GroupUserImport;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use App\Exports\UsersExport;
@@ -35,7 +37,8 @@ class ImportController extends Controller
     public function import()
     {
         Excel::import(new UsersImport, request()->file('file'));
-
+        Excel::import(new GroupsImport, request()->file('file'));
+        Excel::import(new GroupUserImport, request()->file('file'));
         return back();
     }
 }
