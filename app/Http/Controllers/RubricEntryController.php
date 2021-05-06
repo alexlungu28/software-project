@@ -21,28 +21,24 @@ class RubricEntryController extends Controller
         //
     }
 
-    public function autoIncrementDistance($id,$isRow){
-
-        if(RubricEntry::where('rubric_id', '=', $id)->exists())
-        {
-            if(RubricEntry::where('is_row', '=', $isRow)->exists())
-            {
+    public function autoIncrementDistance($id, $isRow)
+    {
+        if (RubricEntry::where('rubric_id', '=', $id)->exists()) {
+            if (RubricEntry::where('is_row', '=', $isRow)->exists()) {
                 $rubricEntrySameId = RubricEntry::where('is_row', '=', $isRow)->where('rubric_id', '=', $id)->get();
                 $max = 0;
                 foreach ($rubricEntrySameId as $value){
-                    if($value->distance>$max){
+                    if ($value->distance>$max) {
                         $max=$value->distance;
                     }
                 }
                 return $max;
-            }else
-            {
+            } else {
                 return 0;
             }
-        }else{
+        } else {
             return 0;
         }
-
     }
 
     /**
