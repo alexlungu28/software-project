@@ -7,6 +7,7 @@ use App\Models\Rubric;
 use App\Models\RubricEntry;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Symfony\Component\Console\Input\Input;
 
 class RubricEntryController extends Controller
 {
@@ -18,6 +19,30 @@ class RubricEntryController extends Controller
     public function index()
     {
         //
+    }
+
+    public function autoIncrementDistance($id,$isRow){
+
+        if(RubricEntry::where('rubric_id', '=', $id)->exists())
+        {
+            if(RubricEntry::where('is_row', '=', $isRow)->exists())
+            {
+                $rubricEntrySameId = RubricEntry::where('is_row', '=', $isRow)->where('rubric_id', '=', $id)->get();
+                $max = 0;
+                foreach ($rubricEntrySameId as $value){
+                    if($value->distance>$max){
+                        $max=$value->distance;
+                    }
+                }
+                return $max;
+            }else
+            {
+                return 0;
+            }
+        }else{
+            return 0;
+        }
+
     }
 
     /**
@@ -39,11 +64,12 @@ class RubricEntryController extends Controller
     public function store(Request $request)
     {
         $rubricId = $request->input('rubric_id');
-        $distance = $request->input('distance');
+        /*$distance = $request->input('distance');*/
         $isRow = $request->input('is_row');
+        $distance = $this->autoIncrementDistance($rubricId,$isRow) + 1;
         $description = $request->input('description');
 
-        $data=array("rubric_id"=>$rubricId, "distance"=>$distance, 'is_row'=>$isRow,
+        $data=array("rubric_id"=>$rubricId, "distance" =>$distance, 'is_row'=>$isRow,
             "description" =>$description, 'created_at' =>now(), 'updated_at' => now());
         DB::table('rubric_entries')->insert($data);
         echo "Record inserted successfully.<br/>";

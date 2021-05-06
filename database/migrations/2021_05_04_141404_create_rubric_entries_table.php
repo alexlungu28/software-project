@@ -15,7 +15,7 @@ class CreateRubricEntriesTable extends Migration
     {
         Schema::create('rubric_entries', function (Blueprint $table) {
             $table->integer('rubric_id');
-            $table->integer('distance');
+            $table->integer('distance')->unsigned();
             $table->boolean('is_row');
             $table->primary(array('rubric_id', 'is_row', 'distance'));
             $table->text('description');

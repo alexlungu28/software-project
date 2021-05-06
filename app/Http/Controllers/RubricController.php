@@ -42,10 +42,10 @@ class RubricController extends Controller
      */
     public function store(Request $request)
     {
-        $width = $request->input('width');
-        $length = $request->input('length');
+        /*$width = $request->input('width');
+        $length = $request->input('length');*/
         $name = $request->input('name');
-        $data=array("width"=>$width,"length"=>$length,'name'=>$name,'created_at' =>now(), 'updated_at' => now());
+        $data=array('name'=>$name,'created_at' =>now(), 'updated_at' => now());
         DB::table('rubrics')->insert($data);
         echo "Record inserted successfully.<br/>";
         echo '<a href = "/rubricCreate">Click Here</a> to go back.';

@@ -18,13 +18,6 @@
 
         <input type = "hidden" name = "_token" value = "<?php echo csrf_token(); ?>"><input type = "hidden" name = "_token" value = "<?php echo csrf_token(); ?>">
 
-
-
-
-        <label class="form-group">Width:</label>
-        <input type="text" class="form-control" placeholder="Width" name="width">
-        <label>Length:</label>
-        <input type="text" class="form-control" placeholder="Length" name="length">
         <label>Name:</label>
         <input type="text" class ="form-control" placeholder="Name" name="name">
 
