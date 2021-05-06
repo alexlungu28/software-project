@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\RubricController;
+use App\Http\Controllers\RubricDataController;
 use App\Http\Controllers\RubricEntryController;
 use Illuminate\Support\Facades\Route;
 use App\Models\Rubric;
@@ -37,23 +38,19 @@ Route::get('/rubricData/{id}',function($id){
 
 });
 
-Route::get('/rubricEntry/{id}/{isRow}',function ($id,$isRow){
+Route::get('/rubricEntry/{id}/{isRow}',function ($id,$isRow) {
 
     $rubric = Rubric::find($id);
 
-    foreach ($rubric->rubricEntry as $entry){
-
-        if($entry->is_row == $isRow){
+    foreach ($rubric->rubricEntry as $entry) {
+        if($entry->is_row == $isRow) {
             echo $entry->description.'<br>';
         }
-
     }
 });
 
-Route::get('/rubricName/{id}', function ($id){
-
+Route::get('/rubricName/{id}', function ($id) {
     return Rubric::find($id)->name;
-
 });
 
 /*
@@ -83,4 +80,12 @@ Route::post('/rubricEntryStore',[RubricEntryController::class,'store']);
 */
 //Gives a visual presentation of the rubric
 Route::get('/viewRubric/{id}', [RubricEntryController::class,'view']);
+
+/*
+|--------------------------------------------------------------------------
+| Save RubricDataController Routes
+|--------------------------------------------------------------------------
+*/
+//Saves data in the database
+Route::post('/rubricDataStore/{id}', [RubricDataController::class,'store']);
 

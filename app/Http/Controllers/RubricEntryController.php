@@ -65,9 +65,13 @@ class RubricEntryController extends Controller
         $distance = $this->autoIncrementDistance($rubricId, $isRow) + 1;
         $description = $request->input('description');
 
-        $data=array("rubric_id"=>$rubricId, "distance" =>$distance, 'is_row'=>$isRow,
+        $data = array("rubric_id"=>$rubricId, "distance" =>$distance, 'is_row'=>$isRow,
             "description" =>$description, 'created_at' =>now(), 'updated_at' => now());
         DB::table('rubric_entries')->insert($data);
+        $rubricData = array("rubric_id" => $rubricId, "row_number" => $distance,
+            "value" => "-1", "note" => null,
+            "created_at" => now(), "updated_at" => now());
+        DB::table('rubric_data')->insert($rubricData);
         echo "Record inserted successfully.<br/>";
         echo '<a href = "/rubricEntryCreate">Click Here</a> to go back.';
     }
