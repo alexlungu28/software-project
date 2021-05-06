@@ -10,15 +10,13 @@ class Rubric extends Model
     use HasFactory;
 
 
-    public function rubricData(){
-
+    public function rubricData()
+    {
         return $this->hasMany('App\Models\RubricData');
-
     }
 
-    public function rubricEntry(){
-
+    public function rubricEntry()
+    {
         return $this->hasMany('App\Models\RubricEntry');
-
     }
 }

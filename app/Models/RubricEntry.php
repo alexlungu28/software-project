@@ -9,9 +9,8 @@ class RubricEntry extends Model
 {
     use HasFactory;
 
-    public function rubric(){
-
-        return $this->belongsTo('App\Models\Rubric','rubric_id');
-
+    public function rubric()
+    {
+        return $this->belongsTo('App\Models\Rubric', 'rubric_id');
     }
 }

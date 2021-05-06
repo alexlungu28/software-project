@@ -27,7 +27,7 @@ class RubricEntryController extends Controller
      */
     public function create()
     {
-        return view('rubricEntry_create',['rubrics' => (new RubricController)->getAllRubric()]);
+        return view('rubricEntry_create', ['rubrics' => (new RubricController)->getAllRubric()]);
     }
 
     /**
@@ -43,7 +43,8 @@ class RubricEntryController extends Controller
         $isRow = $request->input('is_row');
         $description = $request->input('description');
 
-        $data=array("rubric_id"=>$rubricId,"distance"=>$distance,'is_row'=>$isRow, "description" =>$description, 'created_at' =>now(), 'updated_at' => now());
+        $data=array("rubric_id"=>$rubricId, "distance"=>$distance, 'is_row'=>$isRow,
+            "description" =>$description, 'created_at' =>now(), 'updated_at' => now());
         DB::table('rubric_entries')->insert($data);
         echo "Record inserted successfully.<br/>";
         echo '<a href = "/rubricEntryCreate">Click Here</a> to go back.';
@@ -94,7 +95,8 @@ class RubricEntryController extends Controller
         //
     }
 
-    public function view($id) {
+    public function view($id)
+    {
         $rubric = Rubric::find($id);
         $rubricColumnEntries = RubricEntry::all()->where('rubric_id', '=', $id)->where('is_row', '=', '0');
         $rubricRowEntries = RubricEntry::all()->where('rubric_id', '=', $id)->where('is_row', '=', '1');
@@ -107,7 +109,8 @@ class RubricEntryController extends Controller
             'rubricData' => $rubric->rubricData]);
     }
 
-//    public function saveRubric(Request $request) {
+//    public function saveRubric(Request $request)
+//    {
 //
 //    }
 }

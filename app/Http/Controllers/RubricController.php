@@ -19,10 +19,9 @@ class RubricController extends Controller
         //
     }
 
-    public function getAllRubric(){
-
+    public function getAllRubric()
+    {
         return Rubric::all();
-
     }
 
     /**
