@@ -50,7 +50,7 @@ class RubricDataController extends Controller
             $i++;
         }
         echo "Record inserted successfully.<br/>";
-        echo '<a href = "/viewRubric/1">Click Here</a> to go back.';
+        echo "<a href = " . "/viewRubric/" . $id . ">Click Here</a> to go back.";
     }
 
     /**

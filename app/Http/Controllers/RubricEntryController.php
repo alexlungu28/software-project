@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Models\Rubric;
+use App\Models\RubricData;
 use App\Models\RubricEntry;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -32,7 +33,7 @@ class RubricEntryController extends Controller
                         $max=$value->distance;
                     }
                 }
-                return $max;
+                return $max + 1;
             } else {
                 return 0;
             }
@@ -62,16 +63,19 @@ class RubricEntryController extends Controller
         $rubricId = $request->input('rubric_id');
         /*$distance = $request->input('distance');*/
         $isRow = $request->input('is_row');
-        $distance = $this->autoIncrementDistance($rubricId, $isRow) + 1;
+        $distance = $this->autoIncrementDistance($rubricId, $isRow);
         $description = $request->input('description');
 
         $data = array("rubric_id"=>$rubricId, "distance" =>$distance, 'is_row'=>$isRow,
             "description" =>$description, 'created_at' =>now(), 'updated_at' => now());
         DB::table('rubric_entries')->insert($data);
-        $rubricData = array("rubric_id" => $rubricId, "row_number" => $distance,
-            "value" => "-1", "note" => null,
-            "created_at" => now(), "updated_at" => now());
-        DB::table('rubric_data')->insert($rubricData);
+
+        if ($isRow) {
+            $rubricData = array("rubric_id" => $rubricId, "row_number" => $distance,
+                "value" => "-1", "note" => null,
+                "created_at" => now(), "updated_at" => now());
+            DB::table('rubric_data')->insertOrIgnore($rubricData);
+        }
         echo "Record inserted successfully.<br/>";
         echo '<a href = "/rubricEntryCreate">Click Here</a> to go back.';
     }
@@ -124,19 +128,14 @@ class RubricEntryController extends Controller
     public function view($id)
     {
         $rubric = Rubric::find($id);
-        $rubricColumnEntries = RubricEntry::all()->where('rubric_id', '=', $id)->where('is_row', '=', '0');
-        $rubricRowEntries = RubricEntry::all()->where('rubric_id', '=', $id)->where('is_row', '=', '1');
-//        return $rubricRowEntries;
+        $rubricColumnEntries = $rubric->rubricEntry->where('is_row', '=', '0');
+        $rubricRowEntries = $rubric->rubricEntry->where('is_row', '=', '1');
+        $rubricData = $rubric->rubricData;
         return view('rubric', ['rubric' => $rubric,
             'rubricColumnEntries' => $rubricColumnEntries,
             'width' => $rubricColumnEntries->count(),
             'rubricRowEntries' => $rubricRowEntries,
             'length' => $rubricRowEntries->count(),
-            'rubricData' => $rubric->rubricData]);
+            'rubricData' => $rubricData]);
     }
-
-//    public function saveRubric(Request $request)
-//    {
-//
-//    }
 }

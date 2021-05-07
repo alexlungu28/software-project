@@ -27,14 +27,16 @@
         </tr>
         </thead>
         <tbody>
-        @for($i = $width; $i < $width + $length; $i++)
-                <td> {{$rubricRowEntries[$i]->description}} </td>
-                @for($j = 0; $j < $width; $j++)
-                    <td> <input type="radio" name={{$i - $width}} {{$rubricData[$i - $width]->value == $j ? 'checked' : ''}} value={{$j}}> </td>
-                @endfor
-                <td> <textarea name={{"text".$i - $width}} form="rubricForm">{{$rubricData[$i - $width]->note}}</textarea> </td>
+
+        @foreach($rubricRowEntries as $rowEntry)
+            <tr>
+                <td> {{$rowEntry->description}} </td>
+                @foreach($rubricColumnEntries as $columnEntry)
+                    <td> <input type="radio" name={{$loop->parent->index}}  value={{$loop->index}} {{$rubricData[$loop->parent->index]->value == $loop->index ? 'checked' : ''}}> </td>
+                @endforeach
+                <td> <textarea name={{"text".($loop->index)}} form="rubricForm">{{$rubricData[$loop->index]->note}}</textarea> </td>
             </tr>
-        @endfor
+        @endforeach
         </tbody>
     </table>
     <button type="submit"  value = "Add" class="btn btn-primary">Submit</button>
