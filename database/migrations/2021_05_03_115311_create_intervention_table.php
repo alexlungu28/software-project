@@ -16,6 +16,7 @@ class CreateInterventionTable extends Migration
         Schema::create('intervention', function (Blueprint $table) {
             $table->integer('intervention_id');
             $table->string('group_name');
+            $table->foreign('group_name')->references('group_name')->on('group')->cascadeOnDelete();
             $table->string('edition_id');
             $table->primary(['intervention_id', 'group_name', 'edition_id']);
             $table->string('content');

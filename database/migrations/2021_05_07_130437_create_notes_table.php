@@ -19,6 +19,7 @@ class CreateNotesTable extends Migration
             $table->integer('problem_signal');
             $table->string('foreign_type');
             $table->integer('foreign_id');
+            $table->foreign('foreign_id')->references('intervention_id')->on('intervention')->cascadeOnDelete();
             $table->timestamps();
         });
     }
