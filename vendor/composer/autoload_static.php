@@ -91,6 +91,7 @@ class ComposerStaticInitb719e6a4b55f16cf73b9831aea3a1948
         ),
         'R' => 
         array (
+            'RobRichards\\XMLSecLibs\\' => 23,
             'Ramsey\\Uuid\\' => 12,
             'Ramsey\\Collection\\' => 18,
         ),
@@ -111,6 +112,7 @@ class ComposerStaticInitb719e6a4b55f16cf73b9831aea3a1948
         'O' => 
         array (
             'Opis\\Closure\\' => 13,
+            'OneLogin\\' => 9,
         ),
         'N' => 
         array (
@@ -323,6 +325,10 @@ class ComposerStaticInitb719e6a4b55f16cf73b9831aea3a1948
         array (
             0 => __DIR__ . '/..' . '/symfony/config',
         ),
+        'RobRichards\\XMLSecLibs\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/robrichards/xmlseclibs/src',
+        ),
         'Ramsey\\Uuid\\' => 
         array (
             0 => __DIR__ . '/..' . '/ramsey/uuid/src',
@@ -378,6 +384,10 @@ class ComposerStaticInitb719e6a4b55f16cf73b9831aea3a1948
         'Opis\\Closure\\' => 
         array (
             0 => __DIR__ . '/..' . '/opis/closure/src',
+        ),
+        'OneLogin\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/onelogin/php-saml/src',
         ),
         'NunoMaduro\\Collision\\' => 
         array (
@@ -529,9 +539,23 @@ class ComposerStaticInitb719e6a4b55f16cf73b9831aea3a1948
                 0 => __DIR__ . '/..' . '/mockery/mockery/library',
             ),
         ),
+        'A' => 
+        array (
+            'Aacotroneo\\Saml2\\' => 
+            array (
+                0 => __DIR__ . '/..' . '/aacotroneo/laravel-saml2/src',
+            ),
+        ),
     );
 
     public static $classMap = array (
+        'Aacotroneo\\Saml2\\Events\\Saml2Event' => __DIR__ . '/..' . '/aacotroneo/laravel-saml2/src/Aacotroneo/Saml2/Events/Saml2Event.php',
+        'Aacotroneo\\Saml2\\Events\\Saml2LoginEvent' => __DIR__ . '/..' . '/aacotroneo/laravel-saml2/src/Aacotroneo/Saml2/Events/Saml2LoginEvent.php',
+        'Aacotroneo\\Saml2\\Events\\Saml2LogoutEvent' => __DIR__ . '/..' . '/aacotroneo/laravel-saml2/src/Aacotroneo/Saml2/Events/Saml2LogoutEvent.php',
+        'Aacotroneo\\Saml2\\Http\\Controllers\\Saml2Controller' => __DIR__ . '/..' . '/aacotroneo/laravel-saml2/src/Aacotroneo/Saml2/Http/Controllers/Saml2Controller.php',
+        'Aacotroneo\\Saml2\\Saml2Auth' => __DIR__ . '/..' . '/aacotroneo/laravel-saml2/src/Aacotroneo/Saml2/Saml2Auth.php',
+        'Aacotroneo\\Saml2\\Saml2ServiceProvider' => __DIR__ . '/..' . '/aacotroneo/laravel-saml2/src/Aacotroneo/Saml2/Saml2ServiceProvider.php',
+        'Aacotroneo\\Saml2\\Saml2User' => __DIR__ . '/..' . '/aacotroneo/laravel-saml2/src/Aacotroneo/Saml2/Saml2User.php',
         'App\\Console\\Kernel' => __DIR__ . '/../..' . '/app/Console/Kernel.php',
         'App\\Exceptions\\Handler' => __DIR__ . '/../..' . '/app/Exceptions/Handler.php',
         'App\\Http\\Controllers\\Controller' => __DIR__ . '/../..' . '/app/Http/Controllers/Controller.php',
@@ -2779,6 +2803,7 @@ class ComposerStaticInitb719e6a4b55f16cf73b9831aea3a1948
         'League\\CommonMark\\Inline\\Renderer\\TextRenderer' => __DIR__ . '/..' . '/league/commonmark/src/Inline/Renderer/TextRenderer.php',
         'League\\CommonMark\\Input\\MarkdownInput' => __DIR__ . '/..' . '/league/commonmark/src/Input/MarkdownInput.php',
         'League\\CommonMark\\Input\\MarkdownInputInterface' => __DIR__ . '/..' . '/league/commonmark/src/Input/MarkdownInputInterface.php',
+        'League\\CommonMark\\MarkdownConverter' => __DIR__ . '/..' . '/league/commonmark/src/MarkdownConverter.php',
         'League\\CommonMark\\MarkdownConverterInterface' => __DIR__ . '/..' . '/league/commonmark/src/MarkdownConverterInterface.php',
         'League\\CommonMark\\Node\\Node' => __DIR__ . '/..' . '/league/commonmark/src/Node/Node.php',
         'League\\CommonMark\\Node\\NodeWalker' => __DIR__ . '/..' . '/league/commonmark/src/Node/NodeWalker.php',
@@ -3090,6 +3115,18 @@ class ComposerStaticInitb719e6a4b55f16cf73b9831aea3a1948
         'NunoMaduro\\Collision\\Provider' => __DIR__ . '/..' . '/nunomaduro/collision/src/Provider.php',
         'NunoMaduro\\Collision\\SolutionsRepositories\\NullSolutionsRepository' => __DIR__ . '/..' . '/nunomaduro/collision/src/SolutionsRepositories/NullSolutionsRepository.php',
         'NunoMaduro\\Collision\\Writer' => __DIR__ . '/..' . '/nunomaduro/collision/src/Writer.php',
+        'OneLogin\\Saml2\\Auth' => __DIR__ . '/..' . '/onelogin/php-saml/src/Saml2/Auth.php',
+        'OneLogin\\Saml2\\AuthnRequest' => __DIR__ . '/..' . '/onelogin/php-saml/src/Saml2/AuthnRequest.php',
+        'OneLogin\\Saml2\\Constants' => __DIR__ . '/..' . '/onelogin/php-saml/src/Saml2/Constants.php',
+        'OneLogin\\Saml2\\Error' => __DIR__ . '/..' . '/onelogin/php-saml/src/Saml2/Error.php',
+        'OneLogin\\Saml2\\IdPMetadataParser' => __DIR__ . '/..' . '/onelogin/php-saml/src/Saml2/IdPMetadataParser.php',
+        'OneLogin\\Saml2\\LogoutRequest' => __DIR__ . '/..' . '/onelogin/php-saml/src/Saml2/LogoutRequest.php',
+        'OneLogin\\Saml2\\LogoutResponse' => __DIR__ . '/..' . '/onelogin/php-saml/src/Saml2/LogoutResponse.php',
+        'OneLogin\\Saml2\\Metadata' => __DIR__ . '/..' . '/onelogin/php-saml/src/Saml2/Metadata.php',
+        'OneLogin\\Saml2\\Response' => __DIR__ . '/..' . '/onelogin/php-saml/src/Saml2/Response.php',
+        'OneLogin\\Saml2\\Settings' => __DIR__ . '/..' . '/onelogin/php-saml/src/Saml2/Settings.php',
+        'OneLogin\\Saml2\\Utils' => __DIR__ . '/..' . '/onelogin/php-saml/src/Saml2/Utils.php',
+        'OneLogin\\Saml2\\ValidationError' => __DIR__ . '/..' . '/onelogin/php-saml/src/Saml2/ValidationError.php',
         'Opis\\Closure\\Analyzer' => __DIR__ . '/..' . '/opis/closure/src/Analyzer.php',
         'Opis\\Closure\\ClosureContext' => __DIR__ . '/..' . '/opis/closure/src/ClosureContext.php',
         'Opis\\Closure\\ClosureScope' => __DIR__ . '/..' . '/opis/closure/src/ClosureScope.php',
@@ -3865,6 +3902,7 @@ class ComposerStaticInitb719e6a4b55f16cf73b9831aea3a1948
         'PhpParser\\Builder' => __DIR__ . '/..' . '/nikic/php-parser/lib/PhpParser/Builder.php',
         'PhpParser\\BuilderFactory' => __DIR__ . '/..' . '/nikic/php-parser/lib/PhpParser/BuilderFactory.php',
         'PhpParser\\BuilderHelpers' => __DIR__ . '/..' . '/nikic/php-parser/lib/PhpParser/BuilderHelpers.php',
+        'PhpParser\\Builder\\ClassConst' => __DIR__ . '/..' . '/nikic/php-parser/lib/PhpParser/Builder/ClassConst.php',
         'PhpParser\\Builder\\Class_' => __DIR__ . '/..' . '/nikic/php-parser/lib/PhpParser/Builder/Class_.php',
         'PhpParser\\Builder\\Declaration' => __DIR__ . '/..' . '/nikic/php-parser/lib/PhpParser/Builder/Declaration.php',
         'PhpParser\\Builder\\FunctionLike' => __DIR__ . '/..' . '/nikic/php-parser/lib/PhpParser/Builder/FunctionLike.php',
@@ -3895,6 +3933,7 @@ class ComposerStaticInitb719e6a4b55f16cf73b9831aea3a1948
         'PhpParser\\Lexer\\Emulative' => __DIR__ . '/..' . '/nikic/php-parser/lib/PhpParser/Lexer/Emulative.php',
         'PhpParser\\Lexer\\TokenEmulator\\AttributeEmulator' => __DIR__ . '/..' . '/nikic/php-parser/lib/PhpParser/Lexer/TokenEmulator/AttributeEmulator.php',
         'PhpParser\\Lexer\\TokenEmulator\\CoaleseEqualTokenEmulator' => __DIR__ . '/..' . '/nikic/php-parser/lib/PhpParser/Lexer/TokenEmulator/CoaleseEqualTokenEmulator.php',
+        'PhpParser\\Lexer\\TokenEmulator\\EnumTokenEmulator' => __DIR__ . '/..' . '/nikic/php-parser/lib/PhpParser/Lexer/TokenEmulator/EnumTokenEmulator.php',
         'PhpParser\\Lexer\\TokenEmulator\\FlexibleDocStringEmulator' => __DIR__ . '/..' . '/nikic/php-parser/lib/PhpParser/Lexer/TokenEmulator/FlexibleDocStringEmulator.php',
         'PhpParser\\Lexer\\TokenEmulator\\FnTokenEmulator' => __DIR__ . '/..' . '/nikic/php-parser/lib/PhpParser/Lexer/TokenEmulator/FnTokenEmulator.php',
         'PhpParser\\Lexer\\TokenEmulator\\KeywordEmulator' => __DIR__ . '/..' . '/nikic/php-parser/lib/PhpParser/Lexer/TokenEmulator/KeywordEmulator.php',
@@ -4056,6 +4095,8 @@ class ComposerStaticInitb719e6a4b55f16cf73b9831aea3a1948
         'PhpParser\\Node\\Stmt\\Echo_' => __DIR__ . '/..' . '/nikic/php-parser/lib/PhpParser/Node/Stmt/Echo_.php',
         'PhpParser\\Node\\Stmt\\ElseIf_' => __DIR__ . '/..' . '/nikic/php-parser/lib/PhpParser/Node/Stmt/ElseIf_.php',
         'PhpParser\\Node\\Stmt\\Else_' => __DIR__ . '/..' . '/nikic/php-parser/lib/PhpParser/Node/Stmt/Else_.php',
+        'PhpParser\\Node\\Stmt\\EnumCase' => __DIR__ . '/..' . '/nikic/php-parser/lib/PhpParser/Node/Stmt/EnumCase.php',
+        'PhpParser\\Node\\Stmt\\Enum_' => __DIR__ . '/..' . '/nikic/php-parser/lib/PhpParser/Node/Stmt/Enum_.php',
         'PhpParser\\Node\\Stmt\\Expression' => __DIR__ . '/..' . '/nikic/php-parser/lib/PhpParser/Node/Stmt/Expression.php',
         'PhpParser\\Node\\Stmt\\Finally_' => __DIR__ . '/..' . '/nikic/php-parser/lib/PhpParser/Node/Stmt/Finally_.php',
         'PhpParser\\Node\\Stmt\\For_' => __DIR__ . '/..' . '/nikic/php-parser/lib/PhpParser/Node/Stmt/For_.php',
@@ -4500,6 +4541,10 @@ class ComposerStaticInitb719e6a4b55f16cf73b9831aea3a1948
         'Ramsey\\Uuid\\UuidInterface' => __DIR__ . '/..' . '/ramsey/uuid/src/UuidInterface.php',
         'Ramsey\\Uuid\\Validator\\GenericValidator' => __DIR__ . '/..' . '/ramsey/uuid/src/Validator/GenericValidator.php',
         'Ramsey\\Uuid\\Validator\\ValidatorInterface' => __DIR__ . '/..' . '/ramsey/uuid/src/Validator/ValidatorInterface.php',
+        'RobRichards\\XMLSecLibs\\Utils\\XPath' => __DIR__ . '/..' . '/robrichards/xmlseclibs/src/Utils/XPath.php',
+        'RobRichards\\XMLSecLibs\\XMLSecEnc' => __DIR__ . '/..' . '/robrichards/xmlseclibs/src/XMLSecEnc.php',
+        'RobRichards\\XMLSecLibs\\XMLSecurityDSig' => __DIR__ . '/..' . '/robrichards/xmlseclibs/src/XMLSecurityDSig.php',
+        'RobRichards\\XMLSecLibs\\XMLSecurityKey' => __DIR__ . '/..' . '/robrichards/xmlseclibs/src/XMLSecurityKey.php',
         'SebastianBergmann\\CliParser\\AmbiguousOptionException' => __DIR__ . '/..' . '/sebastian/cli-parser/src/exceptions/AmbiguousOptionException.php',
         'SebastianBergmann\\CliParser\\Exception' => __DIR__ . '/..' . '/sebastian/cli-parser/src/exceptions/Exception.php',
         'SebastianBergmann\\CliParser\\OptionDoesNotAllowArgumentException' => __DIR__ . '/..' . '/sebastian/cli-parser/src/exceptions/OptionDoesNotAllowArgumentException.php',
@@ -5564,7 +5609,6 @@ class ComposerStaticInitb719e6a4b55f16cf73b9831aea3a1948
         'Symfony\\Component\\Translation\\MessageCatalogue' => __DIR__ . '/..' . '/symfony/translation/MessageCatalogue.php',
         'Symfony\\Component\\Translation\\MessageCatalogueInterface' => __DIR__ . '/..' . '/symfony/translation/MessageCatalogueInterface.php',
         'Symfony\\Component\\Translation\\MetadataAwareInterface' => __DIR__ . '/..' . '/symfony/translation/MetadataAwareInterface.php',
-        'Symfony\\Component\\Translation\\PluralizationRules' => __DIR__ . '/..' . '/symfony/translation/PluralizationRules.php',
         'Symfony\\Component\\Translation\\PseudoLocalizationTranslator' => __DIR__ . '/..' . '/symfony/translation/PseudoLocalizationTranslator.php',
         'Symfony\\Component\\Translation\\Reader\\TranslationReader' => __DIR__ . '/..' . '/symfony/translation/Reader/TranslationReader.php',
         'Symfony\\Component\\Translation\\Reader\\TranslationReaderInterface' => __DIR__ . '/..' . '/symfony/translation/Reader/TranslationReaderInterface.php',
