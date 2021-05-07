@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateGroupTaTable extends Migration
+class CreateCourseUserTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,10 @@ class CreateGroupTaTable extends Migration
      */
     public function up()
     {
-        Schema::create('group_ta', function (Blueprint $table) {
-            $table->integer('group_id');
+        Schema::create('course_user', function (Blueprint $table) {
             $table->string('user_id');
-            $table->foreign('group_id')->references('group_id')->on('group')->cascadeOnDelete();
-            $table->foreign('user_id')->references('org_defined_id')->on('user')->cascadeOnDelete();
+            $table->integer('edition_id');
+            $table->timestamps();
         });
     }
 
@@ -28,6 +27,6 @@ class CreateGroupTaTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('group_ta');
+        Schema::dropIfExists('course_user');
     }
 }

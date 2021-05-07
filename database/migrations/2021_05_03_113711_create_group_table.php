@@ -14,9 +14,12 @@ class CreateGroupTable extends Migration
     public function up()
     {
         Schema::create('group', function (Blueprint $table) {
-            $table->integer('group_id')->primary();
+            $table->string('group_name');
             $table->string('content');
             $table->float('grade');
+            $table->integer('edition_id');
+            $table->primary(['group_name', 'edition_id']);
+            $table->timestamps();
         });
     }
 

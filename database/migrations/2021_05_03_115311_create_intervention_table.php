@@ -14,10 +14,12 @@ class CreateInterventionTable extends Migration
     public function up()
     {
         Schema::create('intervention', function (Blueprint $table) {
-            $table->integer('intervention_id')->primary();
-            $table->integer('group_id');
+            $table->integer('intervention_id');
+            $table->string('group_name');
+            $table->string('edition_id');
+            $table->primary(['intervention_id', 'group_name', 'edition_id']);
             $table->string('content');
-            $table->foreign('group_id')->references('group_id')->on('group')->cascadeOnDelete();
+            $table->timestamps();
         });
     }
 

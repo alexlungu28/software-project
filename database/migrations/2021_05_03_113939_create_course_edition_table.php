@@ -14,9 +14,10 @@ class CreateCourseEditionTable extends Migration
     public function up()
     {
         Schema::create('course_edition', function (Blueprint $table) {
+            $table->id('edition_id');
             $table->string('course_id');
-            $table->string('course_edition')->unique();
-            $table->foreign('course_id')->references('course_id')->on('course')->cascadeOnDelete();
+            $table->integer('year');
+            $table->timestamps();
         });
     }
 
