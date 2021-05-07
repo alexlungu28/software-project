@@ -2,7 +2,7 @@
 
 // If you choose to use ENV vars to define these values, give this IdP its own env var names
 // so you can define different values for each IdP, all starting with 'SAML2_'.$this_idp_env_id
-$this_idp_env_id = 'GRADINATOR';
+$this_idp_env_id = 'EIPDEV';
 
 //This is variable is for simplesaml example only.
 // For real IdP, you must set the url values in the 'idp' config to conform to the IdP's real urls.
@@ -75,7 +75,7 @@ return $settings = array(
             'url' => env('SAML2_'.$this_idp_env_id.'_IDP_SL_URL', $idp_host . '/saml2/idp/SingleLogoutService.php'),
         ),
         // Public x509 certificate of the IdP
-        'x509cert' => env('SAML2_'.$this_idp_env_id.'_IDP_x509', 'MIID/TCCAuWgAwIBAgIJAI4R3WyjjmB1MA0GCSqGSIb3DQEBCwUAMIGUMQswCQYDVQQGEwJBUjEVMBMGA1UECAwMQnVlbm9zIEFpcmVzMRUwEwYDVQQHDAxCdWVub3MgQWlyZXMxDDAKBgNVBAoMA1NJVTERMA8GA1UECwwIU2lzdGVtYXMxFDASBgNVBAMMC09yZy5TaXUuQ29tMSAwHgYJKoZIhvcNAQkBFhFhZG1pbmlAc2l1LmVkdS5hcjAeFw0xNDEyMDExNDM2MjVaFw0yNDExMzAxNDM2MjVaMIGUMQswCQYDVQQGEwJBUjEVMBMGA1UECAwMQnVlbm9zIEFpcmVzMRUwEwYDVQQHDAxCdWVub3MgQWlyZXMxDDAKBgNVBAoMA1NJVTERMA8GA1UECwwIU2lzdGVtYXMxFDASBgNVBAMMC09yZy5TaXUuQ29tMSAwHgYJKoZIhvcNAQkBFhFhZG1pbmlAc2l1LmVkdS5hcjCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAMbzW/EpEv+qqZzfT1Buwjg9nnNNVrxkCfuR9fQiQw2tSouS5X37W5h7RmchRt54wsm046PDKtbSz1NpZT2GkmHN37yALW2lY7MyVUC7itv9vDAUsFr0EfKIdCKgxCKjrzkZ5ImbNvjxf7eA77PPGJnQ/UwXY7W+cvLkirp0K5uWpDk+nac5W0JXOCFR1BpPUJRbz2jFIEHyChRt7nsJZH6ejzNqK9lABEC76htNy1Ll/D3tUoPaqo8VlKW3N3MZE0DB9O7g65DmZIIlFqkaMH3ALd8adodJtOvqfDU/A6SxuwMfwDYPjoucykGDu1etRZ7dF2gd+W+1Pn7yizPT1q8CAwEAAaNQME4wHQYDVR0OBBYEFPsn8tUHN8XXf23ig5Qro3beP8BuMB8GA1UdIwQYMBaAFPsn8tUHN8XXf23ig5Qro3beP8BuMAwGA1UdEwQFMAMBAf8wDQYJKoZIhvcNAQELBQADggEBAGu60odWFiK+DkQekozGnlpNBQz5lQ/bwmOWdktnQj6HYXu43e7sh9oZWArLYHEOyMUekKQAxOK51vbTHzzw66BZU91/nqvaOBfkJyZKGfluHbD0/hfOl/D5kONqI9kyTu4wkLQcYGyuIi75CJs15uA03FSuULQdY/Liv+czS/XYDyvtSLnu43VuAQWN321PQNhuGueIaLJANb2C5qq5ilTBUw6PxY9Z+vtMjAjTJGKEkE/tQs7CvzLPKXX3KTD9lIILmX5yUC3dLgjVKi1KGDqNApYGOMtjr5eoxPQrqDBmyx3flcy0dQTdLXud3UjWVW3N0PYgJtw5yBsS74QTGD4='),
+        'x509cert' => env('SAML2_'.$this_idp_env_id.'_IDP_x509', 'MIIFQzCCA6ugAwIBAgIUd/itG7/3i8vo7/qTQz8sM/KiEcYwDQYJKoZIhvcNAQELBQAwgbAxCzAJBgNVBAYTAk5MMRUwEwYDVQQIDAxadWlkIEhvbGxhbmQxDjAMBgNVBAcMBURlbGZ0MScwJQYDVQQKDB5EZWxmdCBVbml2ZXJzaXR5IG9mIFRlY2hub2xvZ3kxDjAMBgNVBAsMBUVFTUNTMR4wHAYDVQQDDBVlaXBkZXYuZXdpLnR1ZGVsZnQubmwxITAfBgkqhkiG9w0BCQEWEmVpcC1ld2lAdHVkZWxmdC5ubDAeFw0xOTA5MTIxMjUwNTFaFw0yNDA5MTExMjUwNTFaMIGwMQswCQYDVQQGEwJOTDEVMBMGA1UECAwMWnVpZCBIb2xsYW5kMQ4wDAYDVQQHDAVEZWxmdDEnMCUGA1UECgweRGVsZnQgVW5pdmVyc2l0eSBvZiBUZWNobm9sb2d5MQ4wDAYDVQQLDAVFRU1DUzEeMBwGA1UEAwwVZWlwZGV2LmV3aS50dWRlbGZ0Lm5sMSEwHwYJKoZIhvcNAQkBFhJlaXAtZXdpQHR1ZGVsZnQubmwwggGiMA0GCSqGSIb3DQEBAQUAA4IBjwAwggGKAoIBgQDFZm5gj06tsbgkKn3gtGDqdHbgzMyfK5/FoRt2obdHN+aN8Hubgps75nc9jJ9Uqjsc2MZ6/w3u0rOpV4iDGb+j6ykt3RXFrDVQo17pSpX4/X1+MNqTjvwinD5bYkg7OhET2keYsQy2jqVh7MEDpcsnVsRU4enfGbflcXMYVbz2KerSp8NeijqscV6nhA/MQIB/iAjd8VLph0pj8xwvKVXu7mqIin4iKoCS1yafMyDgLz2yfHLoUrhKmUvyOwOTVt9OIeQo4AlkL87b+fNy7IpXtRgZDcC5FgQqQvRAPQ1Rv/1mv+fQT5MndJWuXmuFqEO9IdFWQhH9WVmpQyR0A7TBJ6Xk1weilZyVY+DNX7F7oEQw0TplF2OWhfOMgbUrPOX1Y/qjihMIkaGFgPwaQ35TPWdCWaMLmsJEupVUr1Jx6gh5fWoH8l5oaHalcS4vsUpNQ9u4pOcDEvJ5OqVCUKdIb3z4SQyet73d3YzEKX33dBqF8xN1I9rzBz8DQc7QMQ8CAwEAAaNTMFEwHQYDVR0OBBYEFOW1P3duY4TRWazADYM6VqLu5kTjMB8GA1UdIwQYMBaAFOW1P3duY4TRWazADYM6VqLu5kTjMA8GA1UdEwEB/wQFMAMBAf8wDQYJKoZIhvcNAQELBQADggGBAERkdVg4ylo2Kmi8l9Ql75RXd/C6+Qt6PK5VQvy+3ucqpRai0HEuaJPn7K9J1uES1w8HRygaJEKKdF84v/2GlJ2L5b8/7egh8ifc2s4taBaTNHAWuGvHTBSavpB+dUzmK13Ce2Q2kPdWph9PsDsAsaUCgsdKkRcxxXaA4CRMT3pIfRkX23GgvtQI5bPwwMnDm2XdEQaRgOb3hRaRsxIbuEnmfOvNzIwxSNIqdWE6r9A+9ESQh1HWCYVZtq4YF+WzScSv8Dn1G2acRPU9inW4iHE3zK7AUzQem/8gWPjf4GbE4cIOjWAdRw1W8+oiB/w8IpIxm26INz5sXISsbc+G73GPshE/uY2VczYUXR+H8ARjL1l7oBYVRW7PevUKgzudv8g2Mz8nhJb8jQSBngZiYnGQ7wCPE1QBJvvDsDloqbURxgL/99kJeKpq5stNWp7XR7JZevc/XChtEbYuGgZv4ApXmvv2r5JnGwgFDEzHxP33kP8g7GoHMEBYk3jgxs1DDg=='),
         /*
          *  Instead of use the whole x509cert you can use a fingerprint
          *  (openssl x509 -noout -fingerprint -in "idp.crt" to generate it)
@@ -155,7 +155,7 @@ return $settings = array(
         'en-US' => array(
             'name' => 'TU Delft',
             'displayname' => 'Gradinator',
-            'url' => ''
+            'url' => 'localhost:8000'
         ),
     ),
 
