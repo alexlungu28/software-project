@@ -15,8 +15,12 @@ class GroupsImport implements ToModel, WithHeadingRow
      */
     public function model(array $row)
     {
-        return new Group([
-            'group_name'    => $row['first_category'],
-        ]);
+        if (!Group::where('group_name', '=', $row['first_category'])->exists()) {
+            return new Group([
+                'group_name'    => $row['first_category'],
+            ]);
+        } else {
+            return null;
+        }
     }
 }
