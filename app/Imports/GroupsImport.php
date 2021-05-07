@@ -16,21 +16,21 @@ class GroupsImport implements ToModel, WithHeadingRow
     public function model(array $row)
     {
         //position before the beginning of categories
-        $position_email = array_search('email', array_keys($row));
+        $positionEmail = array_search('email', array_keys($row));
 
         //position right after the end of categories
-        $position_grade = array_search('group_text_grade_text', array_keys($row));
+        $positionGrade = array_search('group_text_grade_text', array_keys($row));
 
-        $group_name = null;
-        for ($x = $position_email + 1; $x < $position_grade; $x++) {
+        $groupName = null;
+        for ($x = $positionEmail + 1; $x < $positionGrade; $x++) {
             //finds the group name by iterating over all categories
             if ($row[array_keys($row)[$x]] !=null) {
-                $group_name = $row[array_keys($row)[$x]];
+                $groupName = $row[array_keys($row)[$x]];
             }
         }
-        if (!Group::where('group_name', '=', $group_name)->exists()) {
+        if (!Group::where('group_name', '=', $groupName)->exists()) {
             return new Group([
-                'group_name'    => $group_name,
+                'group_name'    => $groupName,
             ]);
         } else {
             return null;
