@@ -93,6 +93,6 @@ class RubricController extends Controller
      */
     public function destroy($id)
     {
-        //
+        Rubric::destroy($id);
     }
 }

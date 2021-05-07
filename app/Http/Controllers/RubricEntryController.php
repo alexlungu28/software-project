@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Models\Rubric;
+use App\Models\RubricData;
 use App\Models\RubricEntry;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -68,10 +69,13 @@ class RubricEntryController extends Controller
         $data = array("rubric_id"=>$rubricId, "distance" =>$distance, 'is_row'=>$isRow,
             "description" =>$description, 'created_at' =>now(), 'updated_at' => now());
         DB::table('rubric_entries')->insert($data);
-        $rubricData = array("rubric_id" => $rubricId, "row_number" => $distance,
-            "value" => "-1", "note" => null,
-            "created_at" => now(), "updated_at" => now());
-        DB::table('rubric_data')->insert($rubricData);
+
+        if ($isRow) {
+            $rubricData = array("rubric_id" => $rubricId, "row_number" => $distance,
+                "value" => "-1", "note" => null,
+                "created_at" => now(), "updated_at" => now());
+            DB::table('rubric_data')->insertOrIgnore($rubricData);
+        }
         echo "Record inserted successfully.<br/>";
         echo '<a href = "/rubricEntryCreate">Click Here</a> to go back.';
     }
@@ -116,9 +120,13 @@ class RubricEntryController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy($id, $distance, $isRow)
     {
-        //
+        DB::table('rubric_entries')->where('rubric_id', '=', $id)->where('distance', '=', $distance)
+            ->where('is_row', '=', $isRow)->delete();
+        if ($isRow == 1) {
+            RubricData::where('rubric_id', '=', $id)->where('row_number', '=', $distance)->delete();
+        }
     }
 
     public function view($id)
