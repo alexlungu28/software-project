@@ -33,7 +33,7 @@ class RubricEntryController extends Controller
                         $max=$value->distance;
                     }
                 }
-                return $max;
+                return $max + 1;
             } else {
                 return 0;
             }
@@ -63,7 +63,7 @@ class RubricEntryController extends Controller
         $rubricId = $request->input('rubric_id');
         /*$distance = $request->input('distance');*/
         $isRow = $request->input('is_row');
-        $distance = $this->autoIncrementDistance($rubricId, $isRow) + 1;
+        $distance = $this->autoIncrementDistance($rubricId, $isRow);
         $description = $request->input('description');
 
         $data = array("rubric_id"=>$rubricId, "distance" =>$distance, 'is_row'=>$isRow,
@@ -132,19 +132,14 @@ class RubricEntryController extends Controller
     public function view($id)
     {
         $rubric = Rubric::find($id);
-        $rubricColumnEntries = RubricEntry::all()->where('rubric_id', '=', $id)->where('is_row', '=', '0');
-        $rubricRowEntries = RubricEntry::all()->where('rubric_id', '=', $id)->where('is_row', '=', '1');
-//        return $rubricRowEntries;
+        $rubricColumnEntries = $rubric->rubricEntry->where('is_row', '=', '0');
+        $rubricRowEntries = $rubric->rubricEntry->where('is_row', '=', '1');
+        $rubricData = $rubric->rubricData;
         return view('rubric', ['rubric' => $rubric,
             'rubricColumnEntries' => $rubricColumnEntries,
             'width' => $rubricColumnEntries->count(),
             'rubricRowEntries' => $rubricRowEntries,
             'length' => $rubricRowEntries->count(),
-            'rubricData' => $rubric->rubricData]);
+            'rubricData' => $rubricData]);
     }
-
-//    public function saveRubric(Request $request)
-//    {
-//
-//    }
 }
