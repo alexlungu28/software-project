@@ -42,8 +42,6 @@ class RubricController extends Controller
      */
     public function store(Request $request)
     {
-        /*$width = $request->input('width');
-        $length = $request->input('length');*/
         $name = $request->input('name');
         $data=array('name'=>$name,'created_at' =>now(), 'updated_at' => now());
         DB::table('rubrics')->insert($data);
@@ -66,11 +64,11 @@ class RubricController extends Controller
      * Show the form for editing the specified resource.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit()
     {
-        //
+        return view('rubric_edit', ['rubrics' => (new RubricController)->getAllRubric()]);
     }
 
     /**
@@ -80,9 +78,16 @@ class RubricController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request)
     {
-        //
+        $id = $request->input('id');
+        $name = $request->input('name');
+        $rubric = Rubric::find($id);
+        $rubric->name = $name;
+        $rubric->save();
+
+        echo "Record updated successfully.<br/>";
+        echo '<a href = "/rubricEdit">Click Here</a> to go back.';
     }
 
     /**

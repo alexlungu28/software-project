@@ -94,12 +94,12 @@ class RubricEntryController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit($id, $isRow)
     {
-        //
+        $rubric = Rubric::find($id);
+        return view('rubricEntry_update', ['rubric' => $rubric, 'isRow' =>$isRow, 'id' => $id]);
     }
 
     /**
@@ -109,9 +109,19 @@ class RubricEntryController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request)
     {
-        //
+        $id = $request->input('id');
+        $isRow = $request->input('isRow');
+        $distance = $request->input('distance');
+        $description = $request->input('description');
+        DB::table('rubric_entries')->where('rubric_id', '=', $id)
+            ->where('is_row', '=', $isRow)
+            ->where('distance', '=', $distance)
+            ->update(['description' => $description]);
+
+        echo "Record updated successfully.<br/>";
+        echo '<a href = "/rubricEntryEdit">Click Here</a> to go back.';
     }
 
     /**
@@ -137,9 +147,7 @@ class RubricEntryController extends Controller
         $rubricData = $rubric->rubricData;
         return view('rubric', ['rubric' => $rubric,
             'rubricColumnEntries' => $rubricColumnEntries,
-            'width' => $rubricColumnEntries->count(),
             'rubricRowEntries' => $rubricRowEntries,
-            'length' => $rubricRowEntries->count(),
             'rubricData' => $rubricData]);
     }
 }

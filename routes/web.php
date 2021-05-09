@@ -68,6 +68,13 @@ Route::post('/rubricStore', [RubricController::class, 'store']);
 Route::get('/rubricDelete/{id}', [RubricController::class, 'destroy']);
 /*
 |--------------------------------------------------------------------------
+| Update Rubric Routes
+|--------------------------------------------------------------------------
+*/
+Route::get('/rubricEdit', [RubricController::class, 'edit']);
+Route::post('/rubricUpdate', [RubricController::class, 'update']);
+/*
+|--------------------------------------------------------------------------
 | Create RubricEntryController Routes
 |--------------------------------------------------------------------------
 */
@@ -81,6 +88,14 @@ Route::post('/rubricEntryStore', [RubricEntryController::class, 'store']);
 |--------------------------------------------------------------------------
 */
 Route::get('/rubricEntryDelete/{id}/{distance}/{isRow}', [RubricEntryController::class, 'destroy']);
+
+/*
+|--------------------------------------------------------------------------
+| Update RubricEntry Routes
+|--------------------------------------------------------------------------
+*/
+Route::get('/rubricEntryEdit/{id}/{isRow}', [RubricEntryController::class, 'edit']);
+Route::post('/rubricEntryUpdate', [RubricEntryController::class, 'update']);
 /*
 |--------------------------------------------------------------------------
 | Show RubricEntryController Routes
