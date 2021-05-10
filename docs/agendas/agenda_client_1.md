@@ -17,7 +17,8 @@ Luca Becheanu\
 Alex Ciurba\
 Alexandru Lungu\
 Melle Schoenmaker\
-Toma Zamfirescu
+Toma Zamfirescu\
+Sander van den Oever
 
 # Approval of the agenda
 

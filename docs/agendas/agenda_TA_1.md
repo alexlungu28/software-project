@@ -11,7 +11,13 @@ Note taker:     Melle Schoenmaker, Toma Zamfirescu
 
 
 # Opening
-*Here you check that everybody is present.*
+
+Luca Becheanu\
+Alex Ciurba\
+Alexandru Lungu\
+Melle Schoenmaker\
+Toma Zamfirescu\
+Alves Marinov
 
 # Approval of the agenda
 Everyone has provided all questions they had.
