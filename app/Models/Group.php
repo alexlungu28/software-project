@@ -9,9 +9,11 @@ class Group extends Model
 {
     use HasFactory;
 
-    protected $table = 'group';
+    public function interventions() {
+        return $this->hasMany(Intervention::class, 'group_name', 'group_name');
+    }
 
-    public function user() {
-        return $this->hasMany(User::class);
+    public function courseEdition() {
+        return $this->belongsTo(CourseEdition::class, 'edition_id');
     }
 }

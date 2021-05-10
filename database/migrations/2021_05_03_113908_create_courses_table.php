@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateCourseEditionTable extends Migration
+class CreateCoursesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,9 @@ class CreateCourseEditionTable extends Migration
      */
     public function up()
     {
-        Schema::create('course_edition', function (Blueprint $table) {
-            $table->id('edition_id');
-            $table->string('course_id');
-            $table->foreign('course_id')->references('course_id')->on('course')->cascadeOnDelete();
-            $table->integer('year');
+        Schema::create('courses', function (Blueprint $table) {
+            $table->string('course_id')->primary();
+            $table->string('description');
             $table->timestamps();
         });
     }
@@ -29,6 +27,6 @@ class CreateCourseEditionTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('course_edition');
+        Schema::dropIfExists('courses');
     }
 }

@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateInterventionTable extends Migration
+class CreateInterventionsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,10 @@ class CreateInterventionTable extends Migration
      */
     public function up()
     {
-        Schema::create('intervention', function (Blueprint $table) {
+        Schema::create('interventions', function (Blueprint $table) {
             $table->integer('intervention_id');
             $table->string('group_name');
-            $table->foreign('group_name')->references('group_name')->on('group')->cascadeOnDelete();
+            $table->foreign('group_name')->references('group_name')->on('groups')->cascadeOnDelete();
             $table->string('edition_id');
             $table->primary(['intervention_id', 'group_name', 'edition_id']);
             $table->string('content');
@@ -31,6 +31,6 @@ class CreateInterventionTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('intervention');
+        Schema::dropIfExists('interventions');
     }
 }

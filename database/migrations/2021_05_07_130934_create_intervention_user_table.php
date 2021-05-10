@@ -16,8 +16,8 @@ class CreateInterventionUserTable extends Migration
         Schema::create('intervention_user', function (Blueprint $table) {
             $table->string('user_id');
             $table->integer('intervention_id');
-            $table->foreign('user_id')->references('org_defined_id')->on('user')->cascadeOnDelete();
-            $table->foreign('intervention_id')->references('intervention_id')->on('intervention')->cascadeOnDelete();
+            $table->foreign('user_id')->references('org_defined_id')->on('users')->cascadeOnDelete();
+            $table->foreign('intervention_id')->references('intervention_id')->on('interventions')->cascadeOnDelete();
             $table->timestamps();
         });
     }

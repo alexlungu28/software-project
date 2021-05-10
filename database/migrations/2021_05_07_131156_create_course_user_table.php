@@ -15,8 +15,8 @@ class CreateCourseUserTable extends Migration
     {
         Schema::create('course_user', function (Blueprint $table) {
             $table->string('user_id');
-            $table->foreign('user_id')->references('org_defined_id')->on('user')->cascadeOnDelete();
-            $table->foreignId('edition_id')->references('edition_id')->on('course_edition')->cascadeOnDelete();
+            $table->foreign('user_id')->references('org_defined_id')->on('users')->cascadeOnDelete();
+            $table->foreignId('edition_id')->references('edition_id')->on('course_editions')->cascadeOnDelete();
             $table->timestamps();
         });
     }

@@ -9,9 +9,11 @@ class Intervention extends Model
 {
     use HasFactory;
 
-    protected $table = 'intervention';
+    public function group() {
+        return $this->belongsTo(Group::class, 'group_name', 'group_name');
+    }
 
     public function notes() {
-        return $this->hasOne(Note::class);
+        return $this->hasMany(Note::class, 'foreign_id', 'intervention_id');
     }
 }
