@@ -14,9 +14,11 @@ class CreateGroupTable extends Migration
     public function up()
     {
         Schema::create('group', function (Blueprint $table) {
-            $table->integer('group_id')->primary();
-            $table->string('content');
-            $table->float('grade');
+            $table->string('group_name')->primary();
+            $table->string('content')->nullable();
+            $table->float('grade')->nullable();
+            $table->integer('edition_id')->nullable();
+            $table->foreign('edition_id')->references('edition_id')->on('course_edition')->cascadeOnDelete();
         });
     }
 

@@ -15,9 +15,11 @@ class CreateInterventionTable extends Migration
     {
         Schema::create('intervention', function (Blueprint $table) {
             $table->integer('intervention_id')->primary();
-            $table->integer('group_id');
+            $table->string('group_name');
+            $table->integer('edition_id');
             $table->string('content');
-            $table->foreign('group_id')->references('group_id')->on('group')->cascadeOnDelete();
+            $table->foreign('group_name')->references('group_name')->on('group')->cascadeOnDelete();
+            $table->foreign('edition_id')->references('edition_id')->on('course_edition')->cascadeOnDelete();
         });
     }
 
