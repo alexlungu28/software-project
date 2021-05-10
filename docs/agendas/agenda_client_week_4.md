@@ -1,4 +1,4 @@
-## Agenda Client meeting 1
+## Agenda Client meeting week 4
 
 This is the agenda for our meeting with the client on 11-05-2021. We will show the current implementation, discuss potential changes, and ask some questions. 
 
