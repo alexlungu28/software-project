@@ -36,7 +36,7 @@ Everyone has provided all questions they had.
 # Any other business
 *If anybody has something that should be discussed but came up with that after the agenda was finalized.*
 
-# Questions for the TA/Client
+# Questions for the TA
 -Do we need to rewrite the project plan based on our feedback that we received from our coach.
     -No need to currently rewrite the project plan to the coach’s feedback, but do take the feedback into consideration for the final report.
 

@@ -1,13 +1,13 @@
 ## Agenda Client meeting week 4
 
-This is the agenda for our meeting with the client on 11-05-2021. We will show the current implementation, discuss potential changes, and ask some questions. 
+This is the agenda for our meeting with the client on 11-05-2021. We will show the current implementation, discuss potential changes, and ask some questions regarding testing. 
 
 ---
 
 Date:           11-05-2021\
 Main focus:     Demonstrate new features\
-Chair:          Luca Becheanu\
-Note taker:     Alex Ciurba, Melle Schoenmaker
+Chair:          Alex Ciurba\
+Note taker:     Melle Schoenmaker, Toma Zamfirescu
 
 
 # Opening
@@ -17,7 +17,7 @@ Luca Becheanu\
 Alex Ciurba\
 Alexandru Lungu\
 Melle Schoenmaker\
-Toma Zamfirescu
+Toma Zamfirescu\
 Sander van den Oever
 
 # Approval of the agenda
@@ -39,7 +39,7 @@ The main points that need to be discussed are present in this week's agenda.
 # Any other business
 *If anybody has something that should be discussed but came up with that after the agenda was finalized.*
 
-# Questions for the TA/Client
+# Questions for the Client
 
 - Is there an optimal way to handle database models that we want to have composite keys?
 - Do you have suggestions for mocking libraries, will Mockery be able to do exactly what we need?
