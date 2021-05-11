@@ -42,11 +42,26 @@ The main points that need to be discussed are present in this week's agenda.
 # Questions for the Client
 
 - Is there an optimal way to handle database models that we want to have composite keys?
+    - For ordering entries in the database, try adding an order column by which you can order the entries etc.
 - Do you have suggestions for mocking libraries, will Mockery be able to do exactly what we need?
+    - Use one of the most popular frameworks that we can find so that we have plenty of documentation.
 
 # Question round
 *If there are any spontaneous questions.*
 
+- We've encountered a number of premade bootstrap templates that we could use for our frontend, how do you feel about us using those?
+  - I don't care, if it's somewhat consistent with queue that's nice.
+    
+- Midterm presentation timeslot?
+    - Preference for client is tuesday or wednesday, but tuesday is busy, morning should work but after 10am. 27th of May is a no go, other than that most days work.
+    
+- Use soft delete for data in the app - in case anything is deleted by mistake.
+- For testing, in the config file you can set up disks, which laravel can reference as a location for data to be stored.
+- Use delete mappings for delete instead of get.
+- It's nice to explicitly list what happens when a student is uploaded twice in the application.
+- Make sure to have the internal auto incrementing field, as it simplifies the relationships and database ordering.
+- Try to avoid composite keys for models. Order by columns on queries.
+- Use an internal ID column for users - since if we have both strings and numbers, sorting will be slow.
 
 # Closing
 
