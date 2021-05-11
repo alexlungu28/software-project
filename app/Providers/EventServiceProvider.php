@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use Aacotroneo\Saml2\Events\Saml2LoginEvent;
+use App\Listeners\SamlLoginListener;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
@@ -30,24 +31,25 @@ class EventServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        Event::listen('Aacotroneo\Saml2\Events\Saml2LoginEvent', function (Saml2LoginEvent $event) {
-            $messageId = $event->getSaml2Auth()->getLastMessageId();
-            // Add your own code preventing reuse of a $messageId to stop replay attacks
-
-            $user = $event->getSaml2User();
-            $userData = [
-                'id' => $user->getUserId(),
-                'attributes' => $user->getAttributes(),
-                'assertion' => $user->getRawSamlAssertion()
-            ];
-            $laravelUser = $userData['id'];//find user by ID or attribute
-                //if it does not exist create it and go on  or show an error message
-                Auth::login($laravelUser);
-        });
-
-        Event::listen('Aacotroneo\Saml2\Events\Saml2LogoutEvent', function ($event) {
-            Auth::logout();
-            Session::save();
-        });
+        Event::listen(Saml2LoginEvent::class, [SamlLoginListener::class, 'handle']);
+//        Event::listen('Aacotroneo\Saml2\Events\Saml2LoginEvent', function (Saml2LoginEvent $event) {
+//            $messageId = $event->getSaml2Auth()->getLastMessageId();
+//            // Add your own code preventing reuse of a $messageId to stop replay attacks
+//
+//            $user = $event->getSaml2User();
+//            $userData = [
+//                'id' => $user->getUserId(),
+//                'attributes' => $user->getAttributes(),
+//                'assertion' => $user->getRawSamlAssertion()
+//            ];
+//            $laravelUser = $userData['id'];//find user by ID or attribute
+//                //if it does not exist create it and go on  or show an error message
+//                Auth::login($laravelUser);
+//        });
+//
+//        Event::listen('Aacotroneo\Saml2\Events\Saml2LogoutEvent', function ($event) {
+//            Auth::logout();
+//            Session::save();
+//        });
     }
 }
