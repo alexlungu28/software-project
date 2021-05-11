@@ -16,4 +16,13 @@ class CourseEdition extends Model
     public function groups() {
         return $this->hasMany(Group::class, 'edition_id');
     }
+
+    public function users() {
+        return $this->belongsToMany(User::class, 'course_edition_user', 'edition_id', 'user_id');
+    }
+
+    public function usersRoles() {
+        return $this->belongsToMany(User::class, 'course_edition_user', 'edition_id', 'user_id')
+                    ->using(UserRole::class);
+    }
 }

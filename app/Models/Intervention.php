@@ -16,4 +16,8 @@ class Intervention extends Model
     public function notes() {
         return $this->hasMany(Note::class, 'foreign_id', 'intervention_id');
     }
+
+    public function users() {
+        return $this->belongsToMany(User::class);
+    }
 }
