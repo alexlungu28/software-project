@@ -15,6 +15,8 @@ class ImportTest extends TestCase
      */
     public function testUserCanImportStudents()
     {
+        $this->withoutMiddleware();
+
         $file = UploadedFile::fake()->create('ImportTest.csv');
 
         Excel::fake();
