@@ -48,6 +48,12 @@
           <p>{{ __('Notifications') }}</p>
         </a>
       </li>
+      <li class="nav-item{{ $activePage == 'rubrics' ? ' active' : '' }}">
+        <a class="nav-link" href="viewRubric/1">
+          <i class="material-icons">rubrics</i>
+          <p>{{ __('Rubrics') }}</p>
+        </a>
+      </li>
     </ul>
   </div>
 </div>
