@@ -65,4 +65,4 @@ The main points that need to be discussed are present in this week's agenda.
 
 # Closing
 
-Next meeting will be held on ... at ....
+Next meeting will be held on 19-05-2021 at 15:30.
