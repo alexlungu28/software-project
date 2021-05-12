@@ -30,7 +30,7 @@ private static $installed = array (
     'aliases' => 
     array (
     ),
-    'reference' => 'fe72ce158109da0ac43bcb913d01c15a1aba5091',
+    'reference' => '8d5c47a6d6ca1e9afa4456a896861023b2ef4532',
     'name' => 'laravel/laravel',
   ),
   'versions' => 
@@ -462,6 +462,15 @@ private static $installed = array (
         0 => '*',
       ),
     ),
+    'laravel-frontend-presets/material-dashboard' => 
+    array (
+      'pretty_version' => 'v1.1.2',
+      'version' => '1.1.2.0',
+      'aliases' => 
+      array (
+      ),
+      'reference' => 'f2c3783561c48bf75a840d7b8242e36a339ea0ed',
+    ),
     'laravel/framework' => 
     array (
       'pretty_version' => 'v8.40.0',
@@ -478,7 +487,16 @@ private static $installed = array (
       'aliases' => 
       array (
       ),
-      'reference' => 'fe72ce158109da0ac43bcb913d01c15a1aba5091',
+      'reference' => '8d5c47a6d6ca1e9afa4456a896861023b2ef4532',
+    ),
+    'laravel/legacy-factories' => 
+    array (
+      'pretty_version' => 'v1.1.0',
+      'version' => '1.1.0.0',
+      'aliases' => 
+      array (
+      ),
+      'reference' => '5e3fe2fd5fda64e20ea5c74c831a7346294e902a',
     ),
     'laravel/sail' => 
     array (
