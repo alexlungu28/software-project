@@ -124,10 +124,10 @@ Route::post('/import', 'App\Http\Controllers\ImportController@import')->name('im
 
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-
+/*
 	Route::get('table-list', function () {
 		return view('pages.table_list');
-	})->name('table');
+	})->name('table');*/
 
 	Route::get('typography', function () {
 		return view('pages.typography');

@@ -145,7 +145,7 @@ class RubricEntryController extends Controller
         $rubricColumnEntries = $rubric->rubricEntry->where('is_row', '=', '0')->sortBy('distance');
         $rubricRowEntries = $rubric->rubricEntry->where('is_row', '=', '1')->sortBy('distance');
         $rubricData = $rubric->rubricData;
-        return view('rubric', ['rubric' => $rubric,
+        return view('pages.table_list', ['rubric' => $rubric,
             'rubricColumnEntries' => $rubricColumnEntries,
             'rubricRowEntries' => $rubricRowEntries,
             'rubricData' => $rubricData]);
