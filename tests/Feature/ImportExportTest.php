@@ -2,12 +2,16 @@
 
 namespace Tests\Feature;
 
+use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Illuminate\Http\UploadedFile;
 use Maatwebsite\Excel\Facades\Excel;
 use Tests\TestCase;
 
-class ImportTest extends TestCase
+class ImportExportTest extends TestCase
 {
+
+    use withoutMiddleware;
+
     /**
      * Test to verify a user can import the list of students.
      *
@@ -15,8 +19,6 @@ class ImportTest extends TestCase
      */
     public function testUserCanImportStudents()
     {
-        $this->withoutMiddleware();
-
         $file = UploadedFile::fake()->create('ImportTest.csv');
 
         Excel::fake();
@@ -24,6 +26,23 @@ class ImportTest extends TestCase
         $response = $this->post(route('import'), [
             'fileToUpload' => $file
         ]);
+
+        $this->assertEquals(302, $response->getStatusCode());
         $response->assertRedirect('');
+    }
+
+    /**
+     * Test to verify a user can export the list of students.
+     *
+     * @return void
+     */
+    public function testUserCanExportStudents()
+    {
+
+        Excel::fake();
+
+        $response = $this->get(route('export'));
+
+        $response->assertOk();
     }
 }
