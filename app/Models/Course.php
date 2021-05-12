@@ -10,6 +10,6 @@ class Course extends Model
     use HasFactory;
 
     public function courseEditions() {
-        return $this->hasMany(CourseEdition::class, 'course_id');
+        return $this->hasMany(CourseEdition::class);
     }
 }

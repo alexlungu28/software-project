@@ -14,11 +14,8 @@ class CreateInterventionsTable extends Migration
     public function up()
     {
         Schema::create('interventions', function (Blueprint $table) {
-            $table->integer('intervention_id');
-            $table->string('group_name');
-            $table->foreign('group_name')->references('group_name')->on('groups')->cascadeOnDelete();
-            $table->string('edition_id');
-            $table->primary(['intervention_id', 'group_name', 'edition_id']);
+            $table->id();
+            $table->foreignId('group_id')->references('id')->on('groups')->cascadeOnDelete();
             $table->string('content');
             $table->timestamps();
         });

@@ -14,9 +14,8 @@ class CreateCourseEditionsTable extends Migration
     public function up()
     {
         Schema::create('course_editions', function (Blueprint $table) {
-            $table->id('edition_id');
-            $table->string('course_id');
-            $table->foreign('course_id')->references('course_id')->on('courses')->cascadeOnDelete();
+            $table->id();
+            $table->foreignId('course_id')->references('id')->on('courses')->cascadeOnDelete();
             $table->integer('year');
             $table->timestamps();
         });

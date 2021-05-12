@@ -10,6 +10,10 @@ class Note extends Model
     use HasFactory;
 
     public function intervention() {
-        return $this->belongsTo(Intervention::class, 'foreign_id', 'intervention_id');
+        return $this->belongsTo(Intervention::class);
+    }
+
+    public function group() {
+        return $this->belongsTo(Group::class);
     }
 }

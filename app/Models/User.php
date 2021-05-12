@@ -42,10 +42,14 @@ class User extends Authenticatable
     ];
 
     public function interventions() {
-        return $this->belongsToMany(Intervention::class);
+        return $this->belongsToMany(Intervention::class, 'intervention_user');
     }
 
     public function courseEditions() {
-        return $this->belongsToMany(CourseEdition::class, 'course_edition_user', 'user_id', 'edition_id');
+        return $this->belongsToMany(CourseEdition::class, 'course_edition_user');
+    }
+
+    public function groups() {
+        return $this->belongsToMany(Group::class, 'group_user');
     }
 }
