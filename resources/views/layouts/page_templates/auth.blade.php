@@ -4,5 +4,6 @@
     @include('layouts.navbars.navs.auth')
     @yield('content')
     @include('layouts.footers.auth')
+    @yield('footer')
   </div>
 </div>

@@ -42,7 +42,7 @@
         </a>
       </li>
       <li class="nav-item{{ $activePage == 'rubrics' ? ' active' : '' }}">
-        <a class="nav-link" href="viewRubric/1">
+        <a class="nav-link" href="viewRubrics">
           <i class="material-icons">rubrics</i>
           <p>{{ __('Rubrics') }}</p>
         </a>
