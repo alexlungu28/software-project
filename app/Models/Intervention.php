@@ -9,15 +9,18 @@ class Intervention extends Model
 {
     use HasFactory;
 
-    public function group() {
+    public function group()
+    {
         return $this->belongsTo(Group::class);
     }
 
-    public function notes() {
+    public function notes()
+    {
         return $this->hasMany(Note::class);
     }
 
-    public function users() {
+    public function users()
+    {
         return $this->belongsToMany(User::class, 'intervention_user');
     }
 }

@@ -9,7 +9,8 @@ class Course extends Model
 {
     use HasFactory;
 
-    public function courseEditions() {
+    public function courseEditions()
+    {
         return $this->hasMany(CourseEdition::class);
     }
 }

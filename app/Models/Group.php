@@ -9,19 +9,23 @@ class Group extends Model
 {
     use HasFactory;
 
-    public function interventions() {
+    public function interventions()
+    {
         return $this->hasMany(Intervention::class);
     }
 
-    public function courseEdition() {
+    public function courseEdition()
+    {
         return $this->belongsTo(CourseEdition::class);
     }
 
-    public function users() {
+    public function users()
+    {
         return $this->belongsToMany(User::class, 'group_user');
     }
 
-    public function notes() {
+    public function notes()
+    {
         return $this->hasMany(Note::class);
     }
 }

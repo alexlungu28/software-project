@@ -9,15 +9,18 @@ class CourseEdition extends Model
 {
     use HasFactory;
 
-    public function course() {
+    public function course()
+    {
         return $this->belongsTo(Course::class);
     }
 
-    public function groups() {
+    public function groups()
+    {
         return $this->hasMany(Group::class);
     }
 
-    public function users() {
+    public function users()
+    {
         return $this->belongsToMany(User::class, 'course_edition_user');
     }
 }

@@ -9,11 +9,13 @@ class Note extends Model
 {
     use HasFactory;
 
-    public function intervention() {
+    public function intervention()
+    {
         return $this->belongsTo(Intervention::class);
     }
 
-    public function group() {
+    public function group()
+    {
         return $this->belongsTo(Group::class);
     }
 }

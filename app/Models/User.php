@@ -41,15 +41,18 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-    public function interventions() {
+    public function interventions()
+    {
         return $this->belongsToMany(Intervention::class, 'intervention_user');
     }
 
-    public function courseEditions() {
+    public function courseEditions()
+    {
         return $this->belongsToMany(CourseEdition::class, 'course_edition_user');
     }
 
-    public function groups() {
+    public function groups()
+    {
         return $this->belongsToMany(Group::class, 'group_user');
     }
 }
