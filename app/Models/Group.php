@@ -8,6 +8,13 @@ use Illuminate\Database\Eloquent\Model;
 class Group extends Model
 {
     use HasFactory;
+    
+    protected $fillable = [
+        'group_name',
+        'content',
+        'grade',
+        'edition_id',
+    ];
 
     public function interventions()
     {
