@@ -37,7 +37,7 @@ Everyone has provided all questions they had.
 # Any other business
 *If anybody has something that should be discussed but came up with that after the agenda was finalized.*
 
-# Questions for the TA/Client
+# Questions for the TA
 
 - We can supply data to our views using laravel's methods. But if we want to have a dynamic view that changes based on user input, is the best practice JavaScript?
     - N/A.

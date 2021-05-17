@@ -38,7 +38,7 @@ The main points that need to be discussed are present in this week's agenda.
 # Any other business
 *If anybody has something that should be discussed but came up with that after the agenda was finalized.*
 
-# Questions for the TA/Client
+# Questions for the Client
 
 - Are rubrics simple n x m matrices? Or can a single rubric contain multiple matrices of different sizes?
     - n x m can work, make sure that they have a descriptive title. If there are multiple parts for a rubric they can be stored as separate ones.
