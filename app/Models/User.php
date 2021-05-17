@@ -57,4 +57,14 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(Group::class, 'group_user');
     }
+
+    public function isStudent()
+    {
+        return $this->affiliation === 'student';
+    }
+
+    public function isEmployee()
+    {
+        return $this->affiliation === 'employee';
+    }
 }
