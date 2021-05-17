@@ -3,9 +3,9 @@
 use App\Http\Controllers\RubricController;
 use App\Http\Controllers\RubricDataController;
 use App\Http\Controllers\RubricEntryController;
-use App\Models\RubricEntry;
 use Illuminate\Support\Facades\Route;
 use App\Models\Rubric;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -56,7 +56,7 @@ Route::get('/rubricName/{id}', function ($id) {
 |--------------------------------------------------------------------------
 */
 //shows the form to create a rubric
-Route::get('/rubricCreate', [RubricController::class, 'create']);
+Route::get('/rubricCreate', [RubricController::class, 'create'])->name('rubricCreate');
 //post route for the Store method in the controller
 Route::post('/rubricStore', [RubricController::class, 'store']);
 
@@ -65,13 +65,14 @@ Route::post('/rubricStore', [RubricController::class, 'store']);
 | Delete Rubric Routes
 |--------------------------------------------------------------------------
 */
-Route::get('/rubricDelete/{id}', [RubricController::class, 'destroy']);
+Route::get('/rubricDelete', [RubricController::class, 'delete'])->name('rubricDelete');
+Route::post('/rubricDestroy', [RubricController::class, 'destroy']);
 /*
 |--------------------------------------------------------------------------
 | Update Rubric Routes
 |--------------------------------------------------------------------------
 */
-Route::get('/rubricEdit', [RubricController::class, 'edit']);
+Route::get('/rubricEdit', [RubricController::class, 'edit'])->name('rubricEdit');
 Route::post('/rubricUpdate', [RubricController::class, 'update']);
 /*
 |--------------------------------------------------------------------------
@@ -101,8 +102,11 @@ Route::post('/rubricEntryUpdate', [RubricEntryController::class, 'update']);
 | Show RubricEntryController Routes
 |--------------------------------------------------------------------------
 */
+//Shows all available rubrics
+Route::get('/viewRubrics', [RubricController::class, 'view']);
+
 //Gives a visual presentation of the rubric
-Route::get('/viewRubric/{id}', [RubricEntryController::class,'view']);
+Route::get('/viewRubric/{id}', [RubricEntryController::class,'view'])->name('rubric');
 
 /*
 |--------------------------------------------------------------------------
@@ -120,3 +124,44 @@ Route::post('/rubricDataStore/{id}', [RubricDataController::class, 'store']);
 Route::get('/export', 'App\Http\Controllers\ImportController@export')->name('export');
 Route::get('/importExportView', 'App\Http\Controllers\ImportController@importExportView');
 Route::post('/import', 'App\Http\Controllers\ImportController@import')->name('import');
+
+
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+//Route::get('table-list', function () {
+//    return view('pages.table_list');
+//})->name('table');
+
+Route::get('typography', function () {
+    return view('pages.typography');
+})->name('typography');
+
+Route::get('icons', function () {
+    return view('pages.icons');
+})->name('icons');
+
+Route::get('map', function () {
+    return view('pages.map');
+})->name('map');
+
+Route::get('notifications', function () {
+    return view('pages.notifications');
+})->name('notifications');
+
+Route::get('rtl-support', function () {
+    return view('pages.language');
+})->name('language');
+
+Route::get('upgrade', function () {
+    return view('pages.upgrade');
+})->name('upgrade');
+
+
+Route::group(['middleware' => 'auth'], function () {
+    Route::resource('user', 'App\Http\Controllers\UserController', ['except' => ['show']]);
+    Route::get('profile', ['as' => 'profile.edit', 'uses' => 'App\Http\Controllers\ProfileController@edit']);
+    Route::put('profile', ['as' => 'profile.update', 'uses' => 'App\Http\Controllers\ProfileController@update']);
+    Route::put('profile/password',
+        ['as' => 'profile.password', 'uses' => 'App\Http\Controllers\ProfileController@password']);
+});

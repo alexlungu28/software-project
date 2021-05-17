@@ -121,7 +121,7 @@ class RubricEntryController extends Controller
             ->update(['description' => $description]);
 
         echo "Record updated successfully.<br/>";
-        echo '<a href = "/rubricEntryEdit">Click Here</a> to go back.';
+        echo "<a href = " . "/rubricEntryEdit/" . $id . "/" . $isRow . ">Click Here</a> to go back.";
     }
 
     /**
@@ -132,7 +132,7 @@ class RubricEntryController extends Controller
      */
     public function destroy($id, $distance, $isRow)
     {
-        DB::table('rubric_entries')->where('rubric_id', '=', $id)->where('distance', '=', $distance)
+        RubricEntry::where('rubric_id', '=', $id)->where('distance', '=', $distance)
             ->where('is_row', '=', $isRow)->delete();
         if ($isRow == 1) {
             RubricData::where('rubric_id', '=', $id)->where('row_number', '=', $distance)->delete();
@@ -142,10 +142,10 @@ class RubricEntryController extends Controller
     public function view($id)
     {
         $rubric = Rubric::find($id);
-        $rubricColumnEntries = $rubric->rubricEntry->where('is_row', '=', '0');
-        $rubricRowEntries = $rubric->rubricEntry->where('is_row', '=', '1');
+        $rubricColumnEntries = $rubric->rubricEntry->where('is_row', '=', '0')->sortBy('distance');
+        $rubricRowEntries = $rubric->rubricEntry->where('is_row', '=', '1')->sortBy('distance');
         $rubricData = $rubric->rubricData;
-        return view('rubric', ['rubric' => $rubric,
+        return view('pages.table_list', ['rubric' => $rubric,
             'rubricColumnEntries' => $rubricColumnEntries,
             'rubricRowEntries' => $rubricRowEntries,
             'rubricData' => $rubricData]);
