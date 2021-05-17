@@ -42,6 +42,7 @@ Everyone has provided all questions they had.
   How should we touch on these subjects? Show our progress in a short demo, cover our requirements and prioritization in a powerpoint presentation?
 - How long should the presentation take?
 - Should we revise our communication with the coach? It is currently tedious to write an email and have to wait several days before we get a reply.
+- How should we go about our planning regarding the TW presentations in combination with the main project, as preparing a presentation can take multiple days worth of time?
 
 # Question round
 *If there are any spontaneous questions.*
