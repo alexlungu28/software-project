@@ -18,7 +18,7 @@ class UsersImport implements ToModel, WithHeadingRow
         if (!User::where('org_defined_id', '=', trim($row['orgdefinedid'], "#"))->exists()) {
             return new User([
                 'org_defined_id' => trim($row['orgdefinedid'], "#"),
-                'net_id' => trim($row['username'], "#"),
+                'net_id' => trim(trim($row['username'], "#"), "@tudelft.nl"),
                 'last_name' => $row['last_name'],
                 'first_name' => $row['first_name'],
                 'email' => $row['email'],

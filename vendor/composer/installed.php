@@ -11,6 +11,15 @@
   ),
   'versions' => 
   array (
+    'aacotroneo/laravel-saml2' => 
+    array (
+      'pretty_version' => '2.1.0',
+      'version' => '2.1.0.0',
+      'aliases' => 
+      array (
+      ),
+      'reference' => '6ed350b37aec3470655335a33e24496e15bde9b7',
+    ),
     'asm89/stack-cors' => 
     array (
       'pretty_version' => 'v2.0.3',
@@ -638,6 +647,15 @@
       ),
       'reference' => '41b7e9999133d5082700d31a1d0977161df8322a',
     ),
+    'onelogin/php-saml' => 
+    array (
+      'pretty_version' => '3.6.1',
+      'version' => '3.6.1.0',
+      'aliases' => 
+      array (
+      ),
+      'reference' => 'a7328b11887660ad248ea10952dd67a5aa73ba3b',
+    ),
     'opis/closure' => 
     array (
       'pretty_version' => '3.6.2',
@@ -932,6 +950,15 @@
       array (
         0 => '4.1.1',
       ),
+    ),
+    'robrichards/xmlseclibs' => 
+    array (
+      'pretty_version' => '3.1.1',
+      'version' => '3.1.1.0',
+      'aliases' => 
+      array (
+      ),
+      'reference' => 'f8f19e58f26cdb42c54b214ff8a820760292f8df',
     ),
     'sebastian/cli-parser' => 
     array (

@@ -16,9 +16,9 @@ class CreateGroupsTable extends Migration
         Schema::create('groups', function (Blueprint $table) {
             $table->id();
             $table->string('group_name');
-            $table->string('content');
-            $table->float('grade');
-            $table->foreignId('course_edition_id')->references('id')->on('course_editions');
+            $table->string('content')->nullable();
+            $table->float('grade')->nullable();
+            $table->foreignId('course_edition_id')->nullable()->references('id')->on('course_editions');
             $table->timestamps();
         });
     }

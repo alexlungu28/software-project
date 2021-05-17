@@ -16,9 +16,8 @@ class GroupUser extends Model
      * @var array
      */
     protected $fillable = [
-        'group_name',
+        'group_id',
         'user_id',
-        'edition_id',
     ];
 
     protected $table = 'group_user';
