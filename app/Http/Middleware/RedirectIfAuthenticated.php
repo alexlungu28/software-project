@@ -31,14 +31,10 @@ class RedirectIfAuthenticated
 //        }
 //
 //        return $next($request);
-        if ($this->auth->guest())
-        {
-            if ($request->ajax())
-            {
+        if ($this->auth->guest()) {
+            if ($request->ajax()) {
                 return response('Unauthorized.', 401);
-            }
-            else
-            {
+            } else {
                 $saml2Auth = new Saml2Auth(Saml2Auth::loadOneLoginAuthFromIpdConfig('eipdev'));
                 return $saml2Auth->login(URL::full());
             }

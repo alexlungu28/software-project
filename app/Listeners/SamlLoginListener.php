@@ -43,8 +43,12 @@ class SamlLoginListener
         //ddd($affiliation);
         // TODO what if no affiliation.
         // Attribute-listing: https://teams.connect.tudelft.nl/misc/sso/SitePages/Attributen.aspx
+        $orgDefinedId = $netid;
+        if ($affiliation === 'student') {
+            $orgDefinedId = $this->determineStudentNumber($samlUser);
+        }
         $laravelUser = User::updateOrCreate([
-            'org_defined_id' => $netid,
+            'org_defined_id' => $orgDefinedId,
         ], [
             'net_id' => $netid,
             'last_name' => $surname,
@@ -147,6 +151,31 @@ class SamlLoginListener
             $netid = $netid[0];
         }
         return $netid;
+    }
+
+    /**
+     * @param Saml2User $samlUser
+     * @return array|mixed|null
+     */
+    public function determineStudentNumber(Saml2User $samlUser)
+    {
+        $studentNumber = $samlUser->getAttribute('urn:mace:dir:attribute-def:tudStudentNumber');
+
+        if (is_null($studentNumber)) {
+            Log::warning('Falling back to the "tudStudentNumber" attribute.');
+            $studentNumber = $samlUser->getAttribute('tudStudentNumber');
+        }
+
+        if (is_null($studentNumber)) {
+            Log::critical('Could not find a Student Number in the SAML response.');
+        }
+
+        if (sizeof($studentNumber) !== 1) {
+            Log::warning('SAML Auth response contained multiple student numbers.');
+        } else {
+            $studentNumber = $studentNumber[0];
+        }
+        return $studentNumber;
     }
 
 //    /**
