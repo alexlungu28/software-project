@@ -59,4 +59,4 @@ Everyone has provided all questions they had.
 # Closing
 *For any final remarks*
 
-Next week's meeting will be on ... at ....
+Next week's meeting will be on Monday 24th at 14:30. PS: It is Whit Monday, so if anyone is unavailable, we will discuss with Alves.
