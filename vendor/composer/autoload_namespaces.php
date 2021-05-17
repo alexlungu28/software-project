@@ -8,5 +8,5 @@ $baseDir = dirname($vendorDir);
 return array(
     'PHPMD\\' => array($vendorDir . '/phpmd/phpmd/src/main/php'),
     'Mockery' => array($vendorDir . '/mockery/mockery/library'),
-    'Aacotroneo\\Saml2\\' => array($vendorDir . '/aacotroneo/laravel-saml2/src'),
+    'HTMLPurifier' => array($vendorDir . '/ezyang/htmlpurifier/library'),
 );

@@ -2,12 +2,11 @@
 
 namespace App\Models;
 
-use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notifiable;
 
-class User extends Authenticatable
+class User extends Model
 {
     use HasFactory, Notifiable;
 
@@ -17,13 +16,16 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'org_defined_id',
         'net_id',
         'last_name',
         'first_name',
         'email',
-        'affiliation'
+        'org_defined_id',
+        'affiliation',
     ];
+
+    protected $table = 'user';
+    public $timestamps = false;
 
     /**
      * The attributes that should be hidden for arrays.
@@ -43,4 +45,19 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function interventions()
+    {
+        return $this->belongsToMany(Intervention::class, 'intervention_user');
+    }
+
+    public function courseEditions()
+    {
+        return $this->belongsToMany(CourseEdition::class, 'course_edition_user');
+    }
+
+    public function groups()
+    {
+        return $this->belongsToMany(Group::class, 'group_user');
+    }
 }
