@@ -29,6 +29,7 @@ return array(
     'App\\Imports\\GroupUserImport' => $baseDir . '/app/Imports/GroupUserImport.php',
     'App\\Imports\\GroupsImport' => $baseDir . '/app/Imports/GroupsImport.php',
     'App\\Imports\\UsersImport' => $baseDir . '/app/Imports/UsersImport.php',
+    'App\\Models\\Attendance' => $baseDir . '/app/Models/Attendance.php',
     'App\\Models\\Course' => $baseDir . '/app/Models/Course.php',
     'App\\Models\\CourseEdition' => $baseDir . '/app/Models/CourseEdition.php',
     'App\\Models\\Group' => $baseDir . '/app/Models/Group.php',

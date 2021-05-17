@@ -676,6 +676,7 @@ class ComposerStaticInitb719e6a4b55f16cf73b9831aea3a1948
         'App\\Imports\\GroupUserImport' => __DIR__ . '/../..' . '/app/Imports/GroupUserImport.php',
         'App\\Imports\\GroupsImport' => __DIR__ . '/../..' . '/app/Imports/GroupsImport.php',
         'App\\Imports\\UsersImport' => __DIR__ . '/../..' . '/app/Imports/UsersImport.php',
+        'App\\Models\\Attendance' => __DIR__ . '/../..' . '/app/Models/Attendance.php',
         'App\\Models\\Course' => __DIR__ . '/../..' . '/app/Models/Course.php',
         'App\\Models\\CourseEdition' => __DIR__ . '/../..' . '/app/Models/CourseEdition.php',
         'App\\Models\\Group' => __DIR__ . '/../..' . '/app/Models/Group.php',
