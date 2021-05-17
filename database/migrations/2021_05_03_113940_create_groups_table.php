@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateGroupNotesTable extends Migration
+class CreateGroupsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,13 @@ class CreateGroupNotesTable extends Migration
      */
     public function up()
     {
-        Schema::create('group_notes', function (Blueprint $table) {
-            $table->integer('notes_id')->primary();
+        Schema::create('groups', function (Blueprint $table) {
+            $table->id();
             $table->string('group_name');
             $table->string('content');
-            $table->foreign('group_name')->references('group_name')->on('group')->cascadeOnDelete();
+            $table->float('grade');
+            $table->foreignId('course_edition_id')->references('id')->on('course_editions');
+            $table->timestamps();
         });
     }
 
@@ -28,6 +30,6 @@ class CreateGroupNotesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('group_notes');
+        Schema::dropIfExists('groups');
     }
 }

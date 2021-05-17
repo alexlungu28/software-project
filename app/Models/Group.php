@@ -4,17 +4,11 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Notifications\Notifiable;
 
 class Group extends Model
 {
-    use HasFactory, Notifiable;
+    use HasFactory;
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array
-     */
     protected $fillable = [
         'group_name',
         'content',
@@ -22,6 +16,23 @@ class Group extends Model
         'edition_id',
     ];
 
-    protected $table = 'group';
-    public $timestamps = false;
+    public function interventions()
+    {
+        return $this->hasMany(Intervention::class);
+    }
+
+    public function courseEdition()
+    {
+        return $this->belongsTo(CourseEdition::class);
+    }
+
+    public function users()
+    {
+        return $this->belongsToMany(User::class, 'group_user');
+    }
+
+    public function notes()
+    {
+        return $this->hasMany(Note::class);
+    }
 }
