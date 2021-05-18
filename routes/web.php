@@ -103,7 +103,7 @@ Route::post('/rubricEntryUpdate', [RubricEntryController::class, 'update']);
 |--------------------------------------------------------------------------
 */
 //Shows all available rubrics
-Route::get('/viewRubrics', [RubricController::class, 'view']);
+Route::get('/viewRubrics', [RubricController::class, 'view'])->name('viewRubrics');
 
 //Gives a visual presentation of the rubric
 Route::get('/viewRubric/{id}', [RubricEntryController::class,'view'])->name('rubric');
