@@ -47,6 +47,12 @@
           <p>{{ __('Rubrics') }}</p>
         </a>
       </li>
+      <li class="nav-item{{ $activePage == 'courses' ? ' active' : '' }}">
+        <a class="nav-link" href="{{ route('courses') }}">
+          <i class="material-icons">courses</i>
+          <p>{{ __('Courses') }}</p>
+        </a>
+      </li>
     </ul>
   </div>
 </div>

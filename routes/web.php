@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CourseController;
 use App\Http\Controllers\RubricController;
 use App\Http\Controllers\RubricDataController;
 use App\Http\Controllers\RubricEntryController;
@@ -17,9 +18,8 @@ use App\Models\Rubric;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', [CourseController::class, 'view'])->name('courses')->middleware('loggedIn');
+
 
 /*
 |--------------------------------------------------------------------------
@@ -127,7 +127,7 @@ Route::post('/import', 'App\Http\Controllers\ImportController@import')->name('im
 
 
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home')->middleware('loggedIn');
 
 //Route::get('table-list', function () {
 //    return view('pages.table_list');
@@ -192,3 +192,20 @@ Route::group(['middleware' => ['App\Http\Middleware\LoggedIn']], function () {
 Route::get('unauthorized', function () {
     echo "You are unauthorized to access this page.";
 })->name('unauthorized');
+
+Route::get('/courses/{id}', [CourseController::class, 'viewCourseById'])->name('course');
+
+Route::get('/courseCreate', [CourseController::class, 'create'])
+    ->name('courseCreate')
+    ->middleware(['loggedIn', 'employee']);
+Route::post('/courseStore', [CourseController::class, 'store'])->middleware(['loggedIn', 'employee']);
+
+Route::get('/courseDelete', [CourseController::class, 'delete'])
+    ->name('courseDelete')
+    ->middleware(['loggedIn', 'employee']);
+Route::post('/courseDestroy', [CourseController::class, 'destroy'])->middleware(['loggedIn', 'employee']);
+
+Route::get('/courseEdit', [CourseController::class, 'edit'])
+    ->name('courseEdit')
+    ->middleware(['loggedIn', 'employee']);
+Route::post('/courseUpdate', [CourseController::class, 'update'])->middleware(['loggedIn', 'employee']);
