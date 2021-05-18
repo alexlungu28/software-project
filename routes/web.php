@@ -56,47 +56,47 @@ Route::get('/rubricName/{id}', function ($id) {
 |--------------------------------------------------------------------------
 */
 //shows the form to create a rubric
-Route::get('/rubricCreate', [RubricController::class, 'create'])->name('rubricCreate');
+Route::get('/rubricCreate', [RubricController::class, 'create'])->name('rubricCreate')->middleware(['loggedIn', 'employee']);
 //post route for the Store method in the controller
-Route::post('/rubricStore', [RubricController::class, 'store']);
+Route::post('/rubricStore', [RubricController::class, 'store'])->middleware(['loggedIn', 'employee']);
 
 /*
 |--------------------------------------------------------------------------
 | Delete Rubric Routes
 |--------------------------------------------------------------------------
 */
-Route::get('/rubricDelete', [RubricController::class, 'delete'])->name('rubricDelete');
-Route::post('/rubricDestroy', [RubricController::class, 'destroy']);
+Route::get('/rubricDelete', [RubricController::class, 'delete'])->name('rubricDelete')->middleware(['loggedIn', 'employee']);
+Route::post('/rubricDestroy', [RubricController::class, 'destroy'])->middleware(['loggedIn', 'employee']);
 /*
 |--------------------------------------------------------------------------
 | Update Rubric Routes
 |--------------------------------------------------------------------------
 */
-Route::get('/rubricEdit', [RubricController::class, 'edit'])->name('rubricEdit');
-Route::post('/rubricUpdate', [RubricController::class, 'update']);
+Route::get('/rubricEdit', [RubricController::class, 'edit'])->name('rubricEdit')->middleware(['loggedIn', 'employee']);
+Route::post('/rubricUpdate', [RubricController::class, 'update'])->middleware(['loggedIn', 'employee']);
 /*
 |--------------------------------------------------------------------------
 | Create RubricEntryController Routes
 |--------------------------------------------------------------------------
 */
 //shows the form to create a rubric
-Route::get('/rubricEntryCreate', [RubricEntryController::class, 'create']);
+Route::get('/rubricEntryCreate', [RubricEntryController::class, 'create'])->middleware(['loggedIn', 'employee']);
 //post route for the Store method in the controller
-Route::post('/rubricEntryStore', [RubricEntryController::class, 'store']);
+Route::post('/rubricEntryStore', [RubricEntryController::class, 'store'])->middleware(['loggedIn', 'employee']);
 /*
 |--------------------------------------------------------------------------
 | Delete RubricEntry Routes
 |--------------------------------------------------------------------------
 */
-Route::get('/rubricEntryDelete/{id}/{distance}/{isRow}', [RubricEntryController::class, 'destroy']);
+Route::get('/rubricEntryDelete/{id}/{distance}/{isRow}', [RubricEntryController::class, 'destroy'])->middleware(['loggedIn', 'employee']);
 
 /*
 |--------------------------------------------------------------------------
 | Update RubricEntry Routes
 |--------------------------------------------------------------------------
 */
-Route::get('/rubricEntryEdit/{id}/{isRow}', [RubricEntryController::class, 'edit']);
-Route::post('/rubricEntryUpdate', [RubricEntryController::class, 'update']);
+Route::get('/rubricEntryEdit/{id}/{isRow}', [RubricEntryController::class, 'edit'])->middleware(['loggedIn', 'employee']);
+Route::post('/rubricEntryUpdate', [RubricEntryController::class, 'update'])->middleware(['loggedIn', 'employee']);
 /*
 |--------------------------------------------------------------------------
 | Show RubricEntryController Routes
@@ -179,6 +179,13 @@ Route::group(['middleware' => ['App\Http\Middleware\Student']], function () {
 Route::group(['middleware' => ['App\Http\Middleware\Employee']], function () {
     Route::get('employee', function () {
         echo "Employee example page";
+    });
+});
+
+// These routes can be accessed by anyone that is logged in
+Route::group(['middleware' => ['App\Http\Middleware\LoggedIn']], function () {
+    Route::get('testRoute', function () {
+        echo "Only for logged in users";
     });
 });
 
