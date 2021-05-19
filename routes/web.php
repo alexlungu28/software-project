@@ -80,7 +80,7 @@ Route::post('/rubricUpdate', [RubricController::class, 'update']);
 |--------------------------------------------------------------------------
 */
 //shows the form to create a rubric
-Route::get('/rubricEntryCreate', [RubricEntryController::class, 'create']);
+Route::get('/rubricEntryCreate', [RubricEntryController::class, 'create'])->name('rubricEntryCreate');
 //post route for the Store method in the controller
 Route::post('/rubricEntryStore', [RubricEntryController::class, 'store']);
 /*
@@ -88,14 +88,15 @@ Route::post('/rubricEntryStore', [RubricEntryController::class, 'store']);
 | Delete RubricEntry Routes
 |--------------------------------------------------------------------------
 */
-Route::get('/rubricEntryDelete/{id}/{distance}/{isRow}', [RubricEntryController::class, 'destroy']);
+Route::get('/rubricEntryDelete/{id}/{distance}/{isRow}', [RubricEntryController::class, 'destroy'])
+    ->name('rubricEntryDelete');
 
 /*
 |--------------------------------------------------------------------------
 | Update RubricEntry Routes
 |--------------------------------------------------------------------------
 */
-Route::get('/rubricEntryEdit/{id}/{isRow}', [RubricEntryController::class, 'edit']);
+Route::get('/rubricEntryEdit/{id}/{isRow}', [RubricEntryController::class, 'edit'])->name('rubricEntryEdit');
 Route::post('/rubricEntryUpdate', [RubricEntryController::class, 'update']);
 /*
 |--------------------------------------------------------------------------
@@ -103,10 +104,13 @@ Route::post('/rubricEntryUpdate', [RubricEntryController::class, 'update']);
 |--------------------------------------------------------------------------
 */
 //Shows all available rubrics
-Route::get('/viewRubrics', [RubricController::class, 'view']);
+Route::get('/viewRubrics', [RubricController::class, 'view'])->name('viewRubrics');
 
 //Gives a visual presentation of the rubric
 Route::get('/viewRubric/{id}', [RubricEntryController::class,'view'])->name('rubric');
+
+//Gives a visual presentation of the teacherView of the rubric
+Route::get('/teacher/viewRubric/{id}', [RubricEntryController::class,'teacherView'])->name('teacherRubric');
 
 /*
 |--------------------------------------------------------------------------
@@ -156,7 +160,6 @@ Route::get('rtl-support', function () {
 Route::get('upgrade', function () {
     return view('pages.upgrade');
 })->name('upgrade');
-
 
 Route::group(['middleware' => 'auth'], function () {
     Route::resource('user', 'App\Http\Controllers\UserController', ['except' => ['show']]);

@@ -139,13 +139,25 @@ class RubricEntryController extends Controller
         }
     }
 
+    public function teacherview($id)
+    {
+        $rubric = Rubric::find($id);
+        $rubricColumnEntries = $rubric->rubricEntry->where('is_row', '=', '0')->sortBy('distance');
+        $rubricRowEntries = $rubric->rubricEntry->where('is_row', '=', '1')->sortBy('distance');
+        $rubricData = $rubric->rubricData;
+        return view('pages.rubricViewTeacher', ['rubric' => $rubric,
+            'rubricColumnEntries' => $rubricColumnEntries,
+            'rubricRowEntries' => $rubricRowEntries,
+            'rubricData' => $rubricData]);
+    }
+
     public function view($id)
     {
         $rubric = Rubric::find($id);
         $rubricColumnEntries = $rubric->rubricEntry->where('is_row', '=', '0')->sortBy('distance');
         $rubricRowEntries = $rubric->rubricEntry->where('is_row', '=', '1')->sortBy('distance');
         $rubricData = $rubric->rubricData;
-        return view('pages.table_list', ['rubric' => $rubric,
+        return view('pages.rubricView', ['rubric' => $rubric,
             'rubricColumnEntries' => $rubricColumnEntries,
             'rubricRowEntries' => $rubricRowEntries,
             'rubricData' => $rubricData]);
