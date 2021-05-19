@@ -43,17 +43,17 @@ The main points that need to be discussed are present in this week's agenda.
 # Questions for the Client
 
 - How does importing js in a blade work? Because with the stack doesn't seem to work for us.
-
+    - If we run the command 'npm run dev' everything will be compiled to a single app.js file which will in turn be used for imports.
 - If we have a pivot table between course editions and users, how can we access the course edition, is it possible to send it in a request? We would need this for retrieving the role of a user.
-
+    - We can make a query to retrieve the course edition then use withPivot to access the role in the pivot table.
 - Are the TAs in the list of students from the grade export on Brightspace, or does this list only contain those taking the course for a grade?
-
+    - The TAs shouldn't be in the exported list of students.
 - Should weeks be in a different table and then linked to attendance, rubric etc., or should it be a column in each of those tables.
-
+    - Table with weeks is not necessary, we can use a simple string field for the week.
 - We have thought of different ways of implementing weeks for weekly rubrics and attendance, e.g. a week number (week 7 in quarter 4 would be 7) field in the rubrics table or a start and end date. Which one is optimal/already used by other platforms (e.g. weblab).
-
+    - Having date ranges would be nice to have, helps with filtering.
 - Would it be possible to add a student to the SSO test server as well? So that we can log in as a student and make sure certain features are hidden.
-
+    - There are already 100 students added to the test server.
 # Question round
 *If there are any spontaneous questions.*
 
