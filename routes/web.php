@@ -172,43 +172,38 @@ Route::group(['middleware' => 'auth'], function () {
     );
 });
 
-// These routes can only be accessed by students
-Route::group(['middleware' => ['App\Http\Middleware\Student']], function () {
-    Route::get('student', function () {
-        echo "Student example page";
-    });
-});
-
-// These routes can only be accessed by employees
-Route::group(['middleware' => ['App\Http\Middleware\Employee']], function () {
-    Route::get('employee', function () {
-        echo "Employee example page";
-    });
-});
-
-// These routes can be accessed by anyone that is logged in
-Route::group(['middleware' => ['App\Http\Middleware\LoggedIn']], function () {
-    Route::get('testRoute', function () {
-        echo "Only for logged in users";
-    });
-});
 
 Route::get('unauthorized', function () {
     echo "You are unauthorized to access this page.";
 })->name('unauthorized');
 
-Route::get('/courses/{id}', [CourseController::class, 'viewCourseById'])->name('course');
+Route::get('/courses/{id}', [CourseController::class, 'viewCourseById'])->name('course')->middleware();
 
+/*
+|--------------------------------------------------------------------------
+| Create Courses Routes
+|--------------------------------------------------------------------------
+*/
 Route::get('/courseCreate', [CourseController::class, 'create'])
     ->name('courseCreate')
     ->middleware(['loggedIn', 'employee']);
 Route::post('/courseStore', [CourseController::class, 'store'])->middleware(['loggedIn', 'employee']);
 
+/*
+|--------------------------------------------------------------------------
+| Delete Courses Routes
+|--------------------------------------------------------------------------
+*/
 Route::get('/courseDelete', [CourseController::class, 'delete'])
     ->name('courseDelete')
     ->middleware(['loggedIn', 'employee']);
 Route::post('/courseDestroy', [CourseController::class, 'destroy'])->middleware(['loggedIn', 'employee']);
 
+/*
+|--------------------------------------------------------------------------
+|  Update Courses Routes
+|--------------------------------------------------------------------------
+*/
 Route::get('/courseEdit', [CourseController::class, 'edit'])
     ->name('courseEdit')
     ->middleware(['loggedIn', 'employee']);
