@@ -36,10 +36,26 @@ class CourseController extends Controller
      */
     public function store(Request $request)
     {
-        $course_number = $request->input('course_number');
+        //adding the course inside the courses table
+        $courseNumber = $request->input('course_number');
         $description = $request->input('description');
-        $data=array('course_number'=>$course_number, 'description'=>$description, 'created_at' =>now(), 'updated_at' => now());
+        $data=array('course_number'=>$courseNumber, 'description'=>$description, 'created_at' =>now(),
+            'updated_at' => now());
         DB::table('courses')->insert($data);
+
+        //adding the course edition inside the course editions table
+        $year = $request->input('year');
+        $courseId = DB::table('courses')->select('id')
+            ->where('course_number', '=', $courseNumber)->get()->first()->id;
+        DB::table('course_editions')->insert(array('course_id'=>$courseId,
+            'year'=>$year, 'created_at'=>now(),'updated_at'=>now()));
+
+        //adding the user role inside the pivot table
+        $courseEditionId = DB::table('course_editions')->select('id')
+            ->where('course_id', '=', $courseId)->get()->first()->id;
+        DB::table('course_edition_user')->insert(array('user_id'=>$request->user()->id,
+            'course_edition_id'=>$courseEditionId, 'role'=>'lecturer' ,'created_at'=>now(),'updated_at'=>now()));
+
         return redirect('/');
     }
 
@@ -79,10 +95,10 @@ class CourseController extends Controller
     public function update(Request $request)
     {
         $id = $request->input('id');
-        $course_number = $request->input('course_number');
+        $courseNumber = $request->input('course_number');
         $description = $request->input('description');
         $course = Course::find($id);
-        $course->course_number = $course_number;
+        $course->course_number = $courseNumber;
         $course->description = $description;
         $course->save();
         return redirect('/');

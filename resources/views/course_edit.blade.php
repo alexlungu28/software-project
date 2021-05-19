@@ -31,6 +31,10 @@
         <label>New course description:</label>
         <input type="text" class="form-control" placeholder="Software Engineering Methods" name="description">
         <br/>
+        <br/>
+        <label>Course edition:</label>
+        <input type="text" class ="form-control" placeholder="2021" name="year">
+        <br/>
 
         <button type="submit"  value = "Add" class="btn btn-primary">Submit</button>
 

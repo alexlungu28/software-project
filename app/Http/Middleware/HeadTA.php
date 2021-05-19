@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Models\CourseEditionUser;
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -15,11 +16,16 @@ class HeadTA
      * @param  \Closure  $next
      * @return mixed
      */
-    public function handle(Request $request, Closure $next)
+    public function handle(Request $request, Closure $next, $courseEdition)
     {
-//        foreach (Auth::user()->courseEditions as $courseEdition) {
-//
-//        }
+
+        $courseEditionId = CourseEditionUser::select('id')->where('course_edition_id', '=', $courseEdition)
+            ->where('user_id', '=', $request->user()->id)->first->id;
+        $courseEditionUser = CourseEditionUser::find($courseEditionId);
+        if (! 'headTA' == $courseEditionUser->role) {
+            redirect('/unauthorized');
+        }
+
         return $next($request);
     }
 }

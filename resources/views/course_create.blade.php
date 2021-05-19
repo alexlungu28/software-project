@@ -24,6 +24,10 @@
         <label>Course description:</label>
         <input type="text" class ="form-control" placeholder="Software Project" name="description">
         <br/>
+        <br/>
+        <label>Course edition:</label>
+        <input type="text" class ="form-control" placeholder="2021" name="year">
+        <br/>
 
         <button type="submit"  value = "Add" class="btn btn-primary">Submit</button>
     </form>
