@@ -24,7 +24,7 @@ class User extends Model
         'affiliation',
     ];
 
-    protected $table = 'user';
+    protected $table = 'users';
     public $timestamps = false;
 
     /**
@@ -59,5 +59,10 @@ class User extends Model
     public function groups()
     {
         return $this->belongsToMany(Group::class, 'group_user');
+    }
+
+    public function attendances()
+    {
+        return $this->belongsToMany(Attendance::class, 'attendance');
     }
 }

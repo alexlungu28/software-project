@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AttendanceController;
 use App\Http\Controllers\RubricController;
 use App\Http\Controllers\RubricDataController;
 use App\Http\Controllers\RubricEntryController;
@@ -165,3 +166,14 @@ Route::group(['middleware' => 'auth'], function () {
     Route::put('profile/password',
         ['as' => 'profile.password', 'uses' => 'App\Http\Controllers\ProfileController@password']);
 });
+
+
+
+Route::resource('/attendance', 'App\Http\Controllers\AttendanceController');
+//Route::get('/attendance/{id}/{week}/{present}', [AttendanceController::class, 'create']);
+
+Route::post('/attendanceupdate/{id}', [AttendanceController::class, 'update'])->name('attendanceupdate');
+
+Route::get('/attendanceweek/{week}/{group}', [AttendanceController::class, 'week'])->name('attendanceweek');
+
+

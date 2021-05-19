@@ -15,6 +15,10 @@ class CreateAttendancesTable extends Migration
     {
         Schema::create('attendances', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('user_id')->references('id')->on('users')->cascadeOnDelete();
+            $table->integer('week');
+            $table->boolean("present");
+            $table->string("reason");
             $table->timestamps();
         });
     }
