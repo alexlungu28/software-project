@@ -12,7 +12,7 @@
 <body>
 
 <div class="container">
-    <h2 class="text-center">RubricEntry Management | Update</h2>
+    <h2 class="text-center">Rubric Entry Management | Update</h2>
     <br>
     <form action = "/rubricEntryUpdate" method = "post" class="form-group" style="width:70%; margin-left:15%;" action="/action_page.php">
 

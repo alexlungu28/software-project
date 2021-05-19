@@ -1,6 +1,6 @@
 <?php
 
-namespace Http\Controllers;
+namespace Tests\Unit;
 
 use App\Http\Controllers\RubricDataController;
 use PHPUnit\Framework\TestCase;

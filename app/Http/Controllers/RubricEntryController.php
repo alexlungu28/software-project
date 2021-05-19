@@ -49,7 +49,7 @@ class RubricEntryController extends Controller
      */
     public function create()
     {
-        return view('rubricEntry_create', ['rubrics' => (new RubricController)->getAllRubric()]);
+        return view('rubricEntry_create', ['rubrics' => Rubric::all()]);
     }
 
     /**

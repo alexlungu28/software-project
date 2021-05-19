@@ -2,9 +2,9 @@
 
 namespace Tests\Feature;
 
+use App\Models\Rubric;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithoutMiddleware;
-use Illuminate\Support\Facades\DB;
 use Tests\TestCase;
 
 class RubricTest extends TestCase
@@ -32,9 +32,11 @@ class RubricTest extends TestCase
 
     public function testViewRubrics()
     {
-        DB::table('rubrics')->insert([
-            'name' => 'TestName'
-        ]);
+        Rubric::insert(
+            [
+                'name' => 'TestName'
+            ]
+        );
         $response = $this->get('viewRubrics')->assertSee('TestName');
         $response->assertStatus(200);
     }

@@ -2,9 +2,9 @@
 
 namespace Tests\Unit;
 
+use App\Models\Rubric;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithoutMiddleware;
-use Illuminate\Support\Facades\DB;
 use Tests\TestCase;
 
 class RubricControllerTest extends TestCase
@@ -16,22 +16,32 @@ class RubricControllerTest extends TestCase
     {
         $response = $this->post(
             '/rubricStore',
-            ['name' => 'TestName'],
+            [
+                'name' => 'TestName'
+            ],
         );
-        $this->assertDatabaseHas('rubrics', [
-            'name' => 'TestName'
-        ]);
+        $this->assertDatabaseHas(
+            'rubrics',
+            [
+                'name' => 'TestName'
+            ]
+        );
         $response->assertStatus(200);
     }
 
     public function testRubricUpdate()
     {
-        DB::table('rubrics')->insert([
-            'name' => 'TestName'
-        ]);
-        $this->assertDatabaseHas('rubrics', [
-            'name' => 'TestName'
-        ]);
+        Rubric::insert(
+            [
+                'name' => 'TestName'
+            ]
+        );
+        $this->assertDatabaseHas(
+            'rubrics',
+            [
+                'name' => 'TestName'
+            ]
+        );
         $response = $this->post(
             '/rubricUpdate',
             [
@@ -39,24 +49,27 @@ class RubricControllerTest extends TestCase
                 'name' => 'NewName',
             ],
         );
-        $this->assertDatabaseHas('rubrics', [
-            'id' => 1,
-            'name' => 'NewName',
-        ]);
+        $this->assertDatabaseHas(
+            'rubrics',
+            [
+                'id' => 1,
+                'name' => 'NewName',
+            ]
+        );
         $response->assertStatus(200);
     }
 
     public function testRubricDestroy()
     {
-        DB::table('rubrics')->insert(
+        Rubric::insert(
             [
-            'name' => 'TestName'
+                'name' => 'TestName'
             ]
         );
         $this->assertDatabaseHas(
             'rubrics',
             [
-            'name' => 'TestName'
+                'name' => 'TestName'
             ]
         );
         $response = $this->post(
