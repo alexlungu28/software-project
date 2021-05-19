@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\CourseController;
+use App\Http\Controllers\CourseEditionController;
 use App\Http\Controllers\RubricController;
 use App\Http\Controllers\RubricDataController;
 use App\Http\Controllers\RubricEntryController;
@@ -208,3 +209,6 @@ Route::get('/courseEdit', [CourseController::class, 'edit'])
     ->name('courseEdit')
     ->middleware(['loggedIn', 'employee']);
 Route::post('/courseUpdate', [CourseController::class, 'update'])->middleware(['loggedIn', 'employee']);
+
+Route::get('/courses/{id}/edition/{edition_id}', [CourseEditionController::class, 'view'])
+    ->name('courseEdition')->middleware();

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Course;
+use App\Models\CourseEdition;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -151,8 +152,12 @@ class CourseController extends Controller
         }
     }
 
-    public function viewCourseById()
+    public function viewCourseById($id)
     {
-
+        $courseEditions = CourseEdition::all();
+        return view('allCourseEditions', [
+            "course_id" => $id,
+            "courseEditions" => $courseEditions,
+        ]);
     }
 }
