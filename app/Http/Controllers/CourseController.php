@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Course;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class CourseController extends Controller
@@ -124,12 +125,30 @@ class CourseController extends Controller
         return redirect('/');
     }
 
-    public function view()
+    public function viewEmployee()
     {
         $courses = Course::all();
-        return view('allcourses', [
+        return view('mainEmployee', [
             "courses" => $courses,
         ]);
+    }
+
+    public function viewStudent()
+    {
+        $courses = Course::all();
+        return view('mainStudent', [
+            "courses" => $courses,
+        ]);
+    }
+
+    public function view()
+    {
+        $user = Auth::user();
+        if ($user->affiliation === 'employee') {
+            return $this->viewEmployee();
+        } else {
+            return $this->viewStudent();
+        }
     }
 
     public function viewCourseById()

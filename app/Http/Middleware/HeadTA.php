@@ -23,7 +23,7 @@ class HeadTA
             ->where('user_id', '=', $request->user()->id)->first->id;
         $courseEditionUser = CourseEditionUser::find($courseEditionId);
         if (! 'headTA' == $courseEditionUser->role) {
-            redirect('/unauthorized');
+            redirect('unauthorized');
         }
 
         return $next($request);

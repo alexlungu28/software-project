@@ -56,7 +56,8 @@ Route::get('/rubricName/{id}', function ($id) {
 |--------------------------------------------------------------------------
 */
 //shows the form to create a rubric
-Route::get('/rubricCreate', [RubricController::class, 'create'])->name('rubricCreate')->middleware(['loggedIn', 'employee']);
+Route::get('/rubricCreate', [RubricController::class, 'create'])
+    ->name('rubricCreate')->middleware(['loggedIn', 'employee']);
 //post route for the Store method in the controller
 Route::post('/rubricStore', [RubricController::class, 'store'])->middleware(['loggedIn', 'employee']);
 
@@ -65,7 +66,8 @@ Route::post('/rubricStore', [RubricController::class, 'store'])->middleware(['lo
 | Delete Rubric Routes
 |--------------------------------------------------------------------------
 */
-Route::get('/rubricDelete', [RubricController::class, 'delete'])->name('rubricDelete')->middleware(['loggedIn', 'employee']);
+Route::get('/rubricDelete', [RubricController::class, 'delete'])
+    ->name('rubricDelete')->middleware(['loggedIn', 'employee']);
 Route::post('/rubricDestroy', [RubricController::class, 'destroy'])->middleware(['loggedIn', 'employee']);
 /*
 |--------------------------------------------------------------------------
@@ -88,14 +90,16 @@ Route::post('/rubricEntryStore', [RubricEntryController::class, 'store'])->middl
 | Delete RubricEntry Routes
 |--------------------------------------------------------------------------
 */
-Route::get('/rubricEntryDelete/{id}/{distance}/{isRow}', [RubricEntryController::class, 'destroy'])->middleware(['loggedIn', 'employee']);
+Route::get('/rubricEntryDelete/{id}/{distance}/{isRow}', [RubricEntryController::class, 'destroy'])
+    ->middleware(['loggedIn', 'employee']);
 
 /*
 |--------------------------------------------------------------------------
 | Update RubricEntry Routes
 |--------------------------------------------------------------------------
 */
-Route::get('/rubricEntryEdit/{id}/{isRow}', [RubricEntryController::class, 'edit'])->middleware(['loggedIn', 'employee']);
+Route::get('/rubricEntryEdit/{id}/{isRow}', [RubricEntryController::class, 'edit'])
+    ->middleware(['loggedIn', 'employee']);
 Route::post('/rubricEntryUpdate', [RubricEntryController::class, 'update'])->middleware(['loggedIn', 'employee']);
 /*
 |--------------------------------------------------------------------------
