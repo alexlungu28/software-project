@@ -165,6 +165,26 @@ Route::group(['middleware' => 'auth'], function () {
     Route::resource('user', 'App\Http\Controllers\UserController', ['except' => ['show']]);
     Route::get('profile', ['as' => 'profile.edit', 'uses' => 'App\Http\Controllers\ProfileController@edit']);
     Route::put('profile', ['as' => 'profile.update', 'uses' => 'App\Http\Controllers\ProfileController@update']);
-    Route::put('profile/password',
-        ['as' => 'profile.password', 'uses' => 'App\Http\Controllers\ProfileController@password']);
+    Route::put(
+        'profile/password',
+        ['as' => 'profile.password', 'uses' => 'App\Http\Controllers\ProfileController@password']
+    );
 });
+
+// These routes can only be accessed by students
+Route::group(['middleware' => ['App\Http\Middleware\Student']], function () {
+    Route::get('student', function () {
+        echo "Student example page";
+    });
+});
+
+// These routes can only be accessed by employees
+Route::group(['middleware' => ['App\Http\Middleware\Employee']], function () {
+    Route::get('employee', function () {
+        echo "Employee example page";
+    });
+});
+
+Route::get('unauthorized', function () {
+    echo "You are unauthorized to access this page.";
+})->name('unauthorized');

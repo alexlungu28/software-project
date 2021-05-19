@@ -19,11 +19,6 @@ class RubricController extends Controller
         //
     }
 
-    public function getAllRubric()
-    {
-        return Rubric::all();
-    }
-
     /**
      * Show the form for creating a new resource.
      *
@@ -67,7 +62,7 @@ class RubricController extends Controller
      */
     public function edit()
     {
-        return view('rubric_edit', ['rubrics' => (new RubricController)->getAllRubric()]);
+        return view('rubric_edit', ['rubrics' => Rubric::all()]);
     }
 
     /**
@@ -112,7 +107,6 @@ class RubricController extends Controller
     public function view()
     {
         $rubrics = Rubric::all();
-//        ddd($rubrics);
         return view('allrubrics', [
             "rubrics" => $rubrics,
         ]);

@@ -11,6 +11,7 @@ class Rubric extends Model
     use HasFactory;
     use SoftDeletes;
 
+    protected $fillable = ['rubric_name'];
     protected $dates = ['deleted_at'];
 
     public function delete()
