@@ -38,8 +38,8 @@ class RubricController extends Controller
     public function store(Request $request)
     {
         $name = $request->input('name');
-        $course_edition = '1';
-        $data=array('name'=>$name,'course_edition_id' => $course_edition,'created_at' =>now(), 'updated_at' => now());
+        $courseEdition = '1';
+        $data=array('name'=>$name,'course_edition_id' => $courseEdition,'created_at' =>now(), 'updated_at' => now());
         DB::table('rubrics')->insert($data);
         return redirect('/rubricCreate');
     }
