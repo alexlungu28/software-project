@@ -24,9 +24,10 @@ class RubricEntryController extends Controller
 
     public function autoIncrementDistance($id, $isRow)
     {
-        if (RubricEntry::where('rubric_id', '=', $id)->exists()) {
-            if (RubricEntry::where('is_row', '=', $isRow)->exists()) {
-                $rubricEntrySameId = RubricEntry::where('is_row', '=', $isRow)->where('rubric_id', '=', $id)->get();
+        if (RubricEntry::withTrashed()->where('rubric_id', '=', $id)->exists()) {
+            if (RubricEntry::withTrashed()->where('is_row', '=', $isRow)->exists()) {
+                $rubricEntrySameId = RubricEntry::withTrashed()
+                    ->where('is_row', '=', $isRow)->where('rubric_id', '=', $id)->get();
                 $max = 0;
                 foreach ($rubricEntrySameId as $value) {
                     if ($value->distance>$max) {
@@ -76,8 +77,7 @@ class RubricEntryController extends Controller
                 "created_at" => now(), "updated_at" => now());
             DB::table('rubric_data')->insertOrIgnore($rubricData);
         }
-        echo "Record inserted successfully.<br/>";
-        echo '<a href = "/rubricEntryCreate">Click Here</a> to go back.';
+        redirect('viewRubricTA/'.$rubricId);
     }
 
     /**
@@ -137,10 +137,12 @@ class RubricEntryController extends Controller
         if ($isRow == 1) {
             RubricData::where('rubric_id', '=', $id)->where('row_number', '=', $distance)->delete();
         }
+        redirect('rubricViewTeacher/'.$id);
     }
 
     public function teacherview($id)
     {
+
         $rubric = Rubric::find($id);
         $rubricColumnEntries = $rubric->rubricEntry->where('is_row', '=', '0')->sortBy('distance');
         $rubricRowEntries = $rubric->rubricEntry->where('is_row', '=', '1')->sortBy('distance');
@@ -157,7 +159,7 @@ class RubricEntryController extends Controller
         $rubricColumnEntries = $rubric->rubricEntry->where('is_row', '=', '0')->sortBy('distance');
         $rubricRowEntries = $rubric->rubricEntry->where('is_row', '=', '1')->sortBy('distance');
         $rubricData = $rubric->rubricData;
-        return view('pages.rubricView', ['rubric' => $rubric,
+        return view('pages.rubricViewTA', ['rubric' => $rubric,
             'rubricColumnEntries' => $rubricColumnEntries,
             'rubricRowEntries' => $rubricRowEntries,
             'rubricData' => $rubricData]);

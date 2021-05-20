@@ -32,9 +32,9 @@
                             {{$rowEntry->description}}
                         </td>
                         @foreach($rubricColumnEntries as $columnEntry)
-                            <td> <input type="radio" name={{$loop->parent->index}}  value={{$loop->index}} {{$rubricData[$loop->parent->index]->value == $loop->index ? 'checked' : ''}}> </td>
+                            <td> <input type="radio" name={{$rowEntry->distance}}  value={{$loop->index}} {{$rubricData[$loop->parent->index]->value == $loop->index ? 'checked' : ''}}> </td>
                         @endforeach
-                        <td> <textarea name={{"text".($loop->index)}} form="rubricForm">{{$rubricData[$loop->index]->note}}</textarea> </td>
+                        <td> <textarea name={{"text".($rowEntry->distance)}} form="rubricForm">{{$rubricData[$loop->index]->note}}</textarea> </td>
                     </tr>
                 @endforeach
                 </tbody>

@@ -58,16 +58,16 @@ Route::post('/rubricEntryStore', [RubricEntryController::class, 'store']);
 
 // Read
 //Gives a visual presentation of the rubric
-Route::get('/viewRubric/{id}', [RubricEntryController::class,'view'])->name('rubric');
+Route::get('/viewRubricTA/{id}', [RubricEntryController::class,'view'])->name('rubric');
 //Gives a visual presentation of the teacherView of the rubric
-Route::get('/teacher/viewRubric/{id}', [RubricEntryController::class,'teacherView'])->name('teacherRubric');
+Route::get('/viewRubricTeacher/{id}', [RubricEntryController::class,'teacherView'])->name('teacherRubric');
 
 // Update
 Route::get('/rubricEntryEdit/{id}/{isRow}', [RubricEntryController::class, 'edit']);
 Route::post('/rubricEntryUpdate', [RubricEntryController::class, 'update']);
 
 // Delete
-Route::get('/rubricEntryDelete/{id}/{distance}/{isRow}', [RubricEntryController::class, 'destroy']);
+Route::get('/rubricEntryDelete/{id}/{distance}/{isRow}', [RubricEntryController::class, 'destroy'])->name('rubricEntryDelete');
 
 /*
 |--------------------------------------------------------------------------
