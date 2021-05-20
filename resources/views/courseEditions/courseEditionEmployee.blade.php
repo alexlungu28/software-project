@@ -8,7 +8,7 @@
                     <div class="col-lg-3 col-md-6 col-sm-6">
                         <div class="card card-stats" style="width: 120px;">
                             <div class="card-icon">
-                                <a class="nav-link" href="{{ route('courseEdition', [$course_id, $edition->id]) }}">
+                                <a class="nav-link" href="{{ route('groups', [$edition->id]) }}">
                                     <p>{{ $edition->year }}</p>
                                 </a>
                             </div>

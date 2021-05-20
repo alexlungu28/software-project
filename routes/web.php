@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\CourseController;
 use App\Http\Controllers\CourseEditionController;
+use App\Http\Controllers\GroupController;
 use App\Http\Controllers\RubricController;
 use App\Http\Controllers\RubricDataController;
 use App\Http\Controllers\RubricEntryController;
@@ -127,7 +128,7 @@ Route::post('/rubricDataStore/{id}', [RubricDataController::class, 'store']);
 |--------------------------------------------------------------------------
 */
 Route::get('/export', 'App\Http\Controllers\ImportController@export')->name('export');
-Route::get('/importExportView', 'App\Http\Controllers\ImportController@importExportView');
+Route::get('/importExportView', 'App\Http\Controllers\ImportController@importExportView')->name('importExport');
 Route::post('/import', 'App\Http\Controllers\ImportController@import')->name('import');
 
 
@@ -241,5 +242,8 @@ Route::get('/courseEditionEdit/{course_id}', [CourseEditionController::class, 'e
 Route::post('/courseEditionUpdate/{course_id}', [CourseEditionController::class, 'update'])->middleware(['loggedIn', 'employee']);
 
 
-Route::get('/courses/{id}/edition/{edition_id}', [CourseEditionController::class, 'view'])
-    ->name('courseEdition')->middleware();
+Route::get('/edition/{edition_id}', [CourseEditionController::class, 'view'])
+    ->name('groups')->middleware();
+
+//Gives a visual presentation of the group
+Route::get('/group/{id}', [GroupController::class,'view'])->name('group');

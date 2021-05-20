@@ -73,8 +73,10 @@ class CourseEditionController extends Controller
     public function edit($courseId)
     {
         $courseEditions = DB::table('course_editions')->where('course_id', '=', $courseId)->get();
-        return view('courseEditions.courseEdition_edit',
-            ['course_id' => $courseId, 'courseEditions' => $courseEditions]);
+        return view(
+            'courseEditions.courseEdition_edit',
+            ['course_id' => $courseId, 'courseEditions' => $courseEditions]
+        );
     }
 
     /**
@@ -127,8 +129,12 @@ class CourseEditionController extends Controller
         return redirect('/');
     }
 
-    public function view()
+    public function view($edition_id)
     {
-        //
+        $groups = DB::table('groups')->where('course_edition_id', '=', $edition_id)->get();
+        return view('groups.allgroups', [
+            "edition_id" => $edition_id,
+            "groups" => $groups
+        ]);
     }
 }
