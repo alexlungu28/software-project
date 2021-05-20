@@ -219,7 +219,8 @@ Route::post('/courseUpdate', [CourseController::class, 'update'])->middleware(['
 Route::get('/courseEditionCreate/{course_id}', [CourseEditionController::class, 'create'])
     ->name('courseEditionCreate')
     ->middleware(['loggedIn', 'employee']);
-Route::post('/courseEditionStore/{course_id}', [CourseEditionController::class, 'store'])->middleware(['loggedIn', 'employee']);
+Route::post('/courseEditionStore/{course_id}', [CourseEditionController::class, 'store'])
+    ->middleware(['loggedIn', 'employee']);
 
 /*
 |--------------------------------------------------------------------------
@@ -239,11 +240,12 @@ Route::post('/courseEditionDestroy', [CourseEditionController::class, 'destroy']
 Route::get('/courseEditionEdit/{course_id}', [CourseEditionController::class, 'edit'])
     ->name('courseEditionEdit')
     ->middleware(['loggedIn', 'employee']);
-Route::post('/courseEditionUpdate/{course_id}', [CourseEditionController::class, 'update'])->middleware(['loggedIn', 'employee']);
+Route::post('/courseEditionUpdate/{course_id}', [CourseEditionController::class, 'update'])
+    ->middleware(['loggedIn', 'employee']);
 
 
 Route::get('/edition/{edition_id}', [CourseEditionController::class, 'view'])
-    ->name('groups')->middleware();
+    ->name('groups')->middleware('role');
 
 //Gives a visual presentation of the group
 Route::get('/group/{id}', [GroupController::class,'view'])->name('group');

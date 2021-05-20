@@ -155,6 +155,7 @@ class CourseController extends Controller
      */
     public function viewStudent()
     {
+        //TODO: query the database to show only the courses where the student is registered to
         $courses = Course::all();
         return view('courses.mainStudent', [
             "courses" => $courses,

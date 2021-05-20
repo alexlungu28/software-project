@@ -41,10 +41,17 @@ class CourseEditionController extends Controller
     public function store(Request $request, $courseId)
     {
         try {
-            $course = Course::find($courseId);
+            //adding the course edition inside the course editions table
             $year = $request->input('year');
-            $data = ['course_id'=>$courseId, 'year'=>$year];
-            DB::table('course_editions')->insert($data);
+            DB::table('course_editions')->insert(array('course_id'=>$courseId,
+                'year'=>$year, 'created_at'=>now(),'updated_at'=>now()));
+
+            //adding the user role inside the pivot table
+            $courseEditionId = DB::table('course_editions')->select('id')
+                ->where('course_id', '=', $courseId)->get()->first()->id;
+            DB::table('course_edition_user')->insert(array('user_id'=>$request->user()->id,
+                'course_edition_id'=>$courseEditionId, 'role'=>'lecturer' ,'created_at'=>now(),'updated_at'=>now()));
+
             return redirect('/');
         } catch (QueryException $e) {
             echo "Course edition already exists.<br/>";
