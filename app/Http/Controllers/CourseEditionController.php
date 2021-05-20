@@ -25,10 +25,10 @@ class CourseEditionController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create($course_id)
+    public function create($courseId)
     {
         return view('courseEditions.courseEdition_create', [
-            "course_id" => $course_id
+            "course_id" => $courseId
         ]);
     }
 
@@ -38,12 +38,12 @@ class CourseEditionController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request, $course_id)
+    public function store(Request $request, $courseId)
     {
         try {
-            $course = Course::find($course_id);
+            $course = Course::find($courseId);
             $year = $request->input('year');
-            $data = ['course_id'=>$course_id, 'year'=>$year];
+            $data = ['course_id'=>$courseId, 'year'=>$year];
             DB::table('course_editions')->insert($data);
             return redirect('/');
         } catch (QueryException $e) {
@@ -70,10 +70,11 @@ class CourseEditionController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($course_id)
+    public function edit($courseId)
     {
-        $courseEditions = DB::table('course_editions')->where('course_id', '=', $course_id)->get();
-        return view('courseEditions.courseEdition_edit', ['course_id' => $course_id, 'courseEditions' => $courseEditions]);
+        $courseEditions = DB::table('course_editions')->where('course_id', '=', $courseId)->get();
+        return view('courseEditions.courseEdition_edit',
+            ['course_id' => $courseId, 'courseEditions' => $courseEditions]);
     }
 
     /**
@@ -83,14 +84,14 @@ class CourseEditionController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $course_id)
+    public function update(Request $request)
     {
         try {
             $id = $request->input('id');
             $year = $request->input('year');
-            $course = CourseEdition::find($id);
-            $course->year = $year;
-            $course->save();
+            $courseEdition = CourseEdition::find($id);
+            $courseEdition->year = $year;
+            $courseEdition->save();
         } catch (QueryException $e) {
             echo "Course edition already exists.<br/>";
             echo "Redirecting you back to main page...";
@@ -99,10 +100,17 @@ class CourseEditionController extends Controller
         return redirect('/');
     }
 
-    public function delete($course_id) {
-        $courseEditions = DB::table('course_editions')->where('course_id', '=', $course_id)->get();
+    /**
+     * Return the view for deleting course editions.
+     *
+     * @param $courseId
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
+     */
+    public function delete($courseId)
+    {
+        $courseEditions = DB::table('course_editions')->where('course_id', '=', $courseId)->get();
         return view('courseEditions.courseEdition_delete', [
-            "course_id" => $course_id,
+            "course_id" => $courseId,
             "courseEditions" => $courseEditions,
         ]);
     }

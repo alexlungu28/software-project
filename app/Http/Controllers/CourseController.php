@@ -65,6 +65,11 @@ class CourseController extends Controller
         //
     }
 
+    /**
+     * Retrieve all courses.
+     *
+     * @return Course[]|\Illuminate\Database\Eloquent\Collection
+     */
     public static function getAllCourses()
     {
         return Course::all();
@@ -105,6 +110,11 @@ class CourseController extends Controller
         return redirect('/');
     }
 
+    /**
+     * Return the view for deleting courses.
+     *
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
+     */
     public function delete()
     {
         $courses = $this::getAllCourses();
@@ -125,6 +135,11 @@ class CourseController extends Controller
         return redirect('/');
     }
 
+    /**
+     * Return the employee view of courses.
+     *
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
+     */
     public function viewEmployee()
     {
         $courses = Course::all();
@@ -133,6 +148,11 @@ class CourseController extends Controller
         ]);
     }
 
+    /**
+     * Return the student view of courses.
+     *
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
+     */
     public function viewStudent()
     {
         $courses = Course::all();
@@ -141,6 +161,11 @@ class CourseController extends Controller
         ]);
     }
 
+    /**
+     * Return the courses view based on user affiliation.
+     *
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
+     */
     public function view()
     {
         $user = Auth::user();
@@ -151,12 +176,49 @@ class CourseController extends Controller
         }
     }
 
-    public function viewCourseById($id)
+    /**
+     * Return the employee view of course editions.
+     *
+     * @param $id
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
+     */
+    public function viewEmployeeCE($id)
     {
         $courseEditions = DB::table('course_editions')->where('course_id', '=', $id)->get();
         return view('courseEditions.courseEditionEmployee', [
             "course_id" => $id,
             "courseEditions" => $courseEditions,
         ]);
+    }
+
+    /**
+     * Return the student view of course editions.
+     *
+     * @param $id
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
+     */
+    public function viewStudentCE($id)
+    {
+        $courseEditions = DB::table('course_editions')->where('course_id', '=', $id)->get();
+        return view('courseEditions.courseEditionStudent', [
+            "course_id" => $id,
+            "courseEditions" => $courseEditions,
+        ]);
+    }
+
+    /**
+     * Return the course edition view based on user affiliation.
+     *
+     * @param $id
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
+     */
+    public function viewCourseById($id)
+    {
+        $user = Auth::user();
+        if ($user->affiliation === 'employee') {
+            return $this->viewEmployeeCE($id);
+        } else {
+            return $this->viewStudentCE($id);
+        }
     }
 }
