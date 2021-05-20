@@ -129,11 +129,11 @@ class CourseEditionController extends Controller
         return redirect('/');
     }
 
-    public function view($edition_id)
+    public function view($editionId)
     {
-        $groups = DB::table('groups')->where('course_edition_id', '=', $edition_id)->get();
+        $groups = DB::table('groups')->where('course_edition_id', '=', $editionId)->get();
         return view('groups.allgroups', [
-            "edition_id" => $edition_id,
+            "edition_id" => $editionId,
             "groups" => $groups
         ]);
     }

@@ -83,7 +83,7 @@ class GroupController extends Controller
         //
     }
 
-    public function view($edition_id)
+    public function view($editionId)
     {
         //
     }
