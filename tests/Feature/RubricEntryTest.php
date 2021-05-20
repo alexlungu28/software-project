@@ -17,7 +17,8 @@ class RubricEntryTest extends TestCase
     {
         Rubric::insert(
             [
-                'name' => 'TestName'
+                'name' => 'TestName',
+                'course_edition_id' => 1,
             ]
         );
         RubricEntry::insert(
@@ -49,7 +50,7 @@ class RubricEntryTest extends TestCase
     public function testRubricView()
     {
         $this->before();
-        $response = $this->get('/viewRubric/1')
+        $response = $this->get('/viewRubricTA/1')
             ->assertSee('TestName')
             ->assertSee('Column 1');
         $response->assertStatus(200);

@@ -38,7 +38,8 @@ class RubricController extends Controller
     public function store(Request $request)
     {
         $name = $request->input('name');
-        $data=array('name'=>$name,'created_at' =>now(), 'updated_at' => now());
+        $course_edition = '1';
+        $data=array('name'=>$name,'course_edition_id' => $course_edition,'created_at' =>now(), 'updated_at' => now());
         DB::table('rubrics')->insert($data);
         echo "Record inserted successfully.<br/>";
         echo '<a href = "/rubricCreate">Click Here</a> to go back.';

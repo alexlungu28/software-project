@@ -20,7 +20,8 @@ class RubricEntryControllerTest extends TestCase
     {
         Rubric::insert(
             [
-                'name' => 'TestName'
+                'name' => 'TestName',
+                'course_edition_id' => 1,
             ]
         );
         $this->controller = new RubricEntryController();

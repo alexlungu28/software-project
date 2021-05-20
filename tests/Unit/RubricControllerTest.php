@@ -33,7 +33,8 @@ class RubricControllerTest extends TestCase
     {
         Rubric::insert(
             [
-                'name' => 'TestName'
+                'name' => 'TestName',
+                'course_edition_id' => 1,
             ]
         );
         $this->assertDatabaseHas(
@@ -63,7 +64,8 @@ class RubricControllerTest extends TestCase
     {
         Rubric::insert(
             [
-                'name' => 'TestName'
+                'name' => 'TestName',
+                'course_edition_id' => 1,
             ]
         );
         $this->assertDatabaseHas(

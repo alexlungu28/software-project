@@ -37,7 +37,6 @@ class RubricDataController extends Controller
      */
     public function store(Request $request, $id)
     {
-        //$i = 0;
         foreach (Rubric::find($id)->rubricData as $entry) {
             $value = $request->input("" . $entry->row_number);
             if ($value === null) {
@@ -47,10 +46,7 @@ class RubricDataController extends Controller
             $key = array("rubric_id"=>$id, "row_number" => $entry->row_number);
             $data = array("value" => $value, "note" => $note, 'created_at' => now(), 'updated_at' => now());
             DB::table('rubric_data')->updateOrInsert($key, $data);
-            //$i++;
         }
-        echo "Record inserted successfully.<br/>";
-        echo "<a href = " . "/viewRubric/" . $id . ">Click Here</a> to go back.";
     }
 
     /**
