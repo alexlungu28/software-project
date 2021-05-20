@@ -210,5 +210,36 @@ Route::get('/courseEdit', [CourseController::class, 'edit'])
     ->middleware(['loggedIn', 'employee']);
 Route::post('/courseUpdate', [CourseController::class, 'update'])->middleware(['loggedIn', 'employee']);
 
+/*
+|--------------------------------------------------------------------------
+| Create Course Edition Routes
+|--------------------------------------------------------------------------
+*/
+Route::get('/courseEditionCreate/{course_id}', [CourseEditionController::class, 'create'])
+    ->name('courseEditionCreate')
+    ->middleware(['loggedIn', 'employee']);
+Route::post('/courseEditionStore/{course_id}', [CourseEditionController::class, 'store'])->middleware(['loggedIn', 'employee']);
+
+/*
+|--------------------------------------------------------------------------
+| Delete Course Edition Routes
+|--------------------------------------------------------------------------
+*/
+Route::get('/courseEditionDelete/{course_id}', [CourseEditionController::class, 'delete'])
+    ->name('courseEditionDelete')
+    ->middleware(['loggedIn', 'employee']);
+Route::post('/courseEditionDestroy', [CourseEditionController::class, 'destroy'])->middleware(['loggedIn', 'employee']);
+
+/*
+|--------------------------------------------------------------------------
+|  Update Course Edition Routes
+|--------------------------------------------------------------------------
+*/
+Route::get('/courseEditionEdit/{course_id}', [CourseEditionController::class, 'edit'])
+    ->name('courseEditionEdit')
+    ->middleware(['loggedIn', 'employee']);
+Route::post('/courseEditionUpdate/{course_id}', [CourseEditionController::class, 'update'])->middleware(['loggedIn', 'employee']);
+
+
 Route::get('/courses/{id}/edition/{edition_id}', [CourseEditionController::class, 'view'])
     ->name('courseEdition')->middleware();

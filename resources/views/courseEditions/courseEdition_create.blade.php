@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Course Management</title>
+    <title>Course Edition Management</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
@@ -12,19 +12,12 @@
 <body>
 
 <div class="container">
-    <h2 class="text-center">Course Management | Add</h2>
+    <h2 class="text-center">Course Edition Management | Add</h2>
     <br>
-    <form action = "/courseStore" method = "post" class="form-group" style="width:70%; margin-left:15%;" action="/action_page.php">
+    <form action = "/courseEditionStore/{{$course_id}}" method = "post" class="form-group" style="width:70%; margin-left:15%;" action="/action_page.php">
 
         <input type = "hidden" name = "_token" value = "<?php echo csrf_token(); ?>"><input type = "hidden" name = "_token" value = "<?php echo csrf_token(); ?>">
 
-        <label>Course number:</label>
-        <input type="text" class ="form-control" placeholder="CSE1234" name="course_number">
-        <br/>
-        <label>Course description:</label>
-        <input type="text" class ="form-control" placeholder="Software Project" name="description">
-        <br/>
-        <br/>
         <label>Course edition:</label>
         <input type="text" class ="form-control" placeholder="2021" name="year">
         <br/>

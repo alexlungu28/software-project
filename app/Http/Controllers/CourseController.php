@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Course;
 use App\Models\CourseEdition;
+use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -27,7 +28,7 @@ class CourseController extends Controller
      */
     public function create()
     {
-        return view('course_create');
+        return view('courses.course_create');
     }
 
     /**
@@ -38,27 +39,19 @@ class CourseController extends Controller
      */
     public function store(Request $request)
     {
-        //adding the course inside the courses table
-        $courseNumber = $request->input('course_number');
-        $description = $request->input('description');
-        $data=array('course_number'=>$courseNumber, 'description'=>$description, 'created_at' =>now(),
-            'updated_at' => now());
-        DB::table('courses')->insert($data);
-
-        //adding the course edition inside the course editions table
-        $year = $request->input('year');
-        $courseId = DB::table('courses')->select('id')
-            ->where('course_number', '=', $courseNumber)->get()->first()->id;
-        DB::table('course_editions')->insert(array('course_id'=>$courseId,
-            'year'=>$year, 'created_at'=>now(),'updated_at'=>now()));
-
-        //adding the user role inside the pivot table
-        $courseEditionId = DB::table('course_editions')->select('id')
-            ->where('course_id', '=', $courseId)->get()->first()->id;
-        DB::table('course_edition_user')->insert(array('user_id'=>$request->user()->id,
-            'course_edition_id'=>$courseEditionId, 'role'=>'lecturer' ,'created_at'=>now(),'updated_at'=>now()));
-
-        return redirect('/');
+        try {
+            //adding the course inside the courses table
+            $courseNumber = $request->input('course_number');
+            $description = $request->input('description');
+            $data = array('course_number' => $courseNumber, 'description' => $description, 'created_at' => now(),
+                'updated_at' => now());
+            DB::table('courses')->insert($data);
+            return redirect('/');
+        } catch (QueryException $e) {
+            echo "Course number already exists.<br/>";
+            echo "Redirecting you back to main page...";
+            header("refresh:3;url=/");
+        }
     }
 
     /**
@@ -85,7 +78,7 @@ class CourseController extends Controller
      */
     public function edit()
     {
-        return view('course_edit', ['courses' => $this::getAllCourses()]);
+        return view('courses.course_edit', ['courses' => $this::getAllCourses()]);
     }
 
     /**
@@ -96,20 +89,26 @@ class CourseController extends Controller
      */
     public function update(Request $request)
     {
-        $id = $request->input('id');
-        $courseNumber = $request->input('course_number');
-        $description = $request->input('description');
-        $course = Course::find($id);
-        $course->course_number = $courseNumber;
-        $course->description = $description;
-        $course->save();
+        try {
+            $id = $request->input('id');
+            $courseNumber = $request->input('course_number');
+            $description = $request->input('description');
+            $course = Course::find($id);
+            $course->course_number = $courseNumber;
+            $course->description = $description;
+            $course->save();
+        } catch (QueryException $e) {
+            echo "Course number already exists.<br/>";
+            echo "Redirecting you back to main page...";
+            header("refresh:3;url=/");
+        }
         return redirect('/');
     }
 
     public function delete()
     {
         $courses = $this::getAllCourses();
-        return view('course_delete', [
+        return view('courses.course_delete', [
             "courses" => $courses,
         ]);
     }
@@ -129,7 +128,7 @@ class CourseController extends Controller
     public function viewEmployee()
     {
         $courses = Course::all();
-        return view('mainEmployee', [
+        return view('courses.mainEmployee', [
             "courses" => $courses,
         ]);
     }
@@ -137,7 +136,7 @@ class CourseController extends Controller
     public function viewStudent()
     {
         $courses = Course::all();
-        return view('mainStudent', [
+        return view('courses.mainStudent', [
             "courses" => $courses,
         ]);
     }
@@ -154,8 +153,8 @@ class CourseController extends Controller
 
     public function viewCourseById($id)
     {
-        $courseEditions = CourseEdition::all();
-        return view('allCourseEditions', [
+        $courseEditions = DB::table('course_editions')->where('course_id', '=', $id)->get();
+        return view('courseEditions.courseEditionEmployee', [
             "course_id" => $id,
             "courseEditions" => $courseEditions,
         ]);

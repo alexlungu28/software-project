@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Course Management</title>
+    <title>Course Edition Management</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
@@ -12,28 +12,21 @@
 <body>
 
 <div class="container">
-    <h2 class="text-center">Course Management | Update</h2>
+    <h2 class="text-center">Course Edition Management | Update</h2>
     <br>
-    <form action = "/courseUpdate" method = "post" class="form-group" style="width:70%; margin-left:15%;" action="/action_page.php">
+    <form action = "/courseEditionUpdate/{{$course_id}}" method = "post" class="form-group" style="width:70%; margin-left:15%;" action="/action_page.php">
 
         <input type = "hidden" name = "_token" value = "<?php echo csrf_token(); ?>">
 
         <select class="form-control" name="id">
-            @foreach($courses as $course)
-                <option value="{{$course->id}}">{{$course->course_number}}</option>
+            @foreach($courseEditions as $edition)
+                <option value="{{$edition->id}}">{{$edition->year}}</option>
             @endforeach
         </select>
 
         <br/>
-        <label>New course number:</label>
-        <input type="text" class="form-control" placeholder="CSE4321" name="course_number">
-        <br/>
-        <label>New course description:</label>
-        <input type="text" class="form-control" placeholder="Software Engineering Methods" name="description">
-        <br/>
-        <br/>
-        <label>Course edition:</label>
-        <input type="text" class ="form-control" placeholder="2021" name="year">
+        <label>New course edition:</label>
+        <input type="text" class="form-control" placeholder="2022" name="year">
         <br/>
 
         <button type="submit"  value = "Add" class="btn btn-primary">Submit</button>
