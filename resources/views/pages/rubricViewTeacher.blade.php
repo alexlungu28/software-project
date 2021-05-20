@@ -42,7 +42,19 @@
                                                 <td> <input type="radio" name={{$loop->parent->index}}  value={{$loop->index}}> </td>
                                             @endforeach
                                             <td> <textarea name={{"text".($loop->index)}} form="rubricForm"></textarea> </td>
-                                            <td><button onclick="window.location='{{route('rubricEntryDelete',array('id' => $rubric->id, 'distance' => $rowEntry->distance, 'isRow' => 1))}}';"  type="button" class="btn btn-primary">Delete</button></td>
+                                            <td>
+                                                <form
+                                                    method="post"
+                                                    action="{{route('rubricEntryDelete',array('id' => $rubric->id, 'distance' => $rowEntry->distance, 'isRow' => 1))}}">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    {{ method_field('DELETE') }}
+                                                    <button
+                                                        type="submit"
+                                                        onclick="return confirm('Are you sure?')"
+                                                        class="btn btn-primary">Remove</button>
+                                                </form>
+                                            </td>
                                         </tr>
                                     @endforeach
                                     <tr>

@@ -74,7 +74,7 @@ class RubricControllerTest extends TestCase
                 'name' => 'TestName'
             ]
         );
-        $response = $this->post(
+        $response = $this->delete(
             '/rubricDestroy',
             [
                 'id' => 1,

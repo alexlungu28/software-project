@@ -17,14 +17,18 @@
     <form action = "/rubricDestroy" method = "post" class="form-group" style="width:70%; margin-left:15%;">
 
         <input type = "hidden" name = "_token" value = "<?php echo csrf_token(); ?>">
-
+        @csrf
+        @method('DELETE')
+        {{ method_field('DELETE') }}
         <select class="form-control" name="id">
             @foreach($rubrics as $rubric)
                 <option value="{{$rubric->id}}">{{$rubric->name}}</option>
             @endforeach
         </select>
 
-        <button type="submit"  value = "Add" class="btn btn-primary">Submit</button>
+        <button type="submit"
+                onclick="return confirm('Are you sure you want to delete this item?')"
+                class="btn btn-primary">Submit</button>
 
     </form>
 </div>

@@ -43,7 +43,7 @@ Route::post('/rubricUpdate', [RubricController::class, 'update']);
 
 // Delete
 Route::get('/rubricDelete', [RubricController::class, 'delete'])->name('rubricDelete');
-Route::post('/rubricDestroy', [RubricController::class, 'destroy']);
+Route::delete('/rubricDestroy', [RubricController::class, 'destroy'])->name('rubricDestroy');
 
 /*
 |--------------------------------------------------------------------------
@@ -67,7 +67,8 @@ Route::get('/rubricEntryEdit/{id}/{isRow}', [RubricEntryController::class, 'edit
 Route::post('/rubricEntryUpdate', [RubricEntryController::class, 'update']);
 
 // Delete
-Route::get('/rubricEntryDelete/{id}/{distance}/{isRow}', [RubricEntryController::class, 'destroy'])->name('rubricEntryDelete');
+Route::delete('/rubricEntryDelete/{id}/{distance}/{isRow}', [RubricEntryController::class, 'destroy'])
+    ->name('rubricEntryDelete');
 
 /*
 |--------------------------------------------------------------------------

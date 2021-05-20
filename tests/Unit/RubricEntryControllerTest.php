@@ -127,7 +127,7 @@ class RubricEntryControllerTest extends TestCase
                 'description' => 'Row 1',
             ]
         );
-        $response = $this->get(
+        $response = $this->delete(
             '/rubricEntryDelete/1/0/1'
         );
         $this->assertSoftDeleted(

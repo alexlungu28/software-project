@@ -41,8 +41,7 @@ class RubricController extends Controller
         $course_edition = '1';
         $data=array('name'=>$name,'course_edition_id' => $course_edition,'created_at' =>now(), 'updated_at' => now());
         DB::table('rubrics')->insert($data);
-        echo "Record inserted successfully.<br/>";
-        echo '<a href = "/rubricCreate">Click Here</a> to go back.';
+        return redirect('/rubricCreate');
     }
 
     /**
@@ -80,8 +79,7 @@ class RubricController extends Controller
         $rubric->name = $name;
         $rubric->save();
 
-        echo "Record updated successfully.<br/>";
-        echo '<a href = "/rubricEdit">Click Here</a> to go back.';
+        return redirect('/rubricEdit');
     }
 
     public function delete()
