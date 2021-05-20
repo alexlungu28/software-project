@@ -120,8 +120,7 @@ class RubricEntryController extends Controller
             ->where('distance', '=', $distance)
             ->update(['description' => $description]);
 
-        echo "Record updated successfully.<br/>";
-        echo "<a href = " . "/rubricEntryEdit/" . $id . "/" . $isRow . ">Click Here</a> to go back.";
+        return redirect("/rubricEntryEdit/". $id . "/" . $isRow);
     }
 
     /**

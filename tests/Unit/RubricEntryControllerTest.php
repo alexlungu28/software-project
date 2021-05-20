@@ -94,7 +94,7 @@ class RubricEntryControllerTest extends TestCase
                 'description' => 'Row 1',
             ]
         );
-        $response = $this->post(
+        $response = $this->put(
             '/rubricEntryUpdate',
             [
                 'id' => 1,
@@ -113,7 +113,7 @@ class RubricEntryControllerTest extends TestCase
                 'description' => 'NewDescription',
             ],
         );
-        $response->assertStatus(200);
+        $response->assertStatus(302);
     }
 
     public function testRubricEntryDelete()

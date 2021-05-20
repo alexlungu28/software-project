@@ -22,7 +22,7 @@
 
         <input type="hidden" class="form-control" placeholder="" name='isRow' value={{$isRow}}>
 
-
+        @method('PUT')
         <label class="form-group"></label>
         <select class="form-control" name="distance">
             @foreach($rubric->rubricEntry as $entry)

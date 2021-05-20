@@ -26,7 +26,7 @@ class RubricControllerTest extends TestCase
                 'name' => 'TestName'
             ]
         );
-        $response->assertStatus(200);
+        $response->assertStatus(302);
     }
 
     public function testRubricUpdate()
@@ -43,7 +43,7 @@ class RubricControllerTest extends TestCase
                 'name' => 'TestName'
             ]
         );
-        $response = $this->post(
+        $response = $this->put(
             '/rubricUpdate',
             [
                 'id' => 1,
@@ -57,7 +57,7 @@ class RubricControllerTest extends TestCase
                 'name' => 'NewName',
             ]
         );
-        $response->assertStatus(200);
+        $response->assertStatus(302);
     }
 
     public function testRubricDestroy()

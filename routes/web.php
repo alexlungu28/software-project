@@ -39,7 +39,7 @@ Route::get('/viewRubrics', [RubricController::class, 'view'])->name('viewRubrics
 
 // Update
 Route::get('/rubricEdit', [RubricController::class, 'edit'])->name('rubricEdit');
-Route::post('/rubricUpdate', [RubricController::class, 'update']);
+Route::put('/rubricUpdate', [RubricController::class, 'update']);
 
 // Delete
 Route::get('/rubricDelete', [RubricController::class, 'delete'])->name('rubricDelete');
@@ -64,7 +64,7 @@ Route::get('/viewRubricTeacher/{id}', [RubricEntryController::class,'teacherView
 
 // Update
 Route::get('/rubricEntryEdit/{id}/{isRow}', [RubricEntryController::class, 'edit']);
-Route::post('/rubricEntryUpdate', [RubricEntryController::class, 'update']);
+Route::put('/rubricEntryUpdate', [RubricEntryController::class, 'update']);
 
 // Delete
 Route::delete('/rubricEntryDelete/{id}/{distance}/{isRow}', [RubricEntryController::class, 'destroy'])
