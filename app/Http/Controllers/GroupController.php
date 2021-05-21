@@ -85,6 +85,6 @@ class GroupController extends Controller
 
     public function view($editionId)
     {
-        //
+        return view('weeks', ['edition_id' => $editionId]);
     }
 }
