@@ -23,7 +23,7 @@ class ImportExportTest extends TestCase
 
         Excel::fake();
 
-        $response = $this->post(route('import'), [
+        $response = $this->post(route('import', [1]), [
             'fileToUpload' => $file
         ]);
 
