@@ -1,5 +1,4 @@
 /vendor
-/vendor/composer
 /node_modules
 /public/hot
 /public/storage
