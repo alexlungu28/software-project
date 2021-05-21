@@ -2,6 +2,8 @@
 
 namespace App\Exceptions;
 
+use Aacotroneo\Saml2\Saml2Auth;
+use Illuminate\Auth\AuthenticationException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Throwable;
 
@@ -37,5 +39,16 @@ class Handler extends ExceptionHandler
         $this->reportable(function (Throwable $e) {
             //
         });
+    }
+
+    protected function unauthenticated($request, AuthenticationException $exception)
+    {
+        if ($request->expectsJson()) {
+            return response()->json(['error' => 'Unauthenticated.'], 401);
+            // Or, return a response that causes client side js to redirect to '/routesPrefix/myIdp1/login'
+        }
+
+        $saml2Auth = new Saml2Auth(Saml2Auth::loadOneLoginAuthFromIpdConfig('eipdev'));
+        return $saml2Auth->login('/');
     }
 }

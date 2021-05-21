@@ -2,11 +2,11 @@
 
 namespace App\Models;
 
+use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notifiable;
 
-class User extends Model
+class User extends Authenticatable
 {
     use HasFactory, Notifiable;
 
@@ -59,6 +59,16 @@ class User extends Model
     public function groups()
     {
         return $this->belongsToMany(Group::class, 'group_user');
+    }
+
+    public function isStudent()
+    {
+        return $this->affiliation === 'student';
+    }
+
+    public function isEmployee()
+    {
+        return $this->affiliation === 'employee';
     }
 
     public function attendances()

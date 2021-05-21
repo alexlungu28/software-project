@@ -4,11 +4,10 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Notifications\Notifiable;
 
-class GroupUser extends Model
+class CourseEditionUser extends Model
 {
-    use HasFactory, Notifiable;
+    use HasFactory;
 
     /**
      * The attributes that are mass assignable.
@@ -16,9 +15,15 @@ class GroupUser extends Model
      * @var array
      */
     protected $fillable = [
-        'group_id',
         'user_id',
+        'course_edition_id',
+        'role'
     ];
 
-    protected $table = 'group_user';
+    protected $table = 'course_edition_user';
+
+    public function isHeadTA()
+    {
+        return $this->role === 'Head TA';
+    }
 }
