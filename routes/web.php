@@ -93,8 +93,9 @@ Route::post('/rubricDataStore/{id}', [RubricDataController::class, 'store']);
 |--------------------------------------------------------------------------
 */
 Route::get('/export', 'App\Http\Controllers\ImportController@export')->name('export');
-Route::get('/importExportView', 'App\Http\Controllers\ImportController@importExportView')->name('importExport');
-Route::post('/import', 'App\Http\Controllers\ImportController@import')->name('import');
+Route::get('/importExportView/{editionId}', 'App\Http\Controllers\ImportController@importExportView')
+    ->name('importExport');
+Route::post('/import/{edition_id}', 'App\Http\Controllers\ImportController@import')->name('import');
 
 
 

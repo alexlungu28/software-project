@@ -8,6 +8,13 @@ use Maatwebsite\Excel\Concerns\WithHeadingRow;
 
 class GroupsImport implements ToModel, WithHeadingRow
 {
+    private $editionId;
+
+    public function __construct(int $editionId)
+    {
+        $this->editionId = $editionId;
+    }
+
     /**
     * @param array $row
     *
@@ -31,6 +38,7 @@ class GroupsImport implements ToModel, WithHeadingRow
         if (!Group::where('group_name', '=', $groupName)->exists()) {
             return new Group([
                 'group_name'    => $groupName,
+                'course_edition_id' => $this->editionId,
             ]);
         } else {
             return null;
