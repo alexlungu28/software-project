@@ -17,6 +17,7 @@ class CreateCourseEditionsTable extends Migration
             $table->id();
             $table->foreignId('course_id')->references('id')->on('courses')->cascadeOnDelete();
             $table->integer('year');
+            $table->unique(['course_id', 'year']);
             $table->timestamps();
         });
     }
