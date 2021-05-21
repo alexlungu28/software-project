@@ -12,7 +12,7 @@
                         <table class="table table-hover">
                             <thead>
                             <tr>
-                                <th>Student Id</th>
+                                <th>Name</th>
                                 <th>Week</th>
                                 <th>Present</th>
                                 <th>Reason</th>
@@ -29,16 +29,33 @@
 
 
 
-                                    <form method="post" value = "<?php echo csrf_token(); ?>" action="{{action('App\Http\Controllers\AttendanceController@update',$at->id)}}">
+                                    <form id="attend" method="post" value = "<?php echo csrf_token(); ?>" action="{{action('App\Http\Controllers\AttendanceController@update',$at->id)}}">
                                         @csrf
-                                        <td> <textarea name="reason" >{{$at->reason}}</textarea> </td>
+                                        <td> <textarea form="attend" type="text" name="reason" class="form-control" >{{$at->reason}}</textarea> </td>
                                         <input type="hidden" name="_method" value="POST">
-                                        <td><button type="submit" name="update" class="btn btn-danger rounded-pill" value="0">Mark Absent</button>
-                                            <button type="submit" name="update" class="btn btn-info " value="1">Mark Present</button>
+                                        <td>
+                                            <button type="submit" name="update" class="btn btn-info " value="Present">Present</button>
+                                            <button type="submit" name="update" class="btn btn-warning rounded-pill" value="Late">Late</button>
+                                            <button type="submit" name="update" class="btn btn-danger rounded-pill" value="Absent">Absent</button>
                                         </td>
                                     </form>
+
+
+
+
                                 </tr>
                             @endforeach
+
+
+                            @if ($errors->any())
+                                <div class="alert alert-danger">
+                                    <ul>
+
+                                        <li>{{ $errors->first() }}</li>
+
+                                    </ul>
+                                </div>
+                            @endif
                             </tbody>
                         </table>
                     </div>

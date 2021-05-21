@@ -174,6 +174,6 @@ Route::resource('/attendance', 'App\Http\Controllers\AttendanceController');
 
 Route::post('/attendanceupdate/{id}', [AttendanceController::class, 'update'])->name('attendanceupdate');
 
-Route::get('/attendanceweek/{week}/{group}', [AttendanceController::class, 'week'])->name('attendanceweek');
+Route::get('/attend/{week}/{group}', [AttendanceController::class, 'week_group'])->name('attend');
 
 
