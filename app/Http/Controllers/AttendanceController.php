@@ -16,27 +16,27 @@ class AttendanceController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index($editionId)
     {
 
-//        $users = DB::select('select * from users');
-//        $attendances = [];
-//        foreach($users as $user) {
-//            if($user->affiliation == 'student') {
-//                $id = $user->id;
-//                $week = 1;
-//                if (Attendance::where('user_id', '=', $id)->where('week', '=', $week)->exists() == false) {
-//                    $present = 0;
-//                    $attendance = new Attendance;
-//                    $attendance->user_id = $id;
-//                    $attendance->week = $week;
-//                    $attendance->present = null;
-//                    $attendance->reason = "salut";
-//                    $attendance->save();
-//                    array_push($attendances, $attendance);
-//                }
-//            }
-//        }
+        $users = DB::select('select * from users');
+        $attendances = [];
+        foreach($users as $user) {
+            if($user->affiliation == 'student') {
+                $id = $user->id;
+                $week = 1;
+                if (Attendance::where('user_id', '=', $id)->where('week', '=', $week)->exists() == false) {
+                    $present = 0;
+                    $attendance = new Attendance;
+                    $attendance->user_id = $id;
+                    $attendance->week = $week;
+                    $attendance->present = null;
+                    $attendance->reason = "salut";
+                    $attendance->save();
+                    array_push($attendances, $attendance);
+                }
+            }
+        }
 ////            foreach ($attendances as $att) {
 ////                echo $att;
 ////                echo "\n";
@@ -44,7 +44,7 @@ class AttendanceController extends Controller
 
         $attendances = Attendance::all();
  //           return Attendance::where('user_id', $id)->where('week', $week)->get();
-      return view('attendance_submit')->with('attendances', $attendances);
+      return view('attendance_submit')->with('attendances', $attendances)->with('edition_id', $editionId);
 
             //return $attendance;
 

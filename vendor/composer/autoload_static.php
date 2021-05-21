@@ -4,7 +4,7 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInitb719e6a4b55f16cf73b9831aea3a1948
+class ComposerStaticInit997af4917fa3700ba6782c6df1e2aefd
 {
     public static $files = array (
         'ec07570ca5a812141189b1fa81503674' => __DIR__ . '/..' . '/phpunit/phpunit/src/Framework/Assert/Functions.php',
@@ -155,6 +155,7 @@ class ComposerStaticInitb719e6a4b55f16cf73b9831aea3a1948
         ),
         'R' => 
         array (
+            'RobRichards\\XMLSecLibs\\' => 23,
             'Ramsey\\Uuid\\' => 12,
             'Ramsey\\Collection\\' => 18,
         ),
@@ -176,6 +177,7 @@ class ComposerStaticInitb719e6a4b55f16cf73b9831aea3a1948
         'O' => 
         array (
             'Opis\\Closure\\' => 13,
+            'OneLogin\\' => 9,
         ),
         'N' => 
         array (
@@ -400,6 +402,10 @@ class ComposerStaticInitb719e6a4b55f16cf73b9831aea3a1948
         array (
             0 => __DIR__ . '/..' . '/symfony/config',
         ),
+        'RobRichards\\XMLSecLibs\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/robrichards/xmlseclibs/src',
+        ),
         'Ramsey\\Uuid\\' => 
         array (
             0 => __DIR__ . '/..' . '/ramsey/uuid/src',
@@ -460,6 +466,10 @@ class ComposerStaticInitb719e6a4b55f16cf73b9831aea3a1948
         'Opis\\Closure\\' => 
         array (
             0 => __DIR__ . '/..' . '/opis/closure/src',
+        ),
+        'OneLogin\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/onelogin/php-saml/src',
         ),
         'NunoMaduro\\Collision\\' => 
         array (
@@ -650,13 +660,31 @@ class ComposerStaticInitb719e6a4b55f16cf73b9831aea3a1948
                 0 => __DIR__ . '/..' . '/ezyang/htmlpurifier/library',
             ),
         ),
+        'A' => 
+        array (
+            'Aacotroneo\\Saml2\\' => 
+            array (
+                0 => __DIR__ . '/..' . '/aacotroneo/laravel-saml2/src',
+            ),
+        ),
     );
 
     public static $classMap = array (
+        'Aacotroneo\\Saml2\\Events\\Saml2Event' => __DIR__ . '/..' . '/aacotroneo/laravel-saml2/src/Aacotroneo/Saml2/Events/Saml2Event.php',
+        'Aacotroneo\\Saml2\\Events\\Saml2LoginEvent' => __DIR__ . '/..' . '/aacotroneo/laravel-saml2/src/Aacotroneo/Saml2/Events/Saml2LoginEvent.php',
+        'Aacotroneo\\Saml2\\Events\\Saml2LogoutEvent' => __DIR__ . '/..' . '/aacotroneo/laravel-saml2/src/Aacotroneo/Saml2/Events/Saml2LogoutEvent.php',
+        'Aacotroneo\\Saml2\\Http\\Controllers\\Saml2Controller' => __DIR__ . '/..' . '/aacotroneo/laravel-saml2/src/Aacotroneo/Saml2/Http/Controllers/Saml2Controller.php',
+        'Aacotroneo\\Saml2\\Saml2Auth' => __DIR__ . '/..' . '/aacotroneo/laravel-saml2/src/Aacotroneo/Saml2/Saml2Auth.php',
+        'Aacotroneo\\Saml2\\Saml2ServiceProvider' => __DIR__ . '/..' . '/aacotroneo/laravel-saml2/src/Aacotroneo/Saml2/Saml2ServiceProvider.php',
+        'Aacotroneo\\Saml2\\Saml2User' => __DIR__ . '/..' . '/aacotroneo/laravel-saml2/src/Aacotroneo/Saml2/Saml2User.php',
         'App\\Console\\Kernel' => __DIR__ . '/../..' . '/app/Console/Kernel.php',
         'App\\Exceptions\\Handler' => __DIR__ . '/../..' . '/app/Exceptions/Handler.php',
         'App\\Exports\\UsersExport' => __DIR__ . '/../..' . '/app/Exports/UsersExport.php',
+        'App\\Http\\Controllers\\AttendanceController' => __DIR__ . '/../..' . '/app/Http/Controllers/AttendanceController.php',
         'App\\Http\\Controllers\\Controller' => __DIR__ . '/../..' . '/app/Http/Controllers/Controller.php',
+        'App\\Http\\Controllers\\CourseController' => __DIR__ . '/../..' . '/app/Http/Controllers/CourseController.php',
+        'App\\Http\\Controllers\\CourseEditionController' => __DIR__ . '/../..' . '/app/Http/Controllers/CourseEditionController.php',
+        'App\\Http\\Controllers\\GroupController' => __DIR__ . '/../..' . '/app/Http/Controllers/GroupController.php',
         'App\\Http\\Controllers\\HomeController' => __DIR__ . '/../..' . '/app/Http/Controllers/HomeController.php',
         'App\\Http\\Controllers\\ImportController' => __DIR__ . '/../..' . '/app/Http/Controllers/ImportController.php',
         'App\\Http\\Controllers\\ProfileController' => __DIR__ . '/../..' . '/app/Http/Controllers/ProfileController.php',
@@ -666,9 +694,13 @@ class ComposerStaticInitb719e6a4b55f16cf73b9831aea3a1948
         'App\\Http\\Controllers\\UserController' => __DIR__ . '/../..' . '/app/Http/Controllers/UserController.php',
         'App\\Http\\Kernel' => __DIR__ . '/../..' . '/app/Http/Kernel.php',
         'App\\Http\\Middleware\\Authenticate' => __DIR__ . '/../..' . '/app/Http/Middleware/Authenticate.php',
+        'App\\Http\\Middleware\\Employee' => __DIR__ . '/../..' . '/app/Http/Middleware/Employee.php',
         'App\\Http\\Middleware\\EncryptCookies' => __DIR__ . '/../..' . '/app/Http/Middleware/EncryptCookies.php',
+        'App\\Http\\Middleware\\LoggedIn' => __DIR__ . '/../..' . '/app/Http/Middleware/LoggedIn.php',
         'App\\Http\\Middleware\\PreventRequestsDuringMaintenance' => __DIR__ . '/../..' . '/app/Http/Middleware/PreventRequestsDuringMaintenance.php',
         'App\\Http\\Middleware\\RedirectIfAuthenticated' => __DIR__ . '/../..' . '/app/Http/Middleware/RedirectIfAuthenticated.php',
+        'App\\Http\\Middleware\\Role' => __DIR__ . '/../..' . '/app/Http/Middleware/Role.php',
+        'App\\Http\\Middleware\\Student' => __DIR__ . '/../..' . '/app/Http/Middleware/Student.php',
         'App\\Http\\Middleware\\TrimStrings' => __DIR__ . '/../..' . '/app/Http/Middleware/TrimStrings.php',
         'App\\Http\\Middleware\\TrustHosts' => __DIR__ . '/../..' . '/app/Http/Middleware/TrustHosts.php',
         'App\\Http\\Middleware\\TrustProxies' => __DIR__ . '/../..' . '/app/Http/Middleware/TrustProxies.php',
@@ -676,9 +708,11 @@ class ComposerStaticInitb719e6a4b55f16cf73b9831aea3a1948
         'App\\Imports\\GroupUserImport' => __DIR__ . '/../..' . '/app/Imports/GroupUserImport.php',
         'App\\Imports\\GroupsImport' => __DIR__ . '/../..' . '/app/Imports/GroupsImport.php',
         'App\\Imports\\UsersImport' => __DIR__ . '/../..' . '/app/Imports/UsersImport.php',
+        'App\\Listeners\\SamlLoginListener' => __DIR__ . '/../..' . '/app/Listeners/SamlLoginListener.php',
         'App\\Models\\Attendance' => __DIR__ . '/../..' . '/app/Models/Attendance.php',
         'App\\Models\\Course' => __DIR__ . '/../..' . '/app/Models/Course.php',
         'App\\Models\\CourseEdition' => __DIR__ . '/../..' . '/app/Models/CourseEdition.php',
+        'App\\Models\\CourseEditionUser' => __DIR__ . '/../..' . '/app/Models/CourseEditionUser.php',
         'App\\Models\\Group' => __DIR__ . '/../..' . '/app/Models/Group.php',
         'App\\Models\\GroupUser' => __DIR__ . '/../..' . '/app/Models/GroupUser.php',
         'App\\Models\\Intervention' => __DIR__ . '/../..' . '/app/Models/Intervention.php',
@@ -2102,6 +2136,7 @@ class ComposerStaticInitb719e6a4b55f16cf73b9831aea3a1948
         'Illuminate\\Console\\Events\\ArtisanStarting' => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/Console/Events/ArtisanStarting.php',
         'Illuminate\\Console\\Events\\CommandFinished' => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/Console/Events/CommandFinished.php',
         'Illuminate\\Console\\Events\\CommandStarting' => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/Console/Events/CommandStarting.php',
+        'Illuminate\\Console\\Events\\ScheduledBackgroundTaskFinished' => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/Console/Events/ScheduledBackgroundTaskFinished.php',
         'Illuminate\\Console\\Events\\ScheduledTaskFailed' => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/Console/Events/ScheduledTaskFailed.php',
         'Illuminate\\Console\\Events\\ScheduledTaskFinished' => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/Console/Events/ScheduledTaskFinished.php',
         'Illuminate\\Console\\Events\\ScheduledTaskSkipped' => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/Console/Events/ScheduledTaskSkipped.php',
@@ -2169,6 +2204,7 @@ class ComposerStaticInitb719e6a4b55f16cf73b9831aea3a1948
         'Illuminate\\Contracts\\Database\\Eloquent\\CastsInboundAttributes' => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/Contracts/Database/Eloquent/CastsInboundAttributes.php',
         'Illuminate\\Contracts\\Database\\Eloquent\\DeviatesCastableAttributes' => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/Contracts/Database/Eloquent/DeviatesCastableAttributes.php',
         'Illuminate\\Contracts\\Database\\Eloquent\\SerializesCastableAttributes' => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/Contracts/Database/Eloquent/SerializesCastableAttributes.php',
+        'Illuminate\\Contracts\\Database\\Eloquent\\SupportsPartialRelations' => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/Contracts/Database/Eloquent/SupportsPartialRelations.php',
         'Illuminate\\Contracts\\Database\\Events\\MigrationEvent' => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/Contracts/Database/Events/MigrationEvent.php',
         'Illuminate\\Contracts\\Database\\ModelIdentifier' => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/Contracts/Database/ModelIdentifier.php',
         'Illuminate\\Contracts\\Debug\\ExceptionHandler' => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/Contracts/Debug/ExceptionHandler.php',
@@ -2323,6 +2359,7 @@ class ComposerStaticInitb719e6a4b55f16cf73b9831aea3a1948
         'Illuminate\\Database\\Eloquent\\Relations\\BelongsTo' => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/Database/Eloquent/Relations/BelongsTo.php',
         'Illuminate\\Database\\Eloquent\\Relations\\BelongsToMany' => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/Database/Eloquent/Relations/BelongsToMany.php',
         'Illuminate\\Database\\Eloquent\\Relations\\Concerns\\AsPivot' => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/Database/Eloquent/Relations/Concerns/AsPivot.php',
+        'Illuminate\\Database\\Eloquent\\Relations\\Concerns\\CanBeOneOfMany' => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/Database/Eloquent/Relations/Concerns/CanBeOneOfMany.php',
         'Illuminate\\Database\\Eloquent\\Relations\\Concerns\\ComparesRelatedModels' => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/Database/Eloquent/Relations/Concerns/ComparesRelatedModels.php',
         'Illuminate\\Database\\Eloquent\\Relations\\Concerns\\InteractsWithDictionary' => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/Database/Eloquent/Relations/Concerns/InteractsWithDictionary.php',
         'Illuminate\\Database\\Eloquent\\Relations\\Concerns\\InteractsWithPivotTable' => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/Database/Eloquent/Relations/Concerns/InteractsWithPivotTable.php',
@@ -3644,6 +3681,18 @@ class ComposerStaticInitb719e6a4b55f16cf73b9831aea3a1948
         'NunoMaduro\\Collision\\Provider' => __DIR__ . '/..' . '/nunomaduro/collision/src/Provider.php',
         'NunoMaduro\\Collision\\SolutionsRepositories\\NullSolutionsRepository' => __DIR__ . '/..' . '/nunomaduro/collision/src/SolutionsRepositories/NullSolutionsRepository.php',
         'NunoMaduro\\Collision\\Writer' => __DIR__ . '/..' . '/nunomaduro/collision/src/Writer.php',
+        'OneLogin\\Saml2\\Auth' => __DIR__ . '/..' . '/onelogin/php-saml/src/Saml2/Auth.php',
+        'OneLogin\\Saml2\\AuthnRequest' => __DIR__ . '/..' . '/onelogin/php-saml/src/Saml2/AuthnRequest.php',
+        'OneLogin\\Saml2\\Constants' => __DIR__ . '/..' . '/onelogin/php-saml/src/Saml2/Constants.php',
+        'OneLogin\\Saml2\\Error' => __DIR__ . '/..' . '/onelogin/php-saml/src/Saml2/Error.php',
+        'OneLogin\\Saml2\\IdPMetadataParser' => __DIR__ . '/..' . '/onelogin/php-saml/src/Saml2/IdPMetadataParser.php',
+        'OneLogin\\Saml2\\LogoutRequest' => __DIR__ . '/..' . '/onelogin/php-saml/src/Saml2/LogoutRequest.php',
+        'OneLogin\\Saml2\\LogoutResponse' => __DIR__ . '/..' . '/onelogin/php-saml/src/Saml2/LogoutResponse.php',
+        'OneLogin\\Saml2\\Metadata' => __DIR__ . '/..' . '/onelogin/php-saml/src/Saml2/Metadata.php',
+        'OneLogin\\Saml2\\Response' => __DIR__ . '/..' . '/onelogin/php-saml/src/Saml2/Response.php',
+        'OneLogin\\Saml2\\Settings' => __DIR__ . '/..' . '/onelogin/php-saml/src/Saml2/Settings.php',
+        'OneLogin\\Saml2\\Utils' => __DIR__ . '/..' . '/onelogin/php-saml/src/Saml2/Utils.php',
+        'OneLogin\\Saml2\\ValidationError' => __DIR__ . '/..' . '/onelogin/php-saml/src/Saml2/ValidationError.php',
         'Opis\\Closure\\Analyzer' => __DIR__ . '/..' . '/opis/closure/src/Analyzer.php',
         'Opis\\Closure\\ClosureContext' => __DIR__ . '/..' . '/opis/closure/src/ClosureContext.php',
         'Opis\\Closure\\ClosureScope' => __DIR__ . '/..' . '/opis/closure/src/ClosureScope.php',
@@ -5352,6 +5401,10 @@ class ComposerStaticInitb719e6a4b55f16cf73b9831aea3a1948
         'Ramsey\\Uuid\\UuidInterface' => __DIR__ . '/..' . '/ramsey/uuid/src/UuidInterface.php',
         'Ramsey\\Uuid\\Validator\\GenericValidator' => __DIR__ . '/..' . '/ramsey/uuid/src/Validator/GenericValidator.php',
         'Ramsey\\Uuid\\Validator\\ValidatorInterface' => __DIR__ . '/..' . '/ramsey/uuid/src/Validator/ValidatorInterface.php',
+        'RobRichards\\XMLSecLibs\\Utils\\XPath' => __DIR__ . '/..' . '/robrichards/xmlseclibs/src/Utils/XPath.php',
+        'RobRichards\\XMLSecLibs\\XMLSecEnc' => __DIR__ . '/..' . '/robrichards/xmlseclibs/src/XMLSecEnc.php',
+        'RobRichards\\XMLSecLibs\\XMLSecurityDSig' => __DIR__ . '/..' . '/robrichards/xmlseclibs/src/XMLSecurityDSig.php',
+        'RobRichards\\XMLSecLibs\\XMLSecurityKey' => __DIR__ . '/..' . '/robrichards/xmlseclibs/src/XMLSecurityKey.php',
         'SebastianBergmann\\CliParser\\AmbiguousOptionException' => __DIR__ . '/..' . '/sebastian/cli-parser/src/exceptions/AmbiguousOptionException.php',
         'SebastianBergmann\\CliParser\\Exception' => __DIR__ . '/..' . '/sebastian/cli-parser/src/exceptions/Exception.php',
         'SebastianBergmann\\CliParser\\OptionDoesNotAllowArgumentException' => __DIR__ . '/..' . '/sebastian/cli-parser/src/exceptions/OptionDoesNotAllowArgumentException.php',
@@ -6529,8 +6582,13 @@ class ComposerStaticInitb719e6a4b55f16cf73b9831aea3a1948
         'Symfony\\Polyfill\\Php80\\Php80' => __DIR__ . '/..' . '/symfony/polyfill-php80/Php80.php',
         'Tests\\CreatesApplication' => __DIR__ . '/../..' . '/tests/CreatesApplication.php',
         'Tests\\Feature\\ImportExportTest' => __DIR__ . '/../..' . '/tests/Feature/ImportExportTest.php',
+        'Tests\\Feature\\RubricEntryTest' => __DIR__ . '/../..' . '/tests/Feature/RubricEntryTest.php',
+        'Tests\\Feature\\RubricTest' => __DIR__ . '/../..' . '/tests/Feature/RubricTest.php',
         'Tests\\TestCase' => __DIR__ . '/../..' . '/tests/TestCase.php',
         'Tests\\Unit\\ExampleTest' => __DIR__ . '/../..' . '/tests/Unit/ExampleTest.php',
+        'Tests\\Unit\\RubricControllerTest' => __DIR__ . '/../..' . '/tests/Unit/RubricControllerTest.php',
+        'Tests\\Unit\\RubricDataControllerTest' => __DIR__ . '/../..' . '/tests/Unit/RubricDataControllerTest.php',
+        'Tests\\Unit\\RubricEntryControllerTest' => __DIR__ . '/../..' . '/tests/Unit/RubricEntryControllerTest.php',
         'TheSeer\\Tokenizer\\Exception' => __DIR__ . '/..' . '/theseer/tokenizer/src/Exception.php',
         'TheSeer\\Tokenizer\\NamespaceUri' => __DIR__ . '/..' . '/theseer/tokenizer/src/NamespaceUri.php',
         'TheSeer\\Tokenizer\\NamespaceUriException' => __DIR__ . '/..' . '/theseer/tokenizer/src/NamespaceUriException.php',
@@ -6670,10 +6728,10 @@ class ComposerStaticInitb719e6a4b55f16cf73b9831aea3a1948
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInitb719e6a4b55f16cf73b9831aea3a1948::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInitb719e6a4b55f16cf73b9831aea3a1948::$prefixDirsPsr4;
-            $loader->prefixesPsr0 = ComposerStaticInitb719e6a4b55f16cf73b9831aea3a1948::$prefixesPsr0;
-            $loader->classMap = ComposerStaticInitb719e6a4b55f16cf73b9831aea3a1948::$classMap;
+            $loader->prefixLengthsPsr4 = ComposerStaticInit997af4917fa3700ba6782c6df1e2aefd::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInit997af4917fa3700ba6782c6df1e2aefd::$prefixDirsPsr4;
+            $loader->prefixesPsr0 = ComposerStaticInit997af4917fa3700ba6782c6df1e2aefd::$prefixesPsr0;
+            $loader->classMap = ComposerStaticInit997af4917fa3700ba6782c6df1e2aefd::$classMap;
 
         }, null, ClassLoader::class);
     }
