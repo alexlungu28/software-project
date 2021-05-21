@@ -83,8 +83,15 @@ class GroupController extends Controller
         //
     }
 
-    public function view($editionId)
+    public function view($id)
     {
-        return view('weeks', ['edition_id' => $editionId]);
+        $editionId = DB::table('groups')->select('course_edition_id')
+            ->where('id', '=', $id)->get()->first()->course_edition_id;
+        return view('weeks', ['edition_id' => $editionId, 'group_id' => $id]);
+    }
+
+    public function viewWeek($id, $editionId)
+    {
+        //return view('week', ['group_id' => $id, 'edition_id' => $editionId]);
     }
 }
