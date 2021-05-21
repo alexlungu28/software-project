@@ -93,8 +93,9 @@ Route::post('/rubricDataStore/{id}', [RubricDataController::class, 'store']);
 |--------------------------------------------------------------------------
 */
 Route::get('/export', 'App\Http\Controllers\ImportController@export')->name('export');
-Route::get('/importExportView', 'App\Http\Controllers\ImportController@importExportView')->name('importExport');
-Route::post('/import', 'App\Http\Controllers\ImportController@import')->name('import');
+Route::get('/importExportView/{editionId}', 'App\Http\Controllers\ImportController@importExportView')
+    ->name('importExport');
+Route::post('/import/{edition_id}', 'App\Http\Controllers\ImportController@import')->name('import');
 
 
 
@@ -212,4 +213,6 @@ Route::get('/edition/{edition_id}', [CourseEditionController::class, 'view'])
     ->name('groups')->middleware('role');
 
 //Gives a visual presentation of the group
-Route::get('/group/{id}', [GroupController::class,'view'])->name('group');
+Route::get('/group/{id}', [GroupController::class, 'view'])->name('group');
+
+Route::get('/group/{id}/week/{week_id}', [GroupController::class, 'viewWeek'])->name('week');
