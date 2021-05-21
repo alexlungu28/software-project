@@ -19,11 +19,6 @@ class RubricController extends Controller
         //
     }
 
-    public function getAllRubric()
-    {
-        return Rubric::all();
-    }
-
     /**
      * Show the form for creating a new resource.
      *
@@ -43,10 +38,10 @@ class RubricController extends Controller
     public function store(Request $request)
     {
         $name = $request->input('name');
-        $data=array('name'=>$name,'created_at' =>now(), 'updated_at' => now());
+        $courseEdition = '1';
+        $data=array('name'=>$name,'course_edition_id' => $courseEdition,'created_at' =>now(), 'updated_at' => now());
         DB::table('rubrics')->insert($data);
-        echo "Record inserted successfully.<br/>";
-        echo '<a href = "/rubricCreate">Click Here</a> to go back.';
+        return redirect('/rubricCreate');
     }
 
     /**
@@ -67,7 +62,7 @@ class RubricController extends Controller
      */
     public function edit()
     {
-        return view('rubric_edit', ['rubrics' => (new RubricController)->getAllRubric()]);
+        return view('rubric_edit', ['rubrics' => Rubric::all()]);
     }
 
     /**
@@ -84,8 +79,7 @@ class RubricController extends Controller
         $rubric->name = $name;
         $rubric->save();
 
-        echo "Record updated successfully.<br/>";
-        echo '<a href = "/rubricEdit">Click Here</a> to go back.';
+        return redirect('/rubricEdit');
     }
 
     public function delete()
@@ -109,12 +103,12 @@ class RubricController extends Controller
         echo '<a href = "/viewRubrics">Click Here</a> to go back.';
     }
 
-    public function view()
+    public function view($editionId)
     {
-        $rubrics = Rubric::all();
-//        ddd($rubrics);
+        $rubrics = Rubric::all()->where('course_edition_id', '=', $editionId);
         return view('allrubrics', [
             "rubrics" => $rubrics,
+            "edition_id" => $editionId,
         ]);
     }
 }

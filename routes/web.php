@@ -28,95 +28,60 @@ Route::get('/', [CourseController::class, 'view'])->name('courses')->middleware(
 | Rubric Routes
 |--------------------------------------------------------------------------
 */
-
-Route::get('/rubricData/{id}', function ($id) {
-    $rubric = Rubric::find($id);
-
-    foreach ($rubric->rubricData as $entryData) {
-        echo $entryData->note.'<br>';
-    }
-});
-
-Route::get('/rubricEntry/{id}/{isRow}', function ($id, $isRow) {
-
-    $rubric = Rubric::find($id);
-
-    foreach ($rubric->rubricEntry as $entry) {
-        if ($entry->is_row == $isRow) {
-            echo $entry->description.'<br>';
-        }
-    }
-});
-
-Route::get('/rubricName/{id}', function ($id) {
-    return Rubric::find($id)->name;
-});
-
-/*
-|--------------------------------------------------------------------------
-| Create Rubric Routes
-|--------------------------------------------------------------------------
-*/
+// Create
 //shows the form to create a rubric
 Route::get('/rubricCreate', [RubricController::class, 'create'])
     ->name('rubricCreate')->middleware(['loggedIn', 'employee']);
 //post route for the Store method in the controller
 Route::post('/rubricStore', [RubricController::class, 'store'])->middleware(['loggedIn', 'employee']);
 
-/*
-|--------------------------------------------------------------------------
-| Delete Rubric Routes
-|--------------------------------------------------------------------------
-*/
+// Read
+//Shows all available rubrics
+Route::get('/viewRubrics/{editionId}', [RubricController::class, 'view'])->name('viewRubrics');
+
+// Update
+Route::get('/rubricEdit', [RubricController::class, 'edit'])
+    ->name('rubricEdit')->middleware(['loggedIn', 'employee']);
+Route::put('/rubricUpdate', [RubricController::class, 'update'])->middleware(['loggedIn', 'employee']);
+
+// Delete
 Route::get('/rubricDelete', [RubricController::class, 'delete'])
-    ->name('rubricDelete')->middleware(['loggedIn', 'employee']);
-Route::post('/rubricDestroy', [RubricController::class, 'destroy'])->middleware(['loggedIn', 'employee']);
-/*
-|--------------------------------------------------------------------------
-| Update Rubric Routes
-|--------------------------------------------------------------------------
-*/
-Route::get('/rubricEdit', [RubricController::class, 'edit'])->name('rubricEdit')->middleware(['loggedIn', 'employee']);
-Route::post('/rubricUpdate', [RubricController::class, 'update'])->middleware(['loggedIn', 'employee']);
-/*
-|--------------------------------------------------------------------------
-| Create RubricEntryController Routes
-|--------------------------------------------------------------------------
-*/
-//shows the form to create a rubric
-Route::get('/rubricEntryCreate', [RubricEntryController::class, 'create'])->middleware(['loggedIn', 'employee']);
-//post route for the Store method in the controller
-Route::post('/rubricEntryStore', [RubricEntryController::class, 'store'])->middleware(['loggedIn', 'employee']);
-/*
-|--------------------------------------------------------------------------
-| Delete RubricEntry Routes
-|--------------------------------------------------------------------------
-*/
-Route::get('/rubricEntryDelete/{id}/{distance}/{isRow}', [RubricEntryController::class, 'destroy'])
-    ->middleware(['loggedIn', 'employee']);
+    ->name('rubricDelete')->middleware(['loggedIn', 'employee']);;
+Route::delete('/rubricDestroy', [RubricController::class, 'destroy'])
+    ->name('rubricDestroy')->middleware(['loggedIn', 'employee']);;
 
 /*
 |--------------------------------------------------------------------------
-| Update RubricEntry Routes
+| RubricEntryController Routes
 |--------------------------------------------------------------------------
 */
+// Create
+//shows the form to create a rubric
+Route::get('/rubricEntryCreate', [RubricEntryController::class, 'create'])
+    ->name('rubricEntryCreate')->middleware(['loggedIn', 'employee']);
+//post route for the Store method in the controller
+Route::post('/rubricEntryStore', [RubricEntryController::class, 'store'])
+    ->middleware(['loggedIn', 'employee']);
+
+// Read
+//Gives a visual presentation of the rubric
+Route::get('/viewRubricTA/{id}/{editionId}', [RubricEntryController::class,'view'])->name('rubric');
+//Gives a visual presentation of the teacherView of the rubric
+Route::get('/viewRubricTeacher/{id}/{editionId}', [RubricEntryController::class,'teacherView'])->name('teacherRubric');
+
+// Update
 Route::get('/rubricEntryEdit/{id}/{isRow}', [RubricEntryController::class, 'edit'])
     ->middleware(['loggedIn', 'employee']);
-Route::post('/rubricEntryUpdate', [RubricEntryController::class, 'update'])->middleware(['loggedIn', 'employee']);
-/*
-|--------------------------------------------------------------------------
-| Show RubricEntryController Routes
-|--------------------------------------------------------------------------
-*/
-//Shows all available rubrics
-Route::get('/viewRubrics', [RubricController::class, 'view']);
+Route::put('/rubricEntryUpdate', [RubricEntryController::class, 'update'])
+    ->middleware(['loggedIn', 'employee']);
 
-//Gives a visual presentation of the rubric
-Route::get('/viewRubric/{id}', [RubricEntryController::class,'view'])->name('rubric');
+// Delete
+Route::delete('/rubricEntryDelete/{id}/{distance}/{isRow}', [RubricEntryController::class, 'destroy'])
+    ->name('rubricEntryDelete')->middleware(['loggedIn', 'employee']);
 
 /*
 |--------------------------------------------------------------------------
-| Save RubricDataController Routes
+| RubricDataController Routes
 |--------------------------------------------------------------------------
 */
 //Saves data in the database
@@ -162,7 +127,6 @@ Route::get('rtl-support', function () {
 Route::get('upgrade', function () {
     return view('pages.upgrade');
 })->name('upgrade');
-
 
 Route::group(['middleware' => 'auth'], function () {
     Route::resource('user', 'App\Http\Controllers\UserController', ['except' => ['show']]);
