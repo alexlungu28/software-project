@@ -103,11 +103,12 @@ class RubricController extends Controller
         echo '<a href = "/viewRubrics">Click Here</a> to go back.';
     }
 
-    public function view()
+    public function view($editionId)
     {
-        $rubrics = Rubric::all();
+        $rubrics = Rubric::all()->where('course_edition_id', '=', $editionId);
         return view('allrubrics', [
             "rubrics" => $rubrics,
+            "edition_id" => $editionId,
         ]);
     }
 }

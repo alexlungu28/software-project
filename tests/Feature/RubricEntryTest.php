@@ -2,6 +2,8 @@
 
 namespace Tests\Feature;
 
+use App\Models\Course;
+use App\Models\CourseEdition;
 use App\Models\Rubric;
 use App\Models\RubricEntry;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -50,7 +52,7 @@ class RubricEntryTest extends TestCase
     public function testRubricView()
     {
         $this->before();
-        $response = $this->get('/viewRubricTA/1')
+        $response = $this->get('/viewRubricTA/1/1')
             ->assertSee('TestName')
             ->assertSee('Column 1');
         $response->assertStatus(200);

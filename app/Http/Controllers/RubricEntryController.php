@@ -139,7 +139,7 @@ class RubricEntryController extends Controller
         redirect('rubricViewTeacher/'.$id);
     }
 
-    public function teacherview($id)
+    public function teacherview($id, $editionId)
     {
 
         $rubric = Rubric::find($id);
@@ -149,10 +149,11 @@ class RubricEntryController extends Controller
         return view('pages.rubricViewTeacher', ['rubric' => $rubric,
             'rubricColumnEntries' => $rubricColumnEntries,
             'rubricRowEntries' => $rubricRowEntries,
-            'rubricData' => $rubricData]);
+            'rubricData' => $rubricData,
+            'edition_id' => $editionId]);
     }
 
-    public function view($id)
+    public function view($id, $editionId)
     {
         $rubric = Rubric::find($id);
         $rubricColumnEntries = $rubric->rubricEntry->where('is_row', '=', '0')->sortBy('distance');
@@ -161,6 +162,7 @@ class RubricEntryController extends Controller
         return view('pages.rubricViewTA', ['rubric' => $rubric,
             'rubricColumnEntries' => $rubricColumnEntries,
             'rubricRowEntries' => $rubricRowEntries,
-            'rubricData' => $rubricData]);
+            'rubricData' => $rubricData,
+            'edition_id' => $editionId]);
     }
 }

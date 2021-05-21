@@ -38,7 +38,7 @@ class RubricTest extends TestCase
                 'course_edition_id' => 1,
             ]
         );
-        $response = $this->get('viewRubrics')->assertSee('TestName');
+        $response = $this->get('viewRubrics/1')->assertSee('TestName');
         $response->assertStatus(200);
     }
 }
