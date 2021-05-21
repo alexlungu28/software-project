@@ -19,7 +19,7 @@ class CreateRubricDataTable extends Migration
             $table->integer('row_number')->unsigned();
             $table->integer('value');
             $table->text('note')->nullable();
-//            $table->integer('user_id'); - To keep track of the latest person that edited this row
+            //$table->foreignId('user_id')->references('id')->on('users');
             //$table->integer('weight'); - for automatic grading indication
             $table->unique(array('rubric_id', 'row_number'));
             $table->timestamps();
