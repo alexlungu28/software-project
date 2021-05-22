@@ -218,9 +218,9 @@ Route::get('/group/{id}', [GroupController::class, 'view'])->name('group');
 
 
 
-Route::resource('/attendance/{edition_id}', 'App\Http\Controllers\AttendanceController')->middleware(['loggedIn', 'employee']);;
+//Route::resource('/attendance/{edition_id}', 'App\Http\Controllers\AttendanceController')->middleware(['loggedIn', 'employee']);;
 
-Route::post('/attendance/{edition_id}', [AttendanceController::class, 'index'])->name('attendance')->middleware(['loggedIn', 'employee']);
+Route::get('/attendance/{edition_id}', [AttendanceController::class, 'index'])->name('attendance')->middleware(['loggedIn', 'employee']);
 
 
 //Route::get('/attendance/{id}/{week}/{present}', [AttendanceController::class, 'create']);
