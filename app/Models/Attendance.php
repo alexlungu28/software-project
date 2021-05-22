@@ -10,10 +10,8 @@ class Attendance extends Model
     use HasFactory;
     protected $fillable = ['user_id', 'week', 'present','reason'];
 
-    public function user() {
+    public function user()
+    {
         return $this->belongsToMany(User::class);
     }
-
-
-
 }

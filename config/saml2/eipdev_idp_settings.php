@@ -33,12 +33,12 @@ return $settings = array(
 
         // Usually x509cert and privateKey of the SP are provided by files placed at
         // the certs folder. But we can also provide them with the following parameters
-        'x509cert' => env('SAML2_'.$this_idp_env_id.'_SP_x509',''),
-        'privateKey' => env('SAML2_'.$this_idp_env_id.'_SP_PRIVATEKEY',''),
+        'x509cert' => env('SAML2_'.$this_idp_env_id.'_SP_x509', ''),
+        'privateKey' => env('SAML2_'.$this_idp_env_id.'_SP_PRIVATEKEY', ''),
 
         // Identifier (URI) of the SP entity.
         // Leave blank to use the '{idpName}_metadata' route, e.g. 'test_metadata'.
-        'entityId' => env('SAML2_'.$this_idp_env_id.'_SP_ENTITYID',''),
+        'entityId' => env('SAML2_'.$this_idp_env_id.'_SP_ENTITYID', ''),
 
         // Specifies info about where and how the <AuthnResponse> message MUST be
         // returned to the requester, in this case our SP.
