@@ -13,7 +13,7 @@ class Group extends Model
         'group_name',
         'content',
         'grade',
-        'edition_id',
+        'course_edition_id',
     ];
 
     public function interventions()
