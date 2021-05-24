@@ -135,7 +135,7 @@ class AttendanceController extends Controller
     }
 
     // Controller for route with weeks and groups.
-    public function weekGroup($week, $group)
+    public function weekGroup($editionId, $group, $week)
     {
         $usersgroup = GroupUser::all()->where('group_id', '=', $group);
 
@@ -171,6 +171,6 @@ class AttendanceController extends Controller
             }//end if
         }//end foreach
 
-        return view('attendance_submit')->with('attendances', $attendances);
+        return view('attendance_submit')->with('attendances', $attendances)->with('edition_id', $editionId);
     }//end week_group()
 }//end class

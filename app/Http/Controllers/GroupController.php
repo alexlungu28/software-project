@@ -90,8 +90,8 @@ class GroupController extends Controller
         return view('weeks', ['edition_id' => $editionId, 'group_id' => $id]);
     }
 
-    public function viewWeek($id, $editionId)
+    public function viewWeek($editionId, $id, $week)
     {
-        //return view('week', ['group_id' => $id, 'edition_id' => $editionId]);
+        return view('week', ['edition_id' => $editionId, 'group_id' => $id, 'week' => $week]);
     }
 }
