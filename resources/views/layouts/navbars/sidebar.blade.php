@@ -59,7 +59,12 @@
                 <p>{{ __('Groups') }}</p>
             </a>
         </li>
-
+        <li class="nav-item{{ $activePage == 'attendance' ? ' active' : '' }}">
+            <a class="nav-link" href="{{ route('attendance', [$edition_id]) }}">
+                <i class="material-icons">Attendance</i>
+                <p>{{ __('Attendance') }}</p>
+            </a>
+        </li>
 
         <li class="nav-item{{ $activePage == 'import' ? ' active' : '' }}">
             <a class="nav-link" href="{{ route('importExport', [$edition_id]) }}">

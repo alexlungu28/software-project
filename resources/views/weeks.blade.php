@@ -8,7 +8,7 @@
                     <div class="col-lg-3 col-md-6 col-sm-6">
                         <div class="card card-stats" style="width: 120px;">
                             <div class="card-icon">
-                                <a class="nav-link" href="{{ route('week', [$edition_id, $group_id, $week]) }}">
+                                <a class="nav-link" href="{{ route('week', [$group_id, $week]) }}">
                                     <p>Week {{ $week }}</p>
                                 </a>
                             </div>
