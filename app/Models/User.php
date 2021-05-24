@@ -24,6 +24,9 @@ class User extends Authenticatable
         'affiliation',
     ];
 
+    protected $table = 'users';
+    public $timestamps = false;
+
     /**
      * The attributes that should be hidden for arrays.
      *
@@ -66,5 +69,10 @@ class User extends Authenticatable
     public function isEmployee()
     {
         return $this->affiliation === 'employee';
+    }
+
+    public function attendances()
+    {
+        return $this->belongsToMany(Attendance::class, 'attendance');
     }
 }
