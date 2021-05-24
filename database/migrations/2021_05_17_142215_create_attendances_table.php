@@ -17,8 +17,8 @@ class CreateAttendancesTable extends Migration
             $table->id();
             $table->foreignId('user_id')->references('id')->on('users')->cascadeOnDelete();
             $table->integer('week');
-            $table->string("present");
-            $table->string("reason");
+            $table->string("present")->nullable();
+            $table->string("reason")->nullable();
             $table->timestamps();
         });
     }
