@@ -227,7 +227,7 @@ Route::get('/attendance/{edition_id}', [AttendanceController::class, 'index'])->
 
 Route::post('/attendanceupdate/{id}', [AttendanceController::class, 'update'])->name('attendanceupdate')->middleware(['loggedIn', 'employee']);
 
-Route::get('/attend/{week}/{group}', [AttendanceController::class, 'weekGroup'])->name('attend')->middleware(['loggedIn', 'employee']);
+Route::get('/attend/{group}/{week}', [AttendanceController::class, 'weekGroup'])->name('attend')->middleware(['loggedIn', 'employee']);
 
 
 
