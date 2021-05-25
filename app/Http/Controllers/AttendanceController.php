@@ -3,14 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\GroupUser;
-use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Response;
-use Illuminate\Support\Facades\DB;
+use DB;
 use App\Models\User;
 use App\Models\Attendance;
-use Illuminate\Contracts\Foundation\Application;
-use Illuminate\Contracts\View\Factory;
-use Illuminate\Contracts\View\View;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 
 class AttendanceController extends Controller
@@ -20,7 +16,7 @@ class AttendanceController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return Application|Factory|View
+     * @return \Illuminate\Http\Response
      */
     public function index($editionId)
     {
@@ -51,14 +47,14 @@ class AttendanceController extends Controller
         // return Attendance::where('user_id', $id)->where('week', $week)->get();
         return view('attendance_submit')->with('attendances', $attendances)->with('edition_id', $editionId);
 
-            // return $attendance;
+        // return $attendance;
     }//end index()
 
 
     /**
      * Show the form for creating a new resource.
      *
-     * @return void
+     * @return \Illuminate\Http\Response
      */
     public function create($userId, $week)
     {
@@ -68,8 +64,8 @@ class AttendanceController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param Request $request
-     * @return void
+     * @param  \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
     {
@@ -79,8 +75,8 @@ class AttendanceController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param Attendance $attendance
-     * @return void
+     * @param  \App\Models\Attendance $attendance
+     * @return \Illuminate\Http\Response
      */
     public function show(Attendance $attendance)
     {
@@ -90,8 +86,8 @@ class AttendanceController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param Attendance $attendance
-     * @return void
+     * @param  \App\Models\Attendance $attendance
+     * @return \Illuminate\Http\Response
      */
     public function edit(Attendance $attendance)
     {
@@ -101,11 +97,11 @@ class AttendanceController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param Request $request
-     * @param $id
-     * @return RedirectResponse
+     * @param  \Illuminate\Http\Request $request
+     * @param  \App\Models\Attendance   $attendance
+     * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id): RedirectResponse
+    public function update(Request $request, $id)
     {
         $attendance          = Attendance::find($id);
         $attendance->present = $request->get('update');
@@ -130,28 +126,30 @@ class AttendanceController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param Attendance $attendance
-     * @return void
+     * @param  \App\Models\Attendance $attendance
+     * @return \Illuminate\Http\Response
      */
     public function destroy(Attendance $attendance)
     {
         //
     }
-/**
+
+    /**
      * Controller for route with weeks and groups.
      *
      * @param $week
      * @param $group
      * @return Application|Factory|View
      */
-    public function weekGroup($week, $group)
+
+    public function weekGroup($group, $week)
     {
-        $usersGroup = GroupUser::all()->where('group_id', '=', $group);
         $editionId = DB::table('groups')->select('course_edition_id')
             ->where('id', '=', $group)->get()->first()->course_edition_id;
+        $usersgroup = GroupUser::all()->where('group_id', '=', $group);
 
         $users = [];
-        foreach ($usersGroup as $item) {
+        foreach ($usersgroup as $item) {
             $user1 = User::find($item->user_id);
             array_push($users, $user1);
         }
@@ -178,7 +176,7 @@ class AttendanceController extends Controller
                     $attendance = $att;
                 }
 
-                    array_push($attendances, $attendance);
+                array_push($attendances, $attendance);
             }//end if
         }//end foreach
 
