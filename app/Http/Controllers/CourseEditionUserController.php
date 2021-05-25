@@ -137,5 +137,4 @@ class CourseEditionUserController extends Controller
             'courseEditionUser' => $courseEditionUser,
             'edition_id' => $editionId]);
     }
-
 }
