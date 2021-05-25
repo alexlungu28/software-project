@@ -41,7 +41,7 @@ class GroupsImport implements ToModel, WithHeadingRow
                 $groupName = $row[array_keys($row)[$x]];
             }
         }
-        if (!Group::where('group_name', '=', $groupName)->exists()) {
+        if (!Group::where('group_name', '=', $groupName)->where('course_edition_id', '=', $this->editionId)->exists()) {
             return new Group([
                 'group_name'    => $groupName,
                 'course_edition_id' => $this->editionId,
