@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\CourseController;
 use App\Http\Controllers\CourseEditionController;
+use App\Http\Controllers\CourseEditionUserController;
 use App\Http\Controllers\GroupController;
 use App\Http\Controllers\AttendanceController;
 use App\Http\Controllers\RubricController;
@@ -146,6 +147,13 @@ Route::get('unauthorized', function () {
 })->name('unauthorized');
 
 Route::get('/courses/{id}', [CourseController::class, 'viewCourseById'])->name('course')->middleware();
+
+/*
+|--------------------------------------------------------------------------
+|  Student List to assign TAs Routes
+|--------------------------------------------------------------------------
+*/
+Route::get('/studentList/{editionId}', [CourseEditionUserController::class,'view'])->name('studentList');
 
 /*
 |--------------------------------------------------------------------------
