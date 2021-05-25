@@ -12,24 +12,36 @@ class RubricTest extends TestCase
     use withoutMiddleware;
     use RefreshDatabase;
 
+    /**
+     * Test to verify rubric create route.
+     */
     public function testCreateRubric()
     {
         $response = $this->get('/rubricCreate')->assertSee('Rubric Management | Add');
         $response->assertStatus(200);
     }
 
+    /**
+     * Test to verify rubric edit route.
+     */
     public function testEditRubric()
     {
         $response = $this->get('/rubricEdit')->assertSee('Rubric Management | Update');
         $response->assertStatus(200);
     }
 
+    /**
+     * Test to verify rubric delete route.
+     */
     public function testDeleteRubric()
     {
         $response = $this->get('/rubricDelete')->assertSee('Rubric Management | Delete');
         $response->assertStatus(200);
     }
 
+    /**
+     * Test to verify rubric view route.
+     */
     public function testViewRubrics()
     {
         Rubric::insert(

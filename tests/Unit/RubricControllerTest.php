@@ -12,6 +12,9 @@ class RubricControllerTest extends TestCase
     use withoutMiddleware;
     use RefreshDatabase;
 
+    /**
+     * Test to verify insertion inside the database.
+     */
     public function testRubricStore()
     {
         $response = $this->post(
@@ -29,6 +32,9 @@ class RubricControllerTest extends TestCase
         $response->assertStatus(302);
     }
 
+    /**
+     * Test to verify the rubric is updated inside the database.
+     */
     public function testRubricUpdate()
     {
         Rubric::insert(
@@ -60,6 +66,9 @@ class RubricControllerTest extends TestCase
         $response->assertStatus(302);
     }
 
+    /**
+     * Test to verify deletion inside the database.
+     */
     public function testRubricDestroy()
     {
         Rubric::insert(

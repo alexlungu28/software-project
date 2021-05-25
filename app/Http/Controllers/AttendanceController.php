@@ -6,7 +6,10 @@ use App\Models\GroupUser;
 use DB;
 use App\Models\User;
 use App\Models\Attendance;
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Contracts\View\View;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 
 class AttendanceController extends Controller
@@ -16,7 +19,7 @@ class AttendanceController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return Application|Factory|View
      */
     public function index($editionId)
     {
@@ -54,7 +57,7 @@ class AttendanceController extends Controller
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return void
      */
     public function create($userId, $week)
     {
@@ -64,8 +67,8 @@ class AttendanceController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request $request
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     * @return void
      */
     public function store(Request $request)
     {
@@ -75,8 +78,8 @@ class AttendanceController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Attendance $attendance
-     * @return \Illuminate\Http\Response
+     * @param Attendance $attendance
+     * @return void
      */
     public function show(Attendance $attendance)
     {
@@ -86,8 +89,8 @@ class AttendanceController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Attendance $attendance
-     * @return \Illuminate\Http\Response
+     * @param Attendance $attendance
+     * @return void
      */
     public function edit(Attendance $attendance)
     {
@@ -97,9 +100,9 @@ class AttendanceController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request $request
-     * @param  \App\Models\Attendance   $attendance
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     * @param $id
+     * @return RedirectResponse
      */
     public function update(Request $request, $id)
     {
@@ -126,8 +129,8 @@ class AttendanceController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Attendance $attendance
-     * @return \Illuminate\Http\Response
+     * @param Attendance $attendance
+     * @return void
      */
     public function destroy(Attendance $attendance)
     {

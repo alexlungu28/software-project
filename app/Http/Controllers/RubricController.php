@@ -86,6 +86,11 @@ class RubricController extends Controller
         return redirect('/rubricEdit');
     }
 
+    /**
+     * Deletes the rubric.
+     *
+     * @return Application|Factory|View
+     */
     public function delete()
     {
         $rubrics = Rubric::all();
@@ -107,6 +112,12 @@ class RubricController extends Controller
         echo '<a href = "/viewRubrics">Click Here</a> to go back.';
     }
 
+    /**
+     * Rubric view based on edition id.
+     *
+     * @param $editionId
+     * @return Application|Factory|View
+     */
     public function view($editionId)
     {
         $rubrics = Rubric::all()->where('course_edition_id', '=', $editionId);

@@ -69,7 +69,7 @@ class CourseEditionController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  $id
      * @return void
      */
     public function show($id)

@@ -14,6 +14,9 @@ class RubricDataControllerTest extends TestCase
     use withoutMiddleware;
     use RefreshDatabase;
 
+    /**
+     * Insert the specified entries inside the database tables.
+     */
     public function before()
     {
         Rubric::insert(
@@ -56,6 +59,9 @@ class RubricDataControllerTest extends TestCase
         );
     }
 
+    /**
+     * Test to verify insertion inside the database.
+     */
     public function testRubricDataStore()
     {
         $this->before();
