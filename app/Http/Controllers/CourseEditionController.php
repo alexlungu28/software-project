@@ -2,10 +2,15 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Course;
 use App\Models\CourseEdition;
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Contracts\View\View;
 use Illuminate\Database\QueryException;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
+use Illuminate\Routing\Redirector;
 use Illuminate\Support\Facades\DB;
 
 class CourseEditionController extends Controller
@@ -13,7 +18,7 @@ class CourseEditionController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return void
      */
     public function index()
     {
@@ -23,7 +28,7 @@ class CourseEditionController extends Controller
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return Application|Factory|View
      */
     public function create($courseId)
     {
@@ -35,8 +40,9 @@ class CourseEditionController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     * @param $courseId
+     * @return Application|RedirectResponse|Redirector
      */
     public function store(Request $request, $courseId)
     {
@@ -64,7 +70,7 @@ class CourseEditionController extends Controller
      * Display the specified resource.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return void
      */
     public function show($id)
     {
@@ -74,8 +80,8 @@ class CourseEditionController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param $courseId
+     * @return Application|Factory|View
      */
     public function edit($courseId)
     {
@@ -89,9 +95,8 @@ class CourseEditionController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     * @return Application|Redirector|RedirectResponse
      */
     public function update(Request $request)
     {
@@ -113,7 +118,7 @@ class CourseEditionController extends Controller
      * Return the view for deleting course editions.
      *
      * @param $courseId
-     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
+     * @return Application|Factory|View
      */
     public function delete($courseId)
     {
@@ -127,8 +132,8 @@ class CourseEditionController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     * @return Application|Redirector|RedirectResponse
      */
     public function destroy(Request $request)
     {
@@ -136,6 +141,12 @@ class CourseEditionController extends Controller
         return redirect('/');
     }
 
+    /**
+     * Returns the course edition view depending on its id.
+     *
+     * @param $editionId
+     * @return Application|Factory|View
+     */
     public function view($editionId)
     {
         $groups = DB::table('groups')->where('course_edition_id', '=', $editionId)->get();

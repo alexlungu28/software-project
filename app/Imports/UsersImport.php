@@ -9,9 +9,10 @@ use Maatwebsite\Excel\Concerns\WithHeadingRow;
 class UsersImport implements ToModel, WithHeadingRow
 {
     /**
-    * @param array $row
-    *
-    * @return User
+     * Add a user in the database.
+     * @param array $row
+     *
+     * @return User
      */
     public function model(array $row)
     {

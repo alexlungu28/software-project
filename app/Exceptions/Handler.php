@@ -3,8 +3,12 @@
 namespace App\Exceptions;
 
 use Aacotroneo\Saml2\Saml2Auth;
+use Exception;
 use Illuminate\Auth\AuthenticationException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Throwable;
 
 class Handler extends ExceptionHandler
@@ -41,6 +45,14 @@ class Handler extends ExceptionHandler
         });
     }
 
+    /**
+     * Throws an error response in case the user is not authenticated.
+     *
+     * @param Request $request
+     * @param AuthenticationException $exception
+     * @return JsonResponse|string|Response|null
+     * @throws Exception
+     */
     protected function unauthenticated($request, AuthenticationException $exception)
     {
         if ($request->expectsJson()) {

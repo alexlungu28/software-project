@@ -10,15 +10,21 @@ class GroupsImport implements ToModel, WithHeadingRow
 {
     private $editionId;
 
+    /**
+     * GroupsImport constructor.
+     * @param int $editionId
+     */
     public function __construct(int $editionId)
     {
         $this->editionId = $editionId;
     }
 
     /**
-    * @param array $row
-    *
-    * @return Group
+     * Adds a group in the database.
+     *
+     * @param array $row
+     *
+     * @return Group
      */
     public function model(array $row)
     {

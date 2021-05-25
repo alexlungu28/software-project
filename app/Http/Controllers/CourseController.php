@@ -3,9 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Models\Course;
-use App\Models\CourseEdition;
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Contracts\View\View;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\QueryException;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Redirector;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
@@ -14,7 +19,7 @@ class CourseController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return void
      */
     public function index()
     {
@@ -24,7 +29,7 @@ class CourseController extends Controller
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return Application|Factory|View
      */
     public function create()
     {
@@ -34,8 +39,8 @@ class CourseController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     * @return Application|RedirectResponse|Redirector
      */
     public function store(Request $request)
     {
@@ -58,7 +63,7 @@ class CourseController extends Controller
      * Display the specified resource.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return void
      */
     public function show($id)
     {
@@ -68,7 +73,7 @@ class CourseController extends Controller
     /**
      * Retrieve all courses.
      *
-     * @return Course[]|\Illuminate\Database\Eloquent\Collection
+     * @return Course[]|Collection
      */
     public static function getAllCourses()
     {
@@ -78,8 +83,7 @@ class CourseController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return Application|Factory|View
      */
     public function edit()
     {
@@ -89,8 +93,8 @@ class CourseController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return void
+     * @param Request $request
+     * @return Application|Redirector|RedirectResponse
      */
     public function update(Request $request)
     {
@@ -113,7 +117,7 @@ class CourseController extends Controller
     /**
      * Return the view for deleting courses.
      *
-     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
+     * @return Application|Factory|View
      */
     public function delete()
     {
@@ -127,7 +131,7 @@ class CourseController extends Controller
      * Remove the specified resource from storage.
      *
      * @param  Request  $request
-     * @return \Illuminate\Http\Response
+     * @return Application|Redirector|RedirectResponse
      */
     public function destroy(Request $request)
     {
@@ -138,7 +142,7 @@ class CourseController extends Controller
     /**
      * Return the employee view of courses.
      *
-     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
+     * @return Application|Factory|View
      */
     public function viewEmployee()
     {
@@ -151,7 +155,7 @@ class CourseController extends Controller
     /**
      * Return the student view of courses.
      *
-     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
+     * @return Application|Factory|View
      */
     public function viewStudent()
     {
@@ -165,7 +169,7 @@ class CourseController extends Controller
     /**
      * Return the courses view based on user affiliation.
      *
-     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
+     * @return Application|Factory|View
      */
     public function view()
     {
@@ -181,7 +185,7 @@ class CourseController extends Controller
      * Return the employee view of course editions.
      *
      * @param $id
-     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
+     * @return Application|Factory|View
      */
     public function viewEmployeeCE($id)
     {
@@ -196,7 +200,7 @@ class CourseController extends Controller
      * Return the student view of course editions.
      *
      * @param $id
-     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
+     * @return Application|Factory|View
      */
     public function viewStudentCE($id)
     {
@@ -211,7 +215,7 @@ class CourseController extends Controller
      * Return the course edition view based on user affiliation.
      *
      * @param $id
-     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
+     * @return Application|Factory|View
      */
     public function viewCourseById($id)
     {
