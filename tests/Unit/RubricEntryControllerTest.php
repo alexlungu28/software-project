@@ -16,6 +16,9 @@ class RubricEntryControllerTest extends TestCase
 
     private $controller;
 
+    /**
+     * Insert the specified entries inside the database tables.
+     */
     protected function before()
     {
         Rubric::insert(
@@ -27,6 +30,9 @@ class RubricEntryControllerTest extends TestCase
         $this->controller = new RubricEntryController();
     }
 
+    /**
+     * Test the distance correctly increments.
+     */
     public function testAutoIncrementDistance()
     {
         $this->before();
@@ -50,6 +56,9 @@ class RubricEntryControllerTest extends TestCase
         );
     }
 
+    /**
+     * Test to verify insertion inside the database.
+     */
     public function testRubricEntryStore()
     {
         $this->before();
@@ -83,6 +92,9 @@ class RubricEntryControllerTest extends TestCase
         $response->assertStatus(200);
     }
 
+    /**
+     * Test to verify the rubric is updated inside the database.
+     */
     public function testRubricEntryUpdate()
     {
         $this->before();
@@ -116,6 +128,9 @@ class RubricEntryControllerTest extends TestCase
         $response->assertStatus(302);
     }
 
+    /**
+     * Test to verify the rubric is deleted from the database.
+     */
     public function testRubricEntryDelete()
     {
         $this->before();

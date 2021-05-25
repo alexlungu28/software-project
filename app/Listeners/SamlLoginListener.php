@@ -61,6 +61,8 @@ class SamlLoginListener
     }
 
     /**
+     * Determines the users' affiliation.
+     *
      * @param Saml2User $samlUser
      * @return string
      */
@@ -83,6 +85,8 @@ class SamlLoginListener
     }
 
     /**
+     * Determines the users' surname.
+     *
      * @param Saml2User $samlUser
      * @return mixed|string
      */
@@ -98,6 +102,8 @@ class SamlLoginListener
     }
 
     /**
+     * Determines the users' netid.
+     *
      * @param Saml2User $samlUser
      * @return array|mixed|null
      */
@@ -124,6 +130,8 @@ class SamlLoginListener
     }
 
     /**
+     * Determines the users' student number.
+     *
      * @param Saml2User $samlUser
      * @return array|mixed|null
      */
