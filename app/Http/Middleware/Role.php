@@ -12,9 +12,8 @@ class Role
     /**
      * Handle an incoming request.
      *
-     * @param \Illuminate\Http\Request $request
+     * @param Request $request
      * @param \Closure $next
-     * @param $role
      * @return mixed
      */
     public function handle(Request $request, Closure $next)

@@ -12,15 +12,21 @@ class CourseEditionUserImport implements ToModel, WithHeadingRow
 {
     private $editionId;
 
+    /**
+     * CourseEditionUserImport constructor.
+     * @param int $editionId
+     */
     public function __construct(int $editionId)
     {
         $this->editionId = $editionId;
     }
 
     /**
-    * @param array $row
-    *
-    * @return CourseEditionUser
+     * Adds a user role in the database.
+     *
+     * @param array $row
+     *
+     * @return CourseEditionUser
      */
     public function model(array $row)
     {

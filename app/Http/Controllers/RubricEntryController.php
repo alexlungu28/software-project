@@ -2,26 +2,38 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
 use App\Models\Rubric;
 use App\Models\RubricData;
 use App\Models\RubricEntry;
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Contracts\View\View;
+use Illuminate\Database\Eloquent\HigherOrderBuilderProxy;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
+use Illuminate\Routing\Redirector;
 use Illuminate\Support\Facades\DB;
-use Symfony\Component\Console\Input\Input;
 
 class RubricEntryController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return void
      */
     public function index()
     {
         //
     }
 
+    /**
+     * Takes the largest distance in the database for a row or column and increments that by one.
+     *
+     * @param $id
+     * @param $isRow
+     * @return HigherOrderBuilderProxy|int|mixed
+     */
     public function autoIncrementDistance($id, $isRow)
     {
         if (RubricEntry::withTrashed()->where('rubric_id', '=', $id)->exists()) {
@@ -46,7 +58,7 @@ class RubricEntryController extends Controller
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Http\Response
+     * @return Application|Factory|View
      */
     public function create()
     {
@@ -56,8 +68,8 @@ class RubricEntryController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     * @return void
      */
     public function store(Request $request)
     {
@@ -84,7 +96,7 @@ class RubricEntryController extends Controller
      * Display the specified resource.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return void
      */
     public function show($id)
     {
@@ -94,7 +106,7 @@ class RubricEntryController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Http\Response
+     * @return Application|Factory|View
      */
     public function edit($id, $isRow)
     {
@@ -105,9 +117,8 @@ class RubricEntryController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     * @return Application|RedirectResponse|Redirector
      */
     public function update(Request $request)
     {
@@ -127,7 +138,7 @@ class RubricEntryController extends Controller
      * Remove the specified resource from storage.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return void
      */
     public function destroy($id, $distance, $isRow)
     {
@@ -139,6 +150,13 @@ class RubricEntryController extends Controller
         redirect('rubricViewTeacher/'.$id);
     }
 
+    /**
+     * Returns the rubric view for a teacher.
+     *
+     * @param $id
+     * @param $editionId
+     * @return Application|Factory|View
+     */
     public function teacherview($id, $editionId)
     {
 
@@ -153,6 +171,13 @@ class RubricEntryController extends Controller
             'edition_id' => $editionId]);
     }
 
+    /**
+     * Returns the rubric view for a TA.
+     *
+     * @param $id
+     * @param $editionId
+     * @return Application|Factory|View
+     */
     public function view($id, $editionId)
     {
         $rubric = Rubric::find($id);

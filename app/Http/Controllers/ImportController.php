@@ -33,20 +33,21 @@ class ImportController extends Controller
      *
      * @return BinaryFileResponse
      */
-    public function export()
+    public function export(): BinaryFileResponse
     {
         return Excel::download(new UsersExport, 'users.xlsx');
     }
 
     /**
-     * Imports users inside the user table,
+     * Imports users inside the users table,
      * groups inside the groups table,
      * the link between the former two inside the group_user table,
      * the role inside the course_edition_user table.
      *
-     * @return RedirectResponse
+     * @param $editionId - the course edition where the students will be imported
+     * @return RedirectResponse - returns the user back to the import page
      */
-    public function import($editionId)
+    public function import($editionId): RedirectResponse
     {
 
         Excel::import(new UsersImport, request()->file('file'));

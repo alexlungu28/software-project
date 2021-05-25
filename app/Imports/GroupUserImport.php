@@ -11,9 +11,11 @@ use Maatwebsite\Excel\Concerns\WithHeadingRow;
 class GroupUserImport implements ToModel, WithHeadingRow
 {
     /**
-    * @param array $row
-    *
-    * @return GroupUser
+     * Adds a link between groups and users in the database.
+     *
+     * @param array $row
+     *
+     * @return GroupUser
      */
     public function model(array $row)
     {
