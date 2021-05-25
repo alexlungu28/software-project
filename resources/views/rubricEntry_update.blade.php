@@ -12,7 +12,7 @@
 <body>
 
 <div class="container">
-    <h2 class="text-center">RubricEntry Management | Update</h2>
+    <h2 class="text-center">Rubric Entry Management | Update</h2>
     <br>
     <form action = "/rubricEntryUpdate" method = "post" class="form-group" style="width:70%; margin-left:15%;" action="/action_page.php">
 
@@ -22,7 +22,7 @@
 
         <input type="hidden" class="form-control" placeholder="" name='isRow' value={{$isRow}}>
 
-
+        @method('PUT')
         <label class="form-group"></label>
         <select class="form-control" name="distance">
             @foreach($rubric->rubricEntry as $entry)

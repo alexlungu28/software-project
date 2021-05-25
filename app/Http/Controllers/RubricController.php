@@ -2,9 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
 use App\Models\Rubric;
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Contracts\View\View;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Redirector;
 use Illuminate\Support\Facades\DB;
 
 class RubricController extends Controller
@@ -12,22 +16,17 @@ class RubricController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return void
      */
     public function index()
     {
         //
     }
 
-    public function getAllRubric()
-    {
-        return Rubric::all();
-    }
-
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
+     * @return Application|Factory|View
      */
     public function create()
     {
@@ -37,16 +36,16 @@ class RubricController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return void
+     * @param Request $request
+     * @return Application|RedirectResponse|Redirector
      */
     public function store(Request $request)
     {
         $name = $request->input('name');
-        $data=array('name'=>$name,'created_at' =>now(), 'updated_at' => now());
+        $courseEdition = '1';
+        $data=array('name'=>$name,'course_edition_id' => $courseEdition,'created_at' =>now(), 'updated_at' => now());
         DB::table('rubrics')->insert($data);
-        echo "Record inserted successfully.<br/>";
-        echo '<a href = "/rubricCreate">Click Here</a> to go back.';
+        return redirect('/rubricCreate');
     }
 
     /**
@@ -63,18 +62,18 @@ class RubricController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
+     * @return Application|Factory|View
      */
     public function edit()
     {
-        return view('rubric_edit', ['rubrics' => (new RubricController)->getAllRubric()]);
+        return view('rubric_edit', ['rubrics' => Rubric::all()]);
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param \Illuminate\Http\Request $request
-     * @return void
+     * @param Request $request
+     * @return Application|Redirector|RedirectResponse
      */
     public function update(Request $request)
     {
@@ -84,8 +83,7 @@ class RubricController extends Controller
         $rubric->name = $name;
         $rubric->save();
 
-        echo "Record updated successfully.<br/>";
-        echo '<a href = "/rubricEdit">Click Here</a> to go back.';
+        return redirect('/rubricEdit');
     }
 
     public function delete()
@@ -109,12 +107,12 @@ class RubricController extends Controller
         echo '<a href = "/viewRubrics">Click Here</a> to go back.';
     }
 
-    public function view()
+    public function view($editionId)
     {
-        $rubrics = Rubric::all();
-//        ddd($rubrics);
+        $rubrics = Rubric::all()->where('course_edition_id', '=', $editionId);
         return view('allrubrics', [
             "rubrics" => $rubrics,
+            "edition_id" => $editionId,
         ]);
     }
 }

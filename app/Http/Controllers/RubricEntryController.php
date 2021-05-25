@@ -2,31 +2,44 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
 use App\Models\Rubric;
 use App\Models\RubricData;
 use App\Models\RubricEntry;
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Contracts\View\View;
+use Illuminate\Database\Eloquent\HigherOrderBuilderProxy;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
+use Illuminate\Routing\Redirector;
 use Illuminate\Support\Facades\DB;
-use Symfony\Component\Console\Input\Input;
 
 class RubricEntryController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return void
      */
     public function index()
     {
         //
     }
 
+    /**
+     * Takes the largest distance in the database for a row or column and increments that by one.
+     *
+     * @param $id
+     * @param $isRow
+     * @return HigherOrderBuilderProxy|int|mixed
+     */
     public function autoIncrementDistance($id, $isRow)
     {
-        if (RubricEntry::where('rubric_id', '=', $id)->exists()) {
-            if (RubricEntry::where('is_row', '=', $isRow)->exists()) {
-                $rubricEntrySameId = RubricEntry::where('is_row', '=', $isRow)->where('rubric_id', '=', $id)->get();
+        if (RubricEntry::withTrashed()->where('rubric_id', '=', $id)->exists()) {
+            if (RubricEntry::withTrashed()->where('is_row', '=', $isRow)->exists()) {
+                $rubricEntrySameId = RubricEntry::withTrashed()
+                    ->where('is_row', '=', $isRow)->where('rubric_id', '=', $id)->get();
                 $max = 0;
                 foreach ($rubricEntrySameId as $value) {
                     if ($value->distance>$max) {
@@ -45,18 +58,18 @@ class RubricEntryController extends Controller
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Http\Response
+     * @return Application|Factory|View
      */
     public function create()
     {
-        return view('rubricEntry_create', ['rubrics' => (new RubricController)->getAllRubric()]);
+        return view('rubricEntry_create', ['rubrics' => Rubric::all()]);
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     * @return void
      */
     public function store(Request $request)
     {
@@ -76,15 +89,14 @@ class RubricEntryController extends Controller
                 "created_at" => now(), "updated_at" => now());
             DB::table('rubric_data')->insertOrIgnore($rubricData);
         }
-        echo "Record inserted successfully.<br/>";
-        echo '<a href = "/rubricEntryCreate">Click Here</a> to go back.';
+        redirect('viewRubricTA/'.$rubricId);
     }
 
     /**
      * Display the specified resource.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return void
      */
     public function show($id)
     {
@@ -94,7 +106,7 @@ class RubricEntryController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Http\Response
+     * @return Application|Factory|View
      */
     public function edit($id, $isRow)
     {
@@ -105,9 +117,8 @@ class RubricEntryController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     * @return Application|RedirectResponse|Redirector
      */
     public function update(Request $request)
     {
@@ -120,15 +131,14 @@ class RubricEntryController extends Controller
             ->where('distance', '=', $distance)
             ->update(['description' => $description]);
 
-        echo "Record updated successfully.<br/>";
-        echo "<a href = " . "/rubricEntryEdit/" . $id . "/" . $isRow . ">Click Here</a> to go back.";
+        return redirect("/rubricEntryEdit/". $id . "/" . $isRow);
     }
 
     /**
      * Remove the specified resource from storage.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return void
      */
     public function destroy($id, $distance, $isRow)
     {
@@ -137,17 +147,47 @@ class RubricEntryController extends Controller
         if ($isRow == 1) {
             RubricData::where('rubric_id', '=', $id)->where('row_number', '=', $distance)->delete();
         }
+        redirect('rubricViewTeacher/'.$id);
     }
 
-    public function view($id)
+    /**
+     * Returns the rubric view for a teacher.
+     *
+     * @param $id
+     * @param $editionId
+     * @return Application|Factory|View
+     */
+    public function teacherview($id, $editionId)
+    {
+
+        $rubric = Rubric::find($id);
+        $rubricColumnEntries = $rubric->rubricEntry->where('is_row', '=', '0')->sortBy('distance');
+        $rubricRowEntries = $rubric->rubricEntry->where('is_row', '=', '1')->sortBy('distance');
+        $rubricData = $rubric->rubricData;
+        return view('pages.rubricViewTeacher', ['rubric' => $rubric,
+            'rubricColumnEntries' => $rubricColumnEntries,
+            'rubricRowEntries' => $rubricRowEntries,
+            'rubricData' => $rubricData,
+            'edition_id' => $editionId]);
+    }
+
+    /**
+     * Returns the rubric view for a TA.
+     *
+     * @param $id
+     * @param $editionId
+     * @return Application|Factory|View
+     */
+    public function view($id, $editionId)
     {
         $rubric = Rubric::find($id);
         $rubricColumnEntries = $rubric->rubricEntry->where('is_row', '=', '0')->sortBy('distance');
         $rubricRowEntries = $rubric->rubricEntry->where('is_row', '=', '1')->sortBy('distance');
         $rubricData = $rubric->rubricData;
-        return view('pages.table_list', ['rubric' => $rubric,
+        return view('pages.rubricViewTA', ['rubric' => $rubric,
             'rubricColumnEntries' => $rubricColumnEntries,
             'rubricRowEntries' => $rubricRowEntries,
-            'rubricData' => $rubricData]);
+            'rubricData' => $rubricData,
+            'edition_id' => $editionId]);
     }
 }

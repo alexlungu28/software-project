@@ -42,11 +42,38 @@
         </a>
       </li>
       <li class="nav-item{{ $activePage == 'rubrics' ? ' active' : '' }}">
-        <a class="nav-link" href="viewRubrics">
+        <a class="nav-link" href={{ route('viewRubrics', [$edition_id]) }}>
           <i class="material-icons">rubrics</i>
           <p>{{ __('Rubrics') }}</p>
         </a>
       </li>
+      <li class="nav-item{{ $activePage == 'courses' ? ' active' : '' }}">
+        <a class="nav-link" href="{{ route('courses') }}">
+          <i class="material-icons">courses</i>
+          <p>{{ __('Courses') }}</p>
+        </a>
+      </li>
+        <li class="nav-item{{ $activePage == 'groups' ? ' active' : '' }}">
+            <a class="nav-link" href="{{ route('groups', [$edition_id]) }}">
+                <i class="material-icons">groups</i>
+                <p>{{ __('Groups') }}</p>
+            </a>
+        </li>
+        <li class="nav-item{{ $activePage == 'attendance' ? ' active' : '' }}">
+            <a class="nav-link" href="{{ route('attendance', [$edition_id]) }}">
+                <i class="material-icons">Attendance</i>
+                <p>{{ __('Attendance') }}</p>
+            </a>
+        </li>
+
+        <li class="nav-item{{ $activePage == 'import' ? ' active' : '' }}">
+            <a class="nav-link" href="{{ route('importExport', [$edition_id]) }}">
+                <i class="material-icons">import</i>
+                <p>{{ __('Import/Export') }}</p>
+            </a>
+        </li>
+
+
     </ul>
   </div>
 </div>

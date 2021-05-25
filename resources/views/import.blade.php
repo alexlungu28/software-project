@@ -1,9 +1,7 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Import Export CSV</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/css/bootstrap.min.css" />
-</head>
+@extends('layouts.app', ['class' => 'off-canvas-sidebar', 'activePage' => 'import', 'title' => __('Import/Export')])
+
+@section('content')
+
 <body>
 
 <div class="container">
@@ -12,7 +10,7 @@
             Import Export CSV
         </div>
         <div class="card-body">
-            <form action="{{ route('import') }}" method="POST" enctype="multipart/form-data">
+            <form action="{{ route('import', [$edition_id]) }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 <input type="file" name="file" class="form-control">
                 <br>
@@ -25,4 +23,4 @@
 </div>
 
 </body>
-</html>
+@endsection
