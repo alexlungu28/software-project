@@ -211,7 +211,7 @@ Route::post('/courseEditionUpdate/{course_id}', [CourseEditionController::class,
 
 
 Route::get('/edition/{edition_id}', [CourseEditionController::class, 'view'])
-    ->name('groups')->middleware('role');
+    ->name('groups')->middleware('role:lecturer');
 
 //Gives a visual presentation of the group
 Route::get('/group/{id}', [GroupController::class, 'view'])->name('group');

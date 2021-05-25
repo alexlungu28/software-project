@@ -16,16 +16,22 @@ class Role
      * @param \Closure $next
      * @return mixed
      */
-    public function handle(Request $request, Closure $next)
+    public function handle(Request $request, Closure $next, String $role)
     {
         //TODO: Add views for TA and Head TA and redirect them to those
         $editionId = $request->route()->parameter('edition_id');
-        $courseEditionId = DB::table('course_edition_user')->select('id')
+        if ($editionId == null) {
+            $groupId = $request->route()->parameter('group_id');
+            $editionId = DB::table('groups')->select('course_edition_id')
+                ->where('id', '=', $groupId)
+                ->get()->first()->course_edition_id;
+        }
+        $courseEditionUserId = DB::table('course_edition_user')->select('id')
             ->where('course_edition_id', '=', $editionId)
             ->where('user_id', '=', $request->user()->id)
             ->get()->first()->id;
-        $courseEditionUser = CourseEditionUser::find($courseEditionId);
-        if ($courseEditionUser->role == 'lecturer') {
+        $courseEditionUser = CourseEditionUser::find($courseEditionUserId);
+        if ($courseEditionUser->role == $role) {
             return $next($request);
         } else {
             redirect('unauthorized');
