@@ -92,7 +92,6 @@ class CourseEditionUserController extends Controller
         if ($student) {
             $student->role = 'TA';
             $student->save();
-
         }
         return redirect()->back();
     }
