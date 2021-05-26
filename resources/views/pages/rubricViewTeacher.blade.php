@@ -60,7 +60,20 @@
                                     <tr>
                                         <td>Delete Column</td>
                                         @foreach($rubricColumnEntries as $columnEntry)
-                                        <td><button onclick="window.location='{{route('rubricEntryDelete',array('id' => $rubric->id, 'distance' => $columnEntry->distance, 'isRow' => 0))}}';"  type="button" class="btn btn-primary">Delete</button></td>
+                                            <td>
+                                                <form
+                                                    method="post"
+                                                    action="{{route('rubricEntryDelete',array('id' => $rubric->id, 'distance' => $columnEntry->distance, 'isRow' => 0))}}">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    {{ method_field('DELETE') }}
+                                                    <button
+                                                        type="submit"
+                                                        onclick="return confirm('Are you sure?')"
+                                                        class="btn btn-primary">Remove</button>
+                                                </form>
+                                            </td>
+{{--                                        <td><button onclick="window.location='{{route('rubricEntryDelete',array('id' => $rubric->id, 'distance' => $columnEntry->distance, 'isRow' => 0))}}';"  type="button" class="btn btn-primary">Delete</button></td>--}}
                                         @endforeach
                                     </tr>
                                     </tbody>

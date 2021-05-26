@@ -89,7 +89,7 @@ class RubricEntryControllerTest extends TestCase
                 'note' => null,
             ],
         );
-        $response->assertStatus(200);
+        $response->assertStatus(302);
     }
 
     /**
@@ -155,6 +155,6 @@ class RubricEntryControllerTest extends TestCase
                 'description' => 'Row 1',
             ],
         );
-        $response->assertStatus(200);
+        $response->assertStatus(302);
     }
 }
