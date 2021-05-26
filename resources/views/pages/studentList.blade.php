@@ -1,4 +1,4 @@
-@extends('layouts.app', ['activePage' => 'rubrics', 'titlePage' => __('RubricView')])
+@extends('layouts.app', ['activePage' => 'studentList', 'titlePage' => __('RubricView')])
 
 @section('content')
     <head>
@@ -26,9 +26,12 @@
                             <table id ="table" class="table">
                                 <thead class=" text-primary">
                                   <th>Net ID</th>
-                                    <th>Last Name</th>
-                                    <th>First Name</th>
-                                    <th>Role</th>
+                                  <th>Last Name</th>
+                                  <th>First Name</th>
+                                  <th>Role</th>
+                                  <th>Set Role TA</th>
+                                  <th>Set Role HEAD TA</th>
+                                  <th>Set Role Student</th>
                                 </thead>
                                 <tbody>
                                     @foreach($courseEditionUser as $user)
@@ -50,6 +53,39 @@
                                             </td>
                                             <td>
                                                 {{$user->role}}
+                                            </td>
+                                            <td>
+                                                <form
+                                                    method="post"
+                                                    action="{{route('setRoleTA',array('id' => $user->user_id))}}">
+                                                    @csrf
+                                                    <button
+                                                        type="submit"
+                                                        onclick="return confirm('Are you sure?')"
+                                                        class="btn btn-primary">Make TA</button>
+                                                </form>
+                                            </td>
+                                            <td>
+                                                <form
+                                                    method="post"
+                                                    action="{{route('setRoleHeadTA',array('id'=>$user->user_id))}}">
+                                                    @csrf
+                                                    <button
+                                                        type="submit"
+                                                        onclick="return confirm('Are you sure?')"
+                                                        class="btn btn-primary">Make Head TA</button>
+                                                </form>
+                                            </td>
+                                            <td>
+                                                <form
+                                                    method="post"
+                                                    action="{{route('setRoleStudent',array('id'=>$user->user_id))}}">
+                                                    @csrf
+                                                    <button
+                                                        type="submit"
+                                                        onclick="return confirm('Are you sure?')"
+                                                        class="btn btn-primary">Make Student</button>
+                                                </form>
                                             </td>
                                         </tr>
                                     @endforeach

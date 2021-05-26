@@ -86,40 +86,35 @@ class CourseEditionUserController extends Controller
     }
 
     //maybe change the methods so it's more dynamic
-    public function setRoleTAFromStudent($id, $editionId)
+    public function setRoleTA($id)
     {
         $student = CourseEditionUser::find($id);
         if ($student) {
             $student->role = 'TA';
             $student->save();
+
         }
+        return redirect()->back();
     }
 
-    public function setRoleHeadTAFromStudent($id, $editionId)
+    public function setRoleHeadTA($id)
     {
         $student = CourseEditionUser::find($id);
         if ($student) {
-            $student->role = 'Head_TA';
+            $student->role = 'HeadTA';
             $student->save();
         }
+        return redirect()->back();
     }
 
-    public function setRoleStudentFromTA($id, $editionId)
-    {
-        $student = CourseEditionUser::find($id);
-        if ($student) {
-            $student->role = 'student';
-            $student->save();
-        }
-    }
-
-    public function setRoleStudentFromHeadTA($id, $editionId)
+    public function setRoleStudent($id)
     {
         $student = CourseEditionUser::find($id);
         if ($student) {
             $student->role = 'student';
             $student->save();
         }
+        return redirect()->back();
     }
 
     public function view($editionId)

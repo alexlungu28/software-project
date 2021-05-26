@@ -11,46 +11,16 @@
   </div>
   <div class="sidebar-wrapper">
     <ul class="nav">
-      <li class="nav-item{{ $activePage == 'dashboard' ? ' active' : '' }}">
-        <a class="nav-link" href="{{ route('home') }}">
-          <i class="material-icons">dashboard</i>
-            <p>{{ __('Dashboard') }}</p>
-        </a>
-      </li>
-      <li class="nav-item{{ $activePage == 'typography' ? ' active' : '' }}">
-        <a class="nav-link" href="{{ route('typography') }}">
-          <i class="material-icons">library_books</i>
-            <p>{{ __('Typography') }}</p>
-        </a>
-      </li>
-      <li class="nav-item{{ $activePage == 'icons' ? ' active' : '' }}">
-        <a class="nav-link" href="{{ route('icons') }}">
-          <i class="material-icons">bubble_chart</i>
-          <p>{{ __('Icons') }}</p>
-        </a>
-      </li>
-      <li class="nav-item{{ $activePage == 'map' ? ' active' : '' }}">
-        <a class="nav-link" href="{{ route('map') }}">
-          <i class="material-icons">location_ons</i>
-            <p>{{ __('Maps') }}</p>
-        </a>
-      </li>
-      <li class="nav-item{{ $activePage == 'notifications' ? ' active' : '' }}">
-        <a class="nav-link" href="{{ route('notifications') }}">
-          <i class="material-icons">notifications</i>
-          <p>{{ __('Notifications') }}</p>
-        </a>
-      </li>
-      <li class="nav-item{{ $activePage == 'rubrics' ? ' active' : '' }}">
+        <li class="nav-item{{ $activePage == 'courses' ? ' active' : '' }}">
+            <a class="nav-link" href="{{ route('courses') }}">
+                <i class="material-icons">courses</i>
+                <p>{{ __('Courses') }}</p>
+            </a>
+        </li>
+        <li class="nav-item{{ $activePage == 'rubrics' ? ' active' : '' }}">
         <a class="nav-link" href={{ route('viewRubrics', [$edition_id]) }}>
           <i class="material-icons">rubrics</i>
           <p>{{ __('Rubrics') }}</p>
-        </a>
-      </li>
-      <li class="nav-item{{ $activePage == 'courses' ? ' active' : '' }}">
-        <a class="nav-link" href="{{ route('courses') }}">
-          <i class="material-icons">courses</i>
-          <p>{{ __('Courses') }}</p>
         </a>
       </li>
         <li class="nav-item{{ $activePage == 'groups' ? ' active' : '' }}">
@@ -63,6 +33,12 @@
             <a class="nav-link" href="{{ route('attendance', [$edition_id]) }}">
                 <i class="material-icons">Attendance</i>
                 <p>{{ __('Attendance') }}</p>
+            </a>
+        </li>
+        <li class="nav-item{{ $activePage == 'studentList' ? ' active' : '' }}">
+            <a class="nav-link" href="{{ route('studentList', [$edition_id]) }}">
+                <i class="material-icons">S</i>
+                <p>{{ __('StudentList') }}</p>
             </a>
         </li>
 

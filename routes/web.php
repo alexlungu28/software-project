@@ -153,8 +153,14 @@ Route::get('/courses/{id}', [CourseController::class, 'viewCourseById'])->name('
 |  Student List to assign TAs Routes
 |--------------------------------------------------------------------------
 */
-Route::get('/studentList/{editionId}', [CourseEditionUserController::class,'view'])->name('studentList');
-
+Route::get('/studentList/{edition_id}', [CourseEditionUserController::class,'view'])->name('studentList')
+    ->middleware(['loggedIn', 'employee']);
+Route::post('/studentList/changeRoleTA/{id}', [CourseEditionUserController::class, 'setRoleTA'])
+    ->name('setRoleTA')->middleware(['loggedIn', 'employee']);
+Route::post('/studentList/changeRoleHeadTA/{id}', [CourseEditionUserController::class, 'setRoleHeadTA'])
+    ->name('setRoleHeadTA')->middleware(['loggedIn', 'employee']);
+Route::post('/studentList/changeRoleStudent/{id}', [CourseEditionUserController::class, 'setRoleStudent'])
+    ->name('setRoleStudent')->middleware(['loggedIn', 'employee']);
 /*
 |--------------------------------------------------------------------------
 | Create Courses Routes
