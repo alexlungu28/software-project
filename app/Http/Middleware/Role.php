@@ -16,7 +16,7 @@ class Role
      * @param \Closure $next
      * @return mixed
      */
-    public function handle(Request $request, Closure $next, String $role)
+    public function handle(Request $request, Closure $next, ...$roles)
     {
         //TODO: Add views for TA and Head TA and redirect them to those
         $editionId = $request->route()->parameter('edition_id');
@@ -26,15 +26,18 @@ class Role
                 ->where('id', '=', $groupId)
                 ->get()->first()->course_edition_id;
         }
-        $courseEditionUserId = DB::table('course_edition_user')->select('id')
+        $courseEditionUser = DB::table('course_edition_user')
             ->where('course_edition_id', '=', $editionId)
             ->where('user_id', '=', $request->user()->id)
-            ->get()->first()->id;
-        $courseEditionUser = CourseEditionUser::find($courseEditionUserId);
-        if ($courseEditionUser->role == $role) {
-            return $next($request);
+            ->get()->first();
+        if ($courseEditionUser === null) {
+            return redirect('unauthorized');
         } else {
-            redirect('unauthorized');
+            if (in_array($courseEditionUser->role, $roles)) {
+                return $next($request);
+            } else {
+                return redirect('unauthorized');
+            }
         }
     }
 }

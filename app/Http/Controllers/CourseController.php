@@ -223,7 +223,7 @@ class CourseController extends Controller
                 $courseEditionUser = DB::table('course_edition_user')
                     ->where('course_edition_id', '=', $courseEdition->id)
                     ->where('user_id', '=', Auth::user()->id)->get()->first();
-                if (!$courseEditionUser === null
+                if ($courseEditionUser !== null
                     && ($courseEditionUser->role === 'TA' || $courseEditionUser->role === 'HeadTA')) {
                     return $courseEdition;
                 }
