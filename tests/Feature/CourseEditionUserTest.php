@@ -67,5 +67,4 @@ class CourseEditionUserTest extends TestCase
             ->assertDontSee('lecturer');
         $response->assertStatus(200);
     }
-
 }

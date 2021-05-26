@@ -118,6 +118,5 @@ class CourseEditionUserControllerTest extends TestCase
             ]
         );
     }
-
 }
 
