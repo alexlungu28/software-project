@@ -73,13 +73,14 @@ class AttendanceController extends Controller
             ->where('id', '=', $group)->get()->first()->course_edition_id;
 
         //find group of students
-        $usersgroup = GroupUser::all()->where('group_id', '=', $group);
+        $usersGroup = GroupUser::all()->where('group_id', '=', $group);
 
         //list of students
         $users = [];
-        foreach ($usersgroup as $item) {
-            $user1 = User::find($item->user_id);
-            array_push($users, $user1);
+
+        foreach ($usersGroup as $item) {
+            $user = User::find($item->user_id);
+            array_push($users, $user);
         }
 
         //create and add attendance object to database
@@ -93,27 +94,34 @@ class AttendanceController extends Controller
                         ->where('week', '=', $week)
                         ->where('group_id', '=', $group)
                         ->exists() === false) {
-                    $attendance          = new Attendance;
-                    $attendance->user_id = $id;
-                    $attendance->group_id = $group;
-                    $attendance->week    = $week;
-                    $attendance->status = null;
-                    $attendance->reason  = null;
-                    $attendance->save();
+                    $this->createAttendance($user, $group, $week);
                 }
-                $atts = Attendance::select('*')
+
+                $attendance = Attendance::select('*')
                         ->where('group_id', '=', $group)
                         ->where('week', '=', $week)
-                        ->where('user_id', '=', $user->id)->get();
+                        ->where('user_id', '=', $id)->first();
 
-                // For sure there is only 1 $att with specific week and user_id, but get() returns a collection.
-                foreach ($atts as $att) {
-                    $attendance = $att;
-                }
                 array_push($attendances, $attendance);
             }
         }
 
         return view('attendance_submit')->with('attendances', $attendances)->with('edition_id', $editionId);
+    }
+
+
+    //function that creates a new attendance object and adds it to the database
+    //this function is only called when no entry for a student in a specific week exists.
+    public function createAttendance($user, $group, $week)
+    {
+                $id = $user->id;
+
+                $attendance          = new Attendance();
+                $attendance->user_id = $id;
+                $attendance->group_id = $group;
+                $attendance->week    = $week;
+                $attendance->status = null;
+                $attendance->reason  = null;
+                $attendance->save();
     }
 }
