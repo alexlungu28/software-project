@@ -6,6 +6,7 @@ use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class GroupController extends Controller
@@ -87,7 +88,7 @@ class GroupController extends Controller
     }
 
     /**
-     * Return the group view based on the course edition id.
+     * Return the group view based on the group id.
      *
      * @param $id
      * @return Application|Factory|View
@@ -96,7 +97,14 @@ class GroupController extends Controller
     {
         $editionId = DB::table('groups')->select('course_edition_id')
             ->where('id', '=', $id)->get()->first()->course_edition_id;
-        return view('weeks', ['edition_id' => $editionId, 'group_id' => $id]);
+        $role = DB::table('course_edition_user')
+            ->where('course_edition_id', '=', $editionId)
+            ->where('user_id', '=', Auth::user()->id)->get()->first()->role;
+        if ($role === 'lecturer') {
+            return view('weeks', ['edition_id' => $editionId, 'group_id' => $id]);
+        } else {
+            return view('weeksTA', ['edition_id' => $editionId, 'group_id' => $id]);
+        }
     }
 
     public function viewWeek($id, $week)
