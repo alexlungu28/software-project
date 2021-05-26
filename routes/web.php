@@ -211,23 +211,24 @@ Route::post('/courseEditionUpdate/{course_id}', [CourseEditionController::class,
 
 
 Route::get('/edition/{edition_id}', [CourseEditionController::class, 'view'])
-    ->name('groups')->middleware('role:lecturer');
+    ->name('groups')->middleware(['loggedIn', 'role:lecturer,HeadTA,TA']);
 
 //Gives a visual presentation of the group
 Route::get('/group/{id}', [GroupController::class, 'view'])->name('group');
 
 
 
-//Route::resource('/attendance/{edition_id}', 'App\Http\Controllers\AttendanceController')->middleware(['loggedIn', 'employee']);;
-
-Route::get('/attendance/{edition_id}', [AttendanceController::class, 'index'])->name('attendance')->middleware(['loggedIn', 'employee']);
+Route::get('/attendance/{edition_id}', [AttendanceController::class, 'index'])
+    ->name('attendance')->middleware(['loggedIn', 'employee']);
 
 
 //Route::get('/attendance/{id}/{week}/{present}', [AttendanceController::class, 'create']);
 
-Route::post('/attendanceupdate/{id}', [AttendanceController::class, 'update'])->name('attendanceupdate')->middleware(['loggedIn', 'employee']);
+Route::post('/attendanceupdate/{id}', [AttendanceController::class, 'update'])
+    ->name('attendanceupdate')->middleware(['loggedIn', 'employee']);
 
-Route::get('/attend/{group}/{week}', [AttendanceController::class, 'weekGroup'])->name('attend')->middleware(['loggedIn', 'employee']);
+Route::get('/attend/{group}/{week}', [AttendanceController::class, 'weekGroup'])
+    ->name('attend')->middleware(['loggedIn', 'employee']);
 
 
 

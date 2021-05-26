@@ -11,6 +11,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Redirector;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class CourseEditionController extends Controller
@@ -138,6 +139,28 @@ class CourseEditionController extends Controller
         return redirect('/');
     }
 
+    public function viewTA($editionId)
+    {
+        $groups = DB::table('group_user')->where('user_id', '=', Auth::user()->id)->get()->map(function ($groupUser) {
+            return DB::table('groups')->where('id', '=', $groupUser->group_id)->get()->first();
+        })->filter(function ($group) {
+            return $group != null;
+        });
+        return view('groups.groupTA', [
+            "edition_id" => $editionId,
+            "groups" => $groups
+        ]);
+    }
+
+    public function viewLecturer($editionId)
+    {
+        $groups = DB::table('groups')->where('course_edition_id', '=', $editionId)->get();
+        return view('groups.allgroups', [
+            "edition_id" => $editionId,
+            "groups" => $groups
+        ]);
+    }
+
     /**
      * Returns the course edition view depending on its id.
      *
@@ -146,10 +169,16 @@ class CourseEditionController extends Controller
      */
     public function view($editionId)
     {
-        $groups = DB::table('groups')->where('course_edition_id', '=', $editionId)->get();
-        return view('groups.allgroups', [
-            "edition_id" => $editionId,
-            "groups" => $groups
-        ]);
+        $user = Auth::user();
+        $role = DB::table('course_edition_user')
+            ->where('course_edition_id', '=', $editionId)
+            ->where('user_id', '=', $user->id)->get()->first()->role;
+        if ($role === 'lecturer') {
+            return $this->viewLecturer($editionId);
+        } elseif ($role === 'TA' || $role === 'HeadTA') {
+            return $this->viewTA($editionId);
+        } else {
+            return redirect('unauthorized');
+        }
     }
 }
