@@ -172,6 +172,8 @@ class CourseController extends Controller
                 return $course;
             }
             return null;
+        })->filter(function ($course) {
+            return $course != null;
         });
         return view('courses.mainStudent', [
             "courses" => $courses,
@@ -216,7 +218,19 @@ class CourseController extends Controller
      */
     public function viewStudentCE($id)
     {
-        $courseEditions = DB::table('course_editions')->where('course_id', '=', $id)->get();
+        $courseEditions = DB::table('course_editions')
+            ->where('course_id', '=', $id)->get()->map(function ($courseEdition) {
+                $courseEditionUser = DB::table('course_edition_user')
+                    ->where('course_edition_id', '=', $courseEdition->id)
+                    ->where('user_id', '=', Auth::user()->id)->get()->first();
+                if (!$courseEditionUser === null
+                    && ($courseEditionUser->role === 'TA' || $courseEditionUser->role === 'HeadTA')) {
+                    return $courseEdition;
+                }
+                return null;
+            })->filter(function ($courseEdition) {
+                return $courseEdition != null;
+            });
         return view('courseEditions.courseEditionStudent', [
             "course_id" => $id,
             "courseEditions" => $courseEditions,
