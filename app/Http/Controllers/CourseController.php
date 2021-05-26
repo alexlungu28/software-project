@@ -159,8 +159,20 @@ class CourseController extends Controller
      */
     public function viewStudent()
     {
-        //TODO: query the database to show only the courses where the student is registered to
-        $courses = Course::all();
+        $courses = DB::table('group_user')->where('user_id', '=', Auth::user()->id)->get()->map(function ($groupUser) {
+            $editionId = DB::table('groups')->where('id', '=', $groupUser->group_id)
+                ->get()->first()->course_edition_id;
+            $courseId = DB::table('course_editions')->where('id', '=', $editionId)
+                ->get()->first()->course_id;
+            $course = DB::table('courses')->where('id', '=', $courseId)
+                ->get()->first();
+            $role = DB::table('course_edition_user')->where('user_id', '=', Auth::user()->id)
+                ->where('course_edition_id', '=', $editionId)->get()->first()->role;
+            if ($role === 'TA' || $role === 'HeadTA') {
+                return $course;
+            }
+            return null;
+        });
         return view('courses.mainStudent', [
             "courses" => $courses,
         ]);
