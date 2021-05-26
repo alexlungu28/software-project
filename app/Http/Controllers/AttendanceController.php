@@ -13,16 +13,14 @@ use Illuminate\Http\Request;
 class AttendanceController extends Controller
 {
 
-
     /**
-     * Display a listing of the resource.
+     * Display an overview of attendances for all users of the course edition.
      *
      * @return \Illuminate\Http\Response
      */
     public function index($editionId)
     {
         $users = CourseEditionUser::where('course_edition_id', $editionId)->where('role', 'student')->get(['user_id']);
-        return $users;
 
         $attendances = Attendance::all()->sortBy('week');
         // return Attendance::where('user_id', $id)->where('week', $week)->get();
@@ -30,50 +28,6 @@ class AttendanceController extends Controller
 
         // return $attendance;
     }
-
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create($userId, $week)
-    {
-    }
-
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-    }
-
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Attendance $attendance
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Attendance $attendance)
-    {
-    }
-
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Attendance $attendance
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Attendance $attendance)
-    {
-    }//end edit()
-
 
     /**
      * Update the the status of the attendance.
@@ -103,17 +57,6 @@ class AttendanceController extends Controller
         return back();
     }
 
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Attendance $attendance
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Attendance $attendance)
-    {
-        //
-    }
 
     /**
      * Controller for route with weeks and groups.
