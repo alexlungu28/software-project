@@ -18,7 +18,6 @@ composer:
     - php -v
     - composer --version
     - composer install --prefer-dist --no-ansi --no-interaction --no-progress --no-scripts
-    - php ./vendor/bin/pcov clobber
     - cp .env.testing .env
     - php artisan key:generate
     - php artisan config:cache
@@ -93,7 +92,6 @@ phpunit:
     - php artisan migrate:fresh --seed
     - php ./vendor/bin/phpunit --version
     - php ./vendor/bin/phpunit -v --coverage-text --colors=never --stderr
-    - php -dpcov.enabled=1 -dpcov.directory=. -dpcov.exclude="~vendor~" ./vendor/bin/phpunit --coverage-text
   artifacts:
     paths:
       - storage/logs # for debugging
