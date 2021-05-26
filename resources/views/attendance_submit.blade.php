@@ -25,7 +25,7 @@
 
                                     <td>{{App\Models\User::find($at->user_id)->first_name . " " . App\Models\User::find($at->user_id)->last_name }}</td>
                                     <td>{{$at->week}}</td>
-                                    <td>{{$at->present}}</td>
+                                    <td>{{$at->status}}</td>
 
 
 

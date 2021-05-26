@@ -21,34 +21,13 @@ class AttendanceController extends Controller
     public function index($editionId)
     {
         $users       = DB::select('select * from users');
-        $attendances = [];
-        foreach ($users as $user) {
-            if ($user->affiliation == 'student') {
-                $id   = $user->id;
-                $week = 1;
-                if (Attendance::where('user_id', '=', $id)->where('week', '=', $week)->exists() == false) {
-                    $present             = 0;
-                    $attendance          = new Attendance;
-                    $attendance->user_id = $id;
-                    $attendance->week    = $week;
-                    $attendance->present = null;
-                    $attendance->reason  = 'salut';
-                    $attendance->save();
-                    array_push($attendances, $attendance);
-                }
-            }
-        }
 
-        // foreach ($attendances as $att) {
-        // echo $att;
-        // echo "\n";
-        // }
-        $attendances = Attendance::all();
+        $attendances = Attendance::all()->sortBy('week');
         // return Attendance::where('user_id', $id)->where('week', $week)->get();
         return view('attendance_submit')->with('attendances', $attendances)->with('edition_id', $editionId);
 
         // return $attendance;
-    }//end index()
+    }
 
 
     /**
@@ -58,7 +37,7 @@ class AttendanceController extends Controller
      */
     public function create($userId, $week)
     {
-    }//end create()
+    }
 
 
     /**
@@ -69,7 +48,7 @@ class AttendanceController extends Controller
      */
     public function store(Request $request)
     {
-    }//end store()
+    }
 
 
     /**
@@ -80,7 +59,7 @@ class AttendanceController extends Controller
      */
     public function show(Attendance $attendance)
     {
-    }//end show()
+    }
 
 
     /**
@@ -95,7 +74,7 @@ class AttendanceController extends Controller
 
 
     /**
-     * Update the specified resource in storage.
+     * Update the the status of the attendance.
      *
      * @param  \Illuminate\Http\Request $request
      * @param  \App\Models\Attendance   $attendance
@@ -104,9 +83,9 @@ class AttendanceController extends Controller
     public function update(Request $request, $id)
     {
         $attendance          = Attendance::find($id);
-        $attendance->present = $request->get('update');
-        if ($attendance->present == 'Present') {
-            $attendance->reason = '-';
+        $attendance->status = $request->get('update');
+        if ($attendance->status == 'Present') {
+            $attendance->reason = " ";
             $request->replace(
                 ['reason' => '-']
             );
@@ -120,7 +99,7 @@ class AttendanceController extends Controller
         $attendance->save();
 
         return back();
-    }//end update()
+    }
 
 
     /**
@@ -144,42 +123,52 @@ class AttendanceController extends Controller
 
     public function weekGroup($group, $week)
     {
+        //fetching the editionId as it needs to be passed to the view.
         $editionId = DB::table('groups')->select('course_edition_id')
             ->where('id', '=', $group)->get()->first()->course_edition_id;
+
+        //find group of students
         $usersgroup = GroupUser::all()->where('group_id', '=', $group);
 
+        //list of students
         $users = [];
         foreach ($usersgroup as $item) {
             $user1 = User::find($item->user_id);
             array_push($users, $user1);
         }
 
+        //create and add attendance object to database
+        //added only if it does not exist for the current group and week
         $attendances = [];
         foreach ($users as $user) {
             if ($user->affiliation === 'student') {
                 $id = $user->id;
 
-                if (Attendance::where('user_id', '=', $id)->where('week', '=', $week)->exists() === false) {
+                if (Attendance::where('user_id', '=', $id)
+                        ->where('week', '=', $week)
+                        ->where('group_id', '=', $group)
+                        ->exists() === false) {
                     $attendance          = new Attendance;
                     $attendance->user_id = $id;
+                    $attendance->group_id = $group;
                     $attendance->week    = $week;
-                    $attendance->present = null;
-                    $attendance->reason  = '';
+                    $attendance->status = null;
+                    $attendance->reason  = null;
                     $attendance->save();
-                    // array_push($attendances, $attendance);
                 }
-
-                $atts = Attendance::select('*')->where('week', '=', $week)->where('user_id', '=', $user->id)->get();
+                $atts = Attendance::select('*')
+                        ->where('group_id', '=', $group)
+                        ->where('week', '=', $week)
+                        ->where('user_id', '=', $user->id)->get();
 
                 // For sure there is only 1 $att with specific week and user_id, but get() returns a collection.
                 foreach ($atts as $att) {
                     $attendance = $att;
                 }
-
                 array_push($attendances, $attendance);
-            }//end if
-        }//end foreach
+            }
+        }
 
         return view('attendance_submit')->with('attendances', $attendances)->with('edition_id', $editionId);
-    }//end week_group()
-}//end class
+    }
+}
