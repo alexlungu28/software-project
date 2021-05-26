@@ -17,7 +17,7 @@
                                                     $i++;
                                             if ($i == 1)
                                                 echo $i . ' group problem';
-                                            else
+                                            if ($i > 1)
                                                 echo $i . ' group problems';
                                         @endphp
                                     </p>
