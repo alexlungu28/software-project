@@ -51,10 +51,7 @@ class CourseEditionController extends Controller
             $year = $request->input('year');
             DB::table('course_editions')->insert(array('course_id'=>$courseId,
                 'year'=>$year, 'created_at'=>now(),'updated_at'=>now()));
-
-            //adding the user role inside the pivot table
-            $courseEditionId = DB::table('course_editions')->select('id')
-                ->where('course_id', '=', $courseId)->get()->first()->id;
+            $courseEditionId = DB::table('course_editions')->get()->last()->id;
             DB::table('course_edition_user')->insert(array('user_id'=>$request->user()->id,
                 'course_edition_id'=>$courseEditionId, 'role'=>'lecturer' ,'created_at'=>now(),'updated_at'=>now()));
 
