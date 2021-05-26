@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\CourseEditionUser;
 use App\Models\GroupUser;
 use DB;
 use App\Models\User;
@@ -20,7 +21,8 @@ class AttendanceController extends Controller
      */
     public function index($editionId)
     {
-        $users       = DB::select('select * from users');
+        $users = CourseEditionUser::where('course_edition_id', $editionId)->where('role', 'student')->get(['user_id']);
+        return $users;
 
         $attendances = Attendance::all()->sortBy('week');
         // return Attendance::where('user_id', $id)->where('week', $week)->get();

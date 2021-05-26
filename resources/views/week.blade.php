@@ -8,7 +8,7 @@
                         <div class="card card-stats" style="width: 120px;">
                             <div class="card-icon">
                                 <a class="nav-link" href="{{ route('attend', [$group_id, $week]) }}">
-                                    <p>Attendance {{ $week }}</p>
+                                    <p>Attendance</p>
                                 </a>
                             </div>
                         </div>

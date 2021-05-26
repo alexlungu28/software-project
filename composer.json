@@ -16,6 +16,7 @@
         "laravel/tinker": "^2.5",
         "laravel/ui": "^3.2",
         "maatwebsite/excel": "^3.1",
+        "pcov/clobber": "^2.0",
         "phpmd/phpmd": "@stable",
         "phpoffice/phpspreadsheet": "^1.17",
         "squizlabs/php_codesniffer": "3.*"
