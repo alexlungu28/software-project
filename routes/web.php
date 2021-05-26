@@ -47,9 +47,9 @@ Route::put('/rubricUpdate', [RubricController::class, 'update'])->middleware(['l
 
 // Delete
 Route::get('/rubricDelete', [RubricController::class, 'delete'])
-    ->name('rubricDelete')->middleware(['loggedIn', 'employee']);;
+    ->name('rubricDelete')->middleware(['loggedIn', 'employee']);
 Route::delete('/rubricDestroy', [RubricController::class, 'destroy'])
-    ->name('rubricDestroy')->middleware(['loggedIn', 'employee']);;
+    ->name('rubricDestroy')->middleware(['loggedIn', 'employee']);
 
 /*
 |--------------------------------------------------------------------------
@@ -214,22 +214,24 @@ Route::get('/edition/{edition_id}', [CourseEditionController::class, 'view'])
     ->name('groups')->middleware(['loggedIn', 'role:lecturer,HeadTA,TA']);
 
 //Gives a visual presentation of the group
-Route::get('/group/{id}', [GroupController::class, 'view'])->name('group');
+Route::get('/group/{group_id}', [GroupController::class, 'view'])->name('group')
+    ->middleware(['loggedIn', 'role:lecturer,HeadTA,TA']);
 
 
 
 Route::get('/attendance/{edition_id}', [AttendanceController::class, 'index'])
-    ->name('attendance')->middleware(['loggedIn', 'employee']);
+    ->name('attendance')->middleware(['loggedIn', 'role:lecturer,HeadTA,TA']);
 
 
 //Route::get('/attendance/{id}/{week}/{present}', [AttendanceController::class, 'create']);
 
 Route::post('/attendanceupdate/{id}', [AttendanceController::class, 'update'])
-    ->name('attendanceupdate')->middleware(['loggedIn', 'employee']);
+    ->name('attendanceupdate')->middleware(['loggedIn']);
 
-Route::get('/attend/{group}/{week}', [AttendanceController::class, 'weekGroup'])
-    ->name('attend')->middleware(['loggedIn', 'employee']);
+Route::get('/attend/{group_id}/{week_id}', [AttendanceController::class, 'weekGroup'])
+    ->name('attend')->middleware(['loggedIn', 'role:lecturer,HeadTA,TA']);
 
 
 
-Route::get('/group/{id}/week/{week_id}', [GroupController::class, 'viewWeek'])->name('week');
+Route::get('/group/{group_id}/week/{week_id}', [GroupController::class, 'viewWeek'])->name('week')
+    ->middleware(['loggedIn', 'role:lecturer,HeadTA,TA']);

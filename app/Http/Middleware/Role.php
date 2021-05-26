@@ -18,7 +18,6 @@ class Role
      */
     public function handle(Request $request, Closure $next, ...$roles)
     {
-        //TODO: Add views for TA and Head TA and redirect them to those
         $editionId = $request->route()->parameter('edition_id');
         if ($editionId == null) {
             $groupId = $request->route()->parameter('group_id');
