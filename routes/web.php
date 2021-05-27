@@ -179,7 +179,7 @@ Route::post('/courseStore', [CourseController::class, 'store'])->middleware(['lo
 Route::get('/courseDelete', [CourseController::class, 'delete'])
     ->name('courseDelete')
     ->middleware(['loggedIn', 'employee']);
-Route::post('/courseDestroy', [CourseController::class, 'destroy'])->middleware(['loggedIn', 'employee']);
+Route::delete('/courseDestroy', [CourseController::class, 'destroy'])->middleware(['loggedIn', 'employee']);
 
 /*
 |--------------------------------------------------------------------------
@@ -189,7 +189,7 @@ Route::post('/courseDestroy', [CourseController::class, 'destroy'])->middleware(
 Route::get('/courseEdit', [CourseController::class, 'edit'])
     ->name('courseEdit')
     ->middleware(['loggedIn', 'employee']);
-Route::post('/courseUpdate', [CourseController::class, 'update'])->middleware(['loggedIn', 'employee']);
+Route::put('/courseUpdate', [CourseController::class, 'update'])->middleware(['loggedIn', 'employee']);
 
 /*
 |--------------------------------------------------------------------------
@@ -210,7 +210,7 @@ Route::post('/courseEditionStore/{course_id}', [CourseEditionController::class, 
 Route::get('/courseEditionDelete/{course_id}', [CourseEditionController::class, 'delete'])
     ->name('courseEditionDelete')
     ->middleware(['loggedIn', 'employee']);
-Route::post('/courseEditionDestroy', [CourseEditionController::class, 'destroy'])->middleware(['loggedIn', 'employee']);
+Route::delete('/courseEditionDestroy', [CourseEditionController::class, 'destroy'])->middleware(['loggedIn', 'employee']);
 
 /*
 |--------------------------------------------------------------------------
@@ -220,7 +220,7 @@ Route::post('/courseEditionDestroy', [CourseEditionController::class, 'destroy']
 Route::get('/courseEditionEdit/{course_id}', [CourseEditionController::class, 'edit'])
     ->name('courseEditionEdit')
     ->middleware(['loggedIn', 'employee']);
-Route::post('/courseEditionUpdate/{course_id}', [CourseEditionController::class, 'update'])
+Route::put('/courseEditionUpdate/{course_id}', [CourseEditionController::class, 'update'])
     ->middleware(['loggedIn', 'employee']);
 
 

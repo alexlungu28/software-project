@@ -17,7 +17,9 @@
     <form action = "/courseEditionDestroy" method = "post" class="form-group" style="width:70%; margin-left:15%;">
 
         <input type = "hidden" name = "_token" value = "<?php echo csrf_token(); ?>">
-
+        @csrf
+        @method('DELETE')
+        {{ method_field('DELETE') }}
         <select class="form-control" name="id">
             @foreach($courseEditions as $edition)
                 <option value="{{$edition->id}}">{{$edition->year}}</option>
