@@ -143,7 +143,7 @@ class CourseEditionController extends Controller
     public function viewTA($editionId)
     {
         $groups = DB::table('group_user')->where('user_id', '=', Auth::user()->id)->get()->map(function ($groupUser) {
-            return DB::table('groups')->where('id', '=', $groupUser->group_id)->get()->first();
+            return Group::where('id', '=', $groupUser->group_id)->get()->first();
         })->filter(function ($group) {
             return $group != null;
         });
@@ -155,7 +155,7 @@ class CourseEditionController extends Controller
 
     public function viewLecturer($editionId)
     {
-        $groups = DB::table('groups')->where('course_edition_id', '=', $editionId)->get();
+        $groups = Group::where('course_edition_id', '=', $editionId)->get();
         return view('groups.allgroups', [
             "edition_id" => $editionId,
             "groups" => $groups

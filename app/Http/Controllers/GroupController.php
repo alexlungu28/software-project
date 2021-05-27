@@ -102,7 +102,7 @@ class GroupController extends Controller
             ->where('course_edition_id', '=', $editionId)
             ->where('user_id', '=', Auth::user()->id)->get()->first()->role;
         if ($role === 'lecturer') {
-            return view('weeks', ['edition_id' => $editionId, 'group_id' => $id]);
+            return view('weeks', ['edition_id' => $editionId, 'group_id' => $id, 'group' => Group::find($id)]);
         } else {
             return view('weeksTA', ['edition_id' => $editionId, 'group_id' => $id]);
         }
