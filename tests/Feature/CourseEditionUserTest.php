@@ -22,6 +22,9 @@ class CourseEditionUserTest extends TestCase
      */
     private $controller;
 
+    /**
+     * Insert the specified entries inside the database tables.
+     */
     public function before()
     {
         User::insert(
@@ -59,6 +62,10 @@ class CourseEditionUserTest extends TestCase
         );
         $this->controller = new CourseEditionUserController();
     }
+
+    /**
+     * Test to verify CourseEditionUser view route.
+     */
     public function testCourseEditionUserView()
     {
         $this->before();

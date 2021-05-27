@@ -22,6 +22,9 @@ class CourseEditionUserControllerTest extends TestCase
      */
     private $controller;
 
+    /**
+     * Insert the specified entries inside the database tables.
+     */
     public function before()
     {
         User::insert(
@@ -52,6 +55,9 @@ class CourseEditionUserControllerTest extends TestCase
         $this->controller = new CourseEditionUserController();
     }
 
+    /**
+     * Test to verify SetRoleTA create route.
+     */
     public function testSetRoleTA()
     {
         $this->before();
@@ -74,6 +80,10 @@ class CourseEditionUserControllerTest extends TestCase
             ]
         );
     }
+
+    /**
+     * Test to verify setRoleStudent create route.
+     */
     public function testSetRoleStudent()
     {
         $this->before();
@@ -96,6 +106,10 @@ class CourseEditionUserControllerTest extends TestCase
             ]
         );
     }
+
+    /**
+     * Test to verify SetRoleHeadTA create route.
+     */
     public function testSetRoleHeadTA()
     {
         $this->before();

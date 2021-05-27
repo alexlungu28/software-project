@@ -85,7 +85,12 @@ class CourseEditionUserController extends Controller
         //
     }
 
-    //maybe change the methods so it's more dynamic
+    /**
+     * Sets the role to be a TA from anything that was before.
+     *
+     * @param $id
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function setRoleTA($id)
     {
         $student = CourseEditionUser::find($id);
@@ -96,6 +101,12 @@ class CourseEditionUserController extends Controller
         return redirect()->back();
     }
 
+    /**
+     * Sets the role to be a HeadTA from anything that was before.
+     *
+     * @param $id
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function setRoleHeadTA($id)
     {
         $student = CourseEditionUser::find($id);
@@ -106,6 +117,12 @@ class CourseEditionUserController extends Controller
         return redirect()->back();
     }
 
+    /**
+     * Sets the role to be a Student from anything that was before.
+     *
+     * @param $id
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function setRoleStudent($id)
     {
         $student = CourseEditionUser::find($id);
@@ -116,6 +133,12 @@ class CourseEditionUserController extends Controller
         return redirect()->back();
     }
 
+    /**
+     * CourseEditionUser view based on edition id.
+     *
+     * @param $editionId
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
+     */
     public function view($editionId)
     {
         $allUsers = User::all();
@@ -124,7 +147,6 @@ class CourseEditionUserController extends Controller
             ->where('role', '=', 'student')
             ->orWhere('role', '=', 'TA')
             ->orWhere('role', '=', 'HeadTA')->get();
-        //$netIdOfUser = DB::table('users')->where('id','=','');
 
         return view('pages.studentList', [
             'allUsers' => $allUsers,
