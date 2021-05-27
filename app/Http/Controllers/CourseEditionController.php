@@ -170,10 +170,9 @@ class CourseEditionController extends Controller
      */
     public function view($editionId)
     {
-        $user = Auth::user();
         $role = DB::table('course_edition_user')
             ->where('course_edition_id', '=', $editionId)
-            ->where('user_id', '=', $user->id)->get()->first()->role;
+            ->where('user_id', '=', Auth::id())->get()->first()->role;
         if ($role === 'lecturer') {
             return $this->viewLecturer($editionId);
         } elseif ($role === 'TA' || $role === 'HeadTA') {

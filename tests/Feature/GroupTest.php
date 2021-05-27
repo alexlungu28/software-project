@@ -2,10 +2,14 @@
 
 namespace Tests\Feature;
 
+use App\Models\CourseEditionUser;
 use App\Models\Group;
 use App\Models\Note;
+use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithoutMiddleware;
+use Illuminate\Support\Facades\Auth;
+use Mockery;
 use Tests\TestCase;
 
 class GroupTest extends TestCase
@@ -18,6 +22,18 @@ class GroupTest extends TestCase
      */
     public function before()
     {
+
+        Auth::shouldReceive('check')->andReturn(true);
+        Auth::shouldReceive('id')->andReturn(1);
+
+        CourseEditionUser::insert(
+            [
+                'user_id' => 1,
+                'course_edition_id' => 1,
+                'role' => 'lecturer'
+            ]
+        );
+
         Group::insert(
             [
                 'group_name' => 'Group 1',
@@ -70,7 +86,13 @@ class GroupTest extends TestCase
         );
     }
 
-    public function testAllGroupsShowProblems() {
+    /**
+     * Test to verify all groups show problems.
+     *
+     * @return void
+     */
+    public function testAllGroupsShowProblems()
+    {
         $this->before();
         $this->get('/edition/1')
             ->assertSeeInOrder(
@@ -85,7 +107,13 @@ class GroupTest extends TestCase
             ->assertDontSee("0 group problems");
     }
 
-    public function testIndividualGroupShowProblemTable() {
+    /**
+     * Test to verify an individual group shows problems.
+     *
+     * @return void
+     */
+    public function testIndividualGroupShowProblemTable()
+    {
         $this->before();
         $this->get('/group/1')->assertSeeInOrder(
             array(
