@@ -155,11 +155,11 @@ Route::get('/courses/{id}', [CourseController::class, 'viewCourseById'])->name('
 */
 Route::get('/studentList/{edition_id}', [CourseEditionUserController::class,'view'])->name('studentList')
     ->middleware(['loggedIn', 'role:lecturer']);
-Route::post('/studentList/changeRoleTA/{id}', [CourseEditionUserController::class, 'setRoleTA'])
+Route::post('/studentList/changeRoleTA/{course_edition_user_id}', [CourseEditionUserController::class, 'setRoleTA'])
     ->name('setRoleTA')->middleware(['loggedIn', 'role:lecturer']);
-Route::post('/studentList/changeRoleHeadTA/{id}', [CourseEditionUserController::class, 'setRoleHeadTA'])
+Route::post('/studentList/changeRoleHeadTA/{course_edition_user_id}', [CourseEditionUserController::class, 'setRoleHeadTA'])
     ->name('setRoleHeadTA')->middleware(['loggedIn', 'role:lecturer']);
-Route::post('/studentList/changeRoleStudent/{id}', [CourseEditionUserController::class, 'setRoleStudent'])
+Route::post('/studentList/changeRoleStudent/{course_edition_user_id}', [CourseEditionUserController::class, 'setRoleStudent'])
     ->name('setRoleStudent')->middleware(['loggedIn', 'role:lecturer']);
 /*
 |--------------------------------------------------------------------------
@@ -256,3 +256,7 @@ Route::get('/attend/{group_id}/{week_id}', [AttendanceController::class, 'weekGr
 
 Route::get('/group/{group_id}/week/{week_id}', [GroupController::class, 'viewWeek'])->name('week')
     ->middleware(['loggedIn', 'role:lecturer,HeadTA,TA']);
+
+Route::get('/routeError', function () {
+    echo "A routing error has occurred";
+})->name('routeError');
