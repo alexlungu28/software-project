@@ -10,6 +10,18 @@
                             <div class="card-icon">
                                 <a class="nav-link" href="{{ route('group', $group->id) }}">
                                     <p>{{ $group->group_name }}</p>
+                                    <p>@php
+                                            $i = 0;
+                                            foreach($group->notes as $note)
+                                                if($note->problem_signal != 0)
+                                                    $i++;
+                                            if ($i == 1)
+                                                echo $i . ' group problem';
+                                            if ($i > 1)
+                                                echo $i . ' group problems';
+                                        @endphp
+                                    </p>
+
                                 </a>
                             </div>
                         </div>

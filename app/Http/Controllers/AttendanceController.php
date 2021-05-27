@@ -7,7 +7,10 @@ use App\Models\GroupUser;
 use DB;
 use App\Models\User;
 use App\Models\Attendance;
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Contracts\View\View;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 
 class AttendanceController extends Controller
@@ -33,7 +36,7 @@ class AttendanceController extends Controller
      * Update the the status of the attendance.
      *
      * @param  \Illuminate\Http\Request $request
-     * @param  \App\Models\Attendance   $attendance
+     * @param  $id
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)

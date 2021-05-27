@@ -4,18 +4,29 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Note extends Model
 {
     use HasFactory;
 
-    public function intervention()
+    /**
+     * Creates the intervention relation.
+     *
+     * @return BelongsTo
+     */
+    public function noteable()
     {
-        return $this->belongsTo(Intervention::class);
+        return $this->morphTo();
     }
 
+    /**
+     * Creates the group relation.
+     *
+     * @return BelongsTo
+     */
     public function group()
     {
-        return $this->belongsTo(Group::class);
+        return $this->morphTo(Group::class);
     }
 }

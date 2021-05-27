@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Notifications\Notifiable;
@@ -46,33 +47,64 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
+    /**
+     * Creates the interventions relation.
+     *
+     * @return BelongsToMany
+     */
     public function interventions()
     {
         return $this->belongsToMany(Intervention::class, 'intervention_user');
     }
 
+    /**
+     * Creates the course editions relation.
+     *
+     * @return BelongsToMany
+     */
     public function courseEditions()
     {
         return $this->belongsToMany(CourseEdition::class, 'course_edition_user');
     }
 
+    /**
+     * Creates the groups relation.
+     *
+     * @return BelongsToMany
+     */
     public function groups()
     {
         return $this->belongsToMany(Group::class, 'group_user');
     }
 
+    /**
+     * Creates the attendances relation.
+     *
+     * @return BelongsToMany
+     */
+    public function attendances()
+    {
+        return $this->belongsToMany(Attendance::class, 'attendance');
+    }
+
+    /**
+     * Verifies whether the user has a student affiliation.
+     *
+     * @return bool
+     */
     public function isStudent()
     {
         return $this->affiliation === 'student';
     }
 
+
+    /**
+     * Verifies whether the user has an employee affiliation.
+     *
+     * @return bool
+     */
     public function isEmployee()
     {
         return $this->affiliation === 'employee';
-    }
-
-    public function attendances()
-    {
-        return $this->belongsToMany(Attendance::class, 'attendance');
     }
 }

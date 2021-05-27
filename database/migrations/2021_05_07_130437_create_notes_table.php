@@ -17,11 +17,13 @@ class CreateNotesTable extends Migration
             $table->id();
             $table->string('content');
             $table->integer('problem_signal');
-            $table->string('foreign_type');
-            $table->unsignedBigInteger('group_id')->nullable();
-            $table->unsignedBigInteger('intervention_id')->nullable();
-            $table->foreign('group_id')->references('id')->on('groups')->cascadeOnDelete();
-            $table->foreign('intervention_id')->references('id')->on('interventions')->cascadeOnDelete();
+            $table->integer('noteable_id');
+            $table->string('noteable_type');
+//            $table->unsignedBigInteger('group_id')->nullable();
+//            $table->unsignedBigInteger('intervention_id')->nullable();
+
+//            $table->foreign('group_id')->references('id')->on('groups')->cascadeOnDelete();
+//            $table->foreign('intervention_id')->references('id')->on('interventions')->cascadeOnDelete();
             $table->timestamps();
         });
     }
