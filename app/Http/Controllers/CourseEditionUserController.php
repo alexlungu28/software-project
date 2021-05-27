@@ -133,6 +133,22 @@ class CourseEditionUserController extends Controller
         return redirect()->back();
     }
 
+    public function assignTaToGroupsView($editionId)
+    {
+        $allUsers = User::all();
+        $courseEditionUser = DB::table('course_edition_user')
+            ->where('course_edition_id', '=', $editionId)
+            ->where('role', '=', 'student')
+            ->orWhere('role', '=', 'TA')
+            ->orWhere('role', '=', 'HeadTA')->get();
+
+        return view('pages.assignTAToGroups', [
+            'allUsers' => $allUsers,
+            'courseEditionUser' => $courseEditionUser,
+            'edition_id' => $editionId]);
+    }
+
+
     /**
      * CourseEditionUser view based on edition id.
      *
