@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\CourseController;
 use App\Http\Controllers\CourseEditionController;
+use App\Http\Controllers\CourseEditionUserController;
 use App\Http\Controllers\GroupController;
 use App\Http\Controllers\AttendanceController;
 use App\Http\Controllers\RubricController;
@@ -147,6 +148,19 @@ Route::get('unauthorized', function () {
 
 Route::get('/courses/{id}', [CourseController::class, 'viewCourseById'])->name('course')->middleware();
 
+/*
+|--------------------------------------------------------------------------
+|  Student List to assign TAs Routes
+|--------------------------------------------------------------------------
+*/
+Route::get('/studentList/{edition_id}', [CourseEditionUserController::class,'view'])->name('studentList')
+    ->middleware(['loggedIn', 'employee']);
+Route::post('/studentList/changeRoleTA/{id}', [CourseEditionUserController::class, 'setRoleTA'])
+    ->name('setRoleTA')->middleware(['loggedIn', 'employee']);
+Route::post('/studentList/changeRoleHeadTA/{id}', [CourseEditionUserController::class, 'setRoleHeadTA'])
+    ->name('setRoleHeadTA')->middleware(['loggedIn', 'employee']);
+Route::post('/studentList/changeRoleStudent/{id}', [CourseEditionUserController::class, 'setRoleStudent'])
+    ->name('setRoleStudent')->middleware(['loggedIn', 'employee']);
 /*
 |--------------------------------------------------------------------------
 | Create Courses Routes
