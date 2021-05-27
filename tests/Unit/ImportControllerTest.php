@@ -51,7 +51,7 @@ class ImportControllerTest extends TestCase
 
         Excel::fake();
 
-        $response = $this->get(route('export'));
+        $response = $this->get(route('export', [1]));
 
         $this->assertEquals(200, $response->getStatusCode());
         $response->assertOk();
