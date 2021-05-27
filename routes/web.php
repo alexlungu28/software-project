@@ -154,13 +154,13 @@ Route::get('/courses/{id}', [CourseController::class, 'viewCourseById'])->name('
 |--------------------------------------------------------------------------
 */
 Route::get('/studentList/{edition_id}', [CourseEditionUserController::class,'view'])->name('studentList')
-    ->middleware(['loggedIn', 'employee']);
+    ->middleware(['loggedIn', 'role:lecturer']);
 Route::post('/studentList/changeRoleTA/{id}', [CourseEditionUserController::class, 'setRoleTA'])
-    ->name('setRoleTA')->middleware(['loggedIn', 'employee']);
+    ->name('setRoleTA')->middleware(['loggedIn', 'role:lecturer']);
 Route::post('/studentList/changeRoleHeadTA/{id}', [CourseEditionUserController::class, 'setRoleHeadTA'])
-    ->name('setRoleHeadTA')->middleware(['loggedIn', 'employee']);
+    ->name('setRoleHeadTA')->middleware(['loggedIn', 'role:lecturer']);
 Route::post('/studentList/changeRoleStudent/{id}', [CourseEditionUserController::class, 'setRoleStudent'])
-    ->name('setRoleStudent')->middleware(['loggedIn', 'employee']);
+    ->name('setRoleStudent')->middleware(['loggedIn', 'role:lecturer']);
 /*
 |--------------------------------------------------------------------------
 | Create Courses Routes
