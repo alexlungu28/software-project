@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\CourseEdition;
+use App\Models\Group;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
@@ -149,7 +150,7 @@ class CourseEditionController extends Controller
      */
     public function view($editionId)
     {
-        $groups = DB::table('groups')->where('course_edition_id', '=', $editionId)->get();
+        $groups = Group::where('course_edition_id', '=', $editionId)->get();
         return view('groups.allgroups', [
             "edition_id" => $editionId,
             "groups" => $groups

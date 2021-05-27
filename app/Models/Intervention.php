@@ -6,7 +6,6 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Intervention extends Model
 {
@@ -25,11 +24,11 @@ class Intervention extends Model
     /**
      * Creates the notes relation.
      *
-     * @return HasMany
+     * @return \Illuminate\Database\Eloquent\Relations\MorphMany
      */
     public function notes()
     {
-        return $this->hasMany(Note::class);
+        return $this->morphMany('App\Models\Note', 'noteable');
     }
 
     /**

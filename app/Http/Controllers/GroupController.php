@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Group;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
@@ -96,7 +97,8 @@ class GroupController extends Controller
     {
         $editionId = DB::table('groups')->select('course_edition_id')
             ->where('id', '=', $id)->get()->first()->course_edition_id;
-        return view('weeks', ['edition_id' => $editionId, 'group_id' => $id]);
+        $group = Group::find($id);
+        return view('weeks', ['edition_id' => $editionId, 'group_id' => $id, 'group' => $group]);
     }
 
     public function viewWeek($id, $week)

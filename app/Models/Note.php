@@ -15,9 +15,9 @@ class Note extends Model
      *
      * @return BelongsTo
      */
-    public function intervention()
+    public function noteable()
     {
-        return $this->belongsTo(Intervention::class);
+        return $this->morphTo();
     }
 
     /**
@@ -27,6 +27,6 @@ class Note extends Model
      */
     public function group()
     {
-        return $this->belongsTo(Group::class);
+        return $this->morphTo(Group::class);
     }
 }
