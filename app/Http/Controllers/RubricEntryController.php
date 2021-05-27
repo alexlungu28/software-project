@@ -69,7 +69,7 @@ class RubricEntryController extends Controller
      * Store a newly created resource in storage.
      *
      * @param Request $request
-     * @return void
+     * @return Application|Redirector|RedirectResponse
      */
     public function store(Request $request)
     {
@@ -89,7 +89,8 @@ class RubricEntryController extends Controller
                 "created_at" => now(), "updated_at" => now());
             DB::table('rubric_data')->insertOrIgnore($rubricData);
         }
-        redirect('viewRubricTA/'.$rubricId);
+        $courseEdition = Rubric::find($rubricId)->course_edition_id;
+        return redirect('viewRubricTeacher/' . $rubricId . '/' . $courseEdition);
     }
 
     /**
@@ -131,7 +132,8 @@ class RubricEntryController extends Controller
             ->where('distance', '=', $distance)
             ->update(['description' => $description]);
 
-        return redirect("/rubricEntryEdit/". $id . "/" . $isRow);
+        $courseEdition = Rubric::find($id)->course_edition_id;
+        return redirect('viewRubricTeacher/' . $id . '/' . $courseEdition);
     }
 
     /**
@@ -147,7 +149,8 @@ class RubricEntryController extends Controller
         if ($isRow == 1) {
             RubricData::where('rubric_id', '=', $id)->where('row_number', '=', $distance)->delete();
         }
-        redirect('rubricViewTeacher/'.$id);
+        $courseEdition = Rubric::find($id)->course_edition_id;
+        return redirect('viewRubricTeacher/' . $id . '/' . $courseEdition);
     }
 
     /**

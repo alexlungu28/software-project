@@ -29,11 +29,16 @@
           <p>{{ __('Rubrics') }}</p>
         </a>
       </li>
-
         <li class="nav-item{{ $activePage == 'groups' ? ' active' : '' }}">
             <a class="nav-link" href="{{ route('groups', [$edition_id]) }}">
                 <i class="material-icons">groups</i>
                 <p>{{ __('Groups') }}</p>
+            </a>
+        </li>
+        <li class="nav-item{{ $activePage == 'studentList' ? ' active' : '' }}">
+            <a class="nav-link" href="{{ route('studentList', [$edition_id]) }}">
+                <i class="material-icons">S</i>
+                <p>{{ __('StudentList') }}</p>
             </a>
         </li>
 
