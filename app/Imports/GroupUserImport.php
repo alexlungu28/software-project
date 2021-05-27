@@ -10,6 +10,18 @@ use Maatwebsite\Excel\Concerns\WithHeadingRow;
 
 class GroupUserImport implements ToModel, WithHeadingRow
 {
+
+    private $editionId;
+
+    /**
+     * GroupsImport constructor.
+     * @param int $editionId
+     */
+    public function __construct(int $editionId)
+    {
+        $this->editionId = $editionId;
+    }
+
     /**
      * Adds a link between groups and users in the database.
      *
@@ -32,22 +44,20 @@ class GroupUserImport implements ToModel, WithHeadingRow
                 $groupName = $row[array_keys($row)[$x]];
             }
         }
-
         $userId = User::select('id')->where('org_defined_id', '=', trim($row['orgdefinedid'], "#"))->first()->id;
-        $user = User::find($userId);
-        $groupExists = false;
-        foreach ($user->groups as $groupUser) {
-            if ($groupUser->group_name == $groupName) {
-                $groupExists = true;
-            }
-        }
-        if (!$groupExists) {
+        if (!GroupUser::where('user_id', '=', $userId)
+            ->where(
+                'group_id',
+                '=',
+                Group::select('id')->where('group_name', '=', $groupName)
+                ->where('course_edition_id', '=', $this->editionId)->first()->id
+            )->exists()) {
             return new GroupUser([
-                'user_id' => $userId,
-                'group_id' => Group::select('id')->where('group_name', '=', $groupName)->first()->id,
+            'user_id' => $userId,
+            'group_id' => Group::select('id')
+                ->where('group_name', '=', $groupName)
+                ->where('course_edition_id', '=', $this->editionId)->first()->id,
             ]);
-        } else {
-            return null;
         }
     }
 }

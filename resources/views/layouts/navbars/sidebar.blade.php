@@ -13,11 +13,17 @@
     <ul class="nav">
         <li class="nav-item{{ $activePage == 'courses' ? ' active' : '' }}">
             <a class="nav-link" href="{{ route('courses') }}">
-                <i class="material-icons">courses</i>
+                <i class="material-icons">dashboard</i>
                 <p>{{ __('Courses') }}</p>
             </a>
         </li>
-        <li class="nav-item{{ $activePage == 'rubrics' ? ' active' : '' }}">
+      <li class="nav-item{{ $activePage == 'notifications' ? ' active' : '' }}">
+        <a class="nav-link" href="{{ route('notifications') }}">
+          <i class="material-icons">notifications</i>
+          <p>{{ __('Notifications') }}</p>
+        </a>
+      </li>
+      <li class="nav-item{{ $activePage == 'rubrics' ? ' active' : '' }}">
         <a class="nav-link" href={{ route('viewRubrics', [$edition_id]) }}>
           <i class="material-icons">rubrics</i>
           <p>{{ __('Rubrics') }}</p>
@@ -29,12 +35,6 @@
                 <p>{{ __('Groups') }}</p>
             </a>
         </li>
-        <li class="nav-item{{ $activePage == 'attendance' ? ' active' : '' }}">
-            <a class="nav-link" href="{{ route('attendance', [$edition_id]) }}">
-                <i class="material-icons">Attendance</i>
-                <p>{{ __('Attendance') }}</p>
-            </a>
-        </li>
         <li class="nav-item{{ $activePage == 'studentList' ? ' active' : '' }}">
             <a class="nav-link" href="{{ route('studentList', [$edition_id]) }}">
                 <i class="material-icons">S</i>
@@ -44,7 +44,7 @@
 
         <li class="nav-item{{ $activePage == 'import' ? ' active' : '' }}">
             <a class="nav-link" href="{{ route('importExport', [$edition_id]) }}">
-                <i class="material-icons">import</i>
+                <i class="material-icons">mp</i>
                 <p>{{ __('Import/Export') }}</p>
             </a>
         </li>
