@@ -255,7 +255,7 @@ Route::post('/noteUpdate/{id}', [NotesController::class, 'update'])
     ->name('noteUpdate')->middleware(['loggedIn']);
 
 Route::get('/note/{group_id}/{week_id}', [NotesController::class, 'weekGroup'])
-    ->name('notes')->middleware(['loggedIn', 'role:lecturer,HeadTA,TA']);
+    ->name('note')->middleware(['loggedIn', 'role:lecturer,HeadTA,TA']);
 
 
 

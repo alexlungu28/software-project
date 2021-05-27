@@ -17,9 +17,8 @@
                             <thead>
                             <tr>
                                 <th>Name</th>
-                                <th>Week</th>
                                 <th>Status</th>
-                                <th>Reason</th>
+                                <th>Reason (if late or absent)</th>
 
                             </tr>
                             </thead>
@@ -28,7 +27,7 @@
                                 <tr>
 
                                     <td>{{App\Models\User::find($at->user_id)->first_name . " " . App\Models\User::find($at->user_id)->last_name }}</td>
-                                    <td>{{$at->week}}</td>
+
                                     <td>{{$at->status}}</td>
 
 

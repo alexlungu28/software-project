@@ -44,7 +44,7 @@ class NotesController extends Controller
     {
         $note          = Note::find($id);
         $note->problem_signal = $request->get('update');
-        if ($note->status == '1') {
+        if ($note->problem_signal == '1' && $note->note==null) {
             $note->note = " ";
             $request->replace(
                 ['note' => '-']

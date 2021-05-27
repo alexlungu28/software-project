@@ -1,4 +1,4 @@
-@extends('layouts.app', ['activePage' => 'attendance', 'titlePage' => __('Attendance')])
+@extends('layouts.app', ['activePage' => 'notes', 'titlePage' => __('Notes')])
 
 @section('content')
     <div class="content">
@@ -17,20 +17,29 @@
                             <thead>
                             <tr>
                                 <th>Name</th>
-                                <th>Week</th>
                                 <th>Problem Signal</th>
                                 <th>Note</th>
 
                             </tr>
                             </thead>
                             <tbody>
+
                             @foreach($notes as $note)
+
+
                                 <tr>
 
 
                                     <td>{{App\Models\User::find($note->user_id)->first_name . " " . App\Models\User::find($note->user_id)->last_name }}</td>
-                                    <td>{{$note->week}}</td>
-                                    <td>{{$note->problem_signal}}</td>
+                                    <td>@if($note->problem_signal == 1)
+                                            <button class="btn btn-success rounded-pill" cursor="default" >All good!</button>
+                                        @elseif($note->problem_signal == 2)
+                                            <button class="btn btn-warning rounded-pill" cursor="default" >Warning!</button>
+                                        @elseif($note->problem_signal == 3)
+                                            <button class="btn btn-danger rounded-pill" cursor="default" >Problematic!</button>
+                                        @else
+                                            {{$problemSignal = " "}}
+                                        @endif</td>
 
 
 
@@ -39,9 +48,9 @@
                                         <td> <textarea form="note" type="text" name="note" class="form-control" >{{$note->note}}</textarea> </td>
                                         <input type="hidden" name="_method" value="POST">
                                         <td>
-                                            <button type="submit" name="update" class="btn btn-success rounded-pill" value="1">Green</button>
-                                            <button type="submit" name="update" class="btn btn-warning rounded-pill" value="2">Yellow</button>
-                                            <button type="submit" name="update" class="btn btn-danger rounded-pill" value="3">Red</button>
+                                            <button type="submit" name="update" class="btn btn-success rounded-pill" value="1">All good!</button>
+                                            <button type="submit" name="update" class="btn btn-warning rounded-pill" value="2">Warning!</button>
+                                            <button type="submit" name="update" class="btn btn-danger rounded-pill" value="3">Problematic!</button>
                                         </td>
                                     </form>
 

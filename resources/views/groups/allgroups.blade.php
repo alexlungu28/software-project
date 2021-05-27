@@ -10,7 +10,7 @@
                             <div class="card-icon">
                                 <a class="nav-link" href="{{ route('group', $group->id) }}">
                                     <p>{{ $group->group_name }}</p>
-                                    <p>@php
+                                {{--    <p>@php
                                             $i = 0;
                                             foreach($group->notes as $note)
                                                 if($note->problem_signal != 0)
@@ -20,7 +20,7 @@
                                             if ($i > 1)
                                                 echo $i . ' group problems';
                                         @endphp
-                                    </p>
+                                    </p>--}}
 
                                 </a>
                             </div>
