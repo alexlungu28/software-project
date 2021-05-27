@@ -11,6 +11,9 @@
             $(document).ready( function () {
                 $('#table').DataTable();
             } );
+            function multipleFunc() {
+                document.getElementById("mySelect").multiple = true;
+            }
         </script>
     </head>
     <div class="content">
@@ -53,14 +56,16 @@
                                             {{$user->role}}
                                         </td>
                                         <td>
+                                            <label for="group-select">Choose groups:</label>
                                             <form
                                                 method="post"
-                                                action="{{route('setRoleTA',array('id' => $user->user_id))}}">
+                                                action="">
                                                 @csrf
-                                                <button
-                                                    type="submit"
-                                                    onclick="return confirm('Are you sure?')"
-                                                    class="btn btn-primary">Make TA</button>
+                                                <select class="" name="id" id="mySelect">
+                                                    @foreach($groups as $group)
+                                                        <option>{{$group->group_name}}</option>
+                                                    @endforeach
+                                                </select>
                                             </form>
                                         </td>
                                     </tr>
