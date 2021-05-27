@@ -14,16 +14,6 @@ use Illuminate\Support\Facades\DB;
 class RubricController extends Controller
 {
     /**
-     * Display a listing of the resource.
-     *
-     * @return void
-     */
-    public function index()
-    {
-        //
-    }
-
-    /**
      * Show the form for creating a new resource.
      *
      * @return Application|Factory|View
@@ -46,17 +36,6 @@ class RubricController extends Controller
         $data=array('name'=>$name,'course_edition_id' => $courseEdition,'created_at' =>now(), 'updated_at' => now());
         DB::table('rubrics')->insert($data);
         return redirect('/viewRubrics/' . $courseEdition);
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return void
-     */
-    public function show($id)
-    {
-        //
     }
 
     /**

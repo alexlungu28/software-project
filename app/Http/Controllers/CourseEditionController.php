@@ -17,15 +17,6 @@ use Illuminate\Support\Facades\DB;
 
 class CourseEditionController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return void
-     */
-    public function index()
-    {
-        //
-    }
 
     /**
      * Show the form for creating a new resource.
@@ -65,16 +56,6 @@ class CourseEditionController extends Controller
         }
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  $id
-     * @return void
-     */
-    public function show($id)
-    {
-        //
-    }
 
     /**
      * Show the form for editing the specified resource.

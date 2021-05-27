@@ -94,10 +94,15 @@ Route::post('/rubricDataStore/{id}', [RubricDataController::class, 'store']);
 | Import/Export student Routes
 |--------------------------------------------------------------------------
 */
-Route::get('/export', 'App\Http\Controllers\ImportController@export')->name('export');
-Route::get('/importExportView/{editionId}', 'App\Http\Controllers\ImportController@importExportView')
-    ->name('importExport');
-Route::post('/import/{edition_id}', 'App\Http\Controllers\ImportController@import')->name('import');
+Route::get('/export/{edition_id}', 'App\Http\Controllers\ImportController@export')
+    ->name('export')
+    ->middleware(['loggedIn', 'role:lecturer']);
+Route::get('/importExportView/{edition_id}', 'App\Http\Controllers\ImportController@importExportView')
+    ->name('importExport')
+    ->middleware(['loggedIn', 'role:lecturer']);
+Route::post('/import/{edition_id}', 'App\Http\Controllers\ImportController@import')
+    ->name('import')
+    ->middleware(['loggedIn', 'role:lecturer']);
 
 
 
