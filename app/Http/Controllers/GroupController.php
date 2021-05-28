@@ -113,7 +113,8 @@ class GroupController extends Controller
     {
         $editionId = DB::table('groups')->select('course_edition_id')
             ->where('id', '=', $id)->get()->first()->course_edition_id;
-        $rubrics = Rubric::all()->where('course_edition_id', '=', $editionId)->where('week', '=', $week);
+        $courseRubrics = Rubric::all()->where('course_edition_id', '=', $editionId);
+        $rubrics = $courseRubrics->where('week', '=', $week)->merge($courseRubrics->where('week', '=', null));
         return view('week', ['edition_id' => $editionId, 'group_id' => $id, 'week' => $week, 'rubrics' => $rubrics]);
     }
 }
