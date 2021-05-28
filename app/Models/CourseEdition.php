@@ -41,4 +41,14 @@ class CourseEdition extends Model
     {
         return $this->belongsToMany(User::class, 'course_edition_user');
     }
+
+    /**
+     * Creates the rubrics relation.
+     *
+     * @return HasMany
+     */
+    public function rubrics()
+    {
+        return $this->hasMany(Rubric::class);
+    }
 }

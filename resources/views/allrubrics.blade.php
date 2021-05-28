@@ -8,7 +8,7 @@
                     <div class="col-lg-3 col-md-6 col-sm-6">
                         <div class="card card-stats" style="width: 120px;">
                             <div class="card-icon">
-                                <a class="nav-link" href="{{ route('rubric', [$rubric->id, $edition_id]) }}">
+                                <a class="nav-link" href="{{ route('teacherRubric', [$rubric->id]) }}">
                                     <p>{{ $rubric->name }}</p>
                                 </a>
                             </div>
@@ -27,7 +27,7 @@
                 <div class="col-lg-3 col-md-6 col-sm-6">
                     <div class="card card-stats" style="width: 120px;">
                         <div class="card-icon">
-                            <a class="nav-link" href="{{ route('rubricCreate') }}">
+                            <a class="nav-link" href="{{ route('rubricCreate', $edition_id) }}">
                                 <p>Create rubric</p>
                             </a>
                         </div>

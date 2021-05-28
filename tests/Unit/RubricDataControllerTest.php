@@ -7,6 +7,7 @@ use App\Models\RubricData;
 use App\Models\RubricEntry;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithoutMiddleware;
+use Illuminate\Support\Facades\Auth;
 use Tests\TestCase;
 
 class RubricDataControllerTest extends TestCase
@@ -19,10 +20,12 @@ class RubricDataControllerTest extends TestCase
      */
     public function before()
     {
+        Auth::shouldReceive('id')->andReturn(1);
         Rubric::insert(
             [
                 'name' => 'TestName',
                 'course_edition_id' => 1,
+                'week' => 1,
             ]
         );
         RubricEntry::insert(
@@ -53,8 +56,10 @@ class RubricDataControllerTest extends TestCase
             [
                 'rubric_id' => 1,
                 'row_number' => 0,
+                'group_id' => 1,
                 'value' => -1,
                 'note' => null,
+                'user_id' => 1,
             ]
         );
     }
@@ -70,6 +75,7 @@ class RubricDataControllerTest extends TestCase
             [
                 '0' => 1,
                 'text0' => "This is a note",
+                'groupId' => 1,
             ]
         );
         $this->assertDatabaseHas(
@@ -77,11 +83,13 @@ class RubricDataControllerTest extends TestCase
             [
                 'id' => 1,
                 'rubric_id' => 1,
+                'group_id' => 1,
                 'row_number' => 0,
                 'value' => 1,
                 'note' => "This is a note",
+                'user_id' => 1,
             ]
         );
-        $response->assertStatus(200);
+        $response->assertStatus(302);
     }
 }

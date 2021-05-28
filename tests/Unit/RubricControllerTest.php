@@ -20,13 +20,17 @@ class RubricControllerTest extends TestCase
         $response = $this->post(
             '/rubricStore',
             [
-                'name' => 'TestName'
+                'name' => 'TestName',
+                'edition' => 1,
+                'week' => 1,
             ],
         );
         $this->assertDatabaseHas(
             'rubrics',
             [
-                'name' => 'TestName'
+                'name' => 'TestName',
+                'course_edition_id' => 1,
+                'week' => 1,
             ]
         );
         $response->assertStatus(302);
@@ -41,12 +45,15 @@ class RubricControllerTest extends TestCase
             [
                 'name' => 'TestName',
                 'course_edition_id' => 1,
+                'week' => 1,
             ]
         );
         $this->assertDatabaseHas(
             'rubrics',
             [
-                'name' => 'TestName'
+                'name' => 'TestName',
+                'course_edition_id' => 1,
+                'week' => 1,
             ]
         );
         $response = $this->put(
@@ -75,12 +82,15 @@ class RubricControllerTest extends TestCase
             [
                 'name' => 'TestName',
                 'course_edition_id' => 1,
+                'week' => 1,
             ]
         );
         $this->assertDatabaseHas(
             'rubrics',
             [
-                'name' => 'TestName'
+                'name' => 'TestName',
+                'course_edition_id' => 1,
+                'week' => 1,
             ]
         );
         $response = $this->delete(

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Group;
+use App\Models\Rubric;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
@@ -112,6 +113,7 @@ class GroupController extends Controller
     {
         $editionId = DB::table('groups')->select('course_edition_id')
             ->where('id', '=', $id)->get()->first()->course_edition_id;
-        return view('week', ['edition_id' => $editionId, 'group_id' => $id, 'week' => $week]);
+        $rubrics = Rubric::all()->where('course_edition_id', '=', $editionId)->where('week', '=', $week);
+        return view('week', ['edition_id' => $editionId, 'group_id' => $id, 'week' => $week, 'rubrics' => $rubrics]);
     }
 }

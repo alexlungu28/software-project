@@ -32,7 +32,7 @@ Route::get('/', [CourseController::class, 'view'])->name('courses')->middleware(
 */
 // Create
 //shows the form to create a rubric
-Route::get('/rubricCreate', [RubricController::class, 'create'])
+Route::get('/rubricCreate/{editionId}', [RubricController::class, 'create'])
     ->name('rubricCreate')->middleware(['loggedIn', 'employee']);
 //post route for the Store method in the controller
 Route::post('/rubricStore', [RubricController::class, 'store'])->middleware(['loggedIn', 'employee']);
@@ -67,9 +67,9 @@ Route::post('/rubricEntryStore', [RubricEntryController::class, 'store'])
 
 // Read
 //Gives a visual presentation of the rubric
-Route::get('/viewRubricTA/{id}/{editionId}', [RubricEntryController::class,'view'])->name('rubric');
+Route::get('/viewRubricTA/{id}/{groupId}', [RubricEntryController::class,'view'])->name('rubric');
 //Gives a visual presentation of the teacherView of the rubric
-Route::get('/viewRubricTeacher/{id}/{editionId}', [RubricEntryController::class,'teacherView'])->name('teacherRubric');
+Route::get('/viewRubricTeacher/{id}', [RubricEntryController::class,'teacherView'])->name('teacherRubric');
 
 // Update
 Route::get('/rubricEntryEdit/{id}/{isRow}', [RubricEntryController::class, 'edit'])
