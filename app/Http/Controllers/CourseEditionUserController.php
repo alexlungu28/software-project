@@ -163,10 +163,10 @@ class CourseEditionUserController extends Controller
     public function assignTaToGroupsStore(Request $request)
     {
         $groups = $request->input('groups');
-        $user_id = $request->input('user_id');
+        $userId = $request->input('user_id');
         foreach ($groups as $group) {
-            $userToInsert = array("user_id" =>$user_id, "group_id" =>$group,
-                'created_at' =>now(), 'updated_at' => now());
+            $userToInsert = array("user_id" => $userId, "group_id" => $group,
+                'created_at' => now(), 'updated_at' => now());
             DB::table('group_user')->updateOrInsert($userToInsert);
         }
         return redirect()->back();
