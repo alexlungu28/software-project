@@ -44,21 +44,14 @@ class NotesController extends Controller
     {
         $note          = Note::find($id);
         $note->problem_signal = $request->get('update');
-        if ($note->problem_signal == '1' && $note->note==null) {
-            $note->note = " ";
-            $request->replace(
-                ['note' => '-']
-            );
-        } else {
-            $note->note = $request->get('note');
-        }
+        $note->note = $request->get('note');
 
         $request->validate(
             ['note' => 'required']
         );
         $note->save();
 
-        return back();
+        return redirect()->route('note', [$note->group_id, $note->week]);
     }
 
 

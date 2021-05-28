@@ -5,7 +5,7 @@
         <div class="container-fluid">
 
     <div class="table-responsive">
-
+        <button type="submit" name="update" class="btn btn-dark rounded-pill" onclick="window.location='{{ route('week', [$notes[0]->group_id, $notes[0]->week]) }}'">Back!</button>
         <div class="col-xl-12">
             <h3>Notes - {{App\Models\Group::find($notes[0]->group_id)->group_name}}, Week {{$notes[0]->week}}</h3>
             <div class="card">

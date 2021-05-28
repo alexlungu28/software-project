@@ -18,7 +18,8 @@ class CreateAttendancesTable extends Migration
             $table->foreignId('user_id')->references('id')->on('users')->cascadeOnDelete();
             $table->foreignId('group_id')->references('id')->on('groups')->cascadeOnDelete();
             $table->integer('week');
-            $table->string("status")->nullable();
+            //1 - present, 2 - late, 3 - absent
+            $table->integer("status")->nullable();
             $table->string("reason")->nullable();
             $table->timestamps();
         });

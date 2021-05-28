@@ -43,7 +43,7 @@ class AttendanceController extends Controller
     {
         $attendance          = Attendance::find($id);
         $attendance->status = $request->get('update');
-        if ($attendance->status == 'Present') {
+        if ($attendance->status == 1) {
             $attendance->reason = " ";
             $request->replace(
                 ['reason' => '-']
