@@ -52,6 +52,14 @@ class RubricDataControllerTest extends TestCase
                 'description' => 'Row 1',
             ]
         );
+        RubricEntry::insert(
+            [
+                'rubric_id' => 1,
+                'distance' => 1,
+                'is_row' => 1,
+                'description' => 'Row 2',
+            ]
+        );
         RubricData::insert(
             [
                 'rubric_id' => 1,
@@ -59,6 +67,16 @@ class RubricDataControllerTest extends TestCase
                 'group_id' => 1,
                 'value' => -1,
                 'note' => null,
+                'user_id' => 1,
+            ]
+        );
+        RubricData::insert(
+            [
+                'rubric_id' => 1,
+                'row_number' => 1,
+                'group_id' => 1,
+                'value' => 1,
+                'note' => "This is also a note",
                 'user_id' => 1,
             ]
         );
@@ -75,6 +93,8 @@ class RubricDataControllerTest extends TestCase
             [
                 '0' => 1,
                 'text0' => "This is a note",
+                '1' => null,
+                'text1' => null,
                 'groupId' => 1,
             ]
         );
@@ -87,6 +107,34 @@ class RubricDataControllerTest extends TestCase
                 'row_number' => 0,
                 'value' => 1,
                 'note' => "This is a note",
+                'user_id' => 1,
+            ]
+        );
+        $response->assertStatus(302);
+    }
+
+    public function testRubricDataStoreNull()
+    {
+        $this->before();
+        $response = $this->post(
+            '/rubricDataStore/1',
+            [
+                '0' => 1,
+                'text0' => "This is a note",
+                '1' => null,
+                'text1' => null,
+                'groupId' => 1,
+            ]
+        );
+        $this->assertDatabaseHas(
+            'rubric_data',
+            [
+                'id' => 2,
+                'rubric_id' => 1,
+                'group_id' => 1,
+                'row_number' => 1,
+                'value' => -1,
+                'note' => null,
                 'user_id' => 1,
             ]
         );

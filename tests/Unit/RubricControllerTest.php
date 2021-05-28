@@ -61,6 +61,7 @@ class RubricControllerTest extends TestCase
             [
                 'id' => 1,
                 'name' => 'NewName',
+                'week' => 2,
             ],
         );
         $this->assertDatabaseHas(
@@ -68,6 +69,7 @@ class RubricControllerTest extends TestCase
             [
                 'id' => 1,
                 'name' => 'NewName',
+                'week' => 2,
             ]
         );
         $response->assertStatus(302);

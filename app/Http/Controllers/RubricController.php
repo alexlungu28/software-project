@@ -91,8 +91,10 @@ class RubricController extends Controller
     {
         $id = $request->input('id');
         $name = $request->input('name');
+        $week = $request->input('week');
         $rubric = Rubric::find($id);
         $rubric->name = $name;
+        $rubric->week = $week;
         $rubric->save();
         return redirect('/viewRubrics/' . $rubric->course_edition_id);
     }

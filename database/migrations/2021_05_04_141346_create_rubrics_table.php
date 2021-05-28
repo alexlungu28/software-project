@@ -17,7 +17,7 @@ class CreateRubricsTable extends Migration
             $table->id();
             $table->text('name');
             $table->foreignId('course_edition_id')->references('id')->on('course_editions');
-            $table->integer('week');
+            $table->integer('week')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });
