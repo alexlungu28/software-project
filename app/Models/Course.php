@@ -12,6 +12,16 @@ class Course extends Model
     use HasFactory;
     use SoftDeletes;
 
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+    protected $fillable = [
+        'course_number',
+        'description'
+    ];
+
     protected $dates = ['deleted_at'];
 
     /**

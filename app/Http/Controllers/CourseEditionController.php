@@ -45,9 +45,8 @@ class CourseEditionController extends Controller
             DB::table('course_editions')->insert(array('course_id'=>$courseId,
                 'year'=>$year, 'created_at'=>now(),'updated_at'=>now()));
             $courseEditionId = DB::table('course_editions')->get()->last()->id;
-            DB::table('course_edition_user')->insert(array('user_id'=>$request->user()->id,
+            DB::table('course_edition_user')->insert(array('user_id'=>Auth::id(),
                 'course_edition_id'=>$courseEditionId, 'role'=>'lecturer' ,'created_at'=>now(),'updated_at'=>now()));
-
             return redirect('/');
         } catch (QueryException $e) {
             echo "Course edition already exists.<br/>";

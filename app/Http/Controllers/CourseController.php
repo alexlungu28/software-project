@@ -41,6 +41,7 @@ class CourseController extends Controller
             $description = $request->input('description');
             $data = array('course_number' => $courseNumber, 'description' => $description, 'created_at' => now(),
                 'updated_at' => now());
+            // TODO: make it possible to add a course if the course number matches with a soft deleted one
             DB::table('courses')->insert($data);
             return redirect('/');
         } catch (QueryException $e) {
@@ -87,12 +88,12 @@ class CourseController extends Controller
             $course->course_number = $courseNumber;
             $course->description = $description;
             $course->save();
+            return redirect('/');
         } catch (QueryException $e) {
             echo "Course number already exists.<br/>";
             echo "Redirecting you back to main page...";
             header("refresh:3;url=/");
         }
-        return redirect('/');
     }
 
     /**
@@ -140,14 +141,14 @@ class CourseController extends Controller
      */
     public function viewStudent()
     {
-        $courses = DB::table('group_user')->where('user_id', '=', Auth::user()->id)->get()->map(function ($groupUser) {
+        $courses = DB::table('group_user')->where('user_id', '=', Auth::id())->get()->map(function ($groupUser) {
             $editionId = DB::table('groups')->where('id', '=', $groupUser->group_id)
                 ->get()->first()->course_edition_id;
             $courseId = DB::table('course_editions')->where('id', '=', $editionId)
                 ->get()->first()->course_id;
             $course = DB::table('courses')->where('id', '=', $courseId)
                 ->get()->first();
-            $role = DB::table('course_edition_user')->where('user_id', '=', Auth::user()->id)
+            $role = DB::table('course_edition_user')->where('user_id', '=', Auth::id())
                 ->where('course_edition_id', '=', $editionId)->get()->first()->role;
             if ($role === 'TA' || $role === 'HeadTA') {
                 return $course;
@@ -203,7 +204,7 @@ class CourseController extends Controller
             ->where('course_id', '=', $id)->get()->map(function ($courseEdition) {
                 $courseEditionUser = DB::table('course_edition_user')
                     ->where('course_edition_id', '=', $courseEdition->id)
-                    ->where('user_id', '=', Auth::user()->id)->get()->first();
+                    ->where('user_id', '=', Auth::id())->get()->first();
                 if ($courseEditionUser !== null
                     && ($courseEditionUser->role === 'TA' || $courseEditionUser->role === 'HeadTA')) {
                     return $courseEdition;
