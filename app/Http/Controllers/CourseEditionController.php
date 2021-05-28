@@ -85,12 +85,12 @@ class CourseEditionController extends Controller
             $courseEdition = CourseEdition::find($id);
             $courseEdition->year = $year;
             $courseEdition->save();
+            return redirect('/');
         } catch (QueryException $e) {
             echo "Course edition already exists.<br/>";
             echo "Redirecting you back to main page...";
             header("refresh:3;url=/");
         }
-        return redirect('/');
     }
 
     /**
@@ -122,7 +122,7 @@ class CourseEditionController extends Controller
 
     public function viewTA($editionId)
     {
-        $groups = DB::table('group_user')->where('user_id', '=', Auth::user()->id)->get()->map(function ($groupUser) {
+        $groups = DB::table('group_user')->where('user_id', '=', Auth::id())->get()->map(function ($groupUser) {
             return Group::where('id', '=', $groupUser->group_id)->get()->first();
         })->filter(function ($group) {
             return $group != null;

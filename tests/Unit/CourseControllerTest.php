@@ -68,7 +68,6 @@ class CourseControllerTest extends TestCase
             ],
         );
         $this->expectOutputString("Course number already exists.<br/>Redirecting you back to main page...");
-        //$response->assertHeader('refresh');
     }
 
     /**
@@ -210,12 +209,7 @@ class CourseControllerTest extends TestCase
      */
     public function testViewEmployee() {
         $user = new User([
-            'net_id' => 'sciorba',
-            'last_name' => 'Ciorba',
-            'first_name' => 'Sandu',
-            'email' => 'sandu.ciorba@tudelft.nl',
-            'org_defined_id' => 'sciorba',
-            'affiliation' => 'employee',
+            'affiliation' => 'employee'
         ]);
         Auth::shouldReceive('user')->once()->andReturn($user);
         $response = $this->get('/');
@@ -227,12 +221,7 @@ class CourseControllerTest extends TestCase
      */
     public function testViewStudent() {
         $user = new User([
-            'net_id' => 'sciorba',
-            'last_name' => 'Ciorba',
-            'first_name' => 'Sandu',
-            'email' => 'sandu.ciorba@tudelft.nl',
-            'org_defined_id' => 'sciorba',
-            'affiliation' => 'student',
+            'affiliation' => 'student'
         ]);
         Auth::shouldReceive('user')->once()->andReturn($user);
         Auth::shouldReceive('id')->twice()->andReturn(1);
@@ -278,12 +267,7 @@ class CourseControllerTest extends TestCase
      */
     public function testViewEmployeeCE() {
         $user = new User([
-            'net_id' => 'sciorba',
-            'last_name' => 'Ciorba',
-            'first_name' => 'Sandu',
-            'email' => 'sandu.ciorba@tudelft.nl',
-            'org_defined_id' => 'sciorba',
-            'affiliation' => 'employee',
+            'affiliation' => 'employee'
         ]);
         Auth::shouldReceive('user')->once()->andReturn($user);
         $response = $this->get('/courses/1');
@@ -295,12 +279,7 @@ class CourseControllerTest extends TestCase
      */
     public function testViewStudentCE() {
         $user = new User([
-            'net_id' => 'sciorba',
-            'last_name' => 'Ciorba',
-            'first_name' => 'Sandu',
-            'email' => 'sandu.ciorba@tudelft.nl',
-            'org_defined_id' => 'sciorba',
-            'affiliation' => 'student',
+            'affiliation' => 'student'
         ]);
         Auth::shouldReceive('user')->once()->andReturn($user);
         Auth::shouldReceive('id')->once()->andReturn(1);
