@@ -32,14 +32,14 @@ Route::get('/', [CourseController::class, 'view'])->name('courses')->middleware(
 */
 // Create
 //shows the form to create a rubric
-Route::get('/rubricCreate/{editionId}', [RubricController::class, 'create'])
+Route::get('/rubricCreate/{edition_id}', [RubricController::class, 'create'])
     ->name('rubricCreate')->middleware(['loggedIn', 'employee']);
 //post route for the Store method in the controller
 Route::post('/rubricStore', [RubricController::class, 'store'])->middleware(['loggedIn', 'employee']);
 
 // Read
 //Shows all available rubrics
-Route::get('/viewRubrics/{editionId}', [RubricController::class, 'view'])->name('viewRubrics');
+Route::get('/viewRubrics/{edition_id}', [RubricController::class, 'view'])->name('viewRubrics');
 
 // Update
 Route::get('/rubricEdit', [RubricController::class, 'edit'])
