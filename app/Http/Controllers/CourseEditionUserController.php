@@ -134,6 +134,11 @@ class CourseEditionUserController extends Controller
         return redirect()->back();
     }
 
+    /**
+     * Method to return the assigntatogroupsview.
+     * @param $editionId
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
+     */
     public function assignTaToGroupsView($editionId)
     {
         $allUsers = User::all();
@@ -148,6 +153,23 @@ class CourseEditionUserController extends Controller
             'groups' => $groups,
             'courseEditionUser' => $courseEditionUser,
             'edition_id' => $editionId]);
+    }
+
+    /**
+     * Method that takes the request and puts the TAs from the request in the group_user table.
+     * @param Request $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function assignTaToGroupsStore(Request $request)
+    {
+        $groups = $request->input('groups');
+        $user_id = $request->input('user_id');
+        foreach ($groups as $group) {
+            $userToInsert = array("user_id" =>$user_id, "group_id" =>$group,
+                'created_at' =>now(), 'updated_at' => now());
+            DB::table('group_user')->updateOrInsert($userToInsert);
+        }
+        return redirect()->back();
     }
 
 
