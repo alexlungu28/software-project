@@ -39,7 +39,8 @@ Route::post('/rubricStore', [RubricController::class, 'store'])->middleware(['lo
 
 // Read
 //Shows all available rubrics
-Route::get('/viewRubrics/{edition_id}', [RubricController::class, 'view'])->name('viewRubrics');
+Route::get('/viewRubrics/{edition_id}', [RubricController::class, 'view'])->name('viewRubrics')
+    ->middleware(['loggedIn', 'role:lecturer,HeadTA']);
 
 // Update
 Route::get('/rubricEdit', [RubricController::class, 'edit'])
@@ -67,9 +68,11 @@ Route::post('/rubricEntryStore', [RubricEntryController::class, 'store'])
 
 // Read
 //Gives a visual presentation of the rubric
-Route::get('/viewRubricTA/{id}/{groupId}', [RubricEntryController::class,'view'])->name('rubric');
+Route::get('/viewRubricTA/{id}/{group_id}', [RubricEntryController::class,'view'])->name('rubric')
+    ->middleware(['loggedIn', 'role:lecturer,HeadTA,TA']);
 //Gives a visual presentation of the teacherView of the rubric
-Route::get('/viewRubricTeacher/{id}', [RubricEntryController::class,'teacherView'])->name('teacherRubric');
+Route::get('/viewRubricTeacher/{id}/{edition_id}', [RubricEntryController::class,'teacherView'])->name('teacherRubric')
+    ->middleware(['loggedIn', 'role:lecturer,HeadTA']);
 
 // Update
 Route::get('/rubricEntryEdit/{id}/{isRow}', [RubricEntryController::class, 'edit'])
