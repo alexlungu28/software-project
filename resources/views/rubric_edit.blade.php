@@ -24,8 +24,11 @@
             @endforeach
         </select>
 
-        <label>New Name</label>
+        <label>New Name:</label>
         <input type="text" class="form-control" placeholder="Name" name="name">
+
+        <label>New Week Number:</label>
+        <input type="number" class ="form-control" min="0" max="15" placeholder="1" name="week">
 
         <button type="submit"  value = "Add" class="btn btn-primary">Submit</button>
 

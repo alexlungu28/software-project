@@ -25,6 +25,7 @@ class RubricEntryControllerTest extends TestCase
             [
                 'name' => 'TestName',
                 'course_edition_id' => 1,
+                'week' => 1,
             ]
         );
         $this->controller = new RubricEntryController();
@@ -78,16 +79,6 @@ class RubricEntryControllerTest extends TestCase
                 'is_row' => 1,
                 'description' => 'Row 1',
             ]
-        );
-        $this->assertDatabaseHas(
-            'rubric_data',
-            [
-                'id' => 1,
-                'rubric_id' => 1,
-                'row_number' => 0,
-                'value' => -1,
-                'note' => null,
-            ],
         );
         $response->assertStatus(302);
     }

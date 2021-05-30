@@ -28,9 +28,14 @@ class RubricController extends Controller
      *
      * @return Application|Factory|View
      */
-    public function create()
+    public function create($editionId)
     {
-        return view('rubric_create');
+        return view(
+            'rubric_create',
+            [
+                'edition_id' => $editionId,
+            ]
+        );
     }
 
     /**
@@ -42,9 +47,16 @@ class RubricController extends Controller
     public function store(Request $request)
     {
         $name = $request->input('name');
-        $courseEdition = '1';
-        $data=array('name'=>$name,'course_edition_id' => $courseEdition,'created_at' =>now(), 'updated_at' => now());
-        DB::table('rubrics')->insert($data);
+        $courseEdition = $request->input('edition');
+        $week = $request->input('week');
+        $data = array(
+            'name'=>$name,
+            'course_edition_id' => $courseEdition,
+            'week' => $week,
+            'created_at' => now(),
+            'updated_at' => now(),
+        );
+        Rubric::insert($data);
         return redirect('/viewRubrics/' . $courseEdition);
     }
 
@@ -79,8 +91,10 @@ class RubricController extends Controller
     {
         $id = $request->input('id');
         $name = $request->input('name');
+        $week = $request->input('week');
         $rubric = Rubric::find($id);
         $rubric->name = $name;
+        $rubric->week = $week;
         $rubric->save();
         return redirect('/viewRubrics/' . $rubric->course_edition_id);
     }

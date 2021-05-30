@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Rubric;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 
 class RubricDataController extends Controller
 {
@@ -33,20 +34,30 @@ class RubricDataController extends Controller
      *
      * @param Request $request
      * @param $id
-     * @return void
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
     public function store(Request $request, $id)
     {
-        foreach (Rubric::find($id)->rubricData as $entry) {
-            $value = $request->input("" . $entry->row_number);
-            if ($value === null) {
+        $groupId = $request->input("groupId");
+        foreach (Rubric::find($id)->rubricEntry->where('is_row', '=', 1) as $entry) {
+            $value = $request->input("" . $entry->distance);
+            if ($value == null) {
                 $value = -1;
             }
-            $note = $request->input("text" . $entry->row_number);
-            $key = array("rubric_id"=>$id, "row_number" => $entry->row_number);
-            $data = array("value" => $value, "note" => $note, 'created_at' => now(), 'updated_at' => now());
+            $note = $request->input("text" . $entry->distance);
+            $key = array(
+                "rubric_id" => $id,
+                "group_id" => $groupId,
+                "row_number" => $entry->distance);
+            $data = array(
+                'value' => $value,
+                'note' => $note,
+                'user_id' => Auth::id(),
+                'created_at' => now(),
+                'updated_at' => now());
             DB::table('rubric_data')->updateOrInsert($key, $data);
         }
+        return redirect(route('rubric', [$id, $groupId]));
     }
 
     /**

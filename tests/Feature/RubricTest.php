@@ -17,7 +17,7 @@ class RubricTest extends TestCase
      */
     public function testCreateRubric()
     {
-        $response = $this->get('/rubricCreate')->assertSee('Rubric Management | Add');
+        $response = $this->get('/rubricCreate/1')->assertSee('Rubric Management | Add');
         $response->assertStatus(200);
     }
 
@@ -48,6 +48,7 @@ class RubricTest extends TestCase
             [
                 'name' => 'TestName',
                 'course_edition_id' => 1,
+                'week' => 1,
             ]
         );
         $response = $this->get('viewRubrics/1')->assertSee('TestName');

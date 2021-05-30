@@ -13,6 +13,17 @@
                             </div>
                         </div>
                     </div>
+                @foreach($rubrics as $rubric)
+                    <div class="col-lg-3 col-md-6 col-sm-6">
+                        <div class="card card-stats" style="width: 120px;">
+                            <div class="card-icon">
+                                <a class="nav-link" href="{{ route('rubric', [$rubric->id, $group_id]) }}">
+                                    <p>Rubric {{ $rubric->name }}</p>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                @endforeach
             </div>
         </div>
     </div>
