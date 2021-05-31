@@ -16,11 +16,12 @@ class GroupTest extends TestCase
 {
     use withoutMiddleware;
     use RefreshDatabase;
+}
 
     /**
      * Insert the specified entries inside the database tables.
      */
-    public function before()
+   /* public function before()
     {
 
         Auth::shouldReceive('check')->andReturn(true);
@@ -91,6 +92,7 @@ class GroupTest extends TestCase
      *
      * @return void
      */
+    /*
     public function testAllGroupsShowProblems()
     {
         $this->before();
@@ -112,6 +114,7 @@ class GroupTest extends TestCase
      *
      * @return void
      */
+    /*
     public function testIndividualGroupShowProblemTable()
     {
         $this->before();
@@ -125,3 +128,4 @@ class GroupTest extends TestCase
         )->assertDontSee("Note 1");
     }
 }
+
