@@ -31,6 +31,6 @@ class CreateNoteGroupsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('note_groups');
+        Schema::dropIfExists('notes_group');
     }
 }
