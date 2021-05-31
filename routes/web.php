@@ -5,6 +5,7 @@ use App\Http\Controllers\CourseEditionController;
 use App\Http\Controllers\CourseEditionUserController;
 use App\Http\Controllers\GroupController;
 use App\Http\Controllers\AttendanceController;
+use App\Http\Controllers\NotesController;
 use App\Http\Controllers\RubricController;
 use App\Http\Controllers\RubricDataController;
 use App\Http\Controllers\RubricEntryController;
@@ -263,6 +264,21 @@ Route::post('/attendanceupdate/{id}', [AttendanceController::class, 'update'])
 
 Route::get('/attend/{group_id}/{week_id}', [AttendanceController::class, 'weekGroup'])
     ->name('attend')->middleware(['loggedIn', 'role:lecturer,HeadTA,TA']);
+
+
+Route::get('/notes/{edition_id}', [NotesController::class, 'index'])
+    ->name('allNotes')->middleware(['loggedIn', 'role:lecturer,HeadTA,TA']);
+
+
+Route::post('/noteUpdate/{id}', [NotesController::class, 'update'])
+    ->name('noteUpdate')->middleware(['loggedIn']);
+
+Route::post('/groupNoteUpdate/{id}', [NotesController::class, 'groupNoteUpdate'])
+    ->name('groupNoteUpdate')->middleware(['loggedIn']);
+
+Route::get('/note/{group_id}/{week_id}', [NotesController::class, 'weekGroup'])
+    ->name('note')->middleware(['loggedIn', 'role:lecturer,HeadTA,TA']);
+
 
 
 
