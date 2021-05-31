@@ -5,10 +5,13 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Note extends Model
 {
     use HasFactory;
+
+    protected $table = 'notes_individual';
 
     /**
      * Creates the intervention relation.
@@ -21,12 +24,22 @@ class Note extends Model
     }
 
     /**
+     * Creates the user relation.
+     *
+     * @return BelongsToMany
+     */
+    public function user()
+    {
+        return $this->belongsToMany(User::class);
+    }
+
+    /**
      * Creates the group relation.
      *
      * @return BelongsTo
      */
     public function group()
     {
-        return $this->morphTo(Group::class);
+        return $this->belongsTo(Group::class);
     }
 }

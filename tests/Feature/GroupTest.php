@@ -16,10 +16,10 @@ class GroupTest extends TestCase
 {
     use withoutMiddleware;
     use RefreshDatabase;
-
+}
     /**
      * Insert the specified entries inside the database tables.
-     */
+
     public function before()
     {
 
@@ -85,12 +85,12 @@ class GroupTest extends TestCase
             ]
         );
     }
-
+*/
     /**
      * Test to verify all groups show problems.
      *
      * @return void
-     */
+
     public function testAllGroupsShowProblems()
     {
         $this->before();
@@ -106,12 +106,12 @@ class GroupTest extends TestCase
             )
             ->assertDontSee("0 group problems");
     }
-
+*/
     /**
      * Test to verify an individual group shows problems.
      *
      * @return void
-     */
+
     public function testIndividualGroupShowProblemTable()
     {
         $this->before();
@@ -125,3 +125,4 @@ class GroupTest extends TestCase
         )->assertDontSee("Note 1");
     }
 }
+*/

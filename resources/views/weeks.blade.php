@@ -32,7 +32,7 @@
                                         <th>Problem Signal</th>
                                         </thead>
                                         <tbody>
-                                        @foreach($group->notes as $note)
+                              {{--          @foreach($group->notes as $note)
                                             @if($note->problem_signal >= 1)
                                             <tr>
                                                 <td>
@@ -46,7 +46,7 @@
                                                 </td>
                                             </tr>
                                             @endif
-                                        @endforeach
+                                        @endforeach--}}
                                         </tbody>
                                     </table>
                                 </div>
