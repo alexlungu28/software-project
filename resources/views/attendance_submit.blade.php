@@ -42,9 +42,9 @@
 
 
 
-                                    <form id="attend" method="post" value = "<?php echo csrf_token(); ?>" action="{{action('App\Http\Controllers\AttendanceController@update',$at->id)}}">
+                                    <form id={{"attend" . $at->id}} method="post" value = "<?php echo csrf_token(); ?>" action="{{action('App\Http\Controllers\AttendanceController@update',$at->id)}}">
                                         @csrf
-                                        <td> <textarea form="attend" type="text" name="reason" class="form-control" >{{$at->reason}}</textarea> </td>
+                                        <td> <textarea form={{"attend" . $at->id}} type="text" name="reason" class="form-control" >{{$at->reason}}</textarea> </td>
                                         <input type="hidden" name="_method" value="POST">
                                         <td>
                                             <button type="submit" name="update" class="btn btn-info " value="1">Present</button>
@@ -59,16 +59,6 @@
                                 </tr>
                             @endforeach
 
-
-                            @if ($errors->any())
-                                <div class="alert alert-danger">
-                                    <ul>
-
-                                        <li>{{ $errors->first() }}</li>
-
-                                    </ul>
-                                </div>
-                            @endif
                             </tbody>
                         </table>
                     </div>

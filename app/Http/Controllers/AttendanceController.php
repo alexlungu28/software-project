@@ -42,19 +42,17 @@ class AttendanceController extends Controller
     public function update(Request $request, $id)
     {
         $attendance          = Attendance::find($id);
-        $attendance->status = $request->get('update');
-        if ($attendance->status == 1) {
-            $attendance->reason = " ";
-            $request->replace(
-                ['reason' => '-']
-            );
-        } else {
-            $attendance->reason = $request->get('reason');
-        }
+        //return $request->get('reason');
 
-        $request->validate(
-            ['reason' => 'required']
-        );
+        $attendance->status = $request->get('update');
+        $attendance->reason = $request->input('reason');
+       // return $request->get('reason');
+
+
+       // return ddd($request);
+
+
+
         $attendance->save();
 
         return back();
