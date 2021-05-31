@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\CourseEditionUser;
 use App\Models\GroupUser;
+use App\Models\NoteGroup;
 use DB;
 use App\Models\User;
 use App\Models\Attendance;
@@ -11,6 +12,7 @@ use App\Models\Note;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 
@@ -27,8 +29,9 @@ class NotesController extends Controller
         $users = CourseEditionUser::where('course_edition_id', $editionId)->where('role', 'student')->get(['user_id']);
 
         $notes = Note::all()->sortBy('week');
+
         // return Attendance::where('user_id', $id)->where('week', $week)->get();
-        return view('notes')->with('attendances', $notes)->with('edition_id', $editionId);
+        return view('notes')->with('notes', $notes)->with('edition_id', $editionId);
 
         // return $attendance;
     }
@@ -44,14 +47,31 @@ class NotesController extends Controller
     {
         $note          = Note::find($id);
         $note->problem_signal = $request->get('update');
-        $note->note = $request->get('note');
 
-        $request->validate(
-            ['note' => 'required']
-        );
+        $note->note = $request->get('reason');
+
         $note->save();
 
         return redirect()->route('note', [$note->group_id, $note->week]);
+    }
+
+    /**
+     * Update the the status of the attendance.
+     *
+     * @param  \Illuminate\Http\Request $request
+     * @param  $id - 1 green, 2 yellow, 3 red.
+     * @return \Illuminate\Http\Response
+     */
+    public function groupNoteUpdate(Request $request, $id)
+    {
+        $groupNote          = NoteGroup::find($id);
+        $groupNote->problem_signal = $request->get('groupNoteUpdate');
+        $groupNote->note = $request->get('groupNote');
+
+
+        $groupNote->save();
+
+        return redirect()->route('note', [$groupNote->group_id, $groupNote->week]);
     }
 
 
@@ -103,11 +123,25 @@ class NotesController extends Controller
             }
         }
 
-        return view('notes')->with('notes', $notes)->with('edition_id', $editionId);
+        if (NoteGroup::where('group_id', '=', $group)
+                ->where('week', '=', $week)
+                ->exists() === false) {
+            $this->createGroupNote($group, $week);
+        }
+
+        $groupNote = NoteGroup::where('group_id', '=', $group)
+            ->where('week', '=', $week)->get();
+        //return $groupNote;
+
+
+
+
+
+        return view('notes')->with('notes', $notes)->with('groupNotes', $groupNote)->with('edition_id', $editionId);
     }
 
 
-    //function that creates a new attendance object and adds it to the database
+    //function that creates a new notes object and adds it to the database
     //this function is only called when no entry for a student in a specific week exists.
     public function createNote($user, $group, $week)
     {
@@ -120,5 +154,18 @@ class NotesController extends Controller
                 $note->problem_signal = null;
                 $note->note  = null;
                 $note->save();
+    }
+
+    //function that creates a new group notes object and adds it to the database
+    //this function is only called when no entry for a student in a specific week exists.
+    public function createGroupNote($group, $week)
+    {
+
+        $note          = new NoteGroup();
+        $note->group_id = $group;
+        $note->week    = $week;
+        $note->problem_signal = null;
+        $note->note  = null;
+        $note->save();
     }
 }
