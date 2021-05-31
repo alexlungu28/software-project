@@ -10,6 +10,7 @@
               <form action="/rubricDataStore/{{$rubric->id}}" method = "post" class="form-group" style="width:70%; margin-left:15%;" id="rubricForm">
 
                   <input type = "hidden" name = "_token" value = "<?php echo csrf_token(); ?>">
+                  <input type = "hidden" name = "groupId" value = {{$group_id}}>
 
                   <h4 class="card-title ">{{$rubric->name}}</h4>
           </div>
@@ -26,17 +27,28 @@
                     <th> note </th>
                 </thead>
                 <tbody>
-                @foreach($rubricRowEntries as $rowEntry)
-                    <tr>
-                        <td>
-                            {{$rowEntry->description}}
-                        </td>
-                        @foreach($rubricColumnEntries as $columnEntry)
-                            <td> <input type="radio" name={{$rowEntry->distance}}  value={{$loop->index}} {{$rubricData[$loop->parent->index]->value == $loop->index ? 'checked' : ''}}> </td>
-                        @endforeach
-                        <td> <textarea name={{"text".($rowEntry->distance)}} form="rubricForm">{{$rubricData[$loop->index]->note}}</textarea> </td>
-                    </tr>
-                @endforeach
+                    @foreach($rubricRowEntries as $rowEntry)
+                        <tr>
+                            <td>
+                                {{$rowEntry->description}}
+                            </td>
+                            @foreach($rubricColumnEntries as $columnEntry)
+                                <td> <input type="radio" name={{$rowEntry->distance}}  value="{{$loop->index}}"
+                                     @if($rubricData->contains('row_number', $loop->parent->index))
+                                        @if($rubricData->where('row_number', '=', $loop->parent->index)->where('group_id', '=', $group_id)->first()->value == $loop->index)
+                                            {{'checked'}}
+                                        @endif
+                                     @endif>
+                                </td>
+                            @endforeach
+                            <td>
+                                <textarea name={{"text".($rowEntry->distance)}} form="rubricForm"><?php
+                                    if($rubricData->contains('row_number', $loop->index))
+                                        echo $rubricData->where('row_number', '=', $loop->index)->where('group_id', '=', $group_id)->first()->note
+                                ?></textarea>
+                            </td>
+                        </tr>
+                    @endforeach
                 </tbody>
               </table>
                 <button type="submit"  value = "Add" class="btn btn-primary">Submit</button>

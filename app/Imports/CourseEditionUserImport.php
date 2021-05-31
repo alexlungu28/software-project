@@ -32,11 +32,13 @@ class CourseEditionUserImport implements ToModel, WithHeadingRow
     {
 
         $userId = User::select('id')->where('org_defined_id', '=', trim($row['orgdefinedid'], "#"))->first()->id;
-
-        return new CourseEditionUser([
+        if (!CourseEditionUser::where('user_id', '=', $userId)
+            ->where('course_edition_id', '=', $this->editionId)->exists()) {
+            return new CourseEditionUser([
             'user_id'    => $userId,
             'course_edition_id' => $this->editionId,
             'role' => 'student',
-        ]);
+            ]);
+        }
     }
 }

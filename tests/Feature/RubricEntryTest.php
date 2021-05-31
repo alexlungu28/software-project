@@ -15,12 +15,16 @@ class RubricEntryTest extends TestCase
     use withoutMiddleware;
     use RefreshDatabase;
 
+    /**
+     * Insert the specified entries inside the database tables.
+     */
     public function before()
     {
         Rubric::insert(
             [
                 'name' => 'TestName',
                 'course_edition_id' => 1,
+                'week' => 1,
             ]
         );
         RubricEntry::insert(
@@ -33,6 +37,9 @@ class RubricEntryTest extends TestCase
         );
     }
 
+    /**
+     * Test to verify rubric create route.
+     */
     public function testRubricCreate()
     {
         $this->before();
@@ -40,6 +47,9 @@ class RubricEntryTest extends TestCase
         $response->assertStatus(200);
     }
 
+    /**
+     * Test to verify rubric edit route.
+     */
     public function testRubricEdit()
     {
         $this->before();
@@ -49,6 +59,9 @@ class RubricEntryTest extends TestCase
         $response->assertStatus(200);
     }
 
+    /**
+     * Test to verify rubric view route.
+     */
     public function testRubricView()
     {
         $this->before();

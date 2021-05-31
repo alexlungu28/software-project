@@ -16,10 +16,12 @@
     <br>
     <form action = "/rubricStore" method = "post" class="form-group" style="width:70%; margin-left:15%;" action="/action_page.php">
 
-        <input type = "hidden" name = "_token" value = "<?php echo csrf_token(); ?>"><input type = "hidden" name = "_token" value = "<?php echo csrf_token(); ?>">
-
+        <input type = "hidden" name = "_token" value = "<?php echo csrf_token(); ?>">
+        <input type = "hidden" name = "edition" value = {{$edition_id}}>
         <label>Name:</label>
         <input type="text" class ="form-control" placeholder="Name" name="name">
+        <label>Week number:</label>
+        <input type="number" class ="form-control" min="0" max="15" placeholder="1" name="week">
 
         <button type="submit"  value = "Add" class="btn btn-primary">Submit</button>
     </form>

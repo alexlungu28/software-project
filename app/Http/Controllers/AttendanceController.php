@@ -2,184 +2,125 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\CourseEditionUser;
 use App\Models\GroupUser;
 use DB;
 use App\Models\User;
 use App\Models\Attendance;
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Contracts\View\View;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 
 class AttendanceController extends Controller
 {
 
-
     /**
-     * Display a listing of the resource.
+     * Display an overview of attendances for all users of the course edition.
      *
      * @return \Illuminate\Http\Response
      */
     public function index($editionId)
     {
-        $users       = DB::select('select * from users');
-        $attendances = [];
-        foreach ($users as $user) {
-            if ($user->affiliation == 'student') {
-                $id   = $user->id;
-                $week = 1;
-                if (Attendance::where('user_id', '=', $id)->where('week', '=', $week)->exists() == false) {
-                    $present             = 0;
-                    $attendance          = new Attendance;
-                    $attendance->user_id = $id;
-                    $attendance->week    = $week;
-                    $attendance->present = null;
-                    $attendance->reason  = 'salut';
-                    $attendance->save();
-                    array_push($attendances, $attendance);
-                }
-            }
-        }
+        $users = CourseEditionUser::where('course_edition_id', $editionId)->where('role', 'student')->get(['user_id']);
 
-        // foreach ($attendances as $att) {
-        // echo $att;
-        // echo "\n";
-        // }
-        $attendances = Attendance::all();
+        $attendances = Attendance::all()->sortBy('week');
         // return Attendance::where('user_id', $id)->where('week', $week)->get();
         return view('attendance_submit')->with('attendances', $attendances)->with('edition_id', $editionId);
 
         // return $attendance;
-    }//end index()
-
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create($userId, $week)
-    {
-    }//end create()
-
+    }
 
     /**
-     * Store a newly created resource in storage.
+     * Update the the status of the attendance.
      *
      * @param  \Illuminate\Http\Request $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-    }//end store()
-
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Attendance $attendance
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Attendance $attendance)
-    {
-    }//end show()
-
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Attendance $attendance
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Attendance $attendance)
-    {
-    }//end edit()
-
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request $request
-     * @param  \App\Models\Attendance   $attendance
+     * @param  $id
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
     {
         $attendance          = Attendance::find($id);
-        $attendance->present = $request->get('update');
-        if ($attendance->present == 'Present') {
-            $attendance->reason = '-';
-            $request->replace(
-                ['reason' => '-']
-            );
-        } else {
-            $attendance->reason = $request->get('reason');
-        }
 
-        $request->validate(
-            ['reason' => 'required']
-        );
+        $attendance->status = $request->get('update');
+        $attendance->reason = $request->input('reason');
+
         $attendance->save();
 
         return back();
-    }//end update()
-
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Attendance $attendance
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Attendance $attendance)
-    {
-        //
     }
 
+
     /**
-     * Controller for route with weeks and groups.
+     * Controller for route with weeks and groups. Creates attendance for entry
+     * for all students based on group and week, only if they are not in the
+     * database already.
      *
      * @param $week
      * @param $group
-     * @return Application|Factory|View
+     * @return view
      */
 
     public function weekGroup($group, $week)
     {
+        //fetching the editionId as it needs to be passed to the view.
         $editionId = DB::table('groups')->select('course_edition_id')
             ->where('id', '=', $group)->get()->first()->course_edition_id;
-        $usersgroup = GroupUser::all()->where('group_id', '=', $group);
 
+        //find group of students
+        $usersGroup = GroupUser::all()->where('group_id', '=', $group);
+
+        //list of students
         $users = [];
-        foreach ($usersgroup as $item) {
-            $user1 = User::find($item->user_id);
-            array_push($users, $user1);
+
+        foreach ($usersGroup as $item) {
+            $user = User::find($item->user_id);
+            array_push($users, $user);
         }
 
+        //create and add attendance object to database
+        //added only if it does not exist for the current group and week
         $attendances = [];
         foreach ($users as $user) {
             if ($user->affiliation === 'student') {
                 $id = $user->id;
 
-                if (Attendance::where('user_id', '=', $id)->where('week', '=', $week)->exists() === false) {
-                    $attendance          = new Attendance;
-                    $attendance->user_id = $id;
-                    $attendance->week    = $week;
-                    $attendance->present = null;
-                    $attendance->reason  = '';
-                    $attendance->save();
-                    // array_push($attendances, $attendance);
+                if (Attendance::where('user_id', '=', $id)
+                        ->where('week', '=', $week)
+                        ->where('group_id', '=', $group)
+                        ->exists() === false) {
+                    $this->createAttendance($user, $group, $week);
                 }
 
-                $atts = Attendance::select('*')->where('week', '=', $week)->where('user_id', '=', $user->id)->get();
-
-                // For sure there is only 1 $att with specific week and user_id, but get() returns a collection.
-                foreach ($atts as $att) {
-                    $attendance = $att;
-                }
+                $attendance = Attendance::select('*')
+                        ->where('group_id', '=', $group)
+                        ->where('week', '=', $week)
+                        ->where('user_id', '=', $id)->first();
 
                 array_push($attendances, $attendance);
-            }//end if
-        }//end foreach
+            }
+        }
 
         return view('attendance_submit')->with('attendances', $attendances)->with('edition_id', $editionId);
-    }//end week_group()
-}//end class
+    }
+
+    /**
+     * Function that creates a new attendance object and adds it to the database.
+     * This function is only called when no entry for a student in a specific week exists.
+     * @param $user - user_id
+     * @param $group - group_id
+     * @param $week - week number
+     */
+    public function createAttendance($user, $group, $week)
+    {
+                $id = $user->id;
+                $attendance          = new Attendance();
+                $attendance->user_id = $id;
+                $attendance->group_id = $group;
+                $attendance->week    = $week;
+                $attendance->status = null;
+                $attendance->reason  = null;
+                $attendance->save();
+    }
+}

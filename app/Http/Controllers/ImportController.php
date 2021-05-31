@@ -52,7 +52,7 @@ class ImportController extends Controller
 
         Excel::import(new UsersImport, request()->file('file'));
         Excel::import(new GroupsImport($editionId), request()->file('file'));
-        Excel::import(new GroupUserImport, request()->file('file'));
+        Excel::import(new GroupUserImport($editionId), request()->file('file'));
         Excel::import(new CourseEditionUserImport($editionId), request()->file('file'));
         return back();
     }

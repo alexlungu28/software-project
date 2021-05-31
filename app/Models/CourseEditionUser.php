@@ -22,7 +22,12 @@ class CourseEditionUser extends Model
 
     protected $table = 'course_edition_user';
 
-    public function isHeadTA()
+    /**
+     * Verifies whether the user has a headTA role.
+     *
+     * @return bool
+     */
+    public function isHeadTA(): bool
     {
         return $this->role === 'Head TA';
     }

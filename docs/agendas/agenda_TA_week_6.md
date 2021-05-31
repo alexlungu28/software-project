@@ -45,12 +45,24 @@ Everyone has provided all questions they had.
 
 
 # Questions for the TA
+- How often are we expected to work on the final report?
+    - Ideally, every week we should document what we did as to make sure we do not grind the report in the final weeks and risk running out of time.
+      
+- What is your feedback for the midterm presentation?
+    - Quality of documentation - We lack a short description of what functions do.
+    - Design quality 
+        - We need to justify our choices, the reason behind chosen technologies is lacking.
+        - Using something because the client said so is not enough of a reason, in our case the client is a teacher but he can be uninformed, need to support these choices as well.
+    - Work distribution - Balance commits so that everyone has around the same amount.
+    - Planning - Not such a problem, fix the other issues first.
+    - Address the rubric without pointing to it explicitly in the presentation.
+    - Overall, the presentation was good content wise.
 
+- What should next week's presentation for Technical Writing be about?
+    - The presentation should be based mainly on the report, not on the product itself.
 
 # Question round
 *If there are any spontaneous questions.*
 
 # Closing
-*For any final remarks*
-
-
+Next week's meeting will be on Monday 31st at 14:30

@@ -56,3 +56,5 @@ Assignments such as the project plan, requirements, code of conduct are in the /
 Notes from weekly client and TA meetings are in /docs/notes folder.
 
 Sprint retrospectives with tasks accomplished through the respective week can be found in /docs/sprintRetrospectives folder.
+
+Code coverage reports from week 6 onwards including the class, method and line coverages can be found in /docs/testCoverages.

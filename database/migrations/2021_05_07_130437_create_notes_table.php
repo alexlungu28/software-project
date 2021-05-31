@@ -13,15 +13,14 @@ class CreateNotesTable extends Migration
      */
     public function up()
     {
-        Schema::create('notes', function (Blueprint $table) {
+        Schema::create('notes_individual', function (Blueprint $table) {
             $table->id();
-            $table->string('content');
-            $table->integer('problem_signal');
-            $table->string('foreign_type');
-            $table->unsignedBigInteger('group_id')->nullable();
-            $table->unsignedBigInteger('intervention_id')->nullable();
-            $table->foreign('group_id')->references('id')->on('groups')->cascadeOnDelete();
-            $table->foreign('intervention_id')->references('id')->on('interventions')->cascadeOnDelete();
+            $table->foreignId('user_id')->references('id')->on('users')->cascadeOnDelete();
+            $table->foreignId('group_id')->references('id')->on('groups')->cascadeOnDelete();
+            $table->integer('week');
+            $table->integer("problem_signal")->nullable();
+            $table->string("note")->nullable();
+
             $table->timestamps();
         });
     }
@@ -33,6 +32,6 @@ class CreateNotesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('notes');
+        Schema::dropIfExists('notes_individual');
     }
 }

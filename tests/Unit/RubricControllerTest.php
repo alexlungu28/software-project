@@ -12,35 +12,48 @@ class RubricControllerTest extends TestCase
     use withoutMiddleware;
     use RefreshDatabase;
 
+    /**
+     * Test to verify insertion inside the database.
+     */
     public function testRubricStore()
     {
         $response = $this->post(
             '/rubricStore',
             [
-                'name' => 'TestName'
+                'name' => 'TestName',
+                'edition' => 1,
+                'week' => 1,
             ],
         );
         $this->assertDatabaseHas(
             'rubrics',
             [
-                'name' => 'TestName'
+                'name' => 'TestName',
+                'course_edition_id' => 1,
+                'week' => 1,
             ]
         );
         $response->assertStatus(302);
     }
 
+    /**
+     * Test to verify the rubric is updated inside the database.
+     */
     public function testRubricUpdate()
     {
         Rubric::insert(
             [
                 'name' => 'TestName',
                 'course_edition_id' => 1,
+                'week' => 1,
             ]
         );
         $this->assertDatabaseHas(
             'rubrics',
             [
-                'name' => 'TestName'
+                'name' => 'TestName',
+                'course_edition_id' => 1,
+                'week' => 1,
             ]
         );
         $response = $this->put(
@@ -48,6 +61,7 @@ class RubricControllerTest extends TestCase
             [
                 'id' => 1,
                 'name' => 'NewName',
+                'week' => 2,
             ],
         );
         $this->assertDatabaseHas(
@@ -55,23 +69,30 @@ class RubricControllerTest extends TestCase
             [
                 'id' => 1,
                 'name' => 'NewName',
+                'week' => 2,
             ]
         );
         $response->assertStatus(302);
     }
 
+    /**
+     * Test to verify deletion inside the database.
+     */
     public function testRubricDestroy()
     {
         Rubric::insert(
             [
                 'name' => 'TestName',
                 'course_edition_id' => 1,
+                'week' => 1,
             ]
         );
         $this->assertDatabaseHas(
             'rubrics',
             [
-                'name' => 'TestName'
+                'name' => 'TestName',
+                'course_edition_id' => 1,
+                'week' => 1,
             ]
         );
         $response = $this->delete(
@@ -86,6 +107,6 @@ class RubricControllerTest extends TestCase
                 'id' => 1,
             ],
         );
-        $response->assertStatus(200);
+        $response->assertStatus(302);
     }
 }

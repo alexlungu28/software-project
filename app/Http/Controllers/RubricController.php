@@ -14,23 +14,18 @@ use Illuminate\Support\Facades\DB;
 class RubricController extends Controller
 {
     /**
-     * Display a listing of the resource.
-     *
-     * @return void
-     */
-    public function index()
-    {
-        //
-    }
-
-    /**
      * Show the form for creating a new resource.
      *
      * @return Application|Factory|View
      */
-    public function create()
+    public function create($editionId)
     {
-        return view('rubric_create');
+        return view(
+            'rubric_create',
+            [
+                'edition_id' => $editionId,
+            ]
+        );
     }
 
     /**
@@ -42,21 +37,17 @@ class RubricController extends Controller
     public function store(Request $request)
     {
         $name = $request->input('name');
-        $courseEdition = '1';
-        $data=array('name'=>$name,'course_edition_id' => $courseEdition,'created_at' =>now(), 'updated_at' => now());
-        DB::table('rubrics')->insert($data);
-        return redirect('/rubricCreate');
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return void
-     */
-    public function show($id)
-    {
-        //
+        $courseEdition = $request->input('edition');
+        $week = $request->input('week');
+        $data = array(
+            'name'=>$name,
+            'course_edition_id' => $courseEdition,
+            'week' => $week,
+            'created_at' => now(),
+            'updated_at' => now(),
+        );
+        Rubric::insert($data);
+        return redirect('/viewRubrics/' . $courseEdition);
     }
 
     /**
@@ -79,13 +70,19 @@ class RubricController extends Controller
     {
         $id = $request->input('id');
         $name = $request->input('name');
+        $week = $request->input('week');
         $rubric = Rubric::find($id);
         $rubric->name = $name;
+        $rubric->week = $week;
         $rubric->save();
-
-        return redirect('/rubricEdit');
+        return redirect('/viewRubrics/' . $rubric->course_edition_id);
     }
 
+    /**
+     * Shows the form to select the rubric to be deleted
+     *
+     * @return Application|Factory|View
+     */
     public function delete()
     {
         $rubrics = Rubric::all();
@@ -98,15 +95,21 @@ class RubricController extends Controller
      * Remove the specified resource from storage.
      *
      * @param Request $request
-     * @return void
+     * @return Application|Redirector|RedirectResponse
      */
     public function destroy(Request $request)
     {
+        $courseEdition = Rubric::find($request->input('id'))->course_edition_id;
         Rubric::destroy($request->input('id'));
-        echo "Record deleted successfully.<br/>";
-        echo '<a href = "/viewRubrics">Click Here</a> to go back.';
+        return redirect('/viewRubrics/' . $courseEdition);
     }
 
+    /**
+     * Rubric view based on edition id.
+     *
+     * @param $editionId
+     * @return Application|Factory|View
+     */
     public function view($editionId)
     {
         $rubrics = Rubric::all()->where('course_edition_id', '=', $editionId);

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\CourseEdition;
+use App\Models\Group;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
@@ -11,19 +12,11 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Redirector;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class CourseEditionController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return void
-     */
-    public function index()
-    {
-        //
-    }
 
     /**
      * Show the form for creating a new resource.
@@ -51,13 +44,9 @@ class CourseEditionController extends Controller
             $year = $request->input('year');
             DB::table('course_editions')->insert(array('course_id'=>$courseId,
                 'year'=>$year, 'created_at'=>now(),'updated_at'=>now()));
-
-            //adding the user role inside the pivot table
-            $courseEditionId = DB::table('course_editions')->select('id')
-                ->where('course_id', '=', $courseId)->get()->first()->id;
-            DB::table('course_edition_user')->insert(array('user_id'=>$request->user()->id,
+            $courseEditionId = DB::table('course_editions')->get()->last()->id;
+            DB::table('course_edition_user')->insert(array('user_id'=>Auth::id(),
                 'course_edition_id'=>$courseEditionId, 'role'=>'lecturer' ,'created_at'=>now(),'updated_at'=>now()));
-
             return redirect('/');
         } catch (QueryException $e) {
             echo "Course edition already exists.<br/>";
@@ -66,16 +55,6 @@ class CourseEditionController extends Controller
         }
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return void
-     */
-    public function show($id)
-    {
-        //
-    }
 
     /**
      * Show the form for editing the specified resource.
@@ -106,12 +85,12 @@ class CourseEditionController extends Controller
             $courseEdition = CourseEdition::find($id);
             $courseEdition->year = $year;
             $courseEdition->save();
+            return redirect('/');
         } catch (QueryException $e) {
             echo "Course edition already exists.<br/>";
             echo "Redirecting you back to main page...";
             header("refresh:3;url=/");
         }
-        return redirect('/');
     }
 
     /**
@@ -141,6 +120,28 @@ class CourseEditionController extends Controller
         return redirect('/');
     }
 
+    public function viewTA($editionId)
+    {
+        $groups = DB::table('group_user')->where('user_id', '=', Auth::id())->get()->map(function ($groupUser) {
+            return Group::where('id', '=', $groupUser->group_id)->get()->first();
+        })->filter(function ($group) {
+            return $group != null;
+        });
+        return view('groups.groupTA', [
+            "edition_id" => $editionId,
+            "groups" => $groups
+        ]);
+    }
+
+    public function viewLecturer($editionId)
+    {
+        $groups = Group::where('course_edition_id', '=', $editionId)->get();
+        return view('groups.allgroups', [
+            "edition_id" => $editionId,
+            "groups" => $groups
+        ]);
+    }
+
     /**
      * Returns the course edition view depending on its id.
      *
@@ -149,10 +150,15 @@ class CourseEditionController extends Controller
      */
     public function view($editionId)
     {
-        $groups = DB::table('groups')->where('course_edition_id', '=', $editionId)->get();
-        return view('groups.allgroups', [
-            "edition_id" => $editionId,
-            "groups" => $groups
-        ]);
+        $role = DB::table('course_edition_user')
+            ->where('course_edition_id', '=', $editionId)
+            ->where('user_id', '=', Auth::id())->get()->first()->role;
+        if ($role === 'lecturer') {
+            return $this->viewLecturer($editionId);
+        } elseif ($role === 'TA' || $role === 'HeadTA') {
+            return $this->viewTA($editionId);
+        } else {
+            return redirect('unauthorized');
+        }
     }
 }

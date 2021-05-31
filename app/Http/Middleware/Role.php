@@ -14,21 +14,40 @@ class Role
      *
      * @param Request $request
      * @param \Closure $next
+     * @param mixed ...$roles
      * @return mixed
      */
-    public function handle(Request $request, Closure $next)
+    public function handle(Request $request, Closure $next, ...$roles)
     {
-        //TODO: Add views for TA and Head TA and redirect them to those
         $editionId = $request->route()->parameter('edition_id');
-        $courseEditionId = DB::table('course_edition_user')->select('id')
+        if ($editionId == null) {
+            $groupId = $request->route()->parameter('group_id');
+            if ($groupId != null) {
+                $editionId = DB::table('groups')->select('course_edition_id')
+                    ->where('id', '=', $groupId)
+                    ->get()->first()->course_edition_id;
+            } else {
+                $courseEditionUserId = $request->route()->parameter('course_edition_user_id');
+                if ($courseEditionUserId == null) {
+                    return redirect('routeError');
+                }
+                $editionId = DB::table('course_edition_user')
+                    ->where('id', '=', $courseEditionUserId)
+                    ->get()->first()->course_edition_id;
+            }
+        }
+        $courseEditionUser = DB::table('course_edition_user')
             ->where('course_edition_id', '=', $editionId)
             ->where('user_id', '=', $request->user()->id)
-            ->get()->first()->id;
-        $courseEditionUser = CourseEditionUser::find($courseEditionId);
-        if ($courseEditionUser->role == 'lecturer') {
-            return $next($request);
+            ->get()->first();
+        if ($courseEditionUser === null) {
+            return redirect('unauthorized');
         } else {
-            redirect('unauthorized');
+            if (in_array($courseEditionUser->role, $roles)) {
+                return $next($request);
+            } else {
+                return redirect('unauthorized');
+            }
         }
     }
 }

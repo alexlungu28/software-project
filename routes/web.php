@@ -2,8 +2,10 @@
 
 use App\Http\Controllers\CourseController;
 use App\Http\Controllers\CourseEditionController;
+use App\Http\Controllers\CourseEditionUserController;
 use App\Http\Controllers\GroupController;
 use App\Http\Controllers\AttendanceController;
+use App\Http\Controllers\NotesController;
 use App\Http\Controllers\RubricController;
 use App\Http\Controllers\RubricDataController;
 use App\Http\Controllers\RubricEntryController;
@@ -31,14 +33,15 @@ Route::get('/', [CourseController::class, 'view'])->name('courses')->middleware(
 */
 // Create
 //shows the form to create a rubric
-Route::get('/rubricCreate', [RubricController::class, 'create'])
+Route::get('/rubricCreate/{edition_id}', [RubricController::class, 'create'])
     ->name('rubricCreate')->middleware(['loggedIn', 'employee']);
 //post route for the Store method in the controller
 Route::post('/rubricStore', [RubricController::class, 'store'])->middleware(['loggedIn', 'employee']);
 
 // Read
 //Shows all available rubrics
-Route::get('/viewRubrics/{editionId}', [RubricController::class, 'view'])->name('viewRubrics');
+Route::get('/viewRubrics/{edition_id}', [RubricController::class, 'view'])->name('viewRubrics')
+    ->middleware(['loggedIn', 'role:lecturer,HeadTA']);
 
 // Update
 Route::get('/rubricEdit', [RubricController::class, 'edit'])
@@ -47,9 +50,9 @@ Route::put('/rubricUpdate', [RubricController::class, 'update'])->middleware(['l
 
 // Delete
 Route::get('/rubricDelete', [RubricController::class, 'delete'])
-    ->name('rubricDelete')->middleware(['loggedIn', 'employee']);;
+    ->name('rubricDelete')->middleware(['loggedIn', 'employee']);
 Route::delete('/rubricDestroy', [RubricController::class, 'destroy'])
-    ->name('rubricDestroy')->middleware(['loggedIn', 'employee']);;
+    ->name('rubricDestroy')->middleware(['loggedIn', 'employee']);
 
 /*
 |--------------------------------------------------------------------------
@@ -66,9 +69,11 @@ Route::post('/rubricEntryStore', [RubricEntryController::class, 'store'])
 
 // Read
 //Gives a visual presentation of the rubric
-Route::get('/viewRubricTA/{id}/{editionId}', [RubricEntryController::class,'view'])->name('rubric');
+Route::get('/viewRubricTA/{id}/{group_id}', [RubricEntryController::class,'view'])->name('rubric')
+    ->middleware(['loggedIn', 'role:lecturer,HeadTA,TA']);
 //Gives a visual presentation of the teacherView of the rubric
-Route::get('/viewRubricTeacher/{id}/{editionId}', [RubricEntryController::class,'teacherView'])->name('teacherRubric');
+Route::get('/viewRubricTeacher/{id}/{edition_id}', [RubricEntryController::class,'teacherView'])->name('teacherRubric')
+    ->middleware(['loggedIn', 'role:lecturer,HeadTA']);
 
 // Update
 Route::get('/rubricEntryEdit/{id}/{isRow}', [RubricEntryController::class, 'edit'])
@@ -93,10 +98,15 @@ Route::post('/rubricDataStore/{id}', [RubricDataController::class, 'store']);
 | Import/Export student Routes
 |--------------------------------------------------------------------------
 */
-Route::get('/export', 'App\Http\Controllers\ImportController@export')->name('export');
-Route::get('/importExportView/{editionId}', 'App\Http\Controllers\ImportController@importExportView')
-    ->name('importExport');
-Route::post('/import/{edition_id}', 'App\Http\Controllers\ImportController@import')->name('import');
+Route::get('/export/{edition_id}', 'App\Http\Controllers\ImportController@export')
+    ->name('export')
+    ->middleware(['loggedIn', 'role:lecturer']);
+Route::get('/importExportView/{edition_id}', 'App\Http\Controllers\ImportController@importExportView')
+    ->name('importExport')
+    ->middleware(['loggedIn', 'role:lecturer']);
+Route::post('/import/{edition_id}', 'App\Http\Controllers\ImportController@import')
+    ->name('import')
+    ->middleware(['loggedIn', 'role:lecturer']);
 
 
 
@@ -149,6 +159,30 @@ Route::get('/courses/{id}', [CourseController::class, 'viewCourseById'])->name('
 
 /*
 |--------------------------------------------------------------------------
+|  Student List to assign TAs Routes
+|--------------------------------------------------------------------------
+*/
+Route::get('/studentList/{edition_id}', [CourseEditionUserController::class,'view'])->name('studentList')
+    ->middleware(['loggedIn', 'role:lecturer']);
+Route::post('/studentList/changeRoleTA/{course_edition_user_id}', [CourseEditionUserController::class, 'setRoleTA'])
+    ->name('setRoleTA')->middleware(['loggedIn', 'role:lecturer']);
+Route::post('/studentList/changeRoleHeadTA/{course_edition_user_id}', [CourseEditionUserController::class, 'setRoleHeadTA'])
+    ->name('setRoleHeadTA')->middleware(['loggedIn', 'role:lecturer']);
+Route::post('/studentList/changeRoleStudent/{course_edition_user_id}', [CourseEditionUserController::class, 'setRoleStudent'])
+    ->name('setRoleStudent')->middleware(['loggedIn', 'role:lecturer']);
+/*
+|--------------------------------------------------------------------------
+|  Assign Tas to groups Routes
+|--------------------------------------------------------------------------
+*/
+Route::get('/assignTaToGroups/{edition_id}', [CourseEditionUserController::class,'assignTaToGroupsView'])
+    ->name('assignTaToGroups')
+    ->middleware(['loggedIn', 'role:lecturer']);
+Route::post('/assignTaToGroups/{edition_id}/store', [CourseEditionUserController::class,'assignTaToGroupsStore'])
+    ->name('assignTaToGroupsStore')
+    ->middleware(['loggedIn', 'role:lecturer']);
+/*
+|--------------------------------------------------------------------------
 | Create Courses Routes
 |--------------------------------------------------------------------------
 */
@@ -165,7 +199,7 @@ Route::post('/courseStore', [CourseController::class, 'store'])->middleware(['lo
 Route::get('/courseDelete', [CourseController::class, 'delete'])
     ->name('courseDelete')
     ->middleware(['loggedIn', 'employee']);
-Route::post('/courseDestroy', [CourseController::class, 'destroy'])->middleware(['loggedIn', 'employee']);
+Route::delete('/courseDestroy', [CourseController::class, 'destroy'])->middleware(['loggedIn', 'employee']);
 
 /*
 |--------------------------------------------------------------------------
@@ -175,7 +209,7 @@ Route::post('/courseDestroy', [CourseController::class, 'destroy'])->middleware(
 Route::get('/courseEdit', [CourseController::class, 'edit'])
     ->name('courseEdit')
     ->middleware(['loggedIn', 'employee']);
-Route::post('/courseUpdate', [CourseController::class, 'update'])->middleware(['loggedIn', 'employee']);
+Route::put('/courseUpdate', [CourseController::class, 'update'])->middleware(['loggedIn', 'employee']);
 
 /*
 |--------------------------------------------------------------------------
@@ -196,7 +230,7 @@ Route::post('/courseEditionStore/{course_id}', [CourseEditionController::class, 
 Route::get('/courseEditionDelete/{course_id}', [CourseEditionController::class, 'delete'])
     ->name('courseEditionDelete')
     ->middleware(['loggedIn', 'employee']);
-Route::post('/courseEditionDestroy', [CourseEditionController::class, 'destroy'])->middleware(['loggedIn', 'employee']);
+Route::delete('/courseEditionDestroy', [CourseEditionController::class, 'destroy'])->middleware(['loggedIn', 'employee']);
 
 /*
 |--------------------------------------------------------------------------
@@ -206,29 +240,51 @@ Route::post('/courseEditionDestroy', [CourseEditionController::class, 'destroy']
 Route::get('/courseEditionEdit/{course_id}', [CourseEditionController::class, 'edit'])
     ->name('courseEditionEdit')
     ->middleware(['loggedIn', 'employee']);
-Route::post('/courseEditionUpdate/{course_id}', [CourseEditionController::class, 'update'])
+Route::put('/courseEditionUpdate/{course_id}', [CourseEditionController::class, 'update'])
     ->middleware(['loggedIn', 'employee']);
 
 
 Route::get('/edition/{edition_id}', [CourseEditionController::class, 'view'])
-    ->name('groups')->middleware('role');
+    ->name('groups')->middleware(['loggedIn', 'role:lecturer,HeadTA,TA']);
 
 //Gives a visual presentation of the group
-Route::get('/group/{id}', [GroupController::class, 'view'])->name('group');
+Route::get('/group/{group_id}', [GroupController::class, 'view'])->name('group')
+    ->middleware(['loggedIn', 'role:lecturer,HeadTA,TA']);
 
 
 
-//Route::resource('/attendance/{edition_id}', 'App\Http\Controllers\AttendanceController')->middleware(['loggedIn', 'employee']);;
-
-Route::get('/attendance/{edition_id}', [AttendanceController::class, 'index'])->name('attendance')->middleware(['loggedIn', 'employee']);
+Route::get('/attendance/{edition_id}', [AttendanceController::class, 'index'])
+    ->name('attendance')->middleware(['loggedIn', 'role:lecturer,HeadTA,TA']);
 
 
 //Route::get('/attendance/{id}/{week}/{present}', [AttendanceController::class, 'create']);
 
-Route::post('/attendanceupdate/{id}', [AttendanceController::class, 'update'])->name('attendanceupdate')->middleware(['loggedIn', 'employee']);
+Route::post('/attendanceupdate/{id}', [AttendanceController::class, 'update'])
+    ->name('attendanceupdate')->middleware(['loggedIn']);
 
-Route::get('/attend/{group}/{week}', [AttendanceController::class, 'weekGroup'])->name('attend')->middleware(['loggedIn', 'employee']);
+Route::get('/attend/{group_id}/{week_id}', [AttendanceController::class, 'weekGroup'])
+    ->name('attend')->middleware(['loggedIn', 'role:lecturer,HeadTA,TA']);
+
+
+Route::get('/notes/{edition_id}', [NotesController::class, 'index'])
+    ->name('allNotes')->middleware(['loggedIn', 'role:lecturer,HeadTA,TA']);
+
+
+Route::post('/noteUpdate/{id}', [NotesController::class, 'update'])
+    ->name('noteUpdate')->middleware(['loggedIn']);
+
+Route::post('/groupNoteUpdate/{id}', [NotesController::class, 'groupNoteUpdate'])
+    ->name('groupNoteUpdate')->middleware(['loggedIn']);
+
+Route::get('/note/{group_id}/{week_id}', [NotesController::class, 'weekGroup'])
+    ->name('note')->middleware(['loggedIn', 'role:lecturer,HeadTA,TA']);
 
 
 
-Route::get('/group/{id}/week/{week_id}', [GroupController::class, 'viewWeek'])->name('week');
+
+Route::get('/group/{group_id}/week/{week_id}', [GroupController::class, 'viewWeek'])->name('week')
+    ->middleware(['loggedIn', 'role:lecturer,HeadTA,TA']);
+
+Route::get('/routeError', function () {
+    echo "A routing error has occurred";
+})->name('routeError');

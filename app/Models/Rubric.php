@@ -4,6 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Rubric extends Model
@@ -11,9 +13,14 @@ class Rubric extends Model
     use HasFactory;
     use SoftDeletes;
 
-    protected $fillable = ['rubric_name'];
+    protected $fillable = ['rubric_name', 'week'];
     protected $dates = ['deleted_at'];
 
+    /**
+     * Deletes the rubric data and entry from the database.
+     *
+     * @return void
+     */
     public function delete()
     {
         $res = parent::delete();
@@ -23,12 +30,33 @@ class Rubric extends Model
         }
     }
 
+    /**
+     * Creates the course edition relation.
+     *
+     * @return BelongsTo
+     */
+    public function courseEdition()
+    {
+        return $this->belongsTo(Rubric::class, 'course_edition_id');
+    }
+
+    /**
+     * Creates the rubric data relation.
+     *
+     * @return HasMany
+     */
     public function rubricData()
     {
-        return $this->hasMany('App\Models\RubricData');
+        return $this->hasMany(RubricData::class);
     }
+
+    /**
+     * Creates the rubric entry relation.
+     *
+     * @return HasMany
+     */
     public function rubricEntry()
     {
-        return $this->hasMany('App\Models\RubricEntry');
+        return $this->hasMany(RubricEntry::class);
     }
 }

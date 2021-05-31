@@ -17,15 +17,6 @@ use Illuminate\Support\Facades\DB;
 
 class RubricEntryController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return void
-     */
-    public function index()
-    {
-        //
-    }
 
     /**
      * Takes the largest distance in the database for a row or column and increments that by one.
@@ -69,7 +60,7 @@ class RubricEntryController extends Controller
      * Store a newly created resource in storage.
      *
      * @param Request $request
-     * @return void
+     * @return Application|Redirector|RedirectResponse
      */
     public function store(Request $request)
     {
@@ -82,25 +73,8 @@ class RubricEntryController extends Controller
         $data = array("rubric_id"=>$rubricId, "distance" =>$distance, 'is_row'=>$isRow,
             "description" =>$description, 'created_at' =>now(), 'updated_at' => now());
         DB::table('rubric_entries')->insert($data);
-
-        if ($isRow) {
-            $rubricData = array("rubric_id" => $rubricId, "row_number" => $distance,
-                "value" => "-1", "note" => null,
-                "created_at" => now(), "updated_at" => now());
-            DB::table('rubric_data')->insertOrIgnore($rubricData);
-        }
-        redirect('viewRubricTA/'.$rubricId);
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return void
-     */
-    public function show($id)
-    {
-        //
+        $courseEdition = Rubric::find($rubricId)->course_edition_id;
+        return redirect('viewRubricTeacher/' . $rubricId);
     }
 
     /**
@@ -131,7 +105,8 @@ class RubricEntryController extends Controller
             ->where('distance', '=', $distance)
             ->update(['description' => $description]);
 
-        return redirect("/rubricEntryEdit/". $id . "/" . $isRow);
+        $courseEdition = Rubric::find($id)->course_edition_id;
+        return redirect('viewRubricTeacher/' . $id);
     }
 
     /**
@@ -147,7 +122,8 @@ class RubricEntryController extends Controller
         if ($isRow == 1) {
             RubricData::where('rubric_id', '=', $id)->where('row_number', '=', $distance)->delete();
         }
-        redirect('rubricViewTeacher/'.$id);
+        $courseEdition = Rubric::find($id)->course_edition_id;
+        return redirect('viewRubricTeacher/' . $id);
     }
 
     /**
@@ -157,13 +133,14 @@ class RubricEntryController extends Controller
      * @param $editionId
      * @return Application|Factory|View
      */
-    public function teacherview($id, $editionId)
+    public function teacherview($id)
     {
 
         $rubric = Rubric::find($id);
         $rubricColumnEntries = $rubric->rubricEntry->where('is_row', '=', '0')->sortBy('distance');
         $rubricRowEntries = $rubric->rubricEntry->where('is_row', '=', '1')->sortBy('distance');
         $rubricData = $rubric->rubricData;
+        $editionId = $rubric->course_edition_id;
         return view('pages.rubricViewTeacher', ['rubric' => $rubric,
             'rubricColumnEntries' => $rubricColumnEntries,
             'rubricRowEntries' => $rubricRowEntries,
@@ -178,16 +155,22 @@ class RubricEntryController extends Controller
      * @param $editionId
      * @return Application|Factory|View
      */
-    public function view($id, $editionId)
+    public function view($id, $groupId)
     {
         $rubric = Rubric::find($id);
         $rubricColumnEntries = $rubric->rubricEntry->where('is_row', '=', '0')->sortBy('distance');
         $rubricRowEntries = $rubric->rubricEntry->where('is_row', '=', '1')->sortBy('distance');
-        $rubricData = $rubric->rubricData;
-        return view('pages.rubricViewTA', ['rubric' => $rubric,
-            'rubricColumnEntries' => $rubricColumnEntries,
-            'rubricRowEntries' => $rubricRowEntries,
-            'rubricData' => $rubricData,
-            'edition_id' => $editionId]);
+        $rubricData = $rubric->rubricData->where('group_id', '=', $groupId);
+        return view(
+            'pages.rubricViewTA',
+            [
+                'rubric' => $rubric,
+                'rubricColumnEntries' => $rubricColumnEntries,
+                'rubricRowEntries' => $rubricRowEntries,
+                'rubricData' => $rubricData,
+                'edition_id' => $rubric->course_edition_id,
+                'group_id' => $groupId,
+            ]
+        );
     }
 }
