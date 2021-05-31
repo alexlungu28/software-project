@@ -17,15 +17,6 @@ use Illuminate\Support\Facades\DB;
 
 class RubricEntryController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return void
-     */
-    public function index()
-    {
-        //
-    }
 
     /**
      * Takes the largest distance in the database for a row or column and increments that by one.
@@ -84,17 +75,6 @@ class RubricEntryController extends Controller
         DB::table('rubric_entries')->insert($data);
         $courseEdition = Rubric::find($rubricId)->course_edition_id;
         return redirect('viewRubricTeacher/' . $rubricId);
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return void
-     */
-    public function show($id)
-    {
-        //
     }
 
     /**

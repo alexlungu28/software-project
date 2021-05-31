@@ -18,6 +18,7 @@ class CreateCoursesTable extends Migration
             $table->string('course_number')->unique();
             $table->string('description');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

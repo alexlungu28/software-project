@@ -14,6 +14,7 @@ class Role
      *
      * @param Request $request
      * @param \Closure $next
+     * @param mixed ...$roles
      * @return mixed
      */
     public function handle(Request $request, Closure $next, ...$roles)

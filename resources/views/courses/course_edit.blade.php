@@ -17,7 +17,7 @@
     <form action = "/courseUpdate" method = "post" class="form-group" style="width:70%; margin-left:15%;" action="/action_page.php">
 
         <input type = "hidden" name = "_token" value = "<?php echo csrf_token(); ?>">
-
+        @method('PUT')
         <select class="form-control" name="id">
             @foreach($courses as $course)
                 <option value="{{$course->id}}">{{$course->course_number}}</option>
