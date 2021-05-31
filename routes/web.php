@@ -166,6 +166,17 @@ Route::post('/studentList/changeRoleStudent/{course_edition_user_id}', [CourseEd
     ->name('setRoleStudent')->middleware(['loggedIn', 'role:lecturer']);
 /*
 |--------------------------------------------------------------------------
+|  Assign Tas to groups Routes
+|--------------------------------------------------------------------------
+*/
+Route::get('/assignTaToGroups/{edition_id}', [CourseEditionUserController::class,'assignTaToGroupsView'])
+    ->name('assignTaToGroups')
+    ->middleware(['loggedIn', 'role:lecturer']);
+Route::post('/assignTaToGroups/{edition_id}/store', [CourseEditionUserController::class,'assignTaToGroupsStore'])
+    ->name('assignTaToGroupsStore')
+    ->middleware(['loggedIn', 'role:lecturer']);
+/*
+|--------------------------------------------------------------------------
 | Create Courses Routes
 |--------------------------------------------------------------------------
 */

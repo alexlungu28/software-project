@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\CourseEditionUser;
+use App\Models\Group;
 use Illuminate\Foundation\Auth\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -132,6 +133,45 @@ class CourseEditionUserController extends Controller
         }
         return redirect()->back();
     }
+
+    /**
+     * Method to return the assigntatogroupsview.
+     * @param $editionId
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
+     */
+    public function assignTaToGroupsView($editionId)
+    {
+        $allUsers = User::all();
+        $groups = Group::all();
+        $courseEditionUser = DB::table('course_edition_user')
+            ->where('course_edition_id', '=', $editionId)
+            ->where('role', '=', 'TA')
+            ->orWhere('role', '=', 'HeadTA')->get();
+
+        return view('pages.assignTAToGroups', [
+            'allUsers' => $allUsers,
+            'groups' => $groups,
+            'courseEditionUser' => $courseEditionUser,
+            'edition_id' => $editionId]);
+    }
+
+    /**
+     * Method that takes the request and puts the TAs from the request in the group_user table.
+     * @param Request $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function assignTaToGroupsStore(Request $request)
+    {
+        $groups = $request->input('groups');
+        $userId = $request->input('user_id');
+        foreach ($groups as $group) {
+            $userToInsert = array("user_id" => $userId, "group_id" => $group,
+                'created_at' => now(), 'updated_at' => now());
+            DB::table('group_user')->updateOrInsert($userToInsert);
+        }
+        return redirect()->back();
+    }
+
 
     /**
      * CourseEditionUser view based on edition id.
