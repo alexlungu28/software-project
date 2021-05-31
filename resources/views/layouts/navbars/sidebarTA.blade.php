@@ -23,13 +23,6 @@
                     <p>{{ __('Notifications') }}</p>
                 </a>
             </li>
-            <li class="nav-item{{ $activePage == 'rubrics' ? ' active' : '' }}">
-                <a class="nav-link" href={{ route('viewRubrics', [$edition_id]) }}>
-                    <i class="material-icons">rubrics</i>
-                    <p>{{ __('Rubrics') }}</p>
-                </a>
-            </li>
-
             <li class="nav-item{{ $activePage == 'groups' ? ' active' : '' }}">
                 <a class="nav-link" href="{{ route('groups', [$edition_id]) }}">
                     <i class="material-icons">groups</i>

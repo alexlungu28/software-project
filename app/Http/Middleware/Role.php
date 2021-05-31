@@ -14,6 +14,7 @@ class Role
      *
      * @param Request $request
      * @param \Closure $next
+     * @param mixed ...$roles
      * @return mixed
      */
     public function handle(Request $request, Closure $next, ...$roles)
@@ -21,9 +22,19 @@ class Role
         $editionId = $request->route()->parameter('edition_id');
         if ($editionId == null) {
             $groupId = $request->route()->parameter('group_id');
-            $editionId = DB::table('groups')->select('course_edition_id')
-                ->where('id', '=', $groupId)
-                ->get()->first()->course_edition_id;
+            if ($groupId != null) {
+                $editionId = DB::table('groups')->select('course_edition_id')
+                    ->where('id', '=', $groupId)
+                    ->get()->first()->course_edition_id;
+            } else {
+                $courseEditionUserId = $request->route()->parameter('course_edition_user_id');
+                if ($courseEditionUserId == null) {
+                    return redirect('routeError');
+                }
+                $editionId = DB::table('course_edition_user')
+                    ->where('id', '=', $courseEditionUserId)
+                    ->get()->first()->course_edition_id;
+            }
         }
         $courseEditionUser = DB::table('course_edition_user')
             ->where('course_edition_id', '=', $editionId)

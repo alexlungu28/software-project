@@ -16,12 +16,13 @@ class CreateRubricDataTable extends Migration
         Schema::create('rubric_data', function (Blueprint $table) {
             $table->id();
             $table->integer('rubric_id');
+            $table->integer('group_id');
             $table->integer('row_number')->unsigned();
             $table->integer('value');
             $table->text('note')->nullable();
-            //$table->foreignId('user_id')->references('id')->on('users');
+            $table->foreignId('user_id')->references('id')->on('users');
             //$table->integer('weight'); - for automatic grading indication
-            $table->unique(array('rubric_id', 'row_number'));
+            $table->unique(array('rubric_id', 'group_id', 'row_number'));
             $table->timestamps();
             $table->softDeletes();
         });

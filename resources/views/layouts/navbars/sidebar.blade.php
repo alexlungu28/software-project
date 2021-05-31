@@ -41,6 +41,12 @@
                 <p>{{ __('StudentList') }}</p>
             </a>
         </li>
+        <li class="nav-item{{ $activePage == 'assignTaToGroups' ? ' active' : '' }}">
+            <a class="nav-link" href="{{ route('assignTaToGroups', [$edition_id]) }}">
+                <i class="material-icons">TA</i>
+                <p>{{ __('Assign TA to Groups') }}</p>
+            </a>
+        </li>
 
         <li class="nav-item{{ $activePage == 'import' ? ' active' : '' }}">
             <a class="nav-link" href="{{ route('importExport', [$edition_id]) }}">

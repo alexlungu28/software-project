@@ -19,6 +19,7 @@ class CreateCourseEditionsTable extends Migration
             $table->integer('year');
             $table->unique(['course_id', 'year']);
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

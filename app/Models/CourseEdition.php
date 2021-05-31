@@ -7,10 +7,12 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class CourseEdition extends Model
 {
     use HasFactory;
+    use SoftDeletes;
 
     /**
      * Creates the course relation.
@@ -40,5 +42,15 @@ class CourseEdition extends Model
     public function users()
     {
         return $this->belongsToMany(User::class, 'course_edition_user');
+    }
+
+    /**
+     * Creates the rubrics relation.
+     *
+     * @return HasMany
+     */
+    public function rubrics()
+    {
+        return $this->hasMany(Rubric::class);
     }
 }

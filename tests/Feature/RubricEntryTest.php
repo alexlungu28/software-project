@@ -24,6 +24,7 @@ class RubricEntryTest extends TestCase
             [
                 'name' => 'TestName',
                 'course_edition_id' => 1,
+                'week' => 1,
             ]
         );
         RubricEntry::insert(

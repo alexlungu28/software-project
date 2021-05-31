@@ -57,7 +57,7 @@
                                             <td>
                                                 <form
                                                     method="post"
-                                                    action="{{route('setRoleTA',array('id' => $user->user_id))}}">
+                                                    action="{{route('setRoleTA',array('course_edition_user_id' => $user->user_id))}}">
                                                     @csrf
                                                     <button
                                                         type="submit"
@@ -68,7 +68,7 @@
                                             <td>
                                                 <form
                                                     method="post"
-                                                    action="{{route('setRoleHeadTA',array('id'=>$user->user_id))}}">
+                                                    action="{{route('setRoleHeadTA',array('course_edition_user_id'=>$user->user_id))}}">
                                                     @csrf
                                                     <button
                                                         type="submit"
@@ -79,7 +79,7 @@
                                             <td>
                                                 <form
                                                     method="post"
-                                                    action="{{route('setRoleStudent',array('id'=>$user->user_id))}}">
+                                                    action="{{route('setRoleStudent',array('course_edition_user_id'=>$user->user_id))}}">
                                                     @csrf
                                                     <button
                                                         type="submit"

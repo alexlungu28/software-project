@@ -22,6 +22,16 @@ class RubricData extends Model
      */
     public function rubric()
     {
-        return $this->belongsTo('App\Models\Rubric', 'rubric_id');
+        return $this->belongsTo(Rubric::class, 'rubric_id');
+    }
+
+    /**
+     * Creates the group relation.
+     *
+     * @return BelongsTo
+     */
+    public function group()
+    {
+        return $this->belongsTo(Group::class, 'group_id');
     }
 }

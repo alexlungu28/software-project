@@ -17,15 +17,6 @@ use Illuminate\Support\Facades\DB;
 
 class CourseEditionController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return void
-     */
-    public function index()
-    {
-        //
-    }
 
     /**
      * Show the form for creating a new resource.
@@ -54,9 +45,8 @@ class CourseEditionController extends Controller
             DB::table('course_editions')->insert(array('course_id'=>$courseId,
                 'year'=>$year, 'created_at'=>now(),'updated_at'=>now()));
             $courseEditionId = DB::table('course_editions')->get()->last()->id;
-            DB::table('course_edition_user')->insert(array('user_id'=>$request->user()->id,
+            DB::table('course_edition_user')->insert(array('user_id'=>Auth::id(),
                 'course_edition_id'=>$courseEditionId, 'role'=>'lecturer' ,'created_at'=>now(),'updated_at'=>now()));
-
             return redirect('/');
         } catch (QueryException $e) {
             echo "Course edition already exists.<br/>";
@@ -65,16 +55,6 @@ class CourseEditionController extends Controller
         }
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  $id
-     * @return void
-     */
-    public function show($id)
-    {
-        //
-    }
 
     /**
      * Show the form for editing the specified resource.
@@ -105,12 +85,12 @@ class CourseEditionController extends Controller
             $courseEdition = CourseEdition::find($id);
             $courseEdition->year = $year;
             $courseEdition->save();
+            return redirect('/');
         } catch (QueryException $e) {
             echo "Course edition already exists.<br/>";
             echo "Redirecting you back to main page...";
             header("refresh:3;url=/");
         }
-        return redirect('/');
     }
 
     /**
@@ -142,7 +122,7 @@ class CourseEditionController extends Controller
 
     public function viewTA($editionId)
     {
-        $groups = DB::table('group_user')->where('user_id', '=', Auth::user()->id)->get()->map(function ($groupUser) {
+        $groups = DB::table('group_user')->where('user_id', '=', Auth::id())->get()->map(function ($groupUser) {
             return Group::where('id', '=', $groupUser->group_id)->get()->first();
         })->filter(function ($group) {
             return $group != null;
