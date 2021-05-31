@@ -89,8 +89,7 @@ class CourseEditionUserController extends Controller
         $groups = $request->input('groups');
         $userId = $request->input('user_id');
         foreach ($groups as $group) {
-            $userToInsert = array("user_id" => $userId, "group_id" => $group,
-                'created_at' => now(), 'updated_at' => now());
+            $userToInsert = array("user_id" => $userId, "group_id" => $group);
             DB::table('group_user')->updateOrInsert($userToInsert);
         }
         return redirect()->back();
