@@ -41,7 +41,10 @@ Everyone has provided all questions they had.
 
 
 # Questions for the TA
-
+- Notes - are they good as of now?
+    - The way we do it is fine, and it looks visually pleasing.
+- Will we receive feedback on the draft report from our coach?
+    - Yes, but we have to send the report via e-mail, since coaches don't have access to Brightspace.
 
 # Question round
 *If there are any spontaneous questions.*
