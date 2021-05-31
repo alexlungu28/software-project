@@ -42,16 +42,9 @@ class AttendanceController extends Controller
     public function update(Request $request, $id)
     {
         $attendance          = Attendance::find($id);
-        //return $request->get('reason');
 
         $attendance->status = $request->get('update');
         $attendance->reason = $request->input('reason');
-       // return $request->get('reason');
-
-
-       // return ddd($request);
-
-
 
         $attendance->save();
 
@@ -60,11 +53,13 @@ class AttendanceController extends Controller
 
 
     /**
-     * Controller for route with weeks and groups.
+     * Controller for route with weeks and groups. Creates attendance for entry
+     * for all students based on group and week, only if they are not in the
+     * database already.
      *
      * @param $week
      * @param $group
-     * @return Application|Factory|View
+     * @return view
      */
 
     public function weekGroup($group, $week)
@@ -110,13 +105,16 @@ class AttendanceController extends Controller
         return view('attendance_submit')->with('attendances', $attendances)->with('edition_id', $editionId);
     }
 
-
-    //function that creates a new attendance object and adds it to the database
-    //this function is only called when no entry for a student in a specific week exists.
+    /**
+     * Function that creates a new attendance object and adds it to the database.
+     * This function is only called when no entry for a student in a specific week exists.
+     * @param $user - user_id
+     * @param $group - group_id
+     * @param $week - week number
+     */
     public function createAttendance($user, $group, $week)
     {
                 $id = $user->id;
-
                 $attendance          = new Attendance();
                 $attendance->user_id = $id;
                 $attendance->group_id = $group;

@@ -20,7 +20,7 @@ class NotesController extends Controller
 {
 
     /**
-     * Display an overview of attendances for all users of the course edition.
+     * Display an overview of notes for all users of the course edition.
      *
      * @return \Illuminate\Http\Response
      */
@@ -37,11 +37,11 @@ class NotesController extends Controller
     }
 
     /**
-     * Update the the status of the attendance.
+     * Update the the status of the notes.
      *
-     * @param  \Illuminate\Http\Request $request
+     * @param  $request
      * @param  $id - 1 green, 2 yellow, 3 red.
-     * @return \Illuminate\Http\Response
+     * @return redirect
      */
     public function update(Request $request, $id)
     {
@@ -56,18 +56,17 @@ class NotesController extends Controller
     }
 
     /**
-     * Update the the status of the attendance.
+     * Update the the status of the group notes.
      *
-     * @param  \Illuminate\Http\Request $request
+     * @param  $request
      * @param  $id - 1 green, 2 yellow, 3 red.
-     * @return \Illuminate\Http\Response
+     * @return redirect
      */
     public function groupNoteUpdate(Request $request, $id)
     {
         $groupNote          = NoteGroup::find($id);
         $groupNote->problem_signal = $request->get('groupNoteUpdate');
         $groupNote->note = $request->get('groupNote');
-
 
         $groupNote->save();
 
@@ -76,7 +75,9 @@ class NotesController extends Controller
 
 
     /**
-     * Controller for route with weeks and groups.
+     * Controller for route with weeks and groups. Creates attendance for entry
+     * for all students based on group and week, only if they are not in the
+     * database already. Otherwise returns view with the needed notes.
      *
      * @param $week
      * @param $group
@@ -141,8 +142,13 @@ class NotesController extends Controller
     }
 
 
-    //function that creates a new notes object and adds it to the database
-    //this function is only called when no entry for a student in a specific week exists.
+    /**
+     * Function that creates a new individual note object and adds it to the database.
+     * This function is only called when no entry for a student in a specific week exists.
+     * @param $user - user_id
+     * @param $group - group_id
+     * @param $week - week number
+     */
     public function createNote($user, $group, $week)
     {
                 $id = $user->id;
@@ -156,8 +162,13 @@ class NotesController extends Controller
                 $note->save();
     }
 
-    //function that creates a new group notes object and adds it to the database
-    //this function is only called when no entry for a student in a specific week exists.
+    /**
+     * Function that creates a new group note object and adds it to the database.
+     * This function is only called when no entry for a group in a specific week exists.
+     * @param $user - user_id
+     * @param $group - group_id
+     * @param $week - week number
+     */
     public function createGroupNote($group, $week)
     {
 

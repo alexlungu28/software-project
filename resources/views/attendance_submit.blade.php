@@ -19,6 +19,7 @@
                                 <th>Name</th>
                                 <th>Status</th>
                                 <th>Reason (if late or absent)</th>
+                                <th>Select Status</th>
 
                             </tr>
                             </thead>
