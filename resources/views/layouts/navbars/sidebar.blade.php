@@ -35,6 +35,20 @@
                 <p>{{ __('Groups') }}</p>
             </a>
         </li>
+        @if(isset($group_id))
+            <li class="nav-item{{ $activePage == 'group' ? ' active' : '' }}">
+                <a class="nav-link" href="{{ route('group', [$group_id]) }}">
+                    <i class="material-icons">group</i>
+                    @if(isset($week))
+                        <p>{{ __('Group ' . $group_id . ': Week ' . $week) }}</p>
+                    @elseif(isset($week_id))
+                        <p>{{ __('Group ' . $group_id . ': Week ' . $week_id) }}</p>
+                    @else
+                        <p>{{ __('Group ' . $group_id) }}</p>
+                    @endif
+                </a>
+            </li>
+        @endif
         <li class="nav-item{{ $activePage == 'studentList' ? ' active' : '' }}">
             <a class="nav-link" href="{{ route('studentList', [$edition_id]) }}">
                 <i class="material-icons">S</i>

@@ -1,18 +1,18 @@
-@extends('layouts.app', ['activePage' => 'group', 'titlePage' => __('Week')])
+@extends('layouts.TA', ['activePage' => 'group', 'titlePage' => __('Week')])
 
 @section('content')
     <div class="content">
         <div class="container-fluid">
             <div class="row">
-                    <div class="col-lg-3 col-md-6 col-sm-6">
-                        <div class="card card-stats" style="width: 120px;">
-                            <div class="card-icon">
-                                <a class="nav-link" href="{{ route('attend', [$group_id, $week]) }}">
-                                    <p>Attendance</p>
-                                </a>
-                            </div>
+                <div class="col-lg-3 col-md-6 col-sm-6">
+                    <div class="card card-stats" style="width: 120px;">
+                        <div class="card-icon">
+                            <a class="nav-link" href="{{ route('attend', [$group_id, $week]) }}">
+                                <p>Attendance</p>
+                            </a>
                         </div>
                     </div>
+                </div>
                 @foreach($rubrics as $rubric)
                     <div class="col-lg-3 col-md-6 col-sm-6">
                         <div class="card card-stats" style="width: 120px;">
