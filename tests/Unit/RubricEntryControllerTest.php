@@ -134,7 +134,7 @@ class RubricEntryControllerTest extends TestCase
             ]
         );
         $response = $this->delete(
-            '/rubricEntryDelete/1/0/1'
+            '/rubricEntryDelete/1'
         );
         $this->assertSoftDeleted(
             'rubric_entries',

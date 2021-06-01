@@ -53,7 +53,7 @@ class RubricEntryTest extends TestCase
     public function testRubricEdit()
     {
         $this->before();
-        $response = $this->get('/rubricEntryEdit/1/0')
+        $response = $this->get('/rubricEntryEdit/1')
             ->assertSee('Rubric Entry Management | Update')
             ->assertSee('Column 1');
         $response->assertStatus(200);

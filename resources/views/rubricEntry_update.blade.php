@@ -17,23 +17,13 @@
     <form action = "/rubricEntryUpdate" method = "post" class="form-group" style="width:70%; margin-left:15%;" action="/action_page.php">
 
         <input type = "hidden" name = "_token" value = "<?php echo csrf_token(); ?>">
-
-        <input type="hidden" class="form-control" placeholder="" name='id' value={{$id}}>
-
-        <input type="hidden" class="form-control" placeholder="" name='isRow' value={{$isRow}}>
+        <input type = "hidden" name = "id" value ="{{$rubricEntry->id}}">
 
         @method('PUT')
         <label class="form-group"></label>
-        <select class="form-control" name="distance">
-            @foreach($rubric->rubricEntry as $entry)
-                @if($entry->is_row == $isRow)
-                    <option value="{{$entry->distance}}">{{$entry->description}}</option>
-                @endif
-            @endforeach
-        </select>
 
         <label>New Description</label>
-        <input type="text" class="form-control" placeholder="New Description" name="description">
+        <input type="text" class="form-control" placeholder="{{$rubricEntry->description}}" name="description">
 
         <button type="submit"  value = "Add" class="btn btn-primary">Submit</button>
 
