@@ -18,14 +18,6 @@ class CourseEditionControllerTest extends TestCase
     use RefreshDatabase;
 
     /**
-     * Test to verify that the correct view is returned upon accessing the route.
-     */
-    public function testCourseEditionCreate() {
-        $response = $this->get('/courseEditionCreate/1');
-        $response->assertViewIs('courseEditions.courseEdition_create');
-    }
-
-    /**
      * Insert the specified entries inside the database tables.
      */
     public function before()
@@ -102,14 +94,6 @@ class CourseEditionControllerTest extends TestCase
     }
 
     /**
-     * Test to verify that the correct view is returned upon accessing the route.
-     */
-    public function testCourseEditionEdit() {
-        $response = $this->get('/courseEditionEdit/1');
-        $response->assertViewIs('courseEditions.courseEdition_edit');
-    }
-
-    /**
      * Test to verify the rubric is updated inside the database.
      */
     public function testCourseEditionUpdate()
@@ -173,14 +157,6 @@ class CourseEditionControllerTest extends TestCase
             ],
         );
         $this->expectOutputString("Course edition already exists.<br/>Redirecting you back to main page...");
-    }
-
-    /**
-     * Test to verify that the correct view is returned upon accessing the route.
-     */
-    public function testCourseEditionDelete() {
-        $response = $this->get('/courseEditionDelete/1');
-        $response->assertViewIs('courseEditions.courseEdition_delete');
     }
 
     /**

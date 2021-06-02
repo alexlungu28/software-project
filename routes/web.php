@@ -207,9 +207,6 @@ Route::put('/courseUpdate', [CourseController::class, 'update'])->middleware(['l
 | Create Course Edition Routes
 |--------------------------------------------------------------------------
 */
-Route::get('/courseEditionCreate/{course_id}', [CourseEditionController::class, 'create'])
-    ->name('courseEditionCreate')
-    ->middleware(['loggedIn', 'employee']);
 Route::post('/courseEditionStore/{course_id}', [CourseEditionController::class, 'store'])
     ->middleware(['loggedIn', 'employee']);
 
@@ -218,9 +215,6 @@ Route::post('/courseEditionStore/{course_id}', [CourseEditionController::class, 
 | Delete Course Edition Routes
 |--------------------------------------------------------------------------
 */
-Route::get('/courseEditionDelete/{course_id}', [CourseEditionController::class, 'delete'])
-    ->name('courseEditionDelete')
-    ->middleware(['loggedIn', 'employee']);
 Route::delete('/courseEditionDestroy', [CourseEditionController::class, 'destroy'])->middleware(['loggedIn', 'employee']);
 
 /*
@@ -228,9 +222,6 @@ Route::delete('/courseEditionDestroy', [CourseEditionController::class, 'destroy
 |  Update Course Edition Routes
 |--------------------------------------------------------------------------
 */
-Route::get('/courseEditionEdit/{course_id}', [CourseEditionController::class, 'edit'])
-    ->name('courseEditionEdit')
-    ->middleware(['loggedIn', 'employee']);
 Route::put('/courseEditionUpdate/{course_id}', [CourseEditionController::class, 'update'])
     ->middleware(['loggedIn', 'employee']);
 

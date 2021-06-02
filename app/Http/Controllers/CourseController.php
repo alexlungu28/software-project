@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Course;
+use App\Models\CourseEdition;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
@@ -151,7 +152,7 @@ class CourseController extends Controller
      */
     public function viewEmployeeCE($id)
     {
-        $courseEditions = DB::table('course_editions')->where('course_id', '=', $id)->get();
+        $courseEditions = CourseEdition::where('course_id', '=', $id)->get();
         return view('courseEditions.courseEditionEmployee', [
             "course_id" => $id,
             "courseEditions" => $courseEditions,
