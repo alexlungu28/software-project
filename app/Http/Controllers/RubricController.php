@@ -118,7 +118,7 @@ class RubricController extends Controller
         $rubric->restore();
         foreach ($rubric->deletedEntries as $entry) {
             $entry->restore();
-            if ($entry->is_row = 1) {
+            if ($entry->is_row == 1) {
                 RubricData::where('rubric_id', '=', $id)
                     ->where('row_number', '=', $entry->distance)
                     ->restore();

@@ -143,7 +143,7 @@ class RubricEntryController extends Controller
         $id = $request->input('id');
         $entry = RubricEntry::withTrashed()->find($id);
         $entry->restore();
-        if ($entry->is_row = 1) {
+        if ($entry->is_row == 1) {
             RubricData::where('rubric_id', '=', $entry->rubric->id)
                 ->where('row_number', '=', $entry->distance)
                 ->restore();
