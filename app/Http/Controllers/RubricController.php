@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Rubric;
+use App\Models\RubricData;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
@@ -105,6 +106,28 @@ class RubricController extends Controller
     }
 
     /**
+     * Restore the specified rubric.
+     *
+     * @param Request $request
+     * @return Application|RedirectResponse|Redirector
+     */
+    public function restore(Request $request)
+    {
+        $id = $request->input('id');
+        $rubric = Rubric::withTrashed()->find($id);
+        $rubric->restore();
+        foreach ($rubric->deletedEntries as $entry) {
+            $entry->restore();
+            if ($entry->is_row = 1) {
+                RubricData::where('rubric_id', '=', $id)
+                    ->where('row_number', '=', $entry->distance)
+                    ->restore();
+            }
+        }
+        return redirect('viewRubrics/' . $rubric->course_edition_id);
+    }
+
+    /**
      * Rubric view based on edition id.
      *
      * @param $editionId
@@ -112,9 +135,11 @@ class RubricController extends Controller
      */
     public function view($editionId)
     {
-        $rubrics = Rubric::all()->where('course_edition_id', '=', $editionId);
+        $rubrics = Rubric::all()->where('course_edition_id', '=', $editionId)->sortBy('week');
+        $deletedRubrics = Rubric::onlyTrashed()->get();
         return view('allrubrics', [
             "rubrics" => $rubrics,
+            "deletedRubrics" => $deletedRubrics,
             "edition_id" => $editionId,
         ]);
     }

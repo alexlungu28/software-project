@@ -136,8 +136,10 @@ class CourseEditionController extends Controller
     public function viewLecturer($editionId)
     {
         $groups = Group::where('course_edition_id', '=', $editionId)->get();
+        $teachingAssistants = CourseEdition::find($editionId)->teachingAssistants;
         return view('groups.allgroups', [
             "edition_id" => $editionId,
+            "teachingAssistants" => $teachingAssistants,
             "groups" => $groups
         ]);
     }

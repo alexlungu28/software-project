@@ -53,6 +53,8 @@ Route::get('/rubricDelete', [RubricController::class, 'delete'])
     ->name('rubricDelete')->middleware(['loggedIn', 'employee']);
 Route::delete('/rubricDestroy', [RubricController::class, 'destroy'])
     ->name('rubricDestroy')->middleware(['loggedIn', 'employee']);
+Route::put('/rubricRestore', [RubricController::class, 'restore'])
+    ->name('rubricRestore')->middleware(['loggedIn', 'employee']);
 
 /*
 |--------------------------------------------------------------------------
