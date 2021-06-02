@@ -267,12 +267,4 @@ class AttendanceControllerTest extends TestCase
             ]
         );
     }
-
-    /**
-     * Test to check if update route is called successfully.
-     */
-    public function testUpdate()
-    {
-        $this->post('/attendanceupdate/1')->assertStatus(200);
-    }
 }
