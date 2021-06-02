@@ -59,4 +59,14 @@ class Rubric extends Model
     {
         return $this->hasMany(RubricEntry::class);
     }
+
+    /**
+     * Returns all deleted entries coupled to this rubric
+     *
+     * @return HasMany
+     */
+    public function deletedEntries()
+    {
+        return $this->hasMany(RubricEntry::class)->onlyTrashed();
+    }
 }

@@ -16,6 +16,20 @@
                 @endforeach
             </div>
         </div>
+        <div class="container">
+            <h2 class="text-center">Restore deleted Rubric</h2>
+            <br>
+            <form action = "{{ route('rubricRestore') }}" method = "post" class="form-group" style="width:70%; margin-left:15%;" action="action_page.php">
+                <input type = "hidden" name = "_token" value = "<?php echo csrf_token(); ?>">
+                @method("PUT")
+                <select class="form-control" name="id">
+                    @foreach($deletedRubrics as $deletedRubric)
+                        <option value="{{$deletedRubric->id}}">{{$deletedRubric->name}}</option>
+                    @endforeach
+                </select>
+                <button type="submit"  value = "Add" class="btn btn-primary">Submit</button>
+            </form>
+        </div>
     </div>
 @endsection
 

@@ -18,7 +18,7 @@ class CreateRubricEntriesTable extends Migration
             $table->integer('rubric_id');
             $table->integer('distance')->unsigned();
             $table->boolean('is_row');
-            $table->unique(array('rubric_id', 'is_row', 'distance'));
+            $table->unique(array('rubric_id', 'distance', 'is_row'));
             $table->text('description');
             $table->timestamps();
             $table->softDeletes();
