@@ -26,11 +26,11 @@ class Note extends Model
     /**
      * Creates the user relation.
      *
-     * @return BelongsToMany
+     * @return BelongsTo
      */
     public function user()
     {
-        return $this->belongsToMany(User::class);
+        return $this->belongsTo(User::class);
     }
 
     /**

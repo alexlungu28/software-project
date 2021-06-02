@@ -5,13 +5,12 @@
         <div class="container-fluid">
             <div class="row">
                 @foreach($rubrics as $rubric)
-                    <div class="col-lg-3 col-md-6 col-sm-6">
-                        <div class="card card-stats" style="width: 120px;">
-                            <div class="card-icon">
-                                <a class="nav-link" href="{{ route('teacherRubric', [$rubric->id, $edition_id]) }}">
-                                    <p>{{ $rubric->name }}</p>
-                                </a>
-                            </div>
+                    <div class="card card-stats" style="width: 120px; margin-left:10px; margin-right:10px; float:left">
+                        <div class="card-icon">
+                            <a class="nav-link" href="{{ route('teacherRubric', [$rubric->id, $edition_id]) }}">
+                                <p>{{ $rubric->name }}</p>
+                                <p> Week: {{ $rubric->week }}</p>
+                            </a>
                         </div>
                     </div>
                 @endforeach

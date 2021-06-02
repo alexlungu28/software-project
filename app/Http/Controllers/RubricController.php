@@ -112,7 +112,7 @@ class RubricController extends Controller
      */
     public function view($editionId)
     {
-        $rubrics = Rubric::all()->where('course_edition_id', '=', $editionId);
+        $rubrics = Rubric::all()->where('course_edition_id', '=', $editionId)->sortBy('week');
         return view('allrubrics', [
             "rubrics" => $rubrics,
             "edition_id" => $editionId,
