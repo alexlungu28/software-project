@@ -107,6 +107,9 @@ Route::get('/importExportView/{edition_id}', 'App\Http\Controllers\ImportControl
 Route::post('/import/{edition_id}', 'App\Http\Controllers\ImportController@import')
     ->name('import')
     ->middleware(['loggedIn', 'role:lecturer']);
+Route::post('/importTA/{edition_id}', 'App\Http\Controllers\ImportController@importTA')
+    ->name('importTA')
+    ->middleware(['loggedIn', 'role:lecturer']);
 
 
 

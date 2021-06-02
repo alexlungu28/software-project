@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Imports\CourseEditionTAImport;
 use App\Imports\CourseEditionUserImport;
 use App\Imports\GroupsImport;
 use App\Imports\GroupUserImport;
+use App\Imports\TAImport;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use App\Exports\UsersExport;
@@ -54,6 +56,21 @@ class ImportController extends Controller
         Excel::import(new GroupsImport($editionId), request()->file('file'));
         Excel::import(new GroupUserImport($editionId), request()->file('file'));
         Excel::import(new CourseEditionUserImport($editionId), request()->file('file'));
+        return back();
+    }
+
+    /**
+     * Imports TAs inside the users table,
+     * the role inside the course_edition_user table.
+     *
+     * @param $editionId - the course edition where the TAs will be imported
+     * @return RedirectResponse - returns the user back to the import page
+     */
+    public function importTA($editionId): RedirectResponse
+    {
+
+        Excel::import(new TAImport, request()->file('file'));
+        Excel::import(new CourseEditionTAImport($editionId), request()->file('file'));
         return back();
     }
 }
