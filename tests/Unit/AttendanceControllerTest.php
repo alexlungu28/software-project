@@ -214,11 +214,14 @@ class AttendanceControllerTest extends TestCase
         );
 
     }
-    /** @test */
+
+    /**
+     * Check if the correct view is returned.
+     *
+     */
     public function testWeekGroup()
     {
         $this->before();
-        $this->get('/group/1/week/1')->assertStatus(200);
         $this->get('/attend/1/1')->assertSeeText(
             array(
                 "testfirstname1",
@@ -232,7 +235,10 @@ class AttendanceControllerTest extends TestCase
         )->assertDontSee("testname3")->assertStatus(200);
     }
 
-
+    /**
+     * Test to check if attendances are correctly added
+     * to the database when visiting '/attend/2/1'
+     */
     public function testCreateAttendance()
     {
         $this->before();
@@ -262,7 +268,9 @@ class AttendanceControllerTest extends TestCase
         );
     }
 
-
+    /**
+     * Test to check if update route is called successfully.
+     */
     public function testUpdate()
     {
         $this->post('/attendanceupdate/1')->assertStatus(200);
