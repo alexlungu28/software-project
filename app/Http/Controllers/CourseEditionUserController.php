@@ -129,7 +129,7 @@ class CourseEditionUserController extends Controller
             /*->where('role', '=', 'student')
             ->orWhere('role', '=', 'TA')
             ->orWhere('role', '=', 'HeadTA')*/
-            ->where('role', '!=','lecturer')
+            ->where('role', '!=', 'lecturer')
             ->get();
         $employeeUsers = DB::table('users')
             ->where('affiliation', '=', 'employee')->get();
