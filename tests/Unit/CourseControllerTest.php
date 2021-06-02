@@ -21,6 +21,14 @@ class CourseControllerTest extends TestCase
     use RefreshDatabase;
 
     /**
+     * Test to verify that the correct view is returned upon accessing the route.
+     */
+    public function testCourseCreate() {
+        $response = $this->get('/courseCreate');
+        $response->assertViewIs('courses.course_create');
+    }
+
+    /**
      * Test to verify insertion inside the database.
      */
     public function testCourseStore()
@@ -80,6 +88,14 @@ class CourseControllerTest extends TestCase
             ]
         );
         assertEquals(2, CourseController::getAllCourses()->count());
+    }
+
+    /**
+     * Test to verify that the correct view is returned upon accessing the route.
+     */
+    public function testCourseEdit() {
+        $response = $this->get('/courseEdit');
+        $response->assertViewIs('courses.course_edit');
     }
 
     /**
@@ -145,6 +161,14 @@ class CourseControllerTest extends TestCase
             ],
         );
         $this->expectOutputString("Course number already exists.<br/>Redirecting you back to main page...");
+    }
+
+    /**
+     * Test to verify that the correct view is returned upon accessing the route.
+     */
+    public function testCourseDelete() {
+        $response = $this->get('/courseDelete');
+        $response->assertViewIs('courses.course_delete');
     }
 
     /**

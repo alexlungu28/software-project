@@ -16,6 +16,17 @@ use Illuminate\Support\Facades\DB;
 
 class CourseController extends Controller
 {
+
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return Application|Factory|View
+     */
+    public function create()
+    {
+        return view('courses.course_create');
+    }
+
     /**
      * Store a newly created resource in storage.
      *
@@ -52,6 +63,16 @@ class CourseController extends Controller
     }
 
     /**
+     * Show the form for editing the specified resource.
+     *
+     * @return Application|Factory|View
+     */
+    public function edit()
+    {
+        return view('courses.course_edit', ['courses' => $this::getAllCourses()]);
+    }
+
+    /**
      * Update the specified resource in storage.
      *
      * @param Request $request
@@ -73,6 +94,19 @@ class CourseController extends Controller
             echo "Redirecting you back to main page...";
             header("refresh:3;url=/");
         }
+    }
+
+    /**
+     * Return the view for deleting courses.
+     *
+     * @return Application|Factory|View
+     */
+    public function delete()
+    {
+        $courses = $this::getAllCourses();
+        return view('courses.course_delete', [
+            "courses" => $courses,
+        ]);
     }
 
     /**
