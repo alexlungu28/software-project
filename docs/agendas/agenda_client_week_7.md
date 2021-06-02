@@ -43,13 +43,17 @@ The main points that need to be discussed are present in this week's agenda.
 # Questions for the Client
 
 - How can we link pcov (https://github.com/krakjoe/pcov) to the pipeline on gitlab?
+    -Sander said that he will try to add it to his pipeline but another pcov not this one. 
 - Currently, for the user exports, all users in the database are exported. Should we make them for specific course editions or are they not needed at all?
+    -Make them specific for course editions. 
 - When a lecturer imports a TA in a course edition, he won't see that course edition when he logs in until the lecturer assigns him to a group. Is that fine, or should he be able to see the course edition while not belonging to any group?
-
+    -He should see the course and course edition and he is not assigned to groups he will be shown something like contact the lecturers, you are not assigned to any groups.
 
 # Question round
-*If there are any spontaneous questions.*
+-should add notification settings, like disabling email notifications etc.
+-gitinspector - project as a test repo, run the tool see what output we get.
+-most platform make a list of courses instead of buttons.
 
 # Closing
 
-Next meeting will be held on ... at ....
+Next meeting will be held on 08/06/2021 at 13:00
