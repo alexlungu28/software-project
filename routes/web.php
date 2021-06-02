@@ -172,6 +172,15 @@ Route::post('/studentList/changeRoleStudent/{course_edition_user_id}', [CourseEd
     ->name('setRoleStudent')->middleware(['loggedIn', 'role:lecturer']);
 /*
 |--------------------------------------------------------------------------
+|  Student List to assign employees to course_editions Routes
+|--------------------------------------------------------------------------
+*/
+Route::post('/studentList/insertLecturer/{edition_id}/{user_id}', [CourseEditionUserController::class, 'insertLecturerFromUsers'])
+    ->name('EmployeeToLecturer')->middleware(['loggedIn', 'role:lecturer']);
+Route::post('/studentList/insertHeadTA/{edition_id}/{user_id}', [CourseEditionUserController::class, 'insertHeadTAFromUsers'])
+    ->name('EmployeeToHeadTA')->middleware(['loggedIn', 'role:lecturer']);
+/*
+|--------------------------------------------------------------------------
 |  Assign Tas to groups Routes
 |--------------------------------------------------------------------------
 */

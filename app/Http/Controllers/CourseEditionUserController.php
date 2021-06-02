@@ -110,10 +110,49 @@ class CourseEditionUserController extends Controller
             ->where('role', '=', 'student')
             ->orWhere('role', '=', 'TA')
             ->orWhere('role', '=', 'HeadTA')->get();
-
+        $employeeUsers = DB::table('users')
+            ->where('affiliation', '=', 'employee')->get();
         return view('pages.studentList', [
             'allUsers' => $allUsers,
             'courseEditionUser' => $courseEditionUser,
+            'employeeUsers' => $employeeUsers,
             'edition_id' => $editionId]);
+    }
+
+    public function insertLecturerFromUsers($courseEdition, $userId)
+    {
+        if (DB::table('course_edition_user')
+            ->where('user_id', '=', $userId)
+            ->where('course_edition_id', '=', $courseEdition)
+            ->exists()) {
+            $updateUser =  array("user_id" => $userId,"course_edition_id" => $courseEdition , "role" => "lecturer");
+            DB::table('course_edition_user')
+                ->where('user_id', '=', $userId)
+                ->where('course_edition_id', '=', $courseEdition)->update($updateUser);
+        } else {
+            $userToInsert = array("user_id" => $userId,
+                "course_edition_id" => $courseEdition , "role" => "lecturer");
+            DB::table('course_edition_user')->updateOrInsert($userToInsert);
+        }
+        return redirect()->back();
+    }
+
+    public function insertHeadTAFromUsers($courseEdition, $userId)
+    {
+        if ($userId) {
+            if (DB::table('course_edition_user')
+                ->where('user_id', '=', $userId)
+                ->where('course_edition_id', '=', $courseEdition)
+                ->exists()) {
+                $updateUser =  array("user_id" => $userId,"course_edition_id" => $courseEdition , "role" => "HeadTA");
+                DB::table('course_edition_user')
+                    ->where('user_id', '=', $userId)
+                    ->where('course_edition_id', '=', $courseEdition)->update($updateUser);
+            } else {
+                $userToInsert =  array("user_id" => $userId,"course_edition_id" => $courseEdition , "role" => "HeadTA");
+                DB::table('course_edition_user')->updateOrInsert($userToInsert);
+            }
+        }
+        return redirect()->back();
     }
 }
