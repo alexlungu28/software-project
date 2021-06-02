@@ -105,7 +105,9 @@ class NotesController extends Controller
         //added only if it does not exist for the current group and week
         $notes = [];
         foreach ($users as $user) {
-            if ($user->affiliation === 'student') {
+            if (CourseEditionUser::where('course_edition_id', '=', $editionId)
+                                    ->where('user_id', '=', $user->id)
+                                    ->where('role', '=', 'student')->exists()) {
                 $id = $user->id;
 
                 if (Note::where('user_id', '=', $id)
@@ -114,13 +116,6 @@ class NotesController extends Controller
                         ->exists() === false) {
                     $this->createNote($user, $group, $week);
                 }
-
-                $note = Note::select('*')
-                        ->where('group_id', '=', $group)
-                        ->where('week', '=', $week)
-                        ->where('user_id', '=', $id)->first();
-
-                array_push($notes, $note);
             }
         }
 
@@ -132,13 +127,18 @@ class NotesController extends Controller
 
         $groupNote = NoteGroup::where('group_id', '=', $group)
             ->where('week', '=', $week)->get();
-        //return $groupNote;
 
 
 
+        $notes = Note::select('*')
+            ->where('group_id', '=', $group)
+            ->where('week', '=', $week)->get();
 
 
-        return view('notes')->with('notes', $notes)->with('groupNotes', $groupNote)->with('edition_id', $editionId);
+        return view('notes')
+                ->with('notes', $notes)->with('groupNotes', $groupNote)
+                ->with('edition_id', $editionId)
+                ->with('week', $week)->with('group_id', $group);
     }
 
 
