@@ -17,7 +17,7 @@ class CreateCourseEditionUserTable extends Migration
             $table->id();
             $table->foreignId('user_id')->references('id')->on('users')->cascadeOnDelete();
             $table->foreignId('course_edition_id')->references('id')->on('course_editions')->cascadeOnDelete();
-            $table->unique(array('user_id','course_edition_id'));
+            /*$table->unique(array('user_id','course_edition_id'));*/
             $table->string('role')->nullable();
             $table->timestamps();
         });
