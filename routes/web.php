@@ -186,9 +186,6 @@ Route::post('/assignTaToGroups/{edition_id}/store', [CourseEditionUserController
 | Create Courses Routes
 |--------------------------------------------------------------------------
 */
-Route::get('/courseCreate', [CourseController::class, 'create'])
-    ->name('courseCreate')
-    ->middleware(['loggedIn', 'employee']);
 Route::post('/courseStore', [CourseController::class, 'store'])->middleware(['loggedIn', 'employee']);
 
 /*
@@ -196,9 +193,6 @@ Route::post('/courseStore', [CourseController::class, 'store'])->middleware(['lo
 | Delete Courses Routes
 |--------------------------------------------------------------------------
 */
-Route::get('/courseDelete', [CourseController::class, 'delete'])
-    ->name('courseDelete')
-    ->middleware(['loggedIn', 'employee']);
 Route::delete('/courseDestroy', [CourseController::class, 'destroy'])->middleware(['loggedIn', 'employee']);
 
 /*
@@ -206,9 +200,6 @@ Route::delete('/courseDestroy', [CourseController::class, 'destroy'])->middlewar
 |  Update Courses Routes
 |--------------------------------------------------------------------------
 */
-Route::get('/courseEdit', [CourseController::class, 'edit'])
-    ->name('courseEdit')
-    ->middleware(['loggedIn', 'employee']);
 Route::put('/courseUpdate', [CourseController::class, 'update'])->middleware(['loggedIn', 'employee']);
 
 /*
