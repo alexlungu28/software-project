@@ -69,6 +69,7 @@
                                         @csrf
                                     <tr>
                                         <input type="hidden" class="form-control" name='user_id' . {{$loop->index}} value={{$user->user_id}}>
+                                        <input type="hidden" class="form-control" name='edition_id' . {{$loop->index}} value={{$edition_id}}>
                                         <td>
                                             {{DB::table('users')
                                                     ->where('id', '=', $user->user_id)
@@ -89,9 +90,13 @@
                                         </td>
                                         <td>
                                                 <label>Select Groups:</label>
-                                                <select form="{{'bestForm' . $loop->index}}" class="selectpicker"  name="groups[]" multiple>
+                                                <select form="{{'bestForm' . $loop->index}}" class="selectpicker"  name="groups[]" data-live-search="true" multiple>
                                                     @foreach($groups as $group)
-                                                    <option value="{{$group->id}}">{{$group->group_name}}</option>
+                                                        @if(DB::table('group_user')->where('user_id', '=', $user->user_id)->where('group_id', '=', $group->id)->exists() )
+                                                            <option value="{{$group->id}}" selected>{{$group->group_name}}</option>
+                                                        @else
+                                                            <option value="{{$group->id}}" >{{$group->group_name}}</option>
+                                                        @endif
                                                     @endforeach
                                                 </select>
                                         </td>

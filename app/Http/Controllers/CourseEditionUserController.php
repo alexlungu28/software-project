@@ -2,11 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\CourseEdition;
 use App\Models\CourseEditionUser;
 use App\Models\Group;
+use App\Models\GroupUser;
 use Illuminate\Foundation\Auth\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use phpDocumentor\Reflection\Types\Null_;
+use function Illuminate\Events\queueable;
 
 class CourseEditionUserController extends Controller
 {
@@ -66,11 +70,15 @@ class CourseEditionUserController extends Controller
     public function assignTaToGroupsView($editionId)
     {
         $allUsers = User::all();
-        $groups = Group::all();
+        $groups = CourseEdition::find($editionId)->groups;
         $courseEditionUser = DB::table('course_edition_user')
             ->where('course_edition_id', '=', $editionId)
             ->where('role', '=', 'TA')
-            ->orWhere('role', '=', 'HeadTA')->get();
+            ->orWhere(function ($query) use ($editionId) {
+                $query->where('course_edition_id', '=', $editionId)
+                    ->where('role', '=', 'HeadTA');
+            })
+            ->get();
 
         return view('pages.assignTAToGroups', [
             'allUsers' => $allUsers,
@@ -86,8 +94,19 @@ class CourseEditionUserController extends Controller
      */
     public function assignTaToGroupsStore(Request $request)
     {
-        $groups = $request->input('groups');
         $userId = $request->input('user_id');
+        $editionId = $request->input('edition_id');
+        $groupUsers = DB::table('group_user')->where('user_id', '=', $userId)->get();
+        foreach ($groupUsers as $groupUser) {
+            $group = Group::find($groupUser->group_id);
+            if ($group->course_edition_id == $editionId) {
+                GroupUser::find($groupUser->id)->delete();
+            }
+        }
+        $groups = $request->input('groups');
+        if ($groups == null) {
+            return redirect()->back();
+        }
         foreach ($groups as $group) {
             $userToInsert = array("user_id" => $userId, "group_id" => $group);
             DB::table('group_user')->updateOrInsert($userToInsert);
@@ -107,9 +126,8 @@ class CourseEditionUserController extends Controller
         $allUsers = User::all();
         $courseEditionUser = DB::table('course_edition_user')
             ->where('course_edition_id', '=', $editionId)
-            ->where('role', '=', 'student')
-            ->orWhere('role', '=', 'TA')
-            ->orWhere('role', '=', 'HeadTA')->get();
+            ->where('role', '!=', 'lecturer')
+            ->get();
         $employeeUsers = DB::table('users')
             ->where('affiliation', '=', 'employee')->get();
         return view('pages.studentList', [
@@ -119,6 +137,12 @@ class CourseEditionUserController extends Controller
             'edition_id' => $editionId]);
     }
 
+    /**
+     * This method either inserts the user in the database or it modifies the role to lecturer.
+     * @param $courseEdition
+     * @param $userId
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function insertLecturerFromUsers($courseEdition, $userId)
     {
         if (DB::table('course_edition_user')
@@ -137,6 +161,12 @@ class CourseEditionUserController extends Controller
         return redirect()->back();
     }
 
+    /**
+     * This method either inserts the user in the database or it modifies the role to HeadTA.
+     * @param $courseEdition
+     * @param $userId
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function insertHeadTAFromUsers($courseEdition, $userId)
     {
         if ($userId) {
