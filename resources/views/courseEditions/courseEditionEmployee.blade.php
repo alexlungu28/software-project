@@ -74,6 +74,30 @@
                         @endforeach
                     </select>
                     <br/>
+                    <input type="checkbox" name="hardDelete" value="Yes" /> Permanently Delete
+                    <br/>
+                    <br/>
+
+                    <button type="submit"  value = "Add" class="btn btn-primary" style="background-color: #00A6D6;">Submit</button>
+
+                </form>
+            </div>
+            <div class="container" style="width: 50%">
+                <button onclick="toggle('courseEditionRestore')" class="btn btn-primary toggle"
+                        style="background-color: #00A6D6;">
+                    <h2 class="text-center" style="font-size: 1.2em;">Restore course edition</h2>
+                </button>
+                <br>
+                <form id="courseEditionRestore" action = "/courseEditionRestore" method = "post" class="form-group" style="width:70%; margin-left:15%; display: none">
+
+                    <input type = "hidden" name = "_token" value = "<?php echo csrf_token(); ?>">
+                    @method('PUT')
+                    <select class="form-control" name="id">
+                        @foreach($deletedEditions as $edition)
+                            <option value="{{$edition->id}}">{{$edition->year}}</option>
+                        @endforeach
+                    </select>
+                    <br/>
 
                     <button type="submit"  value = "Add" class="btn btn-primary" style="background-color: #00A6D6;">Submit</button>
 

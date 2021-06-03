@@ -84,7 +84,27 @@ class CourseController extends Controller
      */
     public function destroy(Request $request)
     {
-        Course::destroy($request->input('id'));
+        $courseId = $request->input('id');
+        $hardDelete = $request->input('hardDelete');
+        if (!empty($hardDelete)) {
+            Course::find($courseId)->forceDelete();
+        } else {
+            Course::destroy($courseId);
+        }
+        return redirect('/');
+    }
+
+    /**
+     * Restore the specified course.
+     *
+     * @param Request $request
+     * @return Application|RedirectResponse|Redirector
+     */
+    public function restore(Request $request)
+    {
+        $id = $request->input('id');
+        $course = Course::withTrashed()->find($id);
+        $course->restore();
         return redirect('/');
     }
 
@@ -96,8 +116,10 @@ class CourseController extends Controller
     public function viewEmployee()
     {
         $courses = Course::all();
+        $deletedCourses = Course::onlyTrashed()->get();
         return view('courses.mainEmployee', [
             "courses" => $courses,
+            "deletedCourses" => $deletedCourses
         ]);
     }
 
@@ -153,9 +175,11 @@ class CourseController extends Controller
     public function viewEmployeeCE($id)
     {
         $courseEditions = CourseEdition::where('course_id', '=', $id)->get();
+        $deletedEditions = CourseEdition::onlyTrashed()->get();
         return view('courseEditions.courseEditionEmployee', [
             "course_id" => $id,
             "courseEditions" => $courseEditions,
+            "deletedEditions" => $deletedEditions
         ]);
     }
 

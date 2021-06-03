@@ -72,8 +72,28 @@ class CourseEditionController extends Controller
     public function destroy(Request $request)
     {
         $id = $request->input('id');
+        $hardDelete = $request->input('hardDelete');
         $courseId = CourseEdition::find($id)->course_id;
-        CourseEdition::destroy($id);
+        if (!empty($hardDelete)) {
+            CourseEdition::find($id)->forceDelete();
+        } else {
+            CourseEdition::destroy($id);
+        }
+        return redirect('/courses/' . $courseId);
+    }
+
+    /**
+     * Restore the specified course edition.
+     *
+     * @param Request $request
+     * @return Application|RedirectResponse|Redirector
+     */
+    public function restore(Request $request)
+    {
+        $id = $request->input('id');
+        $edition = CourseEdition::withTrashed()->find($id);
+        $edition->restore();
+        $courseId = CourseEdition::find($id)->course_id;
         return redirect('/courses/' . $courseId);
     }
 
@@ -99,7 +119,7 @@ class CourseEditionController extends Controller
         return view('groups.allgroups', [
             "edition_id" => $editionId,
             "groups" => $groups,
-            "course_id" => $courseId
+            "course_id" => $courseId,
         ]);
     }
 

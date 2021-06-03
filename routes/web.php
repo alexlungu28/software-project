@@ -194,6 +194,8 @@ Route::post('/courseStore', [CourseController::class, 'store'])->middleware(['lo
 |--------------------------------------------------------------------------
 */
 Route::delete('/courseDestroy', [CourseController::class, 'destroy'])->middleware(['loggedIn', 'employee']);
+Route::put('/courseRestore', [CourseController::class, 'restore'])
+    ->name('courseRestore')->middleware(['loggedIn', 'employee']);
 
 /*
 |--------------------------------------------------------------------------
@@ -216,6 +218,8 @@ Route::post('/courseEditionStore/{course_id}', [CourseEditionController::class, 
 |--------------------------------------------------------------------------
 */
 Route::delete('/courseEditionDestroy', [CourseEditionController::class, 'destroy'])->middleware(['loggedIn', 'employee']);
+Route::put('/courseEditionRestore', [CourseEditionController::class, 'restore'])
+    ->name('courseEditionRestore')->middleware(['loggedIn', 'employee']);
 
 /*
 |--------------------------------------------------------------------------
