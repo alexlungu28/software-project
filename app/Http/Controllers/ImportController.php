@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use App\Imports\CourseEditionTAImport;
 use App\Imports\CourseEditionUserImport;
 use App\Imports\GroupsImport;
+use App\Imports\GroupsTAImport;
 use App\Imports\GroupUserImport;
+use App\Imports\GroupUserTAImport;
 use App\Imports\TAImport;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
@@ -68,8 +70,9 @@ class ImportController extends Controller
      */
     public function importTA($editionId): RedirectResponse
     {
-
         Excel::import(new TAImport, request()->file('file'));
+        Excel::import(new GroupsTAImport($editionId), request()->file('file'));
+        Excel::import(new GroupUserTAImport($editionId), request()->file('file'));
         Excel::import(new CourseEditionTAImport($editionId), request()->file('file'));
         return back();
     }
