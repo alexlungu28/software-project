@@ -126,9 +126,6 @@ class CourseEditionUserController extends Controller
         $allUsers = User::all();
         $courseEditionUser = DB::table('course_edition_user')
             ->where('course_edition_id', '=', $editionId)
-            /*->where('role', '=', 'student')
-            ->orWhere('role', '=', 'TA')
-            ->orWhere('role', '=', 'HeadTA')*/
             ->where('role', '!=', 'lecturer')
             ->get();
         $employeeUsers = DB::table('users')
@@ -140,6 +137,12 @@ class CourseEditionUserController extends Controller
             'edition_id' => $editionId]);
     }
 
+    /**
+     * This method either inserts the user in the database or it modifies the role to lecturer.
+     * @param $courseEdition
+     * @param $userId
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function insertLecturerFromUsers($courseEdition, $userId)
     {
         if (DB::table('course_edition_user')
@@ -158,6 +161,12 @@ class CourseEditionUserController extends Controller
         return redirect()->back();
     }
 
+    /**
+     * This method either inserts the user in the database or it modifies the role to HeadTA.
+     * @param $courseEdition
+     * @param $userId
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function insertHeadTAFromUsers($courseEdition, $userId)
     {
         if ($userId) {
