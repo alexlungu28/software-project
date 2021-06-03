@@ -3,11 +3,11 @@
 @section('content')
     <div class="content">
         <div class="container-fluid">
-
+            <button type="submit" name="update" class="btn btn-dark rounded-pill" onclick="window.location='{{ route('week', [$group_id, $week]) }}'">Back!</button>
     <div class="table-responsive">
-        <button type="submit" name="update" class="btn btn-dark rounded-pill" onclick="window.location='{{ route('week', [$attendances[0]->group_id, $attendances[0]->week]) }}'">Back!</button>
+
         <div class="col-xl-12">
-            <h3>Attendance - {{App\Models\Group::find($attendances[0]->group_id)->group_name}}, Week {{$attendances[0]->week}}</h3>
+            <h3>Attendance - {{App\Models\Group::find($group_id)->group_name}}, Week {{$week}}</h3>
             <div class="card">
 
                 <div class="card-block table-border-style">
