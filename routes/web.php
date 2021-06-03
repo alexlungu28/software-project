@@ -53,6 +53,8 @@ Route::get('/rubricDelete', [RubricController::class, 'delete'])
     ->name('rubricDelete')->middleware(['loggedIn', 'employee']);
 Route::delete('/rubricDestroy', [RubricController::class, 'destroy'])
     ->name('rubricDestroy')->middleware(['loggedIn', 'employee']);
+Route::put('/rubricRestore', [RubricController::class, 'restore'])
+    ->name('rubricRestore')->middleware(['loggedIn', 'employee']);
 
 /*
 |--------------------------------------------------------------------------
@@ -76,14 +78,17 @@ Route::get('/viewRubricTeacher/{id}/{edition_id}', [RubricEntryController::class
     ->middleware(['loggedIn', 'role:lecturer,HeadTA']);
 
 // Update
-Route::get('/rubricEntryEdit/{id}/{isRow}', [RubricEntryController::class, 'edit'])
+Route::get('/rubricEntryEdit/{id}', [RubricEntryController::class, 'edit'])
+    ->name('rubricEntryEdit')
     ->middleware(['loggedIn', 'employee']);
 Route::put('/rubricEntryUpdate', [RubricEntryController::class, 'update'])
     ->middleware(['loggedIn', 'employee']);
 
 // Delete
-Route::delete('/rubricEntryDelete/{id}/{distance}/{isRow}', [RubricEntryController::class, 'destroy'])
+Route::delete('/rubricEntryDelete/{id}', [RubricEntryController::class, 'destroy'])
     ->name('rubricEntryDelete')->middleware(['loggedIn', 'employee']);
+Route::put('/rubricEntryRollback', [RubricEntryController::class, 'rollback'])
+    ->name('rubricEntryRollback')->middleware(['loggedIn', 'employee']);
 
 /*
 |--------------------------------------------------------------------------
