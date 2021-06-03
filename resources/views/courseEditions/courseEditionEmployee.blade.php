@@ -3,6 +3,7 @@
 @section('content')
     <div class="content" style="display: flex">
         <div class="container-fluid">
+            <button type="submit" name="update" class="btn btn-dark rounded-pill" onclick="window.location='{{ route('courses') }}'">Back!</button>
             @foreach($courseEditions as $edition)
             <div class="row">
                 <div class="col-lg-3 col-md-6 col-sm-6">

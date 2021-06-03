@@ -84,18 +84,22 @@ class CourseEditionController extends Controller
         })->filter(function ($group) {
             return $group != null;
         });
+        $courseId = CourseEdition::find($editionId)->course_id;
         return view('groups.groupTA', [
             "edition_id" => $editionId,
-            "groups" => $groups
+            "groups" => $groups,
+            "course_id" => $courseId
         ]);
     }
 
     public function viewLecturer($editionId)
     {
         $groups = Group::where('course_edition_id', '=', $editionId)->get();
+        $courseId = CourseEdition::find($editionId)->course_id;
         return view('groups.allgroups', [
             "edition_id" => $editionId,
-            "groups" => $groups
+            "groups" => $groups,
+            "course_id" => $courseId
         ]);
     }
 
