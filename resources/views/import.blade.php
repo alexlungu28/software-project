@@ -26,7 +26,8 @@
         <ul>
         <li>OrgDefinedId represents the student number. The "#" prefix is optional and can be removed.</li>
         <li>Username represents the netid. The "#" prefix along with the "@tudelft" suffix are optional and can be removed.</li>
-        <li>Groups represent the groups a TA will be assigned to. Adding groups is optional and the column can be left blank.</li>
+        <li>Groups represent the groups a TA will be assigned to. Adding groups is optional and the column can be left blank. <br/>
+            The delimiter is a semicolon followed by a space ("; ").</li>
         </ul>
         <br/>
     </div>
