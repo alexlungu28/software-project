@@ -33,7 +33,7 @@ class GroupUserTAImport implements ToModel, WithHeadingRow
     {
         $userId = User::select('id')->where('org_defined_id', '=', trim($row['orgdefinedid'], "#"))->first()->id;
         $groups = $row[array_keys($row)[5]];
-        foreach(preg_split("/; /", $groups) as $groupName) {
+        foreach (preg_split("/; /", $groups) as $groupName) {
             if ($groupName != null && !GroupUser::where('user_id', '=', $userId)
                 ->where(
                     'group_id',

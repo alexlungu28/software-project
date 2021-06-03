@@ -11,12 +11,10 @@ use App\Imports\GroupUserTAImport;
 use App\Imports\TAImport;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
-use App\Exports\UsersExport;
 use App\Imports\UsersImport;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Maatwebsite\Excel\Facades\Excel;
-use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 class ImportController extends Controller
 {
@@ -30,16 +28,6 @@ class ImportController extends Controller
         return view('import', [
             "edition_id" => $editionId,
         ]);
-    }
-
-    /**
-     * Exports users table.
-     *
-     * @return BinaryFileResponse
-     */
-    public function export(): BinaryFileResponse
-    {
-        return Excel::download(new UsersExport, 'users.xlsx');
     }
 
     /**

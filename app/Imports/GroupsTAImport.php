@@ -29,8 +29,9 @@ class GroupsTAImport implements ToModel, WithHeadingRow
     public function model(array $row)
     {
         $groups = $row[array_keys($row)[5]];
-        foreach(preg_split("/; /", $groups) as $groupName) {
-            if ($groupName != null && !Group::where('group_name', '=', $groupName)->where('course_edition_id', '=', $this->editionId)->exists()) {
+        foreach (preg_split("/; /", $groups) as $groupName) {
+            if ($groupName != null && !Group::where('group_name', '=', $groupName)
+                    ->where('course_edition_id', '=', $this->editionId)->exists()) {
                 Group::create([
                     'group_name'    => $groupName,
                     'course_edition_id' => $this->editionId,
