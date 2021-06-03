@@ -322,4 +322,54 @@ class NotesControllerTest extends TestCase
             ]
         );
     }
+
+    /**
+     * Test to verify if individual note was successfully updated.
+     */
+    public function testUpdateIndividualNotes()
+    {
+        $this->before();
+        $response = $this->post(
+            '/noteUpdate/1',
+            [
+                'reason' => "Updated note!",
+                'update' => 1,
+            ]
+        )->assertStatus(302);
+
+        $this->assertDatabaseHas(
+            'notes_individual',
+            [
+                'id' => 1,
+                'problem_signal' => 1,
+                'note' => "Updated note!",
+            ]
+        );
+        $response->assertStatus(302);
+    }
+
+    /**
+     * Test to verify if group note was successfully updated.
+     */
+    public function testUpdateGroupNotes()
+    {
+        $this->before();
+        $response = $this->post(
+            '/groupNoteUpdate/1',
+            [
+                'groupNoteUpdate' => 1,
+                'groupNote' => "Updated note!",
+            ]
+        );
+
+        $this->assertDatabaseHas(
+            'notes_group',
+            [
+                'id' => 1,
+                'problem_signal' => 1,
+                'note' => "Updated note!",
+            ]
+        );
+        $response->assertStatus(302);
+    }
 }
