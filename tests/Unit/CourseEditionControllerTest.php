@@ -198,6 +198,12 @@ class CourseEditionControllerTest extends TestCase
      */
     public function testViewLecturer() {
         $this->before();
+        CourseEdition::insert(
+            [
+                'course_id' => 1,
+                'year' => 2021
+            ]
+        );
         $response = $this->get('/edition/1');
         $response->assertViewIs('groups.allgroups');
     }
@@ -226,6 +232,12 @@ class CourseEditionControllerTest extends TestCase
                 'user_id' => 1,
                 'course_edition_id' => 1,
                 'role' => 'TA'
+            ]
+        );
+        CourseEdition::insert(
+            [
+                'course_id' => 1,
+                'year' => 2021
             ]
         );
         $response = $this->get('/edition/1');
