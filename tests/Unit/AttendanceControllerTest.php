@@ -267,4 +267,31 @@ class AttendanceControllerTest extends TestCase
             ]
         );
     }
+
+    /**
+     * Test to verify if attendance was successfully updated.
+     */
+    public function testUpdateAttendance()
+    {
+        $this->before();
+        $response = $this->post(
+            '/attendanceupdate/1',
+            [
+                'update' => 2,
+                'reason' => "Reason for being late",
+            ]
+        )->assertStatus(302);
+
+        $this->assertDatabaseHas(
+            'attendances',
+            [
+                'id' => 1,
+                'user_id' => 2,
+                'status' => 2,
+                'reason' => "Reason for being late",
+            ]
+        );
+        $response->assertStatus(302);
+    }
+
 }
