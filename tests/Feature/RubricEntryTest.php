@@ -70,4 +70,21 @@ class RubricEntryTest extends TestCase
             ->assertSee('Column 1');
         $response->assertStatus(200);
     }
+
+    public function testTeacherView()
+    {
+        $this->before();
+        $response = $this->get('/viewRubricTeacher/1/1')
+            ->assertSeeInOrder(
+                [
+                    'TestName',
+                    'Column 1',
+                    'Update Column',
+                    'Delete Column',
+                    'Add a new Rubric Entry',
+                    'Rollback deleted Rubric Entry',
+                ]
+            );
+        $response->assertStatus(200);
+    }
 }

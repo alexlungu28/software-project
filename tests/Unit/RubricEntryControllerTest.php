@@ -4,6 +4,7 @@ namespace Tests\Unit;
 
 use App\Http\Controllers\RubricEntryController;
 use App\Models\Rubric;
+use App\Models\RubricData;
 use App\Models\RubricEntry;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithoutMiddleware;
@@ -120,7 +121,7 @@ class RubricEntryControllerTest extends TestCase
     }
 
     /**
-     * Test to verify the rubric is deleted from the database.
+     * Test to verify the rubricEntry is deleted from the database.
      */
     public function testRubricEntryDelete()
     {
@@ -145,6 +146,76 @@ class RubricEntryControllerTest extends TestCase
                 'is_row' => 1,
                 'description' => 'Row 1',
             ],
+        );
+        $response->assertStatus(302);
+    }
+
+    /**
+     * Test to verify the deleted rubricEntry and it's data is restored
+     */
+    public function testRubricEntryRestore()
+    {
+        $this->before();
+        RubricEntry::insert(
+            [
+                'rubric_id' => 1,
+                'distance' => 0,
+                'is_row' => 1,
+                'description' => 'Row 1',
+            ]
+        );
+        RubricData::insert(
+            [
+                'id' => 1,
+                'rubric_id' => 1,
+                'group_id' => 1,
+                'row_number' => 0,
+                'value' => 1,
+                'note' => "This is a note",
+                'user_id' => 1,
+            ]
+        );
+        $this->delete(
+            '/rubricEntryDelete/1'
+        );
+        $this->assertSoftDeleted(
+            'rubric_data',
+            [
+                'id' => 1,
+                'rubric_id' => 1,
+                'group_id' => 1,
+                'row_number' => 0,
+                'value' => 1,
+                'note' => "This is a note",
+                'user_id' => 1,
+            ]
+        );
+        $response = $this->put(
+            '/rubricEntryRollback',
+            [
+                'id' => 1,
+            ]
+        );
+        $this->assertDatabaseHas(
+            'rubric_entries',
+            [
+                'rubric_id' => 1,
+                'distance' => 0,
+                'is_row' => 1,
+                'description' => 'Row 1',
+            ]
+        );
+        $this->assertDatabaseHas(
+            'rubric_data',
+            [
+                'id' => 1,
+                'rubric_id' => 1,
+                'group_id' => 1,
+                'row_number' => 0,
+                'value' => 1,
+                'note' => "This is a note",
+                'user_id' => 1,
+            ]
         );
         $response->assertStatus(302);
     }
