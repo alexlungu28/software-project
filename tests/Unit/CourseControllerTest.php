@@ -181,6 +181,67 @@ class CourseControllerTest extends TestCase
     }
 
     /**
+     * Test to verify permanent deletion inside the database.
+     */
+    public function testCourseDestroyPermanent()
+    {
+        Course::insert(
+            [
+                'course_number' => 'CSE1234',
+                'description' => 'OOP',
+            ]
+        );
+        $this->assertDatabaseHas(
+            'courses',
+            [
+                'course_number' => 'CSE1234',
+                'description' => 'OOP',
+            ]
+        );
+        $response = $this->delete(
+            '/courseDestroy',
+            [
+                'id' => 1,
+                'hardDelete' => 'true'
+            ],
+        );
+        $this->assertDeleted(
+            'courses',
+            [
+                'id' => 1,
+            ],
+        );
+        $response->assertStatus(302);
+    }
+
+    /**
+     * Test to verify that soft deleted courses are restored correctly.
+     */
+    public function testCourseRestore() {
+        Course::insert(
+            [
+                'course_number' => 'CSE1234',
+                'description' => 'OOP',
+            ]
+        );
+        $this->delete(
+            '/courseDestroy',
+            [
+                'id' => 1
+            ],
+        );
+        $this->assertNull(Course::find(1));
+        $response = $this->put(
+            '/courseRestore',
+            [
+                'id' => 1
+            ]
+        );
+        $this->assertNotNull(Course::find(1));
+        $response->assertStatus(302);
+    }
+
+    /**
      * Test to verify that the correct view is returned according to user affiliation.
      */
     public function testViewEmployee() {

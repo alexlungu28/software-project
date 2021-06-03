@@ -194,6 +194,68 @@ class CourseEditionControllerTest extends TestCase
     }
 
     /**
+     * Test to verify permanent deletion inside the database.
+     */
+    public function testCourseEditionDestroyPermanent()
+    {
+        $this->before();
+        CourseEdition::insert(
+            [
+                'course_id' => 1,
+                'year' => 2021
+            ]
+        );
+        $this->assertDatabaseHas(
+            'course_editions',
+            [
+                'course_id' => 1,
+                'year' => 2021,
+            ]
+        );
+        $response = $this->delete(
+            '/courseEditionDestroy',
+            [
+                'id' => 1,
+                'hardDelete' => true
+            ],
+        );
+        $this->assertDeleted(
+            'course_editions',
+            [
+                'id' => 1,
+            ],
+        );
+        $response->assertStatus(302);
+    }
+
+    /**
+     * Test to verify that soft deleted course editions are restored correctly.
+     */
+    public function testCourseEditionRestore() {
+        CourseEdition::insert(
+            [
+                'course_id' => 1,
+                'year' => 2021
+            ]
+        );
+        $this->delete(
+            '/courseEditionDestroy',
+            [
+                'id' => 1
+            ],
+        );
+        $this->assertNull(CourseEdition::find(1));
+        $response = $this->put(
+            '/courseEditionRestore',
+            [
+                'id' => 1
+            ]
+        );
+        $this->assertNotNull(CourseEdition::find(1));
+        $response->assertStatus(302);
+    }
+
+    /**
      * Test to verify that the correct view is returned according to user role.
      */
     public function testViewLecturer() {

@@ -31,7 +31,6 @@ class CourseController extends Controller
             $description = $request->input('description');
             $data = array('course_number' => $courseNumber, 'description' => $description, 'created_at' => now(),
                 'updated_at' => now());
-            // TODO: make it possible to add a course if the course number matches with a soft deleted one
             DB::table('courses')->insert($data);
             return redirect('/');
         } catch (QueryException $e) {
