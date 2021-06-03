@@ -9,7 +9,7 @@
                         <div class="card card-stats" style="width: 120px;">
                             <div class="card-icon">
                                 <a class="nav-link" href="{{ route('course', $course->id) }}">
-                                    <p><span style="color: #00A6D6; ">{{ $course->course_number }}</span></p>
+                                    <p>{{ $course->course_number }}</p>
                                 </a>
                             </div>
                         </div>

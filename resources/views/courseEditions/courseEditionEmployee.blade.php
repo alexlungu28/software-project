@@ -10,7 +10,7 @@
                     <div class="card card-stats" style="width: 120px;">
                         <div class="card-icon">
                             <a class="nav-link" href="{{ route('groups', [$edition->id]) }}">
-                                <p><span style="color: #00A6D6; ">{{ $edition->year }}</span></p>
+                                <p>{{ $edition->year }}</p>
                             </a>
                         </div>
                     </div>
