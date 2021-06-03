@@ -42,6 +42,25 @@ class ImportControllerTest extends TestCase
     }
 
     /**
+     * Test to verify a user can import the list of TAs.
+     *
+     * @return void
+     */
+    public function testUserCanImportTAs()
+    {
+        $file = UploadedFile::fake()->create('ImportTest.csv');
+
+        Excel::fake();
+
+        $response = $this->post(route('importTA', [1]), [
+            'fileToUpload' => $file
+        ]);
+
+        $this->assertEquals(302, $response->getStatusCode());
+        $response->assertRedirect('');
+    }
+
+    /**
      * Test to verify a user can export the list of students.
      *
      * @return void
