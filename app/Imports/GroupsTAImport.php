@@ -40,5 +40,6 @@ class GroupsTAImport implements ToModel, WithHeadingRow
                 return null;
             }
         }
+        return null;
     }
 }

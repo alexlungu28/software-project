@@ -7,12 +7,12 @@ use App\Models\User;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 
-class CourseEditionUserImport implements ToModel, WithHeadingRow
+class CourseEditionStudentImport implements ToModel, WithHeadingRow
 {
     private $editionId;
 
     /**
-     * CourseEditionUserImport constructor.
+     * CourseEditionStudentImport constructor.
      * @param int $editionId
      */
     public function __construct(int $editionId)
@@ -38,6 +38,8 @@ class CourseEditionUserImport implements ToModel, WithHeadingRow
             'course_edition_id' => $this->editionId,
             'role' => 'student',
             ]);
+        } else {
+            return null;
         }
     }
 }
