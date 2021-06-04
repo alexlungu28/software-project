@@ -60,6 +60,7 @@ class CourseControllerTest extends TestCase
             ],
         );
         $this->expectOutputString("Course number already exists.<br/>Redirecting you back to main page...");
+
     }
 
     /**
@@ -261,7 +262,7 @@ class CourseControllerTest extends TestCase
             'affiliation' => 'student'
         ]);
         Auth::shouldReceive('user')->once()->andReturn($user);
-        Auth::shouldReceive('id')->twice()->andReturn(1);
+        Auth::shouldReceive('id')->andReturn(1);
         Course::insert(
             [
                 'course_number' => 'CSE1234',
@@ -293,6 +294,33 @@ class CourseControllerTest extends TestCase
                 'user_id' => 1,
                 'course_edition_id' => 1,
                 'role' => 'TA'
+            ]
+        );
+        CourseEdition::insert(
+            [
+                'course_id' => 1,
+                'year' => 2020
+            ]
+        );
+        CourseEditionUser::insert(
+            [
+                'user_id' => 1,
+                'course_edition_id' => 2,
+                'role' => 'student'
+            ]
+        );
+        Group::insert(
+            [
+                'group_name' => 'Group 1',
+                'content' => 'First group',
+                'grade' => 10,
+                'course_edition_id' => 2
+            ]
+        );
+        GroupUser::insert(
+            [
+                'user_id' => 1,
+                'group_id' => 2
             ]
         );
         $response = $this->get('/');
@@ -319,7 +347,7 @@ class CourseControllerTest extends TestCase
             'affiliation' => 'student'
         ]);
         Auth::shouldReceive('user')->once()->andReturn($user);
-        Auth::shouldReceive('id')->once()->andReturn(1);
+        Auth::shouldReceive('id')->twice()->andReturn(1);
         Course::insert(
             [
                 'course_number' => 'CSE1234',
@@ -330,6 +358,12 @@ class CourseControllerTest extends TestCase
             [
                 'course_id' => 1,
                 'year' => 2021
+            ]
+        );
+        CourseEdition::insert(
+            [
+                'course_id' => 1,
+                'year' => 2020
             ]
         );
         Group::insert(
@@ -355,8 +389,8 @@ class CourseControllerTest extends TestCase
         );
         CourseEditionUser::insert(
             [
-                'user_id' => 2,
-                'course_edition_id' => 1,
+                'user_id' => 1,
+                'course_edition_id' => 2,
                 'role' => 'student'
             ]
         );

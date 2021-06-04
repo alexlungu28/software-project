@@ -21,7 +21,7 @@ class CourseEditionController extends Controller
      *
      * @param Request $request
      * @param $courseId
-     * @return Application|RedirectResponse|Redirector
+     * @return Application|RedirectResponse|Redirector|void
      */
     public function store(Request $request, $courseId)
     {
@@ -37,7 +37,7 @@ class CourseEditionController extends Controller
         } catch (QueryException $e) {
             echo "Course edition already exists.<br/>";
             echo "Redirecting you back to main page...";
-            header("refresh:3;url=/courses/" . $courseId);
+            return header("refresh:3;url=/courses/" . $courseId);
         }
     }
 
@@ -45,7 +45,7 @@ class CourseEditionController extends Controller
      * Update the specified resource in storage.
      *
      * @param Request $request
-     * @return Application|Redirector|RedirectResponse
+     * @return Application|Redirector|RedirectResponse|void
      */
     public function update(Request $request)
     {
@@ -59,7 +59,7 @@ class CourseEditionController extends Controller
         } catch (QueryException $e) {
             echo "Course edition already exists.<br/>";
             echo "Redirecting you back to main page...";
-            header("refresh:3;url=/courses/" . $courseEdition->course_id);
+            return header("refresh:3;url=/courses/" . $courseEdition->course_id);
         }
     }
 

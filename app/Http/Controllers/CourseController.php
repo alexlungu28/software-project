@@ -21,7 +21,7 @@ class CourseController extends Controller
      * Store a newly created resource in storage.
      *
      * @param Request $request
-     * @return Application|RedirectResponse|Redirector
+     * @return Application|RedirectResponse|Redirector|void
      */
     public function store(Request $request)
     {
@@ -36,7 +36,7 @@ class CourseController extends Controller
         } catch (QueryException $e) {
             echo "Course number already exists.<br/>";
             echo "Redirecting you back to main page...";
-            header("refresh:3;url=/");
+            return header("refresh:3;url=/");
         }
     }
 
@@ -55,7 +55,7 @@ class CourseController extends Controller
      * Update the specified resource in storage.
      *
      * @param Request $request
-     * @return Application|Redirector|RedirectResponse
+     * @return Application|Redirector|RedirectResponse|void
      */
     public function update(Request $request)
     {
@@ -71,7 +71,7 @@ class CourseController extends Controller
         } catch (QueryException $e) {
             echo "Course number already exists.<br/>";
             echo "Redirecting you back to main page...";
-            header("refresh:3;url=/");
+            return header("refresh:3;url=/");
         }
     }
 
