@@ -155,7 +155,9 @@ Route::get('unauthorized', function () {
     echo "You are unauthorized to access this page.";
 })->name('unauthorized');
 
-Route::get('/courses/{id}', [CourseController::class, 'viewCourseById'])->name('course')->middleware();
+Route::get('/courses/{id}', [CourseController::class, 'viewCourseById'])
+    ->name('course')
+    ->middleware('loggedIn');
 
 /*
 |--------------------------------------------------------------------------

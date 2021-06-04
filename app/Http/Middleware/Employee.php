@@ -4,6 +4,7 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 
 class Employee
@@ -20,6 +21,6 @@ class Employee
         if (Auth::check() && Auth::user()->isEmployee()) {
             return $next($request);
         }
-        return redirect('unauthorized');
+        return abort(Response::HTTP_FORBIDDEN, 'Unauthorized');
     }
 }
