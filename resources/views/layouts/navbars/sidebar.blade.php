@@ -49,10 +49,10 @@
                 </a>
             </li>
         @endif
-        <li class="nav-item{{ $activePage == 'studentList' ? ' active' : '' }}">
+        <li class="nav-item{{ $activePage == 'userList' ? ' active' : '' }}">
             <a class="nav-link" href="{{ route('studentList', [$edition_id]) }}">
                 <i class="material-icons">S</i>
-                <p>{{ __('StudentList') }}</p>
+                <p>{{ __('UserList') }}</p>
             </a>
         </li>
         <li class="nav-item{{ $activePage == 'assignTaToGroups' ? ' active' : '' }}">

@@ -144,7 +144,7 @@ class CourseController extends Controller
             return null;
         })->filter(function ($course) {
             return $course != null;
-        });
+        })->unique();
         return view('courses.mainStudent', [
             "courses" => $courses,
         ]);
@@ -202,7 +202,7 @@ class CourseController extends Controller
                 return null;
             })->filter(function ($courseEdition) {
                 return $courseEdition != null;
-            });
+            })->unique();
         return view('courseEditions.courseEditionStudent', [
             "course_id" => $id,
             "courseEditions" => $courseEditions,

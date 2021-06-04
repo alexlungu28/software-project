@@ -3,11 +3,11 @@
 @section('content')
     <div class="content">
         <div class="container-fluid">
-            <button type="submit" name="update" class="btn btn-dark rounded-pill" onclick="window.location='{{ route('week', [$notes[0]->group_id, $notes[0]->week]) }}'">Back!</button>
+            <button type="submit" name="update" class="btn btn-dark rounded-pill" onclick="window.location='{{ route('week', [$group_id, $week]) }}'">Back!</button>
     <div class="table-responsive">
 
         <div class="col-xl-12">
-            <h3>Notes - {{App\Models\Group::find($notes[0]->group_id)->group_name}}, Week {{$notes[0]->week}}</h3>
+            <h3>Notes - {{App\Models\Group::find($group_id)->group_name}}, Week {{$week}}</h3>
             <div class="card">
 
                 <div class="card-block table-border-style">
@@ -17,7 +17,7 @@
                             <thead>
                             <tr>
 
-                                <th>Problem Signal for {{App\Models\Group::find($notes[0]->group_id)->group_name}}</th>
+                                <th>Problem Signal for {{App\Models\Group::find($group_id)->group_name}}</th>
                                 <th>Group Note</th>
                                 <th>Select Problem Signal</th>
 
@@ -29,8 +29,6 @@
 
 
                                 <tr>
-
-
 
                                     <td  style="width:30%">@if($note->problem_signal == 1)
                                             <button class="btn btn-success rounded-pill" cursor="default" >All good!</button>

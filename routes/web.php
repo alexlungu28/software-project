@@ -53,6 +53,8 @@ Route::get('/rubricDelete', [RubricController::class, 'delete'])
     ->name('rubricDelete')->middleware(['loggedIn', 'employee']);
 Route::delete('/rubricDestroy', [RubricController::class, 'destroy'])
     ->name('rubricDestroy')->middleware(['loggedIn', 'employee']);
+Route::put('/rubricRestore', [RubricController::class, 'restore'])
+    ->name('rubricRestore')->middleware(['loggedIn', 'employee']);
 
 /*
 |--------------------------------------------------------------------------
@@ -76,14 +78,17 @@ Route::get('/viewRubricTeacher/{id}/{edition_id}', [RubricEntryController::class
     ->middleware(['loggedIn', 'role:lecturer,HeadTA']);
 
 // Update
-Route::get('/rubricEntryEdit/{id}/{isRow}', [RubricEntryController::class, 'edit'])
+Route::get('/rubricEntryEdit/{id}', [RubricEntryController::class, 'edit'])
+    ->name('rubricEntryEdit')
     ->middleware(['loggedIn', 'employee']);
 Route::put('/rubricEntryUpdate', [RubricEntryController::class, 'update'])
     ->middleware(['loggedIn', 'employee']);
 
 // Delete
-Route::delete('/rubricEntryDelete/{id}/{distance}/{isRow}', [RubricEntryController::class, 'destroy'])
+Route::delete('/rubricEntryDelete/{id}', [RubricEntryController::class, 'destroy'])
     ->name('rubricEntryDelete')->middleware(['loggedIn', 'employee']);
+Route::put('/rubricEntryRollback', [RubricEntryController::class, 'rollback'])
+    ->name('rubricEntryRollback')->middleware(['loggedIn', 'employee']);
 
 /*
 |--------------------------------------------------------------------------
@@ -106,6 +111,9 @@ Route::get('/importExportView/{edition_id}', 'App\Http\Controllers\ImportControl
     ->middleware(['loggedIn', 'role:lecturer']);
 Route::post('/import/{edition_id}', 'App\Http\Controllers\ImportController@import')
     ->name('import')
+    ->middleware(['loggedIn', 'role:lecturer']);
+Route::post('/importTA/{edition_id}', 'App\Http\Controllers\ImportController@importTA')
+    ->name('importTA')
     ->middleware(['loggedIn', 'role:lecturer']);
 
 
@@ -172,6 +180,15 @@ Route::post('/studentList/changeRoleHeadTA/{course_edition_user_id}', [CourseEdi
     ->name('setRoleHeadTA')->middleware(['loggedIn', 'role:lecturer']);
 Route::post('/studentList/changeRoleStudent/{course_edition_user_id}', [CourseEditionUserController::class, 'setRoleStudent'])
     ->name('setRoleStudent')->middleware(['loggedIn', 'role:lecturer']);
+/*
+|--------------------------------------------------------------------------
+|  Student List to assign employees to course_editions Routes
+|--------------------------------------------------------------------------
+*/
+Route::post('/studentList/insertLecturer/{edition_id}/{user_id}', [CourseEditionUserController::class, 'insertLecturerFromUsers'])
+    ->name('EmployeeToLecturer')->middleware(['loggedIn', 'role:lecturer']);
+Route::post('/studentList/insertHeadTA/{edition_id}/{user_id}', [CourseEditionUserController::class, 'insertHeadTAFromUsers'])
+    ->name('EmployeeToHeadTA')->middleware(['loggedIn', 'role:lecturer']);
 /*
 |--------------------------------------------------------------------------
 |  Assign Tas to groups Routes

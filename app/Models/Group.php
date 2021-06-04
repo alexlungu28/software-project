@@ -7,7 +7,6 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\MorphMany;
 
 class Group extends Model
 {
@@ -53,11 +52,21 @@ class Group extends Model
     /**
      * Creates the notes relation.
      *
-     * @return morphMany
+     * @return HasMany
      */
     public function notes()
     {
-        return $this->morphMany('App\Models\Note', 'noteable');
+        return $this->hasMany(Note::class);
+    }
+
+    /**
+     * Creates the groupnotes relation.
+     *
+     * @return HasMany
+     */
+    public function groupnotes()
+    {
+        return $this->hasMany(NoteGroup::class);
     }
 
     public function rubricData()

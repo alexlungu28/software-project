@@ -29,8 +29,9 @@
                                             {{$entry->description}}
                                         </th>
                                     @endforeach
-                                    <th> note </th>
-                                    <th> Delete Row</th>
+                                    <th>Note</th>
+                                    <th>Update Row</th>
+                                    <th>Delete Row</th>
                                     </thead>
                                     <tbody>
                                     @foreach($rubricRowEntries as $rowEntry)
@@ -44,8 +45,18 @@
                                             <td> <textarea name={{"text".($loop->index)}} form="rubricForm"></textarea> </td>
                                             <td>
                                                 <form
+                                                    method="get"
+                                                    action="{{route('rubricEntryEdit', $rowEntry->id)}}">
+                                                    @csrf
+                                                    <button
+                                                        type="submit"
+                                                        class="btn btn-primary">Update</button>
+                                                </form>
+                                            </td>
+                                            <td>
+                                                <form
                                                     method="post"
-                                                    action="{{route('rubricEntryDelete',array('id' => $rubric->id, 'distance' => $rowEntry->distance, 'isRow' => 1))}}">
+                                                    action="{{route('rubricEntryDelete', $rowEntry->id)}}">
                                                     @csrf
                                                     @method('DELETE')
                                                     {{ method_field('DELETE') }}
@@ -58,12 +69,27 @@
                                         </tr>
                                     @endforeach
                                     <tr>
+                                        <td>Update Column</td>
+                                        @foreach($rubricColumnEntries as $columnEntry)
+                                            <td>
+                                                <form
+                                                    method="get"
+                                                    action="{{route('rubricEntryEdit', $columnEntry->id)}}">
+                                                    @csrf
+                                                    <button
+                                                        type="submit"
+                                                        class="btn btn-primary">Update</button>
+                                                </form>
+                                            </td>
+                                        @endforeach
+                                    </tr>
+                                    <tr>
                                         <td>Delete Column</td>
                                         @foreach($rubricColumnEntries as $columnEntry)
                                             <td>
                                                 <form
                                                     method="post"
-                                                    action="{{route('rubricEntryDelete',array('id' => $rubric->id, 'distance' => $columnEntry->distance, 'isRow' => 0))}}">
+                                                    action="{{route('rubricEntryDelete', $columnEntry->id)}}">
                                                     @csrf
                                                     @method('DELETE')
                                                     {{ method_field('DELETE') }}
@@ -85,25 +111,39 @@
             </div>
         </div>
     </div>
-    <div class="container">
-        <h2 class="text-center">Add a new Rubric Entry</h2>
-        <br>
-        <form action = "/rubricEntryStore" method = "post" class="form-group" style="width:70%; margin-left:15%;" action="/action_page.php">
+    <div>
+        <div class="container">
+            <h2 class="text-center">Add a new Rubric Entry</h2>
+            <br>
+            <form action = "/rubricEntryStore" method = "post" class="form-group" style="width:70%; margin-left:15%;" action="/action_page.php">
+                <input type = "hidden" name = "_token" value = "<?php echo csrf_token(); ?>">
+                <input type="hidden" class="form-control" name="rubric_id" value="{{$rubric->id}}">
 
-            <input type = "hidden" name = "_token" value = "<?php echo csrf_token(); ?>"><input type = "hidden" name = "_token" value = "<?php echo csrf_token(); ?>">
+                <label class="form-group"></label>
+                <select class="form-control" name="is_row">
+                    <option value="1">Row</option>
+                    <option value="0">Column</option>
+                </select>
+                <input type="text" class="form-control" placeholder="Description" name="description">
 
-            <input type="hidden" class="form-control" name="rubric_id" value="{{$rubric->id}}">
+                <button type="submit"  value = "Add" class="btn btn-primary">Submit</button>
 
-            <label class="form-group"></label>
-            <select class="form-control" name="is_row">
-                <option value="1">Row</option>
-                <option value="0">Column</option>
-            </select>
-            <label class="form-group"></label>
-            <input type="text" class="form-control" placeholder="Description" name="description">
-
-            <button type="submit"  value = "Add" class="btn btn-primary">Submit</button>
-
-        </form>
+            </form>
+        </div>
+        <div class="container">
+            <h2 class="text-center">Rollback deleted Rubric Entry</h2>
+            <br>
+            <form action = "/rubricEntryRollback" method = "post" class="form-group" style="width:70%; margin-left:15%;" action="action_page.php">
+                <input type = "hidden" name = "_token" value = "<?php echo csrf_token(); ?>">
+                @method("PUT")
+                <select class="form-control" name="id">
+                    @foreach($deletedEntries as $deletedEntry)
+                        <option value="{{$deletedEntry->id}}">{{$deletedEntry->description}}</option>
+                    @endforeach
+                </select>
+                <button type="submit"  value = "Add" class="btn btn-primary">Submit</button>
+            </form>
+        </div>
     </div>
+
 @endsection

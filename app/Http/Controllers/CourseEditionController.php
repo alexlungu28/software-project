@@ -116,10 +116,16 @@ class CourseEditionController extends Controller
     {
         $groups = Group::where('course_edition_id', '=', $editionId)->get();
         $courseId = CourseEdition::find($editionId)->course_id;
+        $courseEdition = CourseEdition::find($editionId);
+        $teachingAssistants = null;
+        if ($courseEdition != null) {
+            $teachingAssistants = $courseEdition->teachingAssistants;
+        }
         return view('groups.allgroups', [
             "edition_id" => $editionId,
             "groups" => $groups,
             "course_id" => $courseId,
+            "teachingAssistants" => $teachingAssistants,
         ]);
     }
 

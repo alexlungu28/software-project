@@ -44,6 +44,11 @@ class CourseEdition extends Model
         return $this->belongsToMany(User::class, 'course_edition_user');
     }
 
+    public function teachingAssistants()
+    {
+        return $this->belongsToMany(User::class, 'course_edition_user')->wherePivot('role', '=', 'TA');
+    }
+
     /**
      * Creates the rubrics relation.
      *

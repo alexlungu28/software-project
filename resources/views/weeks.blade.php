@@ -29,25 +29,54 @@
                                     <table class="table">
                                         <thead class="text-primary">
                                         <th>Solved</th>
+                                        <th>Week</th>
+                                        <th>Regarding</th>
                                         <th>Content</th>
                                         <th>Problem Signal</th>
                                         </thead>
                                         <tbody>
-                              {{--          @foreach($group->notes as $note)
-                                            @if($note->problem_signal >= 1)
+                                        @foreach($group->groupnotes->sortBy('week') as $groupnote)
+                                            @if($groupnote->problem_signal >= 2)
                                             <tr>
                                                 <td>
 
                                                 </td>
                                                 <td>
-                                                    <textarea readonly=true style="width: 100%">{{$note->content}}</textarea>
+                                                    {{$groupnote->week}}
                                                 </td>
                                                 <td>
-                                                    {{$note->problem_signal}}
+                                                    Group
+                                                </td>
+                                                <td>
+                                                    <textarea readonly=true style="width: 100%">{{$groupnote->note}}</textarea>
+                                                </td>
+                                                <td>
+                                                    {{$groupnote->problem_signal}}
                                                 </td>
                                             </tr>
                                             @endif
-                                        @endforeach--}}
+                                        @endforeach
+                                        @foreach($group->notes->sortBy('week') as $note)
+                                            @if($note->problem_signal >= 2)
+                                                <tr>
+                                                    <td>
+
+                                                    </td>
+                                                    <td>
+                                                        {{$note->week}}
+                                                    </td>
+                                                    <td>
+                                                        {{$note->user->first_name . ' ' . $note->user->last_name}}
+                                                    </td>
+                                                    <td>
+                                                        <textarea readonly=true style="width: 100%">{{$note->note}}</textarea>
+                                                    </td>
+                                                    <td>
+                                                        {{$note->problem_signal}}
+                                                    </td>
+                                                </tr>
+                                            @endif
+                                        @endforeach
                                         </tbody>
                                     </table>
                                 </div>

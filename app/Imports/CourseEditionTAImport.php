@@ -7,12 +7,12 @@ use App\Models\User;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 
-class CourseEditionUserImport implements ToModel, WithHeadingRow
+class CourseEditionTAImport implements ToModel, WithHeadingRow
 {
     private $editionId;
 
     /**
-     * CourseEditionUserImport constructor.
+     * CourseEditionTAImport constructor.
      * @param int $editionId
      */
     public function __construct(int $editionId)
@@ -30,13 +30,13 @@ class CourseEditionUserImport implements ToModel, WithHeadingRow
     public function model(array $row)
     {
 
-        $userId = User::select('id')->where('org_defined_id', '=', trim($row['orgdefinedid'], "#"))->first()->id;
+        $userId = User::select('id')->where('org_defined_id', '=', $row['orgdefinedid'])->first()->id;
         if (!CourseEditionUser::where('user_id', '=', $userId)
             ->where('course_edition_id', '=', $this->editionId)->exists()) {
             return new CourseEditionUser([
             'user_id'    => $userId,
             'course_edition_id' => $this->editionId,
-            'role' => 'student',
+            'role' => 'TA',
             ]);
         }
     }
