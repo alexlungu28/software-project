@@ -1,4 +1,4 @@
-@extends('layouts.app', ['activePage' => 'rubrics', 'titlePage' => __('RubricView')])
+@extends('layouts.TA', ['activePage' => 'group', 'titlePage' => __('RubricView')])
 
 @section('content')
 <div class="content">

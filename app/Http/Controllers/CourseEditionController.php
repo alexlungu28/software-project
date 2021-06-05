@@ -10,32 +10,18 @@ use Illuminate\Contracts\View\View;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 use Illuminate\Routing\Redirector;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class CourseEditionController extends Controller
 {
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return Application|Factory|View
-     */
-    public function create($courseId)
-    {
-        return view('courseEditions.courseEdition_create', [
-            "course_id" => $courseId
-        ]);
-    }
-
     /**
      * Store a newly created resource in storage.
      *
      * @param Request $request
      * @param $courseId
-     * @return Application|RedirectResponse|Redirector
+     * @return Application|RedirectResponse|Redirector|void
      */
     public function store(Request $request, $courseId)
     {
@@ -47,65 +33,34 @@ class CourseEditionController extends Controller
             $courseEditionId = DB::table('course_editions')->get()->last()->id;
             DB::table('course_edition_user')->insert(array('user_id'=>Auth::id(),
                 'course_edition_id'=>$courseEditionId, 'role'=>'lecturer' ,'created_at'=>now(),'updated_at'=>now()));
-            return redirect('/');
+            return redirect('/courses/' . $courseId);
         } catch (QueryException $e) {
             echo "Course edition already exists.<br/>";
             echo "Redirecting you back to main page...";
-            header("refresh:3;url=/");
+            return header("refresh:3;url=/courses/" . $courseId);
         }
-    }
-
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param $courseId
-     * @return Application|Factory|View
-     */
-    public function edit($courseId)
-    {
-        $courseEditions = DB::table('course_editions')->where('course_id', '=', $courseId)->get();
-        return view(
-            'courseEditions.courseEdition_edit',
-            ['course_id' => $courseId, 'courseEditions' => $courseEditions]
-        );
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param Request $request
-     * @return Application|Redirector|RedirectResponse
+     * @return Application|Redirector|RedirectResponse|void
      */
     public function update(Request $request)
     {
+        $id = $request->input('id');
+        $year = $request->input('year');
+        $courseEdition = CourseEdition::find($id);
         try {
-            $id = $request->input('id');
-            $year = $request->input('year');
-            $courseEdition = CourseEdition::find($id);
             $courseEdition->year = $year;
             $courseEdition->save();
-            return redirect('/');
+            return redirect('/courses/' . $courseEdition->course_id);
         } catch (QueryException $e) {
             echo "Course edition already exists.<br/>";
             echo "Redirecting you back to main page...";
-            header("refresh:3;url=/");
+            return header("refresh:3;url=/courses/" . $courseEdition->course_id);
         }
-    }
-
-    /**
-     * Return the view for deleting course editions.
-     *
-     * @param $courseId
-     * @return Application|Factory|View
-     */
-    public function delete($courseId)
-    {
-        $courseEditions = DB::table('course_editions')->where('course_id', '=', $courseId)->get();
-        return view('courseEditions.courseEdition_delete', [
-            "course_id" => $courseId,
-            "courseEditions" => $courseEditions,
-        ]);
     }
 
     /**
@@ -116,8 +71,30 @@ class CourseEditionController extends Controller
      */
     public function destroy(Request $request)
     {
-        CourseEdition::destroy($request->input('id'));
-        return redirect('/');
+        $id = $request->input('id');
+        $hardDelete = $request->input('hardDelete');
+        $courseId = CourseEdition::find($id)->course_id;
+        if (!empty($hardDelete)) {
+            CourseEdition::find($id)->forceDelete();
+        } else {
+            CourseEdition::destroy($id);
+        }
+        return redirect('/courses/' . $courseId);
+    }
+
+    /**
+     * Restore the specified course edition.
+     *
+     * @param Request $request
+     * @return Application|RedirectResponse|Redirector
+     */
+    public function restore(Request $request)
+    {
+        $id = $request->input('id');
+        $edition = CourseEdition::withTrashed()->find($id);
+        $edition->restore();
+        $courseId = CourseEdition::find($id)->course_id;
+        return redirect('/courses/' . $courseId);
     }
 
     public function viewTA($editionId)
@@ -127,15 +104,18 @@ class CourseEditionController extends Controller
         })->filter(function ($group) {
             return $group != null;
         });
+        $courseId = CourseEdition::find($editionId)->course_id;
         return view('groups.groupTA', [
             "edition_id" => $editionId,
-            "groups" => $groups
+            "groups" => $groups,
+            "course_id" => $courseId
         ]);
     }
 
     public function viewLecturer($editionId)
     {
         $groups = Group::where('course_edition_id', '=', $editionId)->get();
+        $courseId = CourseEdition::find($editionId)->course_id;
         $courseEdition = CourseEdition::find($editionId);
         $teachingAssistants = null;
         if ($courseEdition != null) {
@@ -143,8 +123,9 @@ class CourseEditionController extends Controller
         }
         return view('groups.allgroups', [
             "edition_id" => $editionId,
+            "groups" => $groups,
+            "course_id" => $courseId,
             "teachingAssistants" => $teachingAssistants,
-            "groups" => $groups
         ]);
     }
 

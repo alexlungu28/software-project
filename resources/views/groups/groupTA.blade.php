@@ -3,6 +3,7 @@
 @section('content')
     <div class="content">
         <div class="container-fluid">
+            <button type="submit" name="update" class="btn btn-dark rounded-pill" onclick="window.location='{{ route('course', ['id'=>$course_id]) }}'">Back!</button>
             <div class="row">
                 @foreach($groups as $group)
                     <div class="card card-stats" style="width: 170px; margin-left:10px; margin-right:10px; float:left">

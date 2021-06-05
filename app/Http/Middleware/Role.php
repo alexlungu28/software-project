@@ -5,6 +5,7 @@ namespace App\Http\Middleware;
 use App\Models\CourseEditionUser;
 use Closure;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
 
 class Role
@@ -41,12 +42,12 @@ class Role
             ->where('user_id', '=', $request->user()->id)
             ->get()->first();
         if ($courseEditionUser === null) {
-            return redirect('unauthorized');
+            abort(Response::HTTP_FORBIDDEN, 'Unauthorized');
         } else {
             if (in_array($courseEditionUser->role, $roles)) {
                 return $next($request);
             } else {
-                return redirect('unauthorized');
+                abort(Response::HTTP_FORBIDDEN, 'Unauthorized');
             }
         }
     }
