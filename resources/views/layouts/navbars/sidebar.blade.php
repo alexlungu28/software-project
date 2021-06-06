@@ -35,6 +35,14 @@
                 <p>{{ __('Groups') }}</p>
             </a>
         </li>
+
+        <li class="nav-item{{ $activePage == 'interventions' ? ' active' : '' }}">
+            <a class="nav-link" href={{ route('interventions', [$edition_id]) }}>
+                <i class="material-icons">interventions</i>
+                <p>{{ __('Interventions') }}</p>
+            </a>
+        </li>
+
         <li class="nav-item{{ $activePage == 'userList' ? ' active' : '' }}">
             <a class="nav-link" href="{{ route('studentList', [$edition_id]) }}">
                 <i class="material-icons">S</i>
