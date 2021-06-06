@@ -11,6 +11,8 @@ class Intervention extends Model
 {
     use HasFactory;
 
+    protected $table = 'interventions_individual';
+
     /**
      * Creates the groups relation.
      *
@@ -22,22 +24,12 @@ class Intervention extends Model
     }
 
     /**
-     * Creates the notes relation.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\MorphMany
-     */
-    public function notes()
-    {
-        return $this->morphMany('App\Models\Note', 'noteable');
-    }
-
-    /**
      * Creates the users relation.
      *
      * @return BelongsToMany
      */
-    public function users()
+    public function user()
     {
-        return $this->belongsToMany(User::class, 'intervention_user');
+        return $this->belongsTo(User::class);
     }
 }
