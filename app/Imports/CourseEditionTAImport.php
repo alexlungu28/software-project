@@ -38,6 +38,8 @@ class CourseEditionTAImport implements ToModel, WithHeadingRow
             'course_edition_id' => $this->editionId,
             'role' => 'TA',
             ]);
+        } else {
+            return null;
         }
     }
 }
