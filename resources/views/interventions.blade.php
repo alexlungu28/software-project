@@ -9,306 +9,210 @@
 
 </head>
 @section('content')
+
+
+
     <div class="content">
         <div class="container-fluid">
+            @include ('/interventions/intervention_create_modal')
 
-            <div class="table-responsive">
-
-                <h3>Interventions</h3>
-                <button type="button" name="createIntervention" class="btn btn-danger rounded-pill" value="2" data-toggle="modal" data-target="{{"#createIntervention" . $edition_id}}">Create Intervention</button>
-
-
-
-
-
-                <div class="card">
-
-                    <div class="card-block table-border-style">
-                        <div class="table-responsive">
-
-                            <table class="table table-hover" style="table-layout:fixed;">
-                                <thead>
-                                <tr>
-                                    <th style="width:15%">Name</th>
-                                    <th style="width:10%">Group</th>
-                                    <th style="width:20%">Reason</th>
-                                    <th style="width:20%">Action</th>
-                                    <th style="width:10%">Starting</th>
-                                    <th style="width:10%">Ending</th>
-                                    <th style="width:25%"></th>
-
-                                </tr>
-                                </thead>
-                                <tbody>
-                                @foreach($interventions as $intervention)
-                                    <tr>
-
-                                        <td>{{App\Models\User::find($intervention->user_id)->first_name . " " . App\Models\User::find($intervention->user_id)->last_name }}</td>
-                                        <td>{{App\Models\Group::find($intervention->group_id)->group_name}}</td>
-
-                                        <td>{{$intervention->reason}}</td>
-
-                                        <td>{{$intervention->action}}
-                                          </td>
-
-                                        <td>{{$intervention->start_day}}</td>
-                                        <td>{{$intervention->end_day}}</td>
-
-                                        <form>
-                                            @csrf
-                                            <input type="hidden" name="_method" value="POST">
-                                            <td>
-                                                <button type="button" name="update" class="btn btn-info " value="1"  data-toggle="modal" data-target="{{"#editIntervention" . $intervention->id}}">Edit</button>
-                                                <button type="button" name="update" class="btn btn-danger rounded-pill" value="2" data-toggle="modal" data-target="{{"#deleteIntervention" . $intervention->id}}">Delete</button>
-
-                                            </td>
-                                        </form>
-
-
-                                    </tr>
-                                    <div class="modal fade" id="{{"editIntervention" . $intervention->id}}">
-                                        <div class="modal-dialog">
-                                            <div class="modal-content">
-                                                <div class="modal-header">
-                                                    <h4 class="modal-title" align="center"><b>Edit Intervention #{{$intervention->id}}</b></h4>
-                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                        <span aria-hidden="true">&times;</span></button>
-
-                                                </div>
-
-
-                                                <div class="modal-body">
-                                                    <form id={{"intervention" . $intervention->id}} method="post" value = "<?php echo csrf_token(); ?>" action="{{action('App\Http\Controllers\InterventionsController@editIntervention',$intervention->id)}}">
-                                                        <input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
-                                                        <div class="box-body">
-                                                            <div class="form-group">
-                                                                <label for="name">Name</label>
-                                                                <h4 ><b>{{App\Models\User::find($intervention->user_id)->first_name . " " . App\Models\User::find($intervention->user_id)->last_name }}</b></h4>
-                                                                <label for="group">Group</label>
-                                                                <h4 ><b>{{App\Models\Group::find($intervention->group_id)->group_name}}</b></h4>
-                                                            </div>
-                                                            <div class="form-group">
-                                                                <label for="editReason">Reason</label>
-                                                                <textarea type="text" class="form-control" id="editReason" name="editReason" rows="4" value="">{{$intervention->reason}}</textarea>
-                                                            </div>
 
 
-                                                            <div class="form-group">
-                                                                <label for="editAction">Action</label>
-                                                                <textarea type="text" class="form-control" id="editAction" name="editAction" rows="4" value="">{{$intervention->action}}</textarea>
-                                                            </div>
 
-                                                                <div class="form-group">
-                                                                        <label for="editStart">Starting</label>
-                                                                        <input type='text' class="form-control" id='{{"editStart" . $intervention->id}}' name="{{"editStart" . $intervention->id}}" value="{{$intervention->start_day}}" />
-                                                                    </div>
-                                                                    <script type="text/javascript">
-                                                                        $(function () {
-                                                                            moment.locale('en', {
-                                                                                week: { dow: 1 } // Monday is the first day of the week
-                                                                            });
-                                                                            $('{{"#editStart" . $intervention->id}}').datetimepicker({
-                                                                                format: 'YYYY-MM-DD'
-                                                                            });
-                                                                        });
-                                                                    </script>
+            <ul class="nav nav-pills " id="pills-tab" role="tablist">
+                <li class="nav-item">
+                    <a class="nav-link active" id="pills-allInterventions-tab" data-toggle="pill" href="#allInterventions" role="tab" aria-controls="allInterventions" aria-selected="true">Interventions - Individual</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" id="pills-problemCases-tab" data-toggle="pill" href="#problemCases" role="tab" aria-controls="problemCases" aria-selected="false">Problem Cases - Individual</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" id="pills-contact-tab" data-toggle="pill" href="#pills-contact" role="tab" aria-controls="pills-contact" aria-selected="false">Interventions - Group</a>
+                </li>
 
+                <li class="nav-item">
+                    <a class="nav-link" id="pills-contact-tab" data-toggle="pill" href="#pills-contact" role="tab" aria-controls="pills-contact" aria-selected="false">Problem Cases - Group</a>
+                </li>
 
-                                                            <div class="form-group">
-                                                                <label for="editEnd">Ending</label>
-                                                                <input type='text' class="form-control" form={{"intervention" . $intervention->id}} id='{{"editEnd" . $intervention->id}}' name="{{"editEnd" . $intervention->id}}" value="{{$intervention->end_day}}"/>
-                                                            </div>
-                                                            <script type="text/javascript">
-                                                                $(function () {
-                                                                    moment.locale('en', {
-                                                                        week: { dow: 1 } // Monday is the first day of the week
-                                                                    });
-                                                                    $('{{"#editEnd" . $intervention->id}}').datetimepicker({
-                                                                        format: 'YYYY-MM-DD'
-                                                                    });
-                                                                });
-                                                            </script>
+            </ul>
+            <div class="tab-content" id="pills-tabContent">
+                <div class="tab-pane fade show active" id="allInterventions" role="tabpanel" aria-labelledby="pills-allInterventions-tab">
+                    <div class="table-responsive">
 
-                                                            </div>
+                        <h3>Interventions</h3>
 
+                        <button type="button" name="createIntervention" class="btn btn-danger rounded-pill" value="2" data-toggle="modal" data-target="{{"#createIntervention" . $edition_id}}" style="float:right">Create Intervention</button>
 
+                        <div class="card">
 
+                            <div class="card-block table-border-style">
+                                <div class="table-responsive">
 
-                                                        <div class="modal-footer">
-                                                            <button type="button" id="close" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
-                                                            <script type="text/javascript">
-                                                                $(window).on('load', function (e) {
-                                                                    $('#close').on('click', function (e) {
-                                                                        $("#div").load(" #div > *");
-                                                                    });
-                                                                });
-                                                            </script>
+                                    <table class="table table-hover" style="table-layout:fixed;">
+                                        <thead>
+                                        <tr>
+                                            <th style="width:15%">Name</th>
+                                            <th style="width:10%">Group</th>
+                                            <th style="width:25%">Reason</th>
+                                            <th style="width:25%">Action</th>
+                                            <th style="width:10%">Starting</th>
+                                            <th style="width:10%">Ending</th>
+                                            <th style="width:25%"></th>
 
-                                                            <button type="submit" class="btn btn-primary">Save changes</button>
-                                                        </div>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
 
-                                                    </form>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
+                                        @foreach($interventions as $intervention)
 
+                                            <tr>
+@
+                                                <td>{{App\Models\User::find($intervention->user_id)->first_name . " " . App\Models\User::find($intervention->user_id)->last_name }}</td>
+                                                <td>
 
+                                                    {{App\Models\Group::find($intervention->group_id)->group_name}}</td>
 
-                                    <div class="modal fade" id="{{"deleteIntervention" . $intervention->id}}">
-                                        <div class="modal-dialog">
-                                            <div class="modal-content">
-                                                <div class="modal-header">
-                                                    <h4 class="modal-title" align="center"><b>Are you sure you want to delete this intervention?</b></h4>
-                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                        <span aria-hidden="true">&times;</span></button>
+                                                <td>
 
-                                                </div>
 
 
 
-                                                <div class="modal-body">
-                                                    <form id={{"deleteIntervention" . $intervention->id}} method="post" value = "<?php echo csrf_token(); ?>" action="{{action('App\Http\Controllers\InterventionsController@deleteIntervention',$intervention->id)}}">
-                                                        <input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
-                                                        <div class="modal-footer">
-                                                            <button type="button" id="close" class="btn btn-default pull-left" data-dismiss="modal">Cancel</button>
-                                                            <script type="text/javascript">
-                                                                $(window).on('load', function (e) {
-                                                                    $('#close').on('click', function (e) {
-                                                                        $("#div").load(" #div > *");
-                                                                    });
-                                                                });
-                                                            </script>
 
-                                                            <button type="submit" class="btn btn-primary">Delete!</button>
-                                                        </div>
+                                                    @if(preg_match("/^(note)\d+$/i", $intervention->reason))
+                                                        @php
+                                                            $note = App\Models\Note::find(preg_replace('/[^0-9]/', '', $intervention->reason));
+                                                            @endphp
 
-                                                    </form>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
+                                                    @include('/interventions/intervention_view_note')
+                                                        <button type="button" name="viewNote" class="btn btn-info rounded-pill" data-toggle="modal" data-target="{{"#viewNote" . preg_replace('/[^0-9]/', '', $intervention->reason)}}">Note</button>
+                                                    @else
+                                                        {{$intervention->reason}}
+                                                    @endif
+                                                </td>
 
+                                                <td>{{$intervention->action}}
+                                                </td>
 
+                                                <td>@php echo date("F jS, Y", strtotime($intervention->start_day)); @endphp</td>
 
+                                                <td>@php echo date("F jS, Y", strtotime($intervention->end_day)); @endphp</td>
 
+                                                <form>
+                                                    @csrf
+                                                    <input type="hidden" name="_method" value="POST">
+                                                    <td align="right">
+                                                        <button type="button" name="update" class="btn btn-info " value="1"  data-toggle="modal" data-target="{{"#editIntervention" . $intervention->id}}">Edit</button>
+                                                        <button type="button" name="update" class="btn btn-dark" value="2" data-toggle="modal" data-target="{{"#deleteIntervention" . $intervention->id}}"> <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
+                                                                <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"/>
+                                                                <path fill-rule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"/>
+                                                            </svg></button>
 
+                                                    </td>
+                                                </form>
 
 
-                                @endforeach
+                                            </tr>
 
+                                            @include ('/interventions/intervention_edit_modal')
+                                            @include ('/interventions/intervention_delete_modal')
 
+                                        @endforeach
 
-                                </tbody>
-                            </table>
 
-                            <div class="modal fade" id="{{"createIntervention" . $edition_id}}">
-                                <div class="modal-dialog">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <h4 class="modal-title" align="center"><b>Create Intervention</b></h4>
-                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                <span aria-hidden="true">&times;</span></button>
 
-                                        </div>
+                                        </tbody>
+                                    </table>
 
-
-                                        <div class="modal-body">
-                                            <form id={{"createIntervention"}} method="post" value = "<?php echo csrf_token(); ?>" action="{{action('App\Http\Controllers\InterventionsController@createIntervention',$edition_id)}}">
-                                                <input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
-                                                <div class="box-body">
-                                                    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/css/bootstrap-select.min.css">
-
-                                                    <!-- (Optional) Latest compiled and minified JavaScript translation files -->
-                                                    <script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/js/i18n/defaults-*.min.js"></script>
-
-
-
-
-                                                    <div class="form-group">
-                                                        <label for="name">Name</label>
-                                                        <select class="selectpicker" data-live-search="true" name="createUser" id='createUser'>
-                                                            @foreach(App\Models\CourseEditionUser::where('course_edition_id', '=', $edition_id)->where('role','=','student')->get() as $user)
-                                                                <option value="{{$user->user_id}}" >{{App\Models\User::find($user->user_id)->first_name . " " . App\Models\User::find($user->user_id)->last_name }}</option>
-                                                            @endforeach
-                                                        </select>
-                                                    </div>
-
-                                                    <div class="form-group">
-                                                        <label for="editReason">Reason</label>
-                                                        <textarea type="text" class="form-control" id="createReason" name="createReason" rows="4" placeholder="..."></textarea>
-                                                    </div>
-
-
-                                                    <div class="form-group">
-                                                        <label for="createAction">Action</label>
-                                                        <textarea type="text" class="form-control" id="createAction" name="createAction" rows="4" placeholder="..."></textarea>
-                                                    </div>
-
-                                                    <div class="form-group">
-                                                        <label for="createStart">Starting</label>
-                                                        <input type='text' class="form-control" id='{{"createStart" . $edition_id}}' name="{{"createStart" . $edition_id}}" value="" />
-                                                    </div>
-                                                    <script type="text/javascript">
-                                                        $(function () {
-                                                            moment.locale('en', {
-                                                                week: { dow: 1 } // Monday is the first day of the week
-                                                            });
-                                                            $('{{"#createStart" . $edition_id}}').datetimepicker({
-                                                                format: 'YYYY-MM-DD'
-                                                            });
-                                                        });
-                                                    </script>
-
-                                                    <div class="form-group">
-                                                        <label for="createEnd">Ending</label>
-                                                        <input type='text' class="form-control" id='{{"createEnd" . $edition_id}}' name="{{"createEnd" . $edition_id}}" value="" />
-                                                    </div>
-                                                    <script type="text/javascript">
-                                                        $(function () {
-                                                            moment.locale('en', {
-                                                                week: { dow: 1 } // Monday is the first day of the week
-                                                            });
-                                                            $('{{"#createEnd" . $edition_id}}').datetimepicker({
-                                                                format: 'YYYY-MM-DD'
-                                                            });
-                                                        });
-
-
-                                                    </script>
-
-                                                </div>
-
-
-
-
-                                                <div class="modal-footer">
-                                                    <button type="button" id="close" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
-                                                    <script type="text/javascript">
-                                                        $(window).on('load', function (e) {
-                                                            $('#close').on('click', function (e) {
-                                                                $("#div").load(" #div > *");
-                                                            });
-                                                        });
-                                                    </script>
-
-                                                    <button type="submit" class="btn btn-primary">Save changes</button>
-                                                </div>
-
-                                            </form>
-                                        </div>
-                                    </div>
                                 </div>
                             </div>
+                        </div></div>
+
+                </div>
+
+
+                <div class="tab-pane fade show" id="problemCases" role="tabpanel" aria-labelledby="pills-problemCases-tab">
+                    <div class="table-responsive">
+
+                        <h3>Problem Cases - Individual</h3>
+
+                        <div class="card">
+
+                            <div class="card-block table-border-style">
+                                <div class="table-responsive">
+
+                                    <table class="table table-hover" style="table-layout:fixed;">
+                                        <thead>
+                                        <tr>
+                                            <th style="width:15%">Name</th>
+                                            <th style="width:10%">Group</th>
+                                            <th style="width:10%">Week</th>
+                                            <th style="width:15%">Problem Signal</th>
+                                            <th style="width:30%">Note</th>
+                                            <th style="width:20%"></th>
+
+                                        </tr>
+                                        </thead>
+                                        <tbody>
 
 
 
+                                        @foreach($notes as $note)
+
+                                            <tr>
+
+
+                                                <td>{{App\Models\User::find($note->user_id)->first_name . " " . App\Models\User::find($note->user_id)->last_name }}</td>
+                                                <td>{{App\Models\Group::find($note->group_id)->group_name}}</td>
+                                                <td>Week {{$note->week}}</td>
+                                                <td>@if($note->problem_signal == 1)
+                                                        <button class="btn btn-success rounded-pill" cursor="default" >All good!</button>
+                                                    @elseif($note->problem_signal == 2)
+                                                        <button class="btn btn-warning rounded-pill" cursor="default" >Warning!</button>
+                                                    @elseif($note->problem_signal == 3)
+                                                        <button class="btn btn-danger rounded-pill" cursor="default" >Problematic!</button>
+                                                    @else
+                                                        {{$problemSignal = " "}}
+                                                    @endif</td>
 
 
 
-                        </div>
+                                                <form id={{"note" . $note->id}} method="post" value = "<?php echo csrf_token(); ?>" action="{{action('App\Http\Controllers\NotesController@update',$note->id)}}">
+                                                    @csrf
+                                                    <td> {{$note->note}} </td>
+                                                    <input type="hidden" name="_method" value="POST">
+                                                    <td>
+                                                        <button type="button" name="update" class="btn btn-info " value="1"  data-toggle="modal" data-target="{{"#createInterventionNote" . $note->id}}">Create Intervention</button>
+                                                    </td>
+                                                </form>
+
+
+                                                @include ('/interventions/intervention_create_note_based_modal')
+
+
+
+                                            </tr>
+                                        @endforeach
+
+
+
+                                        </tbody>
+                                    </table>
+
+                                </div>
+                            </div>
+                        </div></div>
+
                     </div>
-                </div></div></div></div></div>
+
+
+
+                <div class="tab-pane fade show" id="pills-contact" role="tabpanel" aria-labelledby="pills-contact-tab">
+                <p>salut</p>
+                </div>
+
+            </div>
+
+</div>
 
 
 

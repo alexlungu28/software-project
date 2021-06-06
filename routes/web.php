@@ -306,6 +306,9 @@ Route::post('/editIntervention/{id}', [InterventionsController::class, 'editInte
 Route::post('/createIntervention/{id}', [InterventionsController::class, 'createIntervention'])
     ->name('createIntervention')->middleware(['loggedIn']);
 
+Route::post('/createInterventionNote/{id}', [InterventionsController::class, 'createInterventionNote'])
+    ->name('createInterventionNote')->middleware(['loggedIn']);
+
 Route::post('/deleteIntervention/{id}', [InterventionsController::class, 'deleteIntervention'])
     ->name('deleteIntervention')->middleware(['loggedIn']);
 
