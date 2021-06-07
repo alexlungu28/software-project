@@ -45,7 +45,10 @@ Everyone has provided all questions they had.
 
 
 # Question round
-*If there are any spontaneous questions.*
+- If you look at the assignments tab in brightspace, there is currently in the final report a wordcount for each section.
+The total words should be 15000, but adding up all of the minimal word counts per section it is not close to the minimum of the complete report.
+  - If you stay in the middle of these limits it should add up to at least 15000 words.
 
 # Closing
-*For any final remarks*
+
+Next week's meeting will be on the same day at the same time, 14-6-2021 at 14:30.
