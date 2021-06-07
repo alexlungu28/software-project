@@ -26,8 +26,8 @@ class AttendanceController extends Controller
         $users = CourseEditionUser::where('course_edition_id', $editionId)->where('role', 'student')->get(['user_id']);
 
         $attendances = Attendance::all()->sortBy('week');
-        // return Attendance::where('user_id', $id)->where('week', $week)->get();
-        return view('attendance_submit')->with('attendances', $attendances)->with('edition_id', $editionId);
+
+        return view('attendance')->with('attendances', $attendances)->with('edition_id', $editionId);
 
         // return $attendance;
     }
@@ -79,11 +79,13 @@ class AttendanceController extends Controller
             array_push($users, $user);
         }
 
-        //create and add attendance object to database
+        //create and add attendance object *for students* to database
         //added only if it does not exist for the current group and week
         $attendances = [];
         foreach ($users as $user) {
-            if ($user->affiliation === 'student') {
+            if (CourseEditionUser::where('course_edition_id', '=', $editionId)
+                ->where('user_id', '=', $user->id)
+                ->where('role', '=', 'student')->exists()) {
                 $id = $user->id;
 
                 if (Attendance::where('user_id', '=', $id)
@@ -92,17 +94,16 @@ class AttendanceController extends Controller
                         ->exists() === false) {
                     $this->createAttendance($user, $group, $week);
                 }
-
-                $attendance = Attendance::select('*')
-                        ->where('group_id', '=', $group)
-                        ->where('week', '=', $week)
-                        ->where('user_id', '=', $id)->first();
-
-                array_push($attendances, $attendance);
             }
         }
+        $attendances = Attendance::select('*')
+            ->where('group_id', '=', $group)
+            ->where('week', '=', $week)->get();
 
-        return view('attendance_submit')->with('attendances', $attendances)->with('edition_id', $editionId);
+        return view('attendance')
+            ->with('attendances', $attendances)
+            ->with('edition_id', $editionId)
+            ->with('week', $week)->with('group_id', $group);
     }
 
     /**

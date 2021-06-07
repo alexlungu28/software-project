@@ -1,4 +1,4 @@
-@extends('layouts.app', ['activePage' => 'studentList', 'titlePage' => __('RubricView')])
+@extends('layouts.app', ['activePage' => 'userList', 'titlePage' => __('RubricView')])
 
 @section('content')
     <head>
@@ -10,6 +10,9 @@
         <script>
             $(document).ready( function () {
                 $('#table').DataTable();
+            } );
+            $(document).ready( function () {
+                $('#employeeTable').DataTable();
             } );
         </script>
     </head>
@@ -98,5 +101,71 @@
             </div>
         </div>
     </div>
+    <div class="content">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="card-header card-header-primary">
+                            <input type = "hidden" name = "_token" value = "<?php echo csrf_token(); ?>">
+                            <h4 class="card-title ">Employee List</h4>
+                        </div>
+                        <div class="card-body">
+                            <table id ="employeeTable" class="table">
+                                <thead class=" text-primary">
+                                <th>Net ID</th>
+                                <th>First Name</th>
+                                <th>Last Name</th>
+                                <th>Role</th>
+                                <th>Set Role HEAD TA</th>
+                                <th>Set Role Lecturer</th>
+                                </thead>
+                                <tbody>
+                                @foreach($employeeUsers as $employee)
+                                    <tr>
+                                        <td>
+                                            {{$employee->net_id}}
+                                        </td>
+                                        <td>
+                                            {{$employee->first_name}}
+                                        </td>
+                                        <td>
+                                            {{$employee->last_name}}
+                                        </td>
+                                        <td>
+                                            {{$employee->affiliation}}
+                                        </td>
+                                        <td>
+                                            <form
+                                                method="post"
+                                                action="{{route('EmployeeToHeadTA',array('edition_id'=>$edition_id, 'user_id' => $employee->id))}}">
+                                                @csrf
+                                                <button
+                                                    type="submit"
+                                                    onclick="return confirm('Are you sure?')"
+                                                    class="btn btn-primary">Make Head TA</button>
+                                            </form>
+                                        </td>
+                                        <td>
+                                            <form
+                                                method="post"
+                                                action="{{route('EmployeeToLecturer',array('edition_id'=>$edition_id, 'user_id' => $employee->id))}}">
+                                                @csrf
+                                                <button
+                                                    type="submit"
+                                                    onclick="return confirm('Are you sure?')"
+                                                    class="btn btn-primary">Make Lecturer</button>
+                                            </form>
+                                        </td>
+                                    </tr>
+                                @endforeach
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
 
+                </div>
+            </div>
+        </div>
+    </div>
 @endsection

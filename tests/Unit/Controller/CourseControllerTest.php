@@ -21,14 +21,6 @@ class CourseControllerTest extends TestCase
     use RefreshDatabase;
 
     /**
-     * Test to verify that the correct view is returned upon accessing the route.
-     */
-    public function testCourseCreate() {
-        $response = $this->get('/courseCreate');
-        $response->assertViewIs('courses.course_create');
-    }
-
-    /**
      * Test to verify insertion inside the database.
      */
     public function testCourseStore()
@@ -68,6 +60,7 @@ class CourseControllerTest extends TestCase
             ],
         );
         $this->expectOutputString("Course number already exists.<br/>Redirecting you back to main page...");
+
     }
 
     /**
@@ -88,14 +81,6 @@ class CourseControllerTest extends TestCase
             ]
         );
         assertEquals(2, CourseController::getAllCourses()->count());
-    }
-
-    /**
-     * Test to verify that the correct view is returned upon accessing the route.
-     */
-    public function testCourseEdit() {
-        $response = $this->get('/courseEdit');
-        $response->assertViewIs('courses.course_edit');
     }
 
     /**
@@ -164,14 +149,6 @@ class CourseControllerTest extends TestCase
     }
 
     /**
-     * Test to verify that the correct view is returned upon accessing the route.
-     */
-    public function testCourseDelete() {
-        $response = $this->get('/courseDelete');
-        $response->assertViewIs('courses.course_delete');
-    }
-
-    /**
      * Test to verify deletion inside the database.
      */
     public function testCourseDestroy()
@@ -205,6 +182,67 @@ class CourseControllerTest extends TestCase
     }
 
     /**
+     * Test to verify permanent deletion inside the database.
+     */
+    public function testCourseDestroyPermanent()
+    {
+        Course::insert(
+            [
+                'course_number' => 'CSE1234',
+                'description' => 'OOP',
+            ]
+        );
+        $this->assertDatabaseHas(
+            'courses',
+            [
+                'course_number' => 'CSE1234',
+                'description' => 'OOP',
+            ]
+        );
+        $response = $this->delete(
+            '/courseDestroy',
+            [
+                'id' => 1,
+                'hardDelete' => 'true'
+            ],
+        );
+        $this->assertDeleted(
+            'courses',
+            [
+                'id' => 1,
+            ],
+        );
+        $response->assertStatus(302);
+    }
+
+    /**
+     * Test to verify that soft deleted courses are restored correctly.
+     */
+    public function testCourseRestore() {
+        Course::insert(
+            [
+                'course_number' => 'CSE1234',
+                'description' => 'OOP',
+            ]
+        );
+        $this->delete(
+            '/courseDestroy',
+            [
+                'id' => 1
+            ],
+        );
+        $this->assertNull(Course::find(1));
+        $response = $this->put(
+            '/courseRestore',
+            [
+                'id' => 1
+            ]
+        );
+        $this->assertNotNull(Course::find(1));
+        $response->assertStatus(302);
+    }
+
+    /**
      * Test to verify that the correct view is returned according to user affiliation.
      */
     public function testViewEmployee() {
@@ -224,7 +262,7 @@ class CourseControllerTest extends TestCase
             'affiliation' => 'student'
         ]);
         Auth::shouldReceive('user')->once()->andReturn($user);
-        Auth::shouldReceive('id')->twice()->andReturn(1);
+        Auth::shouldReceive('id')->andReturn(1);
         Course::insert(
             [
                 'course_number' => 'CSE1234',
@@ -256,6 +294,33 @@ class CourseControllerTest extends TestCase
                 'user_id' => 1,
                 'course_edition_id' => 1,
                 'role' => 'TA'
+            ]
+        );
+        CourseEdition::insert(
+            [
+                'course_id' => 1,
+                'year' => 2020
+            ]
+        );
+        CourseEditionUser::insert(
+            [
+                'user_id' => 1,
+                'course_edition_id' => 2,
+                'role' => 'student'
+            ]
+        );
+        Group::insert(
+            [
+                'group_name' => 'Group 1',
+                'content' => 'First group',
+                'grade' => 10,
+                'course_edition_id' => 2
+            ]
+        );
+        GroupUser::insert(
+            [
+                'user_id' => 1,
+                'group_id' => 2
             ]
         );
         $response = $this->get('/');
@@ -282,7 +347,7 @@ class CourseControllerTest extends TestCase
             'affiliation' => 'student'
         ]);
         Auth::shouldReceive('user')->once()->andReturn($user);
-        Auth::shouldReceive('id')->once()->andReturn(1);
+        Auth::shouldReceive('id')->twice()->andReturn(1);
         Course::insert(
             [
                 'course_number' => 'CSE1234',
@@ -293,6 +358,12 @@ class CourseControllerTest extends TestCase
             [
                 'course_id' => 1,
                 'year' => 2021
+            ]
+        );
+        CourseEdition::insert(
+            [
+                'course_id' => 1,
+                'year' => 2020
             ]
         );
         Group::insert(
@@ -318,8 +389,8 @@ class CourseControllerTest extends TestCase
         );
         CourseEditionUser::insert(
             [
-                'user_id' => 2,
-                'course_edition_id' => 1,
+                'user_id' => 1,
+                'course_edition_id' => 2,
                 'role' => 'student'
             ]
         );

@@ -1,15 +1,16 @@
-@extends('layouts.app', ['activePage' => 'groups', 'titlePage' => __('Weeks')])
+@extends('layouts.app', ['activePage' => 'group', 'titlePage' => __('Weeks')])
 
 @section('content')
     <div class="content">
         <div class="container-fluid">
+            <button type="submit" name="update" class="btn btn-dark rounded-pill" onclick="window.location='{{ route('groups', ['edition_id'=>$edition_id]) }}'">Back!</button>
             <div class="row">
-                @for($week=1; $week<=10; $week++)
+                @for($w=1; $w<=10; $w++)
                     <div class="col-lg-3 col-md-6 col-sm-6">
                         <div class="card card-stats" style="width: 120px;">
                             <div class="card-icon">
-                                <a class="nav-link" href="{{ route('week', [$group_id, $week]) }}">
-                                    <p>Week {{ $week }}</p>
+                                <a class="nav-link" href="{{ route('week', [$group_id, $w]) }}">
+                                    <p>Week {{ $w }}</p>
                                 </a>
                             </div>
                         </div>
@@ -28,25 +29,54 @@
                                     <table class="table">
                                         <thead class="text-primary">
                                         <th>Solved</th>
+                                        <th>Week</th>
+                                        <th>Regarding</th>
                                         <th>Content</th>
                                         <th>Problem Signal</th>
                                         </thead>
                                         <tbody>
-                              {{--          @foreach($group->notes as $note)
-                                            @if($note->problem_signal >= 1)
+                                        @foreach($group->groupnotes->sortBy('week') as $groupnote)
+                                            @if($groupnote->problem_signal >= 2)
                                             <tr>
                                                 <td>
 
                                                 </td>
                                                 <td>
-                                                    <textarea readonly=true style="width: 100%">{{$note->content}}</textarea>
+                                                    {{$groupnote->week}}
                                                 </td>
                                                 <td>
-                                                    {{$note->problem_signal}}
+                                                    Group
+                                                </td>
+                                                <td>
+                                                    <textarea readonly=true style="width: 100%">{{$groupnote->note}}</textarea>
+                                                </td>
+                                                <td>
+                                                    {{$groupnote->problem_signal}}
                                                 </td>
                                             </tr>
                                             @endif
-                                        @endforeach--}}
+                                        @endforeach
+                                        @foreach($group->notes->sortBy('week') as $note)
+                                            @if($note->problem_signal >= 2)
+                                                <tr>
+                                                    <td>
+
+                                                    </td>
+                                                    <td>
+                                                        {{$note->week}}
+                                                    </td>
+                                                    <td>
+                                                        {{$note->user->first_name . ' ' . $note->user->last_name}}
+                                                    </td>
+                                                    <td>
+                                                        <textarea readonly=true style="width: 100%">{{$note->note}}</textarea>
+                                                    </td>
+                                                    <td>
+                                                        {{$note->problem_signal}}
+                                                    </td>
+                                                </tr>
+                                            @endif
+                                        @endforeach
                                         </tbody>
                                     </table>
                                 </div>

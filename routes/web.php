@@ -53,6 +53,8 @@ Route::get('/rubricDelete', [RubricController::class, 'delete'])
     ->name('rubricDelete')->middleware(['loggedIn', 'employee']);
 Route::delete('/rubricDestroy', [RubricController::class, 'destroy'])
     ->name('rubricDestroy')->middleware(['loggedIn', 'employee']);
+Route::put('/rubricRestore', [RubricController::class, 'restore'])
+    ->name('rubricRestore')->middleware(['loggedIn', 'employee']);
 
 /*
 |--------------------------------------------------------------------------
@@ -76,14 +78,17 @@ Route::get('/viewRubricTeacher/{id}/{edition_id}', [RubricEntryController::class
     ->middleware(['loggedIn', 'role:lecturer,HeadTA']);
 
 // Update
-Route::get('/rubricEntryEdit/{id}/{isRow}', [RubricEntryController::class, 'edit'])
+Route::get('/rubricEntryEdit/{id}', [RubricEntryController::class, 'edit'])
+    ->name('rubricEntryEdit')
     ->middleware(['loggedIn', 'employee']);
 Route::put('/rubricEntryUpdate', [RubricEntryController::class, 'update'])
     ->middleware(['loggedIn', 'employee']);
 
 // Delete
-Route::delete('/rubricEntryDelete/{id}/{distance}/{isRow}', [RubricEntryController::class, 'destroy'])
+Route::delete('/rubricEntryDelete/{id}', [RubricEntryController::class, 'destroy'])
     ->name('rubricEntryDelete')->middleware(['loggedIn', 'employee']);
+Route::put('/rubricEntryRollback', [RubricEntryController::class, 'rollback'])
+    ->name('rubricEntryRollback')->middleware(['loggedIn', 'employee']);
 
 /*
 |--------------------------------------------------------------------------
@@ -98,14 +103,17 @@ Route::post('/rubricDataStore/{id}', [RubricDataController::class, 'store']);
 | Import/Export student Routes
 |--------------------------------------------------------------------------
 */
-Route::get('/export/{edition_id}', 'App\Http\Controllers\ImportController@export')
+Route::get('/export/{edition_id}', 'App\Http\Controllers\ExportController@export')
     ->name('export')
     ->middleware(['loggedIn', 'role:lecturer']);
 Route::get('/importExportView/{edition_id}', 'App\Http\Controllers\ImportController@importExportView')
-    ->name('importExport')
+    ->name('importTAsStudents')
     ->middleware(['loggedIn', 'role:lecturer']);
 Route::post('/import/{edition_id}', 'App\Http\Controllers\ImportController@import')
     ->name('import')
+    ->middleware(['loggedIn', 'role:lecturer']);
+Route::post('/importTA/{edition_id}', 'App\Http\Controllers\ImportController@importTA')
+    ->name('importTA')
     ->middleware(['loggedIn', 'role:lecturer']);
 
 
@@ -155,7 +163,9 @@ Route::get('unauthorized', function () {
     echo "You are unauthorized to access this page.";
 })->name('unauthorized');
 
-Route::get('/courses/{id}', [CourseController::class, 'viewCourseById'])->name('course')->middleware();
+Route::get('/courses/{id}', [CourseController::class, 'viewCourseById'])
+    ->name('course')
+    ->middleware('loggedIn');
 
 /*
 |--------------------------------------------------------------------------
@@ -172,6 +182,15 @@ Route::post('/studentList/changeRoleStudent/{course_edition_user_id}', [CourseEd
     ->name('setRoleStudent')->middleware(['loggedIn', 'role:lecturer']);
 /*
 |--------------------------------------------------------------------------
+|  Student List to assign employees to course_editions Routes
+|--------------------------------------------------------------------------
+*/
+Route::post('/studentList/insertLecturer/{edition_id}/{user_id}', [CourseEditionUserController::class, 'insertLecturerFromUsers'])
+    ->name('EmployeeToLecturer')->middleware(['loggedIn', 'role:lecturer']);
+Route::post('/studentList/insertHeadTA/{edition_id}/{user_id}', [CourseEditionUserController::class, 'insertHeadTAFromUsers'])
+    ->name('EmployeeToHeadTA')->middleware(['loggedIn', 'role:lecturer']);
+/*
+|--------------------------------------------------------------------------
 |  Assign Tas to groups Routes
 |--------------------------------------------------------------------------
 */
@@ -186,9 +205,6 @@ Route::post('/assignTaToGroups/{edition_id}/store', [CourseEditionUserController
 | Create Courses Routes
 |--------------------------------------------------------------------------
 */
-Route::get('/courseCreate', [CourseController::class, 'create'])
-    ->name('courseCreate')
-    ->middleware(['loggedIn', 'employee']);
 Route::post('/courseStore', [CourseController::class, 'store'])->middleware(['loggedIn', 'employee']);
 
 /*
@@ -196,19 +212,15 @@ Route::post('/courseStore', [CourseController::class, 'store'])->middleware(['lo
 | Delete Courses Routes
 |--------------------------------------------------------------------------
 */
-Route::get('/courseDelete', [CourseController::class, 'delete'])
-    ->name('courseDelete')
-    ->middleware(['loggedIn', 'employee']);
 Route::delete('/courseDestroy', [CourseController::class, 'destroy'])->middleware(['loggedIn', 'employee']);
+Route::put('/courseRestore', [CourseController::class, 'restore'])
+    ->name('courseRestore')->middleware(['loggedIn', 'employee']);
 
 /*
 |--------------------------------------------------------------------------
 |  Update Courses Routes
 |--------------------------------------------------------------------------
 */
-Route::get('/courseEdit', [CourseController::class, 'edit'])
-    ->name('courseEdit')
-    ->middleware(['loggedIn', 'employee']);
 Route::put('/courseUpdate', [CourseController::class, 'update'])->middleware(['loggedIn', 'employee']);
 
 /*
@@ -216,9 +228,6 @@ Route::put('/courseUpdate', [CourseController::class, 'update'])->middleware(['l
 | Create Course Edition Routes
 |--------------------------------------------------------------------------
 */
-Route::get('/courseEditionCreate/{course_id}', [CourseEditionController::class, 'create'])
-    ->name('courseEditionCreate')
-    ->middleware(['loggedIn', 'employee']);
 Route::post('/courseEditionStore/{course_id}', [CourseEditionController::class, 'store'])
     ->middleware(['loggedIn', 'employee']);
 
@@ -227,19 +236,15 @@ Route::post('/courseEditionStore/{course_id}', [CourseEditionController::class, 
 | Delete Course Edition Routes
 |--------------------------------------------------------------------------
 */
-Route::get('/courseEditionDelete/{course_id}', [CourseEditionController::class, 'delete'])
-    ->name('courseEditionDelete')
-    ->middleware(['loggedIn', 'employee']);
 Route::delete('/courseEditionDestroy', [CourseEditionController::class, 'destroy'])->middleware(['loggedIn', 'employee']);
+Route::put('/courseEditionRestore', [CourseEditionController::class, 'restore'])
+    ->name('courseEditionRestore')->middleware(['loggedIn', 'employee']);
 
 /*
 |--------------------------------------------------------------------------
 |  Update Course Edition Routes
 |--------------------------------------------------------------------------
 */
-Route::get('/courseEditionEdit/{course_id}', [CourseEditionController::class, 'edit'])
-    ->name('courseEditionEdit')
-    ->middleware(['loggedIn', 'employee']);
 Route::put('/courseEditionUpdate/{course_id}', [CourseEditionController::class, 'update'])
     ->middleware(['loggedIn', 'employee']);
 

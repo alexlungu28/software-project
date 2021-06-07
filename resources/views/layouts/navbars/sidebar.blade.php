@@ -1,4 +1,4 @@
-<div class="sidebar" data-color="orange" data-background-color="white" data-image="{{ asset('material') }}/img/sidebar-1.jpg">
+<div class="sidebar" data-color="azure" data-background-color="white" data-image="{{ asset('material') }}/img/sidebar-1.jpg">
   <!--
       Tip 1: You can change the color of the sidebar using: data-color="purple | azure | green | orange | danger"
 
@@ -35,10 +35,24 @@
                 <p>{{ __('Groups') }}</p>
             </a>
         </li>
-        <li class="nav-item{{ $activePage == 'studentList' ? ' active' : '' }}">
+        @if(isset($group_id))
+            <li class="nav-item{{ $activePage == 'group' ? ' active' : '' }}">
+                <a class="nav-link" href="{{ route('group', [$group_id]) }}">
+                    <i class="material-icons">group</i>
+                    @if(isset($week))
+                        <p>{{ __('Group ' . $group_id . ': Week ' . $week) }}</p>
+                    @elseif(isset($week_id))
+                        <p>{{ __('Group ' . $group_id . ': Week ' . $week_id) }}</p>
+                    @else
+                        <p>{{ __('Group ' . $group_id) }}</p>
+                    @endif
+                </a>
+            </li>
+        @endif
+        <li class="nav-item{{ $activePage == 'userList' ? ' active' : '' }}">
             <a class="nav-link" href="{{ route('studentList', [$edition_id]) }}">
                 <i class="material-icons">S</i>
-                <p>{{ __('StudentList') }}</p>
+                <p>{{ __('UserList') }}</p>
             </a>
         </li>
         <li class="nav-item{{ $activePage == 'assignTaToGroups' ? ' active' : '' }}">
@@ -49,9 +63,9 @@
         </li>
 
         <li class="nav-item{{ $activePage == 'import' ? ' active' : '' }}">
-            <a class="nav-link" href="{{ route('importExport', [$edition_id]) }}">
+            <a class="nav-link" href="{{ route('importTAsStudents', [$edition_id]) }}">
                 <i class="material-icons">mp</i>
-                <p>{{ __('Import/Export') }}</p>
+                <p>{{ __('Import TAs/Students CSVs') }}</p>
             </a>
         </li>
 

@@ -74,18 +74,24 @@ class RubricEntryController extends Controller
             "description" =>$description, 'created_at' =>now(), 'updated_at' => now());
         DB::table('rubric_entries')->insert($data);
         $courseEdition = Rubric::find($rubricId)->course_edition_id;
-        return redirect('viewRubricTeacher/' . $rubricId);
+        return redirect('viewRubricTeacher/' . $rubricId . '/' . $courseEdition);
     }
 
     /**
      * Show the form for editing the specified resource.
      *
+     * @param  $id
      * @return Application|Factory|View
      */
-    public function edit($id, $isRow)
+    public function edit($id)
     {
-        $rubric = Rubric::find($id);
-        return view('rubricEntry_update', ['rubric' => $rubric, 'isRow' =>$isRow, 'id' => $id]);
+        $rubricEntry = RubricEntry::find($id);
+        return view(
+            'rubricEntry_update',
+            [
+                'rubricEntry' => $rubricEntry
+            ]
+        );
     }
 
     /**
@@ -97,40 +103,58 @@ class RubricEntryController extends Controller
     public function update(Request $request)
     {
         $id = $request->input('id');
-        $isRow = $request->input('isRow');
-        $distance = $request->input('distance');
         $description = $request->input('description');
-        DB::table('rubric_entries')->where('rubric_id', '=', $id)
-            ->where('is_row', '=', $isRow)
-            ->where('distance', '=', $distance)
-            ->update(['description' => $description]);
+        $entry = RubricEntry::find($id);
+        $entry->description = $description;
+        $entry->save();
 
-        $courseEdition = Rubric::find($id)->course_edition_id;
-        return redirect('viewRubricTeacher/' . $id);
+        $courseEdition = $entry->rubric->course_edition_id;
+        return redirect('viewRubricTeacher/' . $entry->rubric->id . '/' . $courseEdition);
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
-     * @return void
+     * @param  $id
+     * @return Application|Redirector|RedirectResponse
      */
-    public function destroy($id, $distance, $isRow)
+    public function destroy($id)
     {
-        RubricEntry::where('rubric_id', '=', $id)->where('distance', '=', $distance)
-            ->where('is_row', '=', $isRow)->delete();
-        if ($isRow == 1) {
-            RubricData::where('rubric_id', '=', $id)->where('row_number', '=', $distance)->delete();
+        $entry = RubricEntry::find($id);
+        $courseEdition = $entry->rubric->course_edition_id;
+        $rubricId = $entry->rubric->id;
+        if ($entry->is_row == 1) {
+            RubricData::where('rubric_id', '=', $rubricId)
+                ->where('row_number', '=', $entry->distance)
+                ->delete();
         }
-        $courseEdition = Rubric::find($id)->course_edition_id;
-        return redirect('viewRubricTeacher/' . $id);
+        $entry->delete();
+        return redirect('viewRubricTeacher/' . $rubricId . '/' . $courseEdition);
+    }
+
+    /**
+     * Returns the specified resource into storage.
+     *
+     * @param Request $request
+     * @return
+     */
+    public function rollback(Request $request)
+    {
+        $id = $request->input('id');
+        $entry = RubricEntry::withTrashed()->find($id);
+        $entry->restore();
+        if ($entry->is_row == 1) {
+            RubricData::where('rubric_id', '=', $entry->rubric->id)
+                ->where('row_number', '=', $entry->distance)
+                ->restore();
+        }
+        return redirect('viewRubricTeacher/' . $entry->rubric->id . '/' . $entry->rubric->course_edition_id);
     }
 
     /**
      * Returns the rubric view for a teacher.
      *
      * @param $id
-     * @param $editionId
      * @return Application|Factory|View
      */
     public function teacherview($id)
@@ -139,12 +163,14 @@ class RubricEntryController extends Controller
         $rubric = Rubric::find($id);
         $rubricColumnEntries = $rubric->rubricEntry->where('is_row', '=', '0')->sortBy('distance');
         $rubricRowEntries = $rubric->rubricEntry->where('is_row', '=', '1')->sortBy('distance');
+        $deletedEntries = RubricEntry::onlyTrashed()->where('rubric_id', '=', $id)->get();
         $rubricData = $rubric->rubricData;
         $editionId = $rubric->course_edition_id;
         return view('pages.rubricViewTeacher', ['rubric' => $rubric,
             'rubricColumnEntries' => $rubricColumnEntries,
             'rubricRowEntries' => $rubricRowEntries,
             'rubricData' => $rubricData,
+            'deletedEntries' => $deletedEntries,
             'edition_id' => $editionId]);
     }
 
@@ -152,7 +178,7 @@ class RubricEntryController extends Controller
      * Returns the rubric view for a TA.
      *
      * @param $id
-     * @param $editionId
+     * @param $groupId
      * @return Application|Factory|View
      */
     public function view($id, $groupId)
