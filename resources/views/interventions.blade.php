@@ -66,7 +66,7 @@
                                         @foreach($interventions as $intervention)
 
                                             <tr>
-@
+
                                                 <td>{{App\Models\User::find($intervention->user_id)->first_name . " " . App\Models\User::find($intervention->user_id)->last_name }}</td>
                                                 <td>
 
@@ -154,9 +154,30 @@
                                         </thead>
                                         <tbody>
 
+                                        @php
+
+                                        $notesGood = [];
+                                        foreach($notes as $note) {
+                                            array_push($notesGood, $note);
+                                        }
+                                        $interventionNotes = [];
+                                        foreach($interventions as $intervention) {
+                                            if(preg_match("/^(note)\d+$/i", $intervention->reason)) {
+                                                $note = App\Models\Note::find(preg_replace('/[^0-9]/', '', $intervention->reason));
+                                                array_push($interventionNotes, $note);
+                                            }
+                                        }
 
 
-                                        @foreach($notes as $note)
+                                        $notesNoInterventions = array_diff($notesGood, $interventionNotes);
+                                        //return dd($notesNoInterventions);
+
+
+                                        @endphp
+
+
+
+                                        @foreach($notesNoInterventions as $note)
 
                                             <tr>
 
@@ -176,7 +197,7 @@
 
 
 
-                                                <form id={{"note" . $note->id}} method="post" value = "<?php echo csrf_token(); ?>" action="{{action('App\Http\Controllers\NotesController@update',$note->id)}}">
+                                                <form id={{"note" . $note->id}} method="post" value = "<?php echo csrf_token(); ?>" action="">
                                                     @csrf
                                                     <td> {{$note->note}} </td>
                                                     <input type="hidden" name="_method" value="POST">

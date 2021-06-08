@@ -21,9 +21,9 @@
 
 
 
-                        <div class="form-group">
+                        <div class="form-group" >
                             <label for="name">Name</label>
-                            <select class="selectpicker" data-live-search="true" name="createUser" id='createUser'>
+                            <select class="selectpicker" data-live-search="true" name="createUser" id='createUser' >
                                 @foreach(App\Models\CourseEditionUser::where('course_edition_id', '=', $edition_id)->where('role','=','student')->get() as $user)
                                     <option value="{{$user->user_id}}" >{{App\Models\User::find($user->user_id)->first_name . " " . App\Models\User::find($user->user_id)->last_name }}</option>
                                 @endforeach
