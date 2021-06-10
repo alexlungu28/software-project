@@ -1,4 +1,5 @@
 ![pipeline](https://gitlab.ewi.tudelft.nl/cse2000-software-project/2020-2021-q4/cluster-13/improving-assessement-procedure/badges/master/pipeline.svg)
+![pipeline](https://gitlab.ewi.tudelft.nl/cse2000-software-project/2020-2021-q4/cluster-13/improving-assessement-procedure/badges/master/coverage.svg)
 # CSE2000 - Improving-Assessement-Procedure
 ## Group 3C:
 Becheanu Luca, Ciurba Alex, Lungu Alexandru, Schoenmaker Melle, Zamfirescu Toma

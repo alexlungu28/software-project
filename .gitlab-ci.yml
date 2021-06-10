@@ -85,15 +85,20 @@ phpunit:
   needs:
     - composer
     - build-assets
+  variables:
+    XDEBUG_MODE: coverage
   script:
     - php artisan key:generate
     - php artisan config:cache
     - php -v
     - php artisan migrate:fresh --seed
     - php ./vendor/bin/phpunit --version
-    - php ./vendor/bin/phpunit -v --coverage-text --colors=never --stderr
+    - php ./vendor/bin/phpunit -v --coverage-text --colors=never --stderr --log-junit report-phpunit.xml --coverage-cobertura report-coverage.xml
   artifacts:
     paths:
       - storage/logs # for debugging
-    expire_in: 1 days
+    reports:
+      cobertura: report-coverage.xml
+      junit: report-phpunit.xml
+    expire_in: 7 days
     when: always
