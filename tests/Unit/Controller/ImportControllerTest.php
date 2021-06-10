@@ -17,7 +17,7 @@ class ImportControllerTest extends TestCase
      */
     public function testImportExportView()
     {
-        $response = $this->get('/importExportView/1');
+        $response = $this->get('/importView/1');
         $response->assertStatus(200);
     }
 
