@@ -6,6 +6,7 @@ use App\Http\Controllers\CourseEditionUserController;
 use App\Http\Controllers\GroupController;
 use App\Http\Controllers\AttendanceController;
 use App\Http\Controllers\NotesController;
+use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\RubricController;
 use App\Http\Controllers\RubricDataController;
 use App\Http\Controllers\RubricEntryController;
@@ -136,9 +137,13 @@ Route::get('map', function () {
     return view('pages.map');
 })->name('map');
 
-Route::get('notifications', function () {
-    return view('pages.notifications');
-})->name('notifications');
+Route::get('notificationsOld', function () {
+    return view('pages.notificationsOld', ['edition_id' => 1]);
+})->name('notificationsOld');
+
+Route::get('notifications/{edition_id}', [NotificationController::class, 'view'])
+    ->name('notifications')
+    ->middleware(['loggedIn']);
 
 Route::get('rtl-support', function () {
     return view('pages.language');
