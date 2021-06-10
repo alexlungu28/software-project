@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Course;
+use App\Models\CourseEdition;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
@@ -16,22 +17,11 @@ use Illuminate\Support\Facades\DB;
 
 class CourseController extends Controller
 {
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return Application|Factory|View
-     */
-    public function create()
-    {
-        return view('courses.course_create');
-    }
-
     /**
      * Store a newly created resource in storage.
      *
      * @param Request $request
-     * @return Application|RedirectResponse|Redirector
+     * @return Application|RedirectResponse|Redirector|void
      */
     public function store(Request $request)
     {
@@ -41,13 +31,12 @@ class CourseController extends Controller
             $description = $request->input('description');
             $data = array('course_number' => $courseNumber, 'description' => $description, 'created_at' => now(),
                 'updated_at' => now());
-            // TODO: make it possible to add a course if the course number matches with a soft deleted one
             DB::table('courses')->insert($data);
             return redirect('/');
         } catch (QueryException $e) {
             echo "Course number already exists.<br/>";
             echo "Redirecting you back to main page...";
-            header("refresh:3;url=/");
+            return header("refresh:3;url=/");
         }
     }
 
@@ -63,20 +52,10 @@ class CourseController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
-     *
-     * @return Application|Factory|View
-     */
-    public function edit()
-    {
-        return view('courses.course_edit', ['courses' => $this::getAllCourses()]);
-    }
-
-    /**
      * Update the specified resource in storage.
      *
      * @param Request $request
-     * @return Application|Redirector|RedirectResponse
+     * @return Application|Redirector|RedirectResponse|void
      */
     public function update(Request $request)
     {
@@ -92,21 +71,8 @@ class CourseController extends Controller
         } catch (QueryException $e) {
             echo "Course number already exists.<br/>";
             echo "Redirecting you back to main page...";
-            header("refresh:3;url=/");
+            return header("refresh:3;url=/");
         }
-    }
-
-    /**
-     * Return the view for deleting courses.
-     *
-     * @return Application|Factory|View
-     */
-    public function delete()
-    {
-        $courses = $this::getAllCourses();
-        return view('courses.course_delete', [
-            "courses" => $courses,
-        ]);
     }
 
     /**
@@ -117,7 +83,27 @@ class CourseController extends Controller
      */
     public function destroy(Request $request)
     {
-        Course::destroy($request->input('id'));
+        $courseId = $request->input('id');
+        $hardDelete = $request->input('hardDelete');
+        if (!empty($hardDelete)) {
+            Course::find($courseId)->forceDelete();
+        } else {
+            Course::destroy($courseId);
+        }
+        return redirect('/');
+    }
+
+    /**
+     * Restore the specified course.
+     *
+     * @param Request $request
+     * @return Application|RedirectResponse|Redirector
+     */
+    public function restore(Request $request)
+    {
+        $id = $request->input('id');
+        $course = Course::withTrashed()->find($id);
+        $course->restore();
         return redirect('/');
     }
 
@@ -129,8 +115,10 @@ class CourseController extends Controller
     public function viewEmployee()
     {
         $courses = Course::all();
+        $deletedCourses = Course::onlyTrashed()->get();
         return view('courses.mainEmployee', [
             "courses" => $courses,
+            "deletedCourses" => $deletedCourses
         ]);
     }
 
@@ -185,10 +173,12 @@ class CourseController extends Controller
      */
     public function viewEmployeeCE($id)
     {
-        $courseEditions = DB::table('course_editions')->where('course_id', '=', $id)->get();
+        $courseEditions = CourseEdition::where('course_id', '=', $id)->get();
+        $deletedEditions = CourseEdition::onlyTrashed()->get();
         return view('courseEditions.courseEditionEmployee', [
             "course_id" => $id,
             "courseEditions" => $courseEditions,
+            "deletedEditions" => $deletedEditions
         ]);
     }
 

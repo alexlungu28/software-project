@@ -40,7 +40,7 @@ class GroupUserImport implements ToModel, WithHeadingRow
         $groupName = null;
         for ($x = $positionEmail + 1; $x < $positionGrade; $x++) {
             //finds the group name by iterating over all categories
-            if ($row[array_keys($row)[$x]] !=null) {
+            if ($row[array_keys($row)[$x]] != null) {
                 $groupName = $row[array_keys($row)[$x]];
             }
         }

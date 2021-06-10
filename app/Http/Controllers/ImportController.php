@@ -3,18 +3,17 @@
 namespace App\Http\Controllers;
 
 use App\Imports\CourseEditionTAImport;
-use App\Imports\CourseEditionUserImport;
+use App\Imports\CourseEditionStudentImport;
 use App\Imports\GroupsImport;
+use App\Imports\GroupsTAImport;
 use App\Imports\GroupUserImport;
-use App\Imports\TAImport;
+use App\Imports\GroupUserTAImport;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
-use App\Exports\UsersExport;
 use App\Imports\UsersImport;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Maatwebsite\Excel\Facades\Excel;
-use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 class ImportController extends Controller
 {
@@ -28,16 +27,6 @@ class ImportController extends Controller
         return view('import', [
             "edition_id" => $editionId,
         ]);
-    }
-
-    /**
-     * Exports users table.
-     *
-     * @return BinaryFileResponse
-     */
-    public function export(): BinaryFileResponse
-    {
-        return Excel::download(new UsersExport, 'users.xlsx');
     }
 
     /**
@@ -55,7 +44,7 @@ class ImportController extends Controller
         Excel::import(new UsersImport, request()->file('file'));
         Excel::import(new GroupsImport($editionId), request()->file('file'));
         Excel::import(new GroupUserImport($editionId), request()->file('file'));
-        Excel::import(new CourseEditionUserImport($editionId), request()->file('file'));
+        Excel::import(new CourseEditionStudentImport($editionId), request()->file('file'));
         return back();
     }
 
@@ -68,8 +57,9 @@ class ImportController extends Controller
      */
     public function importTA($editionId): RedirectResponse
     {
-
-        Excel::import(new TAImport, request()->file('file'));
+        Excel::import(new UsersImport, request()->file('file'));
+        Excel::import(new GroupsTAImport($editionId), request()->file('file'));
+        Excel::import(new GroupUserTAImport($editionId), request()->file('file'));
         Excel::import(new CourseEditionTAImport($editionId), request()->file('file'));
         return back();
     }

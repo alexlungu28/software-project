@@ -18,14 +18,6 @@ class CourseEditionControllerTest extends TestCase
     use RefreshDatabase;
 
     /**
-     * Test to verify that the correct view is returned upon accessing the route.
-     */
-    public function testCourseEditionCreate() {
-        $response = $this->get('/courseEditionCreate/1');
-        $response->assertViewIs('courseEditions.courseEdition_create');
-    }
-
-    /**
      * Insert the specified entries inside the database tables.
      */
     public function before()
@@ -102,14 +94,6 @@ class CourseEditionControllerTest extends TestCase
     }
 
     /**
-     * Test to verify that the correct view is returned upon accessing the route.
-     */
-    public function testCourseEditionEdit() {
-        $response = $this->get('/courseEditionEdit/1');
-        $response->assertViewIs('courseEditions.courseEdition_edit');
-    }
-
-    /**
      * Test to verify the rubric is updated inside the database.
      */
     public function testCourseEditionUpdate()
@@ -176,14 +160,6 @@ class CourseEditionControllerTest extends TestCase
     }
 
     /**
-     * Test to verify that the correct view is returned upon accessing the route.
-     */
-    public function testCourseEditionDelete() {
-        $response = $this->get('/courseEditionDelete/1');
-        $response->assertViewIs('courseEditions.courseEdition_delete');
-    }
-
-    /**
      * Test to verify deletion inside the database.
      */
     public function testCourseEditionDestroy()
@@ -218,10 +194,78 @@ class CourseEditionControllerTest extends TestCase
     }
 
     /**
+     * Test to verify permanent deletion inside the database.
+     */
+    public function testCourseEditionDestroyPermanent()
+    {
+        $this->before();
+        CourseEdition::insert(
+            [
+                'course_id' => 1,
+                'year' => 2021
+            ]
+        );
+        $this->assertDatabaseHas(
+            'course_editions',
+            [
+                'course_id' => 1,
+                'year' => 2021,
+            ]
+        );
+        $response = $this->delete(
+            '/courseEditionDestroy',
+            [
+                'id' => 1,
+                'hardDelete' => true
+            ],
+        );
+        $this->assertDeleted(
+            'course_editions',
+            [
+                'id' => 1,
+            ],
+        );
+        $response->assertStatus(302);
+    }
+
+    /**
+     * Test to verify that soft deleted course editions are restored correctly.
+     */
+    public function testCourseEditionRestore() {
+        CourseEdition::insert(
+            [
+                'course_id' => 1,
+                'year' => 2021
+            ]
+        );
+        $this->delete(
+            '/courseEditionDestroy',
+            [
+                'id' => 1
+            ],
+        );
+        $this->assertNull(CourseEdition::find(1));
+        $response = $this->put(
+            '/courseEditionRestore',
+            [
+                'id' => 1
+            ]
+        );
+        $this->assertNotNull(CourseEdition::find(1));
+        $response->assertStatus(302);
+    }
+
+    /**
      * Test to verify that the correct view is returned according to user role.
      */
     public function testViewLecturer() {
         $this->before();
+        CourseEdition::insert(
+            [
+                'course_id' => 1,
+                'year' => 2021
+            ]
+        );
         $response = $this->get('/edition/1');
         $response->assertViewIs('groups.allgroups');
     }
@@ -250,6 +294,12 @@ class CourseEditionControllerTest extends TestCase
                 'user_id' => 1,
                 'course_edition_id' => 1,
                 'role' => 'TA'
+            ]
+        );
+        CourseEdition::insert(
+            [
+                'course_id' => 1,
+                'year' => 2021
             ]
         );
         $response = $this->get('/edition/1');

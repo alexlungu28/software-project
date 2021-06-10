@@ -39,6 +39,15 @@ class GroupController extends Controller
             ->where('id', '=', $id)->get()->first()->course_edition_id;
         $courseRubrics = Rubric::all()->where('course_edition_id', '=', $editionId);
         $rubrics = $courseRubrics->where('week', '=', $week)->merge($courseRubrics->where('week', '=', null));
-        return view('week', ['edition_id' => $editionId, 'group_id' => $id, 'week' => $week, 'rubrics' => $rubrics]);
+        $role = DB::table('course_edition_user')
+            ->where('course_edition_id', '=', $editionId)
+            ->where('user_id', '=', Auth::id())->get()->first()->role;
+        if ($role === 'lecturer') {
+            return view('week', ['edition_id' => $editionId, 'group_id' => $id,
+                'week' => $week, 'rubrics' => $rubrics]);
+        } else {
+            return view('weekTA', ['edition_id' => $editionId, 'group_id' => $id,
+                'week' => $week, 'rubrics' => $rubrics]);
+        }
     }
 }

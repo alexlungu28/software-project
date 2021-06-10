@@ -31,9 +31,8 @@
             </form>
         </div>
     </div>
-@endsection
 
-@section('footer')
+
     <footer class="footer">
         <div class="container-fluid">
             <div class="row">
