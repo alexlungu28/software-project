@@ -19,8 +19,10 @@ class CreateGitanalysesTable extends Migration
             $table->integer('week_number');
             $table->text('names');
             $table->text('emails');
+            $table->text('activity');
             $table->text('blame');
             $table->text('timeline');
+            $table->unique(array('group_id', 'week_number'));
             $table->timestamps();
         });
     }

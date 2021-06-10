@@ -9,7 +9,7 @@ class Gitanalysis extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['group_id', 'week_number', 'names', 'emails', 'blame', 'timeline'];
+    protected $fillable = ['group_id', 'week_number', 'names', 'emails', 'activity', 'blame', 'timeline'];
 
     /**
      * Returns the group model that is linked to this gitanalysis.
