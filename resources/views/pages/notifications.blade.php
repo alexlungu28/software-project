@@ -3,19 +3,6 @@
 @section('content')
     <div class="content">
         <div class="container-fluid">
-            @foreach($notifications as $notification)
-                <div class="row">
-                    <div class="col-lg-3 col-md-6 col-sm-6">
-                        <div class="card card-stats" style="width: 120px;">
-                            <div class="card-icon">
-                                <a class="nav-link" href="{{ route('group', $notification->group_id) }}">
-                                    <p>{{ $course->course_number }}</p>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            @endforeach
                 <div class="row">
                     <div class="col-lg-6 col-md-12">
                         <div class="card">
@@ -27,21 +14,14 @@
                                     <div class="tab-pane active" id="profile">
                                         <table class="table">
                                             <tbody>
-                                                <tr>
-                                                @for($i = 0; $i < count($interventions); $i++)
-                                                    <div class="col-lg-3 col-md-6 col-sm-6">
-                                                        <div class="card card-stats" style="width: 120px;">
-                                                            <div class="card-icon">
-                                                                <a class="nav-link" href="{{ route('group', $interventions[$i]->group_id) }}">
-                                                                    <p>{{ $users[$i]->first_name . ' ' . $users[$i]->last_name }}</p>
-                                                                    <p>{{ 'Group ' . $interventions[$i]->group_id }}</p>
-                                                                    <p>{{ $interventions[$i]->end_day }}</p>
-                                                                </a>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                @endfor
-                                                </tr>
+                                            @foreach($notifications as $key=>$notification)
+                                                <a class="nav-link" href="{{ route('group', $notification->data['Deadline passed']['group_id']) }}">
+                                                    <p>{{$users[$key]->first_name
+                                                    . ' ' . $users[$key]->last_name
+                                                    . '; Group ' . $notification->data['Deadline passed']['group_id']
+                                                    . '; ' . $notification->data['Deadline passed']['end_day']}}</p>
+                                                </a>
+                                            @endforeach
                                             </tbody>
                                         </table>
                                     </div>

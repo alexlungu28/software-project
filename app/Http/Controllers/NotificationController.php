@@ -2,15 +2,17 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
+use App\Notifications\DeadlinePassed;
 use Carbon\Carbon;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Http\Request;
+use Illuminate\Notifications\DatabaseNotificationCollection;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Routing\Controller as BaseController;
-
 
 class NotificationController extends BaseController
 {
@@ -94,30 +96,13 @@ class NotificationController extends BaseController
 
     public function view($editionId)
     {
-        $interventions = DB::table('course_edition_user')->where('course_edition_id', '=', $editionId)->get()
-            ->flatMap(function ($editionUser) {
-                $userInterventions = DB::table('interventions_individual')
-                    ->where('user_id', '=', $editionUser->user_id)->get();
-                $currentDate = Carbon::now();
-                $passed = $userInterventions->map(function ($intervention) use ($currentDate) {
-                    if ($currentDate->gt($intervention->end_day)) {
-                        return $intervention;
-                    }
-                    return null;
-                })->filter(function ($intervention) {
-                    return $intervention != null;
-                })->unique();
-                return $passed;
-            })->filter(function ($intervention) {
-                return $intervention != null;
-            })->unique();
-        $users = $interventions->map(function ($intervention) {
-            return DB::table('users')->where('id', '=', $intervention->user_id)->get()->first();
+        $unread = Auth::user()->unreadNotifications;
+        $users = $unread->map(function ($notification) {
+            return User::where('id', '=', $notification->data['Deadline passed']['user_id'])->get()->first();
         });
         return view('pages.notifications', [
             'edition_id' => $editionId,
-            'interventions' => $interventions,
-            'notifications' => [],
+            'notifications' => $unread,
             'users' => $users
         ]);
     }
