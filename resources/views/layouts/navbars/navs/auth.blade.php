@@ -30,17 +30,18 @@
         <li class="nav-item dropdown">
           <a class="nav-link" href="http://example.com" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             <i class="material-icons">notifications</i>
-            <span class="notification">5</span>
+            <span class="notification">{{count(auth()->user()->unreadNotifications)}}</span>
             <p class="d-lg-none d-md-block">
               {{ __('Some Actions') }}
             </p>
           </a>
           <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
-            <a class="dropdown-item" href="#">{{ __('Mike John responded to your email') }}</a>
-            <a class="dropdown-item" href="#">{{ __('You have 5 new tasks') }}</a>
-            <a class="dropdown-item" href="#">{{ __('You\'re now friend with Andrew') }}</a>
-            <a class="dropdown-item" href="#">{{ __('Another Notification') }}</a>
-            <a class="dropdown-item" href="#">{{ __('Another One') }}</a>
+              @foreach(auth()->user()->unreadNotifications as $notification)
+                  <a class="dropdown-item" href="{{route('group', $notification->data['Deadline passed']['group_id'])}}"
+                  onclick={{$notification->markAsRead()}}>
+                      {{ 'Intervention deadline passed: Group ' . $notification->data['Deadline passed']['group_id'] }}
+                  </a>
+              @endforeach
           </div>
         </li>
         <li class="nav-item dropdown">
