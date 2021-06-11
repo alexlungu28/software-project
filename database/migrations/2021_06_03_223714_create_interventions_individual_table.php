@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateInterventionUserTable extends Migration
+class CreateInterventionsIndividualTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,15 @@ class CreateInterventionUserTable extends Migration
      */
     public function up()
     {
-        Schema::create('intervention_user', function (Blueprint $table) {
+        Schema::create('interventions_individual', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->references('id')->on('users')->cascadeOnDelete();
-            $table->foreignId('intervention_id')->references('id')->on('interventions')->cascadeOnDelete();
+            $table->foreignId('group_id')->references('id')->on('groups')->cascadeOnDelete();
+            $table->string("reason")->nullable();
+            $table->string("action")->nullable();
+            $table->date('start_day');
+            $table->date('end_day');
+
             $table->timestamps();
         });
     }
@@ -28,6 +33,6 @@ class CreateInterventionUserTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('intervention_user');
+        Schema::dropIfExists('interventions_individual');
     }
 }
