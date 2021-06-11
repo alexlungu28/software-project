@@ -29,8 +29,8 @@ class ExportController extends Controller
      *
      * @return BinaryFileResponse
      */
-    public function export(): BinaryFileResponse
+    public function exportUserList(): BinaryFileResponse
     {
-        return Excel::download(new UsersExport, 'users.xlsx');
+        return Excel::download(new UsersExport, 'user_list.csv');
     }
 }

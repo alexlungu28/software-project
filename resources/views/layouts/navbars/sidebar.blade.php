@@ -38,7 +38,7 @@
 
         <li class="nav-item{{ $activePage == 'interventions' ? ' active' : '' }}">
             <a class="nav-link" href={{ route('interventions', [$edition_id]) }}>
-                <i class="material-icons">interventions</i>
+                <i class="material-icons">report</i>
                 <p>{{ __('Interventions') }}</p>
             </a>
         </li>

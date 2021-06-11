@@ -107,6 +107,9 @@ Route::post('/rubricDataStore/{id}', [RubricDataController::class, 'store']);
 Route::get('/exportView/{edition_id}', 'App\Http\Controllers\ExportController@exportView')
     ->name('export')
     ->middleware(['loggedIn', 'role:lecturer']);
+Route::get('/exportUserList/{edition_id}', 'App\Http\Controllers\ExportController@exportUserList')
+    ->name('exportUserList')
+    ->middleware(['loggedIn', 'role:lecturer']);
 Route::get('/importView/{edition_id}', 'App\Http\Controllers\ImportController@importView')
     ->name('importTAsStudents')
     ->middleware(['loggedIn', 'role:lecturer']);
