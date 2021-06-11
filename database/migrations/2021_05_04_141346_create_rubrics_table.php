@@ -16,7 +16,7 @@ class CreateRubricsTable extends Migration
         Schema::create('rubrics', function (Blueprint $table) {
             $table->id();
             $table->text('name');
-            $table->foreignId('course_edition_id')->references('id')->on('course_editions');
+            $table->foreignId('course_edition_id')->references('id')->on('course_editions')->cascadeOnDelete();
             $table->integer('week')->nullable();
             $table->timestamps();
             $table->softDeletes();
