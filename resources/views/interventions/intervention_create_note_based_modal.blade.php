@@ -13,13 +13,6 @@
                 <form id={{"createInterventionNote" . $note->id}} method="post" value = "<?php echo csrf_token(); ?>" action="{{action('App\Http\Controllers\InterventionsController@createInterventionNote',$note->id)}}">
                     <input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
                     <div class="box-body">
-                        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/css/bootstrap-select.min.css">
-
-                        <!-- (Optional) Latest compiled and minified JavaScript translation files -->
-                        <script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/js/i18n/defaults-*.min.js"></script>
-
-
-
 
                         <div class="form-group">
                             <label for="name">Name</label>
@@ -52,35 +45,15 @@
 
                         <div class="form-group">
                             <label for="createStart">Starting</label>
-                            <input type='text' class="form-control" id='{{"createStartNote" . $note->id}}' name="{{"createStartNote" . $note->id}}" value="" />
+                            <input type='date' class="form-control" id='{{"createStartNote" . $note->id}}' name="{{"createStartNote" . $note->id}}" value="" />
                         </div>
-                        <script type="text/javascript">
-                            $(function () {
-                                moment.locale('en', {
-                                    week: { dow: 1 } // Monday is the first day of the week
-                                });
-                                $('{{"#createStartNote" . $note->id}}').datetimepicker({
-                                    format: 'YYYY-MM-DD'
-                                });
-                            });
-                        </script>
+
 
                         <div class="form-group">
                             <label for="createEnd">Ending</label>
-                            <input type='text' class="form-control" id='{{"createEndNote" . $note->id}}' name="{{"createEndNote" . $note->id}}" value="" />
+                            <input type='date'  data-date-format="DD-MM-YYYY" class="form-control" id='{{"createEndNote" . $note->id}}' name="{{"createEndNote" . $note->id}}" value="" />
                         </div>
-                        <script type="text/javascript">
-                            $(function () {
-                                moment.locale('en', {
-                                    week: { dow: 1 } // Monday is the first day of the week
-                                });
-                                $('{{"#createEndNote" . $note->id}}').datetimepicker({
-                                    format: 'YYYY-MM-DD'
-                                });
-                            });
 
-
-                        </script>
 
                     </div>
 

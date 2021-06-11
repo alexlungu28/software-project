@@ -14,7 +14,9 @@
 
     <div class="content">
         <div class="container-fluid">
+
             @include ('/interventions/intervention_create_modal')
+
 
 
 
@@ -37,11 +39,14 @@
             </ul>
             <div class="tab-content" id="pills-tabContent">
                 <div class="tab-pane fade show active" id="allInterventions" role="tabpanel" aria-labelledby="pills-allInterventions-tab">
+
                     <div class="table-responsive">
 
                         <h3>Interventions</h3>
 
-                        <button type="button" name="createIntervention" class="btn btn-danger rounded-pill" value="2" data-toggle="modal" data-target="{{"#createIntervention" . $edition_id}}" style="float:right">Create Intervention</button>
+
+
+                        <button type="button" name="createIntervention" class="btn btn-danger rounded-pill" data-toggle="modal" data-target="{{"#createIntervention" . $edition_id}}" style="float:right">Create Intervention</button>
 
                         <div class="card">
 
@@ -57,11 +62,13 @@
                                             <th style="width:25%">Action</th>
                                             <th style="width:10%">Starting</th>
                                             <th style="width:10%">Ending</th>
-                                            <th style="width:25%"></th>
+                                            <th style="width:10%"></th>
+                                            <th style="width:20%"></th>
 
                                         </tr>
                                         </thead>
                                         <tbody>
+
 
                                         @foreach($interventions as $intervention)
 
@@ -93,9 +100,26 @@
                                                 <td>{{$intervention->action}}
                                                 </td>
 
-                                                <td>@php echo date("F jS, Y", strtotime($intervention->start_day)); @endphp</td>
+                                                <td>@php echo date("F jS", strtotime($intervention->start_day)); @endphp</td>
 
-                                                <td>@php echo date("F jS, Y", strtotime($intervention->end_day)); @endphp</td>
+                                                <td>@php echo date("F jS", strtotime($intervention->end_day)); @endphp</td>
+
+
+
+                                                <form>
+                                                    @csrf
+                                                    <input type="hidden" name="_method" value="POST">
+                                                    <td align="right">
+
+                                                        <button type="button" name="update" class="btn btn-success " value="1"  data-toggle="modal" data-target="">
+                                                            Active</button>
+
+
+
+                                                    </td>
+                                                </form>
+
+
 
                                                 <form>
                                                     @csrf

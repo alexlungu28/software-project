@@ -45,12 +45,18 @@
                                         <tbody>
 
                                         @php
-                                            $notes = App\Models\NoteGroup::where('group_id', '=', $group->id)->orderBy('week')->first()->get();
+                                        if(App\Models\NoteGroup::where('group_id', '=', $group->id)->exists())
+                                            $notes = App\Models\NoteGroup::where('group_id', '=', $group->id)->orderBy('week')->get();
+                                        else
+                                            $notes = [];
                                         $notesGood = [];
                                         foreach($notes as $note) {
                                             array_push($notesGood, $note);
                                         }
-                                        $interventions = \App\Models\Intervention::where('group_id','=', $group->id)->get();
+                                        if(\App\Models\Intervention::where('group_id','=', $group->id)->exists())
+                                            $interventions = \App\Models\Intervention::where('group_id','=', $group->id)->get();
+                                        else
+                                            $interventions = [];
                                         $interventionNotes = [];
                                         foreach($interventions as $intervention) {
                                             if(preg_match("/^(aaaaanote)\d+$/i", $intervention->reason)) {
@@ -71,7 +77,7 @@
 
 
 
-                                        @foreach($group->groupnotes->sortBy('week') as $groupnote)
+                                 {{--       @foreach($group->groupnotes->sortBy('week') as $groupnote)
                                             @if($groupnote->problem_signal >= 2)
                                             <tr>
                                                 <td>
@@ -109,7 +115,7 @@
                                             </tr>
                                             @endif
                                         @endforeach
-
+--}}
 
                                         @php
                                             $notes = App\Models\Note::where('group_id', '=', $group->id)->orderBy('week')->get();
@@ -200,41 +206,16 @@
                         <div class="card-body">
                             <div class="tab-content">
                                 <div class="tab-pane active" id="profile">
-                                    <table class="table">
+                                    <table class="table"  style="table-layout:fixed;">
                                         <thead class="text-primary">
                                         <th>Name</th>
                                         <th>Reason</th>
                                         <th style="width:15%">Action</th>
-                                        <th>Starting</th>
+
                                         <th>Ending</th>
-                                        <th>Solved</th>
+                                        <th></th>
                                         </thead>
                                         <tbody>
-                                        {{--
-                                        @foreach($group->groupnotes->sortBy('week') as $groupnote)
-                                            @if($groupnote->problem_signal >= 2)
-                                                <tr>
-                                                    <td>
-
-                                                    </td>
-                                                    <td>
-                                                        {{$groupnote->week}}
-                                                    </td>
-                                                    <td>
-                                                        Group
-                                                    </td>
-                                                    <td>
-
-                                                    </td>
-                                                    <td>
-                                                        {{$groupnote->problem_signal}}
-                                                    </td>
-                                                </tr>
-                                            @endif
-                                        @endforeach
-                                        --}}
-
-
                                         @foreach($group->groupIndividualInterventions->sortBy('end_day') as $intervention)
 
                                                 <tr>
@@ -262,9 +243,19 @@
                                                     <td>{{$intervention->action}}
                                                     </td>
 
-                                                    <td>@php echo date("F jS, Y", strtotime($intervention->start_day)); @endphp</td>
 
-                                                    <td>@php echo date("F jS, Y", strtotime($intervention->end_day)); @endphp</td>
+
+                                                    <td>@php echo date("F jS", strtotime($intervention->end_day)); @endphp</td>
+
+                                                    <td>
+                                                        <button type="button" class="btn btn-success">
+                                                            <span>Mark As</span>
+                                                            <br>
+
+                                                            <span>Solved</span>
+                                                        </button>
+
+                                                    </td>
 
                                                 </tr>
                                         @endforeach
