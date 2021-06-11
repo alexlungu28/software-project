@@ -6,6 +6,7 @@ use App\Http\Controllers\CourseEditionUserController;
 use App\Http\Controllers\GroupController;
 use App\Http\Controllers\AttendanceController;
 use App\Http\Controllers\ImportController;
+use App\Http\Controllers\InterventionsController;
 use App\Http\Controllers\NotesController;
 use App\Http\Controllers\RubricController;
 use App\Http\Controllers\RubricDataController;
@@ -293,6 +294,20 @@ Route::post('/groupNoteUpdate/{id}', [NotesController::class, 'groupNoteUpdate']
 Route::get('/note/{group_id}/{week_id}', [NotesController::class, 'weekGroup'])
     ->name('note')->middleware(['loggedIn', 'role:lecturer,HeadTA,TA']);
 
+Route::get('/interventions/{edition_id}', [InterventionsController::class, 'showAllInterventions'])
+    ->name('interventions')->middleware(['loggedIn', 'role:lecturer,HeadTA']);
+
+Route::post('/editIntervention/{id}', [InterventionsController::class, 'editIntervention'])
+    ->name('editIntervention')->middleware(['loggedIn']);
+
+Route::post('/createIntervention/{id}', [InterventionsController::class, 'createIntervention'])
+    ->name('createIntervention')->middleware(['loggedIn']);
+
+Route::post('/createInterventionNote/{id}', [InterventionsController::class, 'createInterventionNote'])
+    ->name('createInterventionNote')->middleware(['loggedIn']);
+
+Route::post('/deleteIntervention/{id}', [InterventionsController::class, 'deleteIntervention'])
+    ->name('deleteIntervention')->middleware(['loggedIn']);
 
 
 
