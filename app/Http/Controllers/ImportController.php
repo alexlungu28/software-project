@@ -71,11 +71,13 @@ class ImportController extends Controller
         $jsonFile = request()->file('file');
         $jsonData = file_get_contents($jsonFile->getPathname());
         if ($jsonData == false) {
-            return "Error reading file";
+            echo "Error reading file";
+            return null;
         }
         $parsedData = json_decode($jsonData);
         if ($parsedData == null) {
-            return "Error parsing JSON";
+            echo "Error parsing JSON";
+            return null;
         }
         try {
             $gitinspector = $parsedData->gitinspector;
@@ -131,7 +133,7 @@ class ImportController extends Controller
             );
             return back();
         } catch (Error $error) {
-            return "Error retrieving data from parsed JSON, make sure gitanalysis was run with the Grading setting";
+            echo "Error retrieving data from parsed JSON, make sure gitanalysis was run with the Grading setting";
         }
     }
 }
