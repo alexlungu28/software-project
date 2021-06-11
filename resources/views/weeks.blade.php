@@ -1,10 +1,45 @@
 @extends('layouts.app', ['activePage' => 'group', 'titlePage' => __('Weeks')])
 <?php
- $dataPoints = array_fill(0, count($users), null);
-foreach ($users as $key => $user)
-{
-$dataPoints[$key] = array("label"=>"$user->user_id", "y"=>64.02);
+    #ddd($gitanalyses);
+    $maxWeekNumber = 0;
+    $index = 0;
+    $latestGitAnalyses = -1;
+/**
+ * This method goes through the gitanalyses if there are any and searches for the last week uploaded in that group.
+ */
+foreach ($gitanalyses as $git) {
+    if ($git->week_number >= $maxWeekNumber) {
+        $maxWeekNumber = $git->week_number;
+        $latestGitAnalyses = $index;
+    }
+    $index++;
 }
+/**
+ * This if goes through the gitanalysis found in the previous for is good or doesn't have any gitanalyses
+ * otherwise it initiates the datapoints with dummy data
+ */
+if ($latestGitAnalyses != -1) {
+    $names = json_decode($gitanalyses[$latestGitAnalyses]->names);
+    $emails = json_decode($gitanalyses[$latestGitAnalyses]->emails);
+    $blame = json_decode($gitanalyses[$latestGitAnalyses]->blame);
+
+    $dataPoints = array_fill(0, count($emails), null);
+    $count = 0;
+    foreach ($emails as $email) {
+        $dataPoints[$count] = array("label"=>"$email", "y"=>$blame[$count]->percentage_in_comments);
+        $count++;
+    }
+} else {
+    $dataPoints = array(
+        array("label"=>"Chrome", "y"=>64.02),
+        array("label"=>"Firefox", "y"=>12.55),
+        array("label"=>"IE", "y"=>8.47),
+        array("label"=>"Safari", "y"=>6.08),
+        array("label"=>"Edge", "y"=>4.29),
+        array("label"=>"Others", "y"=>4.59)
+    );
+}
+
 
 ?>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.7.14/js/bootstrap-datetimepicker.min.js"></script>
@@ -20,10 +55,10 @@ $dataPoints[$key] = array("label"=>"$user->user_id", "y"=>64.02);
                 var chart = new CanvasJS.Chart("chartContainer", {
                     animationEnabled: true,
                     title: {
-                        text: "Usage Share of Desktop Browsers"
+                        text: "Gitinspector"
                     },
                     subtitles: [{
-                        text: "November 2017"
+                        text: "Latest week"
                     }],
                     data: [{
                         type: "pie",
