@@ -107,7 +107,6 @@ class RubricController extends Controller
             RubricData::withTrashed()->where('rubric_id', '=', $rubricId)->forceDelete();
             RubricEntry::withTrashed()->where('rubric_id', '=', $rubricId)->forceDelete();
             Rubric::find($request->input('id'))->forceDelete();
-
         } else {
             Rubric::destroy($request->input('id'));
         }
