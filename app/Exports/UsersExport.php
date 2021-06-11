@@ -5,7 +5,6 @@ namespace App\Exports;
 use App\Models\User;
 use Maatwebsite\Excel\Concerns\FromQuery;
 use Maatwebsite\Excel\Concerns\WithHeadings;
-use Maatwebsite\Excel\Concerns\WithMapping;
 
 class UsersExport implements FromQuery, WithHeadings
 {
@@ -52,18 +51,13 @@ class UsersExport implements FromQuery, WithHeadings
             ->join('course_edition_user', 'users.id', '=', 'user_id')
             ->where('course_edition_id', '=', $this->editionId)
             ->select(
-            'org_defined_id',
-                    'net_id',
-                    'last_name',
-                    'first_name',
-                    'email',
-                    'affiliation',
-                    'role');
+                'org_defined_id',
+                'net_id',
+                'last_name',
+                'first_name',
+                'email',
+                'affiliation',
+                'role'
+            );
     }
-
-
-
-
 }
-
-
