@@ -25,12 +25,13 @@ class ExportController extends Controller
 
 
     /**
-     * Exports users table.
+     * Exports the user list.
      *
+     * @param $editionId
      * @return BinaryFileResponse
      */
-    public function exportUserList(): BinaryFileResponse
+    public function exportUserList($editionId): BinaryFileResponse
     {
-        return Excel::download(new UsersExport, 'user_list.csv');
+        return Excel::download(new UsersExport($editionId), 'user_list.csv');
     }
 }
