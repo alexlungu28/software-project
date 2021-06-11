@@ -54,7 +54,7 @@ class User extends Authenticatable
      */
     public function interventions()
     {
-        return $this->belongsToMany(Intervention::class, 'intervention_user');
+        return $this->belongsToMany(InterventionGroup::class, 'intervention_user');
     }
 
     /**

@@ -14,16 +14,6 @@ class Note extends Model
     protected $table = 'notes_individual';
 
     /**
-     * Creates the intervention relation.
-     *
-     * @return BelongsTo
-     */
-    public function noteable()
-    {
-        return $this->morphTo();
-    }
-
-    /**
      * Creates the user relation.
      *
      * @return BelongsTo
