@@ -26,20 +26,31 @@ class InterventionsController extends Controller
      */
     public function showAllInterventions($editionId)
     {
-        $interventions = Intervention::all()->sortBy('end_day')->sortBy('status');
-       // return $interventions;
+        //fetching the notes and interventions of the current course edition.
+        //first, the groupIds of the current course edition are collected,
+        // then the notes and interventions are directly selected from the database and passed to the view.
         $groupIds = DB::table('groups')
             ->select('groups.id')
             ->where('groups.course_edition_id', '=', $editionId)
             ->pluck('groups.id');
         $notes = [];
+        $interventions = [];
         foreach ($groupIds as $groupId) {
             if (Note::where('problem_signal', '>', 1)->where('group_id', $groupId)->exists()) {
                 $notesAux = Note::where('problem_signal', '>', 1)->where('group_id', $groupId)->get();
-                foreach ($notesAux as $note) {
-                    array_push($notes, $note);
+                foreach ($notesAux as $noteGroup) {
+                    array_push($notes, $noteGroup);
                 }
             }
+
+            if (Intervention::where('group_id', $groupId)->exists()) {
+                $interventionsAux = Intervention::where('group_id', $groupId)->get();
+                foreach ($interventionsAux as $interventionGroup) {
+                    array_push($interventions, $interventionGroup);
+                }
+            }
+
+
         }
 
         return view('interventions', [
@@ -61,7 +72,8 @@ class InterventionsController extends Controller
     {
         $intervention          = Intervention::find($interventionId);
 
-        //return $request->get('editStart1');
+        //if the reason is of the format 'note\d', then the request will be empty,
+        // so we should make sure the reason it is not updated with an empty string.
         if (preg_match("/^(note)\d+$/i", $intervention->reason) == false) {
             $intervention->reason = $request->get('editReason');
         }
