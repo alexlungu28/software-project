@@ -248,17 +248,26 @@
                                                     <td>@php echo date("F jS", strtotime($intervention->end_day)); @endphp</td>
 
                                                     <td>
-                                                        <button type="button" class="btn btn-success">
-                                                            <span>Mark As</span>
-                                                            <br>
-
-                                                            <span>Solved</span>
-                                                        </button>
+                                                        @if($intervention->status == 1)
+                                                            <button class="btn btn-outline-success rounded-pill" type="button" name="update"  data-toggle="modal" data-target="{{"#statusIntervention" . $intervention->id}}" >Active</button>
+                                                        @elseif($intervention->status == 2)
+                                                            <button class="btn btn-outline-info rounded-pill"  type="button" name="update"  data-toggle="modal" data-target="{{"#statusIntervention" . $intervention->id}}">Extended</button>
+                                                        @elseif($intervention->status == 3)
+                                                            <button class="btn btn-outline-danger rounded-pill"  type="button" name="update"  data-toggle="modal" data-target="{{"#statusIntervention" . $intervention->id}}">  <span>Closed</span>
+                                                                <br>
+                                                                <span>Unsolved</span></button>
+                                                        @else
+                                                            <button class="btn btn-outline-secondary rounded-pill" type="button" name="update"  data-toggle="modal" data-target="{{"#statusIntervention" . $intervention->id}}">  <span>Closed</span>
+                                                                <br>
+                                                                <span>Solved</span></button>
+                                                        @endif
 
                                                     </td>
 
                                                 </tr>
+                                                @include ('/interventions/intervention_status_modal')
                                         @endforeach
+
                                         </tbody>
                                     </table>
                                 </div>

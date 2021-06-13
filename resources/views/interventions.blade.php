@@ -62,7 +62,7 @@
                                             <th style="width:25%">Action</th>
                                             <th style="width:10%">Starting</th>
                                             <th style="width:10%">Ending</th>
-                                            <th style="width:10%"></th>
+                                            <th style="width:10%">Status</th>
                                             <th style="width:20%"></th>
 
                                         </tr>
@@ -90,8 +90,8 @@
                                                             $note = App\Models\Note::find(preg_replace('/[^0-9]/', '', $intervention->reason));
                                                             @endphp
 
-                                                    @include('/interventions/intervention_view_note')
-                                                        <button type="button" name="viewNote" class="btn btn-info rounded-pill" data-toggle="modal" data-target="{{"#viewNote" . preg_replace('/[^0-9]/', '', $intervention->reason)}}">Note</button>
+                                                    @include('/interventions/intervention_view_note1')
+                                                        <button type="button" name="viewNotee" class="btn btn-info rounded-pill" data-toggle="modal" data-target="{{"#viewNotee" . preg_replace('/[^0-9]/', '', $intervention->reason)}}">Note</button>
                                                     @else
                                                         {{$intervention->reason}}
                                                     @endif
@@ -109,10 +109,21 @@
                                                 <form>
                                                     @csrf
                                                     <input type="hidden" name="_method" value="POST">
-                                                    <td align="right">
+                                                    <td>
 
-                                                        <button type="button" name="update" class="btn btn-success " value="1"  data-toggle="modal" data-target="">
-                                                            Active</button>
+                                                        @if($intervention->status == 1)
+                                                            <button class="btn btn-outline-success rounded-pill" type="button" name="update"  data-toggle="modal" data-target="{{"#statusIntervention" . $intervention->id}}" >Active</button>
+                                                        @elseif($intervention->status == 2)
+                                                            <button class="btn btn-outline-info rounded-pill"  type="button" name="update"  data-toggle="modal" data-target="{{"#statusIntervention" . $intervention->id}}">Extended</button>
+                                                        @elseif($intervention->status == 3)
+                                                            <button class="btn btn-outline-danger rounded-pill"  type="button" name="update"  data-toggle="modal" data-target="{{"#statusIntervention" . $intervention->id}}">  <span>Closed</span>
+                                                                <br>
+                                                                <span>Unsolved</span></button>
+                                                        @else
+                                                            <button class="btn btn-outline-secondary rounded-pill" type="button" name="update"  data-toggle="modal" data-target="{{"#statusIntervention" . $intervention->id}}">  <span>Closed</span>
+                                                                <br>
+                                                                <span>Solved</span></button>
+                                                        @endif
 
 
 
@@ -139,6 +150,7 @@
 
                                             @include ('/interventions/intervention_edit_modal')
                                             @include ('/interventions/intervention_delete_modal')
+                                            @include ('/interventions/intervention_status_modal')
 
                                         @endforeach
 

@@ -28,7 +28,7 @@ class InterventionsController extends Controller
      */
     public function showAllInterventions($editionId)
     {
-        $interventions = Intervention::all()->sortBy('end_day');
+        $interventions = Intervention::all()->sortBy('end_day')->sortBy('status');
        // return $interventions;
         $groupIds = DB::table('groups')
             ->select('groups.id')
@@ -44,9 +44,6 @@ class InterventionsController extends Controller
             }
         }
 
-
-
-
         return view('interventions', [
             "interventions" => $interventions,
             "edition_id" => $editionId,
@@ -59,7 +56,10 @@ class InterventionsController extends Controller
         $intervention          = Intervention::find($interventionId);
 
         //return $request->get('editStart1');
-        $intervention->reason = $request->get('editReason');
+        if (preg_match("/^(note)\d+$/i", $intervention->reason) == false) {
+            $intervention->reason = $request->get('editReason');
+        }
+
         $intervention->action = $request->get('editAction');
         $intervention->start_day = $request->input('editStart'. $interventionId);
         $intervention->end_day = $request->input('editEnd' . $interventionId);
@@ -68,7 +68,6 @@ class InterventionsController extends Controller
 
         return back();
     }
-
 
     public function createIntervention(Request $request, $editionId)
     {
@@ -89,8 +88,7 @@ class InterventionsController extends Controller
         $intervention->action = $request->get('createAction');
         $intervention->start_day = $request->input('createStart' . $editionId);
         $intervention->end_day = $request->input('createEnd' . $editionId);
-
-       // return $intervention;
+        $intervention->status = 1; //active - unsolved
 
         $intervention->save();
 
@@ -110,8 +108,7 @@ class InterventionsController extends Controller
         $intervention->action = $request->get('createAction');
         $intervention->start_day = $request->input('createStartNote' . $noteId);
         $intervention->end_day = $request->input('createEndNote' . $noteId);
-
-
+        $intervention->status = 1;
 
         $intervention->save();
 
@@ -122,6 +119,44 @@ class InterventionsController extends Controller
     {
         $intervention = Intervention::find($interventionId);
         $intervention->delete();
+        return back();
+    }
+
+
+    public function statusActive(Request $request, $interventionId)
+    {
+        $intervention = Intervention::find($interventionId);
+        $intervention->status = 1;
+        $intervention->status_note = $request->get('active_note');
+        $intervention->save();
+        return back();
+    }
+
+    public function statusExtend(Request $request, $interventionId)
+    {
+        $intervention = Intervention::find($interventionId);
+        $intervention->status = 2;
+        $intervention->end_day = $request->get('extend_end' . $interventionId);
+        $intervention->status_note = $request->get('extend_note');
+        $intervention->save();
+        return back();
+    }
+
+    public function statusUnsolved(Request $request, $interventionId)
+    {
+        $intervention = Intervention::find($interventionId);
+        $intervention->status = 3;
+        $intervention->status_note = $request->get('unsolved_note');
+        $intervention->save();
+        return back();
+    }
+
+    public function statusSolved(Request $request, $interventionId)
+    {
+        $intervention = Intervention::find($interventionId);
+        $intervention->status = 4;
+        $intervention->status_note = $request->get('solved_note');
+        $intervention->save();
         return back();
     }
 }
