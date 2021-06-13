@@ -20,7 +20,7 @@ class CreateAttendancesTable extends Migration
             $table->integer('week');
             //1 - present, 2 - late, 3 - absent
             $table->integer("status")->nullable();
-            $table->string("reason")->nullable();
+            $table->text("reason")->nullable();
             $table->timestamps();
         });
     }
