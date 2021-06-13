@@ -18,8 +18,6 @@ use Illuminate\Support\Facades\DB;
 
 class InterventionsController extends Controller
 {
-
-
     /**
      * Show all interventions of current course edition.
      *
@@ -51,6 +49,14 @@ class InterventionsController extends Controller
         ]);
     }
 
+    /**
+     * Controller for editing interventions.
+     * The reason, action, and starting and ending dates can be changed.
+     *
+     * @param Request $request
+     * @param $interventionId
+     * @return RedirectResponse
+     */
     public function editIntervention(Request $request, $interventionId)
     {
         $intervention          = Intervention::find($interventionId);
@@ -69,12 +75,21 @@ class InterventionsController extends Controller
         return back();
     }
 
+    /**
+     * Controller for creating interventions.
+     * The request has the userId, reason, action, and starting and ending dates.
+     *
+     * @param Request $request
+     * @param $editionId
+     * @return RedirectResponse
+     */
     public function createIntervention(Request $request, $editionId)
     {
         $intervention          = new Intervention();
         $userId = $request->get('createUser');
         $intervention->user_id = $userId;
 
+        //find groupId based on user_id
         $groupId = DB::table('group_user')
                     ->join('course_edition_user', 'group_user.user_id', '=', 'course_edition_user.user_id')
                     ->select('group_user.group_id')
@@ -88,15 +103,20 @@ class InterventionsController extends Controller
         $intervention->action = $request->get('createAction');
         $intervention->start_day = $request->input('createStart' . $editionId);
         $intervention->end_day = $request->input('createEnd' . $editionId);
-        $intervention->status = 1; //active - unsolved
+        $intervention->status = 1; //active
 
         $intervention->save();
 
         return back();
     }
 
-
-
+    /**
+     * Create an intervention that is directly related to a note.
+     *
+     * @param Request $request
+     * @param $noteId
+     * @return RedirectResponse
+     */
     public function createInterventionNote(Request $request, $noteId)
     {
         $intervention          = new Intervention();
@@ -115,6 +135,13 @@ class InterventionsController extends Controller
         return back();
     }
 
+    /**
+     * Controller for deleting interventions.
+     *
+     * @param Request $request
+     * @param $interventionId
+     * @return RedirectResponse
+     */
     public function deleteIntervention(Request $request, $interventionId)
     {
         $intervention = Intervention::find($interventionId);
@@ -122,7 +149,13 @@ class InterventionsController extends Controller
         return back();
     }
 
-
+    /**
+     * Controller for changing the status of the intervention to active.
+     *
+     * @param Request $request
+     * @param $interventionId
+     * @return RedirectResponse
+     */
     public function statusActive(Request $request, $interventionId)
     {
         $intervention = Intervention::find($interventionId);
@@ -132,6 +165,14 @@ class InterventionsController extends Controller
         return back();
     }
 
+    /**
+     * Controller for changing the status of the intervention to extended.
+     * The status note and the new ending date are passed in the request.
+     *
+     * @param Request $request
+     * @param $interventionId
+     * @return RedirectResponse
+     */
     public function statusExtend(Request $request, $interventionId)
     {
         $intervention = Intervention::find($interventionId);
@@ -142,6 +183,14 @@ class InterventionsController extends Controller
         return back();
     }
 
+    /**
+     * Controller for changing the status of the intervention to closed - unsolved.
+     * The status note is passed in the request.
+     *
+     * @param Request $request
+     * @param $interventionId
+     * @return RedirectResponse
+     */
     public function statusUnsolved(Request $request, $interventionId)
     {
         $intervention = Intervention::find($interventionId);
@@ -151,6 +200,14 @@ class InterventionsController extends Controller
         return back();
     }
 
+    /**
+     * Controller for changing the status of the intervention to closed - solved.
+     * The status note is passed in the request.
+     *
+     * @param Request $request
+     * @param $interventionId
+     * @return RedirectResponse
+     */
     public function statusSolved(Request $request, $interventionId)
     {
         $intervention = Intervention::find($interventionId);
