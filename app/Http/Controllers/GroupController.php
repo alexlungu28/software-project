@@ -32,7 +32,7 @@ class GroupController extends Controller
             return view('weeks', ['edition_id' => $editionId, 'group_id' => $id,
                 'group' => Group::find($id), 'users' => $usersFromGroup, 'gitanalyses' => $gitanalyses]);
         } else {
-            return view('weeksTA', ['edition_id' => $editionId, 'group_id' => $id, 'group' => Group::find($id)]);
+            return view('weeks', ['edition_id' => $editionId, 'group_id' => $id, 'group' => Group::find($id)]);
         }
     }
 

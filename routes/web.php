@@ -312,6 +312,18 @@ Route::post('/createInterventionNote/{id}', [InterventionsController::class, 'cr
 Route::post('/deleteIntervention/{id}', [InterventionsController::class, 'deleteIntervention'])
     ->name('deleteIntervention')->middleware(['loggedIn']);
 
+Route::post('/statusActive/{id}', [InterventionsController::class, 'statusActive'])
+    ->name('statusActive')->middleware(['loggedIn']);
+
+Route::post('/statusExtend/{id}', [InterventionsController::class, 'statusExtend'])
+    ->name('statusExtend')->middleware(['loggedIn']);
+
+Route::post('/statusUnsolved/{id}', [InterventionsController::class, 'statusUnsolved'])
+    ->name('statusUnsolved')->middleware(['loggedIn']);
+
+Route::post('/statusSolved/{id}', [InterventionsController::class, 'statusSolved'])
+    ->name('statusSolved')->middleware(['loggedIn']);
+
 
 
 Route::get('/group/{group_id}/week/{week_id}', [GroupController::class, 'viewWeek'])->name('week')
