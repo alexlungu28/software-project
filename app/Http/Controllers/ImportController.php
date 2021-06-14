@@ -21,11 +21,11 @@ use Maatwebsite\Excel\Facades\Excel;
 class ImportController extends Controller
 {
     /**
-     * View of the import export page.
+     * View of the import page.
      *
      * @return Application|Factory|View
      */
-    public function importExportView($editionId)
+    public function importView($editionId)
     {
         return view('import', [
             "edition_id" => $editionId,
