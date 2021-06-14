@@ -40,5 +40,22 @@
             </div>
 
         </div>
+
+        <div class="container" style="display:inline-flex;">
+            <div class="card bg-light mt-3" style="color: black; font-size: 1.2rem;">
+                <div class="card-header">
+                    Git analysis importing
+                </div>
+                <div class="card-body">
+                    <form action="{{ route('importGitanalysis', [$group_id, $week]) }}" method="POST" enctype="multipart/form-data">
+                        @csrf
+                        <input type="file" name="file" class="form-control">
+                        <br>
+                        <button class="btn btn-info">Import Git analysis from a txt file containing JSON</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
     </div>
 @endsection

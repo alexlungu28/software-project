@@ -82,7 +82,7 @@ class RubricEntryTest extends TestCase
                     'Update Column',
                     'Delete Column',
                     'Add a new Rubric Entry',
-                    'Rollback deleted Rubric Entry',
+                    'Restore deleted Rubric Entry',
                 ]
             );
         $response->assertStatus(200);

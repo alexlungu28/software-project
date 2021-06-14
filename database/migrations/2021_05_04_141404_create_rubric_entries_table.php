@@ -15,7 +15,7 @@ class CreateRubricEntriesTable extends Migration
     {
         Schema::create('rubric_entries', function (Blueprint $table) {
             $table->id();
-            $table->integer('rubric_id');
+            $table->foreignId('rubric_id')->references('id')->on('rubrics')->cascadeOnDelete();
             $table->integer('distance')->unsigned();
             $table->boolean('is_row');
             $table->unique(array('rubric_id', 'distance', 'is_row'));

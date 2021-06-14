@@ -5,6 +5,8 @@ use App\Http\Controllers\CourseEditionController;
 use App\Http\Controllers\CourseEditionUserController;
 use App\Http\Controllers\GroupController;
 use App\Http\Controllers\AttendanceController;
+use App\Http\Controllers\ImportController;
+use App\Http\Controllers\InterventionsController;
 use App\Http\Controllers\NotesController;
 use App\Http\Controllers\RubricController;
 use App\Http\Controllers\RubricDataController;
@@ -103,10 +105,13 @@ Route::post('/rubricDataStore/{id}', [RubricDataController::class, 'store']);
 | Import/Export student Routes
 |--------------------------------------------------------------------------
 */
-Route::get('/export/{edition_id}', 'App\Http\Controllers\ExportController@export')
+Route::get('/exportView/{edition_id}', 'App\Http\Controllers\ExportController@exportView')
     ->name('export')
     ->middleware(['loggedIn', 'role:lecturer']);
-Route::get('/importExportView/{edition_id}', 'App\Http\Controllers\ImportController@importExportView')
+Route::get('/exportUserList/{edition_id}', 'App\Http\Controllers\ExportController@exportUserList')
+    ->name('exportUserList')
+    ->middleware(['loggedIn', 'role:lecturer']);
+Route::get('/importView/{edition_id}', 'App\Http\Controllers\ImportController@importView')
     ->name('importTAsStudents')
     ->middleware(['loggedIn', 'role:lecturer']);
 Route::post('/import/{edition_id}', 'App\Http\Controllers\ImportController@import')
@@ -116,7 +121,15 @@ Route::post('/importTA/{edition_id}', 'App\Http\Controllers\ImportController@imp
     ->name('importTA')
     ->middleware(['loggedIn', 'role:lecturer']);
 
+/*
+|--------------------------------------------------------------------------
+| Import/Export student Routes
+|--------------------------------------------------------------------------
+*/
 
+Route::post('importGitanalysis/{group_id}/{week}', [ImportController::class, 'importGitanalysis'])
+    ->name('importGitanalysis')
+    ->middleware(['loggedIn', 'role:lecturer,HeadTA,TA']);
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home')->middleware('loggedIn');
 
@@ -284,6 +297,32 @@ Route::post('/groupNoteUpdate/{id}', [NotesController::class, 'groupNoteUpdate']
 Route::get('/note/{group_id}/{week_id}', [NotesController::class, 'weekGroup'])
     ->name('note')->middleware(['loggedIn', 'role:lecturer,HeadTA,TA']);
 
+Route::get('/interventions/{edition_id}', [InterventionsController::class, 'showAllInterventions'])
+    ->name('interventions')->middleware(['loggedIn', 'role:lecturer,HeadTA']);
+
+Route::post('/editIntervention/{id}', [InterventionsController::class, 'editIntervention'])
+    ->name('editIntervention')->middleware(['loggedIn']);
+
+Route::post('/createIntervention/{id}', [InterventionsController::class, 'createIntervention'])
+    ->name('createIntervention')->middleware(['loggedIn']);
+
+Route::post('/createInterventionNote/{id}', [InterventionsController::class, 'createInterventionNote'])
+    ->name('createInterventionNote')->middleware(['loggedIn']);
+
+Route::post('/deleteIntervention/{id}', [InterventionsController::class, 'deleteIntervention'])
+    ->name('deleteIntervention')->middleware(['loggedIn']);
+
+Route::post('/statusActive/{id}', [InterventionsController::class, 'statusActive'])
+    ->name('statusActive')->middleware(['loggedIn']);
+
+Route::post('/statusExtend/{id}', [InterventionsController::class, 'statusExtend'])
+    ->name('statusExtend')->middleware(['loggedIn']);
+
+Route::post('/statusUnsolved/{id}', [InterventionsController::class, 'statusUnsolved'])
+    ->name('statusUnsolved')->middleware(['loggedIn']);
+
+Route::post('/statusSolved/{id}', [InterventionsController::class, 'statusSolved'])
+    ->name('statusSolved')->middleware(['loggedIn']);
 
 
 

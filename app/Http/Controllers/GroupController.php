@@ -26,10 +26,14 @@ class GroupController extends Controller
         $role = DB::table('course_edition_user')
             ->where('course_edition_id', '=', $editionId)
             ->where('user_id', '=', Auth::id())->get()->first()->role;
+        $usersFromGroup = DB::table('group_user')->select('user_id')->where('group_id', '=', $id)->get();
+        $gitanalyses = DB::table('gitanalyses')->where('group_id', '=', $id)->get();
         if ($role === 'lecturer') {
-            return view('weeks', ['edition_id' => $editionId, 'group_id' => $id, 'group' => Group::find($id)]);
+            return view('weeks', ['edition_id' => $editionId, 'group_id' => $id,
+                'group' => Group::find($id), 'users' => $usersFromGroup, 'gitanalyses' => $gitanalyses]);
         } else {
-            return view('weeksTA', ['edition_id' => $editionId, 'group_id' => $id, 'group' => Group::find($id)]);
+            return view('weeks', ['edition_id' => $editionId, 'group_id' => $id, 'group' => Group::find($id),
+                'users' => $usersFromGroup, 'gitanalyses' => $gitanalyses]);
         }
     }
 

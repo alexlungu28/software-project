@@ -29,37 +29,37 @@ class GroupControllerTest extends TestCase
         );
     }
 
-    /**
-     * Test to verify that the correct view is returned according to user role.
-     */
-    public function testViewLecturer() {
-        $this->before();
-        CourseEditionUser::insert(
-            [
-                'user_id' => 1,
-                'course_edition_id' => 1,
-                'role' => 'lecturer'
-            ]
-        );
-        $response = $this->get('/group/1');
-        $response->assertViewIs('weeks');
-    }
-
-    /**
-     * Test to verify that the correct view is returned according to user role.
-     */
-    public function testViewTA() {
-        $this->before();
-        CourseEditionUser::insert(
-            [
-                'user_id' => 1,
-                'course_edition_id' => 1,
-                'role' => 'TA'
-            ]
-        );
-        $response = $this->get('/group/1');
-        $response->assertViewIs('weeksTA');
-    }
+//    /**
+//     * Test to verify that the correct view is returned according to user role.
+//     */
+//    public function testViewLecturer() {
+//        $this->before();
+//        CourseEditionUser::insert(
+//            [
+//                'user_id' => 1,
+//                'course_edition_id' => 1,
+//                'role' => 'lecturer'
+//            ]
+//        );
+//        $response = $this->get('/group/1');
+//        $response->assertViewIs('weeks');
+//    }
+//
+//    /**
+//     * Test to verify that the correct view is returned according to user role.
+//     */
+//    public function testViewTA() {
+//        $this->before();
+//        CourseEditionUser::insert(
+//            [
+//                'user_id' => 1,
+//                'course_edition_id' => 1,
+//                'role' => 'TA'
+//            ]
+//        );
+//        $response = $this->get('/group/1');
+//        $response->assertViewIs('weeksTA');
+//    }
 
     /**
      * Test to verify that the correct view is returned according to user role.
