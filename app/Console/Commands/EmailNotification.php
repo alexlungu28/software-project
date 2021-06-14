@@ -18,7 +18,7 @@ class EmailNotification extends Command
      *
      * @var string
      */
-    protected $signature = 'notify:email';
+    protected $signature = 'notify';
 
     /**
      * The console command description.
@@ -40,43 +40,42 @@ class EmailNotification extends Command
     /**
      * Execute the console command.
      *
-     * @return int
+     * @return void
      */
     public function handle()
     {
 
-        Mail::raw("test", function ($mail) {
-            $mail->to('test@gmail.com')->subject('subject');
-        });
+//        Mail::raw("test", function ($mail) {
+//            $mail->to(Auth::user()->email)->subject('subject');
+//        });
 
         $ceUsers = DB::table('course_edition_user')->where('role', '=', 'lecturer')
             ->orWhere('role', '=', 'HeadTA')
             ->get();
-        //ddd($lecturers);
         $users = $ceUsers->map(function ($ceUser) {
             return User::where('id', '=', $ceUser->user_id)->get()->first();
         });
-        //ddd($users);
-        $interventions = DB::table('course_edition_user')->where('course_edition_id', '=', 1)->get()
-            ->flatMap(function ($editionUser) {
-                $userInterventions = DB::table('interventions_individual')
-                    ->where('user_id', '=', $editionUser->user_id)->get();
-                $currentDate = Carbon::now();
-                $passed = $userInterventions->map(function ($intervention) use ($currentDate) {
-                    if ($currentDate->gt($intervention->end_day)) {
-                        return $intervention;
+        DB::table('course_edition_user')->get()->map(function ($editionUser) use ($users) {
+            $userInterventions = DB::table('interventions_individual')
+                ->where('user_id', '=', $editionUser->user_id)->get();
+            $currentDate = Carbon::now();
+            $userInterventions->map(function ($intervention) use ($currentDate, $users) {
+                if ($currentDate->gt($intervention->end_day)) {
+                    $notification = DB::table('notifications')
+                        ->where('data', 'like', '%' .
+                            '"user_id":' . $intervention->user_id
+                            . ',"group_id":' . $intervention->group_id
+                            . ',"reason":"' . $intervention->reason
+                            . '","action":"' . $intervention->action
+                            . '","start_day":"' . $intervention->start_day
+                            . '","end_day":"' . $intervention->end_day
+                            . '%')
+                        ->get()->first();
+                    if ($notification == null) {
+                        Notification::send($users, new DeadlinePassed($intervention));
                     }
-                    return null;
-                })->filter(function ($intervention) {
-                    return $intervention != null;
-                })->unique();
-                return $passed;
-            })->filter(function ($intervention) use ($users) {
-                if ($intervention != null) {
-                    Notification::send($users, new DeadlinePassed($intervention));
                 }
-            })->unique();
-        //Notification::send($users, new DeadlinePassed($intervention));
-
+            });
+        });
     }
 }
