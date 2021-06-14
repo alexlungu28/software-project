@@ -45,17 +45,23 @@ class InterventionsController extends Controller
                 }
             }
 
-            if (Intervention::where('group_id', $groupId)->exists()) {
+            if (Intervention::where('group_id', '=', $groupId)->exists()) {
                 $interventionsAux = Intervention::where('group_id', $groupId)->get();
                 $interventions = $interventionsAux->merge($interventions);
             }
         }
         //sort active interventions by end date, and closed interventions by status (first unsolved, then solved)
-        $interventionsActive = $interventions->where('status', '<', '3')->sortBy('end_day');
-        $interventionsClosed = $interventions->where('status', '>', '2')->sortBy('status');
-        $interventions = $interventionsActive->merge($interventionsClosed);
-
-
+//        if($interventions->where('status', '<', '3')->first() != null)
+//            $interventionsActive = $interventions->where('status', '<', '3')->sortBy('end_day');
+//        else
+//            $interventionsActive = [];
+//
+//        if ($interventions->where('status', '>', '2')->first() != null)
+//            $interventionsClosed = $interventions->where('status', '>', '2')->sortBy('status');
+//        else
+//            $interventionsClosed = [];
+//
+//        $interventions = $interventionsActive->merge($interventionsClosed);
 
         return view('interventions', [
             "interventions" => $interventions,
