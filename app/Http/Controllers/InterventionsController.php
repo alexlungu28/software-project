@@ -26,6 +26,8 @@ class InterventionsController extends Controller
      */
     public function showAllInterventions($editionId)
     {
+
+
         //fetching the notes and interventions of the current course edition.
         //first, the groupIds of the current course edition are collected,
         // then the notes and interventions are directly selected from the database and passed to the view.
@@ -45,13 +47,15 @@ class InterventionsController extends Controller
 
             if (Intervention::where('group_id', $groupId)->exists()) {
                 $interventionsAux = Intervention::where('group_id', $groupId)->get();
-                foreach ($interventionsAux as $interventionGroup) {
-                    array_push($interventions, $interventionGroup);
-                }
+                $interventions = $interventionsAux->merge($interventions);
             }
-
-
         }
+        //sort active interventions by end date, and closed interventions by status (first unsolved, then solved)
+        $interventionsActive = $interventions->where('status', '<', '3')->sortBy('end_day');
+        $interventionsClosed = $interventions->where('status', '>', '2')->sortBy('status');
+        $interventions = $interventionsActive->merge($interventionsClosed);
+
+
 
         return view('interventions', [
             "interventions" => $interventions,
