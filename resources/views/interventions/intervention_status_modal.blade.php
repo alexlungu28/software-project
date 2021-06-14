@@ -1,44 +1,42 @@
 <div class="modal fade" id="{{"statusIntervention" . $intervention->id}}">
     <div class="modal-dialog">
         <div class="modal-content">
+
             <div class="modal-header">
                 <h4 class="modal-title" align="center"><b>Status of Intervention #{{$intervention->id}}</b></h4>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span></button>
-
             </div>
 
-
-
-
             <div class="modal-body">
-
                     <div class="box-body">
+
                         <div class="form-group">
-                            <label for="name">Name</label>
+                            <label>Name</label>
                             <h4 ><b>{{App\Models\User::find($intervention->user_id)->first_name . " " . App\Models\User::find($intervention->user_id)->last_name }}</b></h4>
-                            <label for="group">Group</label>
+
+                            <label>Group</label>
                             <h4 ><b>{{App\Models\Group::find($intervention->group_id)->group_name}}</b></h4>
                         </div>
+
                         <div class="form-group">
-                            <label for="editReason">Reason</label>
+                            <label>Reason</label>
                             <h4>{{$intervention->reason}}</h4>
                         </div>
 
-
                         <div class="form-group">
-                            <label for="editAction">Action</label>
+                            <label>Action</label>
                             <h4>{{$intervention->action}}</h4>
                         </div>
 
                         <div class="form-group">
-                            <label for="editStart">Date</label>
+                            <label>Date</label>
                             <h4>@php echo date("F jS", strtotime($intervention->start_day)); @endphp {{" - "}} @php echo date("F jS", strtotime($intervention->end_day)); @endphp </h4>
-
                         </div>
 
                         <div class="form-group">
-                            <label for="showStatus">Current Status</label>
+                            <label>Current Status</label>
+
                             @if($intervention->status == 1)
                                 <button class="btn btn-success rounded-pill" disabled >Active</button>
                             @elseif($intervention->status == 2)
@@ -47,41 +45,39 @@
                                 <button class="btn btn-danger rounded-pill" disabled >Closed - Unsolved</button>
                             @else
                                 <button class="btn btn-outline-secondary rounded-pill" disabled> Closed - Solved</button>
-
                             @endif
-
                         </div>
 
 
                         <div class="form-group">
-
-                                <label for="note">Status Note</label>
-                                <h4>{{$intervention->status_note}}</h4>
+                            <label for="note">Status Note</label>
+                            <h4>
+                                <div style="overflow-x: hidden; overflow-y:auto;
+                                                                   text-overflow: clip;
+                                                                   display: -webkit-box;
+                                                                   -webkit-line-clamp: 5; /* number of lines to show */
+                                                                   -webkit-box-orient: vertical;">
+                                    {{$intervention->status_note}}
+                                </div>
+                                </h4>
                         </div>
 
-
-
-
                         <div class="form-group">
-
-
-
                                     <ul class="nav nav-pills " id="pills-tab" role="tablist">
+
                                         <li  style="margin:0 2px" class="nav-item">
-
-
                                             <button @if($intervention->status == 1 || $intervention->status == 2)
                                                     style="display:none"
                                                     @endif
                                                     type="button" class="btn btn-outline-success btn-block" id="pills-active-tab" data-toggle="pill" href={{"#active" . $intervention->id}} role="tab" aria-controls="active" aria-selected="false">Active</button>
                                         </li>
+
                                         <li style="margin:0 2px" class="nav-item">
                                             <button @if($intervention->status == 3 || $intervention->status == 4)
                                                     style="display:none"
                                                     @endif
                                                     type="button" class="btn btn-outline-info btn-block" id="pills-extend-tab" data-toggle="pill" href={{"#extend" . $intervention->id}} role="tab" aria-controls="extend" aria-selected="false">Extend</button>
                                         </li>
-
 
                                         <li  style="margin:0 2px" class="nav-item">
                                             <button @if($intervention->status == 3)
@@ -96,8 +92,6 @@
                                                     @endif
                                                     type="button" class="btn btn-outline-secondary btn-block" id="pills-solved-tab" data-toggle="pill" href={{"#solved" . $intervention->id}} role="tab" aria-controls="solved" aria-selected="false">Close- Solved</button>
                                         </li>
-
-
                                     </ul>
 
                             <div class="tab-content" id="pills-tabContent">
@@ -143,27 +137,10 @@
                                 </div>
 
                             </div>
-
-
-
-
                         </div>
-
-
-
-
-
                     </div>
 
-
-
-
                     <div class="modal-footer">
-
-
-
-
-
                         <button type="button" id="close" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
                         <script type="text/javascript">
                             $(window).on('load', function (e) {
@@ -172,11 +149,7 @@
                                 });
                             });
                         </script>
-
-
                     </div>
-
-
             </div>
         </div>
     </div>

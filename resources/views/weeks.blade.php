@@ -44,79 +44,12 @@
                                         </thead>
                                         <tbody>
 
-                                        @php
-                                        if(App\Models\NoteGroup::where('group_id', '=', $group->id)->exists())
-                                            $notes = App\Models\NoteGroup::where('group_id', '=', $group->id)->orderBy('week')->get();
-                                        else
-                                            $notes = [];
-                                        $notesGood = [];
-                                        foreach($notes as $note) {
-                                            array_push($notesGood, $note);
-                                        }
-                                        if(\App\Models\Intervention::where('group_id','=', $group->id)->exists())
-                                            $interventions = \App\Models\Intervention::where('group_id','=', $group->id)->get();
-                                        else
-                                            $interventions = [];
-                                        $interventionNotes = [];
-                                        foreach($interventions as $intervention) {
-                                            if(preg_match("/^(aaaaanote)\d+$/i", $intervention->reason)) {
-                                                $note = App\Models\Note::find(preg_replace('/[^0-9]/', '', $intervention->reason));
-                                                array_push($interventionNotes, $note);
-                                            }
-                                        }
-
-
-                                        $notesNoInterventions = array_diff($notesGood, $interventionNotes);
-                                        //return dd($notesNoInterventions);
-
-
-                                        @endphp
-
-
-
-
-
-
-                                 {{--       @foreach($group->groupnotes->sortBy('week') as $groupnote)
-                                            @if($groupnote->problem_signal >= 2)
-                                            <tr>
-                                                <td>
-                                                    Group Note
-                                                </td>
-                                                <td>
-                                                    {{$groupnote->week}}
-                                                </td>
-
-                                                <td >
-                                                    {{$groupnote->note}}
-                                                </td>
-                                                <td>
-                                                   @if($groupnote->problem_signal == 2)
-                                                        <button title="Warning!" class="btn btn-squared-default btn-warning">
-                                                            <br />
-                                                            <br />
-                                                        </button>
-                                                    @else
-                                                        <button title="Problematic!"  class="btn btn-squared-default btn-danger">
-                                                            <br />
-                                                            <br />
-                                                        </button>
-                                                    @endif
-                                                </td>
-
-                                                <td>
-
-                                                    <button class="btn btn-primary btn-sm rounded-0" type="button" name="update"  data-toggle="modal" data-target="{{"#createInterventionNote" . $note->id}}">
-                                                        <span>Create</span>
-                                                        <br>
-                                                        <span>Intervention</span>
-                                                    </button>
-                                                </td>
-                                            </tr>
-                                            @endif
-                                        @endforeach
---}}
-
+                                        <!--
+                                         Fetching the group interventions and notes of the current group.
+                                         Also, a list with the interventions that are strictly related to
+                                         notes (that have reason of the format 'note1234') is needed,
+                                         used to get the list of problematic notes that do not have interventions assigned.
+                                        -->
                                         @php
                                             $notes = App\Models\Note::where('group_id', '=', $group->id)->orderBy('week')->get();
                                         $notesGood = [];
@@ -132,20 +65,10 @@
                                             }
                                         }
 
-
                                         $notesNoInterventions = array_diff($notesGood, $interventionNotes);
-                                        //return dd($notesNoInterventions);
-
-
                                         @endphp
 
-
                                         @foreach($notesNoInterventions as $note)
-
-                                            @php
-
-
-                                            @endphp
                                             @if($note->problem_signal >= 2)
                                                 <tr>
                                                     <td>
@@ -154,11 +77,12 @@
                                                     <td>
                                                         {{$note->week}}
                                                     </td>
-                                                   <td > <div style=" overflow-x: hidden; overflow-y:auto;
-   text-overflow: clip;
-   display: -webkit-box;
-   -webkit-line-clamp: 5; /* number of lines to show */
-   -webkit-box-orient: vertical;">
+                                                   <td >
+                                                       <div style="overflow-x: hidden; overflow-y:auto;
+                                                                   text-overflow: clip;
+                                                                   display: -webkit-box;
+                                                                   -webkit-line-clamp: 5; /* number of lines to show */
+                                                                   -webkit-box-orient: vertical;">
                                                         {{$note->note}}
                                                             </div>
                                                     </td>
@@ -183,8 +107,6 @@
                                                             <br>
                                                             <span>Intervention</span>
                                                         </button>
-
-
                                                     </td>
                                                 </tr>
                                             @endif
@@ -197,98 +119,8 @@
                     </div>
                 </div>
 
-
-                <div class="col-lg-6 col-md-12">
-                    <div class="card" >
-                        <div class="card-header card-header-primary">
-                            <h4 class="card-title">Active Interventions</h4>
-                        </div>
-                        <div class="card-body">
-                            <div class="tab-content">
-                                <div class="tab-pane active" id="profile">
-                                    <table class="table"  style="table-layout:fixed;">
-                                        <thead class="text-primary">
-                                        <th>Name</th>
-                                        <th>Reason</th>
-                                        <th style="width:15%">Action</th>
-
-                                        <th>Ending</th>
-                                        <th></th>
-                                        </thead>
-                                        <tbody>
-                                        @foreach($group->groupIndividualInterventions->sortBy('end_day') as $intervention)
-
-                                                <tr>
-                                                    <td>{{App\Models\User::find($intervention->user_id)->first_name . " " . App\Models\User::find($intervention->user_id)->last_name }}</td>
-
-
-                                                    <td>
-
-
-
-
-
-                                                        @if(preg_match("/^(note)\d+$/i", $intervention->reason))
-                                                            @php
-                                                                $note = App\Models\Note::find(preg_replace('/[^0-9]/', '', $intervention->reason));
-                                                            @endphp
-
-                                                            @include('/interventions/intervention_view_note')
-                                                            <button type="button" name="viewNote" class="btn btn-info rounded-pill" data-toggle="modal" data-target="{{"#viewNote" . preg_replace('/[^0-9]/', '', $intervention->reason)}}">Note</button>
-                                                        @else
-                                                            {{$intervention->reason}}
-                                                        @endif
-                                                    </td>
-
-                                                    <td>{{$intervention->action}}
-                                                    </td>
-
-
-
-                                                    <td>@php echo date("F jS", strtotime($intervention->end_day)); @endphp</td>
-
-                                                    <td>
-                                                        @if($intervention->status == 1)
-                                                            <button class="btn btn-outline-success rounded-pill" type="button" name="update"  data-toggle="modal" data-target="{{"#statusIntervention" . $intervention->id}}" >Active</button>
-                                                        @elseif($intervention->status == 2)
-                                                            <button class="btn btn-outline-info rounded-pill"  type="button" name="update"  data-toggle="modal" data-target="{{"#statusIntervention" . $intervention->id}}">Extended</button>
-                                                        @elseif($intervention->status == 3)
-                                                            <button class="btn btn-outline-danger rounded-pill"  type="button" name="update"  data-toggle="modal" data-target="{{"#statusIntervention" . $intervention->id}}">  <span>Closed</span>
-                                                                <br>
-                                                                <span>Unsolved</span></button>
-                                                        @else
-                                                            <button class="btn btn-outline-secondary rounded-pill" type="button" name="update"  data-toggle="modal" data-target="{{"#statusIntervention" . $intervention->id}}">  <span>Closed</span>
-                                                                <br>
-                                                                <span>Solved</span></button>
-                                                        @endif
-
-                                                    </td>
-
-                                                </tr>
-                                                @include ('/interventions/intervention_status_modal')
-                                        @endforeach
-
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-
-
-
+                @include ('/interventions/weeks_interventions_subview')
             </div>
-
-
-
-
-
-
-
-
-
         </div>
     </div>
 @endsection
