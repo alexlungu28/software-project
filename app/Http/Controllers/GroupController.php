@@ -29,7 +29,7 @@ class GroupController extends Controller
         if ($role === 'lecturer') {
             return view('weeks', ['edition_id' => $editionId, 'group_id' => $id, 'group' => Group::find($id)]);
         } else {
-            return view('weeksTA', ['edition_id' => $editionId, 'group_id' => $id, 'group' => Group::find($id)]);
+            return view('weeks', ['edition_id' => $editionId, 'group_id' => $id, 'group' => Group::find($id)]);
         }
     }
 
