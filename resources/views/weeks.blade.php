@@ -39,9 +39,9 @@ if ($latestGitAnalyses != -1) {
         array("label"=>"Others", "y"=>4.59)
     );
 }
-
-
 ?>
+
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.7.14/js/bootstrap-datetimepicker.min.js"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.7.14/css/bootstrap-datetimepicker.min.css">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
@@ -52,7 +52,6 @@ if ($latestGitAnalyses != -1) {
     $user =auth()->user();
     $userId = $user->id;
     $role = \App\Models\CourseEditionUser::where('user_id', '=', $userId)->where('course_edition_id', '=', $edition_id)->first()->role;
-   // return dd($role);
     @endphp
 
     @if ($role == "lecturer" || $role == "HeadTA")
@@ -81,13 +80,14 @@ if ($latestGitAnalyses != -1) {
             }
         </script>
     </head>
+
     <div class="content" style="display: flex">
         <div class="container-fluid">
             <button type="submit" name="update" class="btn btn-dark rounded-pill" onclick="window.location='{{ route('groups', ['edition_id'=>$edition_id]) }}'">Back!</button>
 
             <div class="row">
                 @for($w=1; $w<=10; $w++)
-                <div class="col-lg-3 col-md-6 col-sm-6">
+                <div class="col-lg-1 col-md-3 col-sm-6">
                             <div class="card card-stats" style="width: 120px;">
                             <div class="card-icon">
                                 <a class="nav-link" href="{{ route('week', [$group_id, $w]) }}">
@@ -98,6 +98,65 @@ if ($latestGitAnalyses != -1) {
                     </div>
                 @endfor
             </div>
+
+            <div class="container-fluid">
+                @if(DB::table('gitanalyses')->where('group_id', "=", $group_id)->exists())
+                    <div id="chartContainer" style="height: 370px; width: 100%;"></div>
+                    <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+                @endif
+                <div class="row">
+                    <div class="col-lg-6 col-md-12">
+                        <div class="card">
+                            <div class="card-header card-header-primary">
+                                <h4 class="card-title">Students</h4>
+                            </div>
+                            <div class="card-body">
+                                <div class="tab-content">
+                                    <div class="tab-pane active" id="profile">
+                                        <table class="table">
+                                            <thead class="text-primary">
+                                            <th>Netid</th>
+                                            <th>Last Name</th>
+                                            <th>First Name</th>
+                                            <th>Email</th>
+                                            </thead>
+                                            <tbody>
+                                            @foreach($users as $user)
+                                                @if(DB::table('course_edition_user')->where("user_id","=", $user->user_id)->where('role','=','student')->exists())
+                                                    <tr>
+                                                        <td>
+                                                            {{DB::table('users')
+                                                                    ->where('id', '=', $user->user_id)
+                                                                    ->value('net_id')}}
+                                                        </td>
+                                                        <td>
+                                                            {{DB::table('users')
+                                                                    ->where('id', '=', $user->user_id)
+                                                                    ->value('last_name')}}
+                                                        </td>
+                                                        <td>
+                                                            {{DB::table('users')
+                                                                    ->where('id', '=', $user->user_id)
+                                                                    ->value('first_name')}}
+                                                        </td>
+                                                        <td>
+                                                            {{DB::table('users')
+                                                                    ->where('id', '=', $user->user_id)
+                                                                    ->value('email')}}
+                                                        </td>
+                                                    </tr>
+                                                @endif
+                                            @endforeach
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <div class="row"  >
                 <div class="col-lg-6 col-md-12">
                     <div class="card" >
@@ -191,8 +250,11 @@ if ($latestGitAnalyses != -1) {
                         </div>
                     </div>
                 </div>
-
                 @include ('/interventions/weeks_interventions_subview')
+
+
+
+
             </div>
         </div>
     </div>
@@ -241,21 +303,7 @@ if ($latestGitAnalyses != -1) {
                                              notes (that have reason of the format 'note1234') is needed,
                                              used to get the list of problematic notes that do not have interventions assigned.
                                             -->
-                                            @php
-                                                $notes = App\Models\Note::where('group_id', '=', $group->id)->orderBy('week')->get();
-                                            $notesGood = [];
-                                            foreach($notes as $note) {
-                                                array_push($notesGood, $note);
-                                            }
-                                            $interventions = \App\Models\Intervention::where('group_id','=', $group->id)->get();
-                                            $interventionNotes = [];
-                                            foreach($interventions as $intervention) {
-                                                if(preg_match("/^(note)\d+$/i", $intervention->reason)) {
-                                                    $note = App\Models\Note::find(preg_replace('/[^0-9]/', '', $intervention->reason));
-                                                    array_push($interventionNotes, $note);
-                                                }
-                                            }
---}}
+
                                         @php
                                             $notes = App\Models\Note::where('group_id', '=', $group->id)->orderBy('week')->get();
                                         $notesGood = [];
@@ -271,8 +319,8 @@ if ($latestGitAnalyses != -1) {
                                             }
                                         }
 
-                                            $notesNoInterventions = array_diff($notesGood, $interventionNotes);
-                                            @endphp
+                                        $notesNoInterventions = array_diff($notesGood, $interventionNotes);
+                                        @endphp
 
                                             @foreach($notesNoInterventions as $note)
                                                 @if($note->problem_signal >= 2)
@@ -318,10 +366,7 @@ if ($latestGitAnalyses != -1) {
                         </div>
                     </div>
 
-                                        $notesNoInterventions = array_diff($notesGood, $interventionNotes);
-                                        //return dd($notesNoInterventions);
 
-                                        @endphp
                                         @foreach($notesNoInterventions as $note)
                                             @php
 
@@ -380,63 +425,7 @@ if ($latestGitAnalyses != -1) {
             </div>
 
         </div>
-        <div class="container-fluid">
-        @if(DB::table('gitanalyses')->where('group_id', "=", $group_id)->exists())
-                <div id="chartContainer" style="height: 370px; width: 100%;"></div>
-                <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
-        @endif
-            <div class="row">
-                <div class="col-lg-12 col-md-12">
-                    <div class="card">
-                        <div class="card-header card-header-primary">
-                            <h4 class="card-title">Students</h4>
-                        </div>
-                        <div class="card-body">
-                            <div class="tab-content">
-                                <div class="tab-pane active" id="profile">
-                                    <table class="table">
-                                        <thead class="text-primary">
-                                        <th>Netid</th>
-                                        <th>Last Name</th>
-                                        <th>First Name</th>
-                                        <th>Email</th>
-                                        </thead>
-                                        <tbody>
-                                        @foreach($users as $user)
-                                            @if(DB::table('course_edition_user')->where("user_id","=", $user->user_id)->where('role','=','student')->exists())
-                                            <tr>
-                                                <td>
-                                                    {{DB::table('users')
-                                                            ->where('id', '=', $user->user_id)
-                                                            ->value('net_id')}}
-                                                </td>
-                                                <td>
-                                                    {{DB::table('users')
-                                                            ->where('id', '=', $user->user_id)
-                                                            ->value('last_name')}}
-                                                </td>
-                                                <td>
-                                                    {{DB::table('users')
-                                                            ->where('id', '=', $user->user_id)
-                                                            ->value('first_name')}}
-                                                </td>
-                                                <td>
-                                                    {{DB::table('users')
-                                                            ->where('id', '=', $user->user_id)
-                                                            ->value('email')}}
-                                                </td>
-                                            </tr>
-                                            @endif
-                                        @endforeach
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+
     @endif
 
 
