@@ -110,40 +110,67 @@
                 </div>
             </div>
         </div>
-    </div>
-    <div>
-        <div class="container">
-            <h2 class="text-center">Add a new Rubric Entry</h2>
-            <br>
-            <form action = "/rubricEntryStore" method = "post" class="form-group" style="width:70%; margin-left:15%;" action="/action_page.php">
-                <input type = "hidden" name = "_token" value = "<?php echo csrf_token(); ?>">
-                <input type="hidden" class="form-control" name="rubric_id" value="{{$rubric->id}}">
+        <div class="container-fluid">
+            <div class="container" style="width: 50%">
+                <button onclick="toggle('rubricEntryCreate')" class="btn btn-primary toggle" style="background-color: #00A6D6">
+                    <h2 class="text-center" style="font-size: 1.2em;">Add a new Rubric Entry</h2>
+                </button>
+                <br>
+                <form id="rubricEntryCreate" action = "/rubricEntryStore" method = "post" class="form-group" style="width:70%; margin-left:15%; display: none" action="/action_page.php">
 
-                <label class="form-group"></label>
-                <select class="form-control" name="is_row">
-                    <option value="1">Row</option>
-                    <option value="0">Column</option>
-                </select>
-                <input type="text" class="form-control" placeholder="Description" name="description">
+                    <input type = "hidden" name = "_token" value = "<?php echo csrf_token(); ?>">
+                    <input type="hidden" class="form-control" name="rubric_id" value="{{$rubric->id}}">
 
-                <button type="submit"  value = "Add" class="btn btn-primary">Submit</button>
+                    <input type = "hidden" name = "edition" value = {{$edition_id}}>
 
-            </form>
-        </div>
-        <div class="container">
-            <h2 class="text-center">Rollback deleted Rubric Entry</h2>
-            <br>
-            <form action = "/rubricEntryRollback" method = "post" class="form-group" style="width:70%; margin-left:15%;" action="action_page.php">
-                <input type = "hidden" name = "_token" value = "<?php echo csrf_token(); ?>">
-                @method("PUT")
-                <select class="form-control" name="id">
-                    @foreach($deletedEntries as $deletedEntry)
-                        <option value="{{$deletedEntry->id}}">{{$deletedEntry->description}}</option>
-                    @endforeach
-                </select>
-                <button type="submit"  value = "Add" class="btn btn-primary">Submit</button>
-            </form>
+                    <br>
+                    <select class="form-control" name="is_row">
+                        <option value="1">Row</option>
+                        <option value="0">Column</option>
+                    </select>
+                    <br>
+                    <input type="text" class="form-control" placeholder="Description" name="description">
+
+                    <button type="submit"  value = "Add" class="btn btn-primary">Submit</button>
+                </form>
+            </div>
+            <div class="container" style="width: 50%">
+                <button onclick="toggle('rubricEntryRestore')" class="btn btn-primary toggle"
+                        style="background-color: #00A6D6;">
+                    <h2 class="text-center" style="font-size: 1.2em">Restore deleted Rubric Entry</h2>
+                </button>
+                <br>
+                <form id="rubricEntryRestore" action = "/rubricEntryRollback" method = "post" class="form-group" style="width:70%; margin-left:15%;" action="action_page.php">
+                    <input type = "hidden" name = "_token" value = "<?php echo csrf_token(); ?>">
+                    @method("PUT")
+                    <select class="form-control" name="id">
+                        @foreach($deletedEntries as $deletedEntry)
+                            <option value="{{$deletedEntry->id}}">{{$deletedEntry->description}}</option>
+                        @endforeach
+                    </select>
+                    <button type="submit"  value = "Add" class="btn btn-primary">Submit</button>
+                </form>
+            </div>
+            <div class="container">
+
+            </div>
+
         </div>
     </div>
 
 @endsection
+
+<script>
+    function toggle(id) {
+        const x = document.getElementById(id);
+        const forms = document.getElementsByClassName('form-group');
+        if (x.style.display === "none") {
+            Array.from(forms).forEach((el) => {
+                el.style.display = "none";
+            });
+            x.style.display = "block";
+        } else {
+            x.style.display = "none";
+        }
+    }
+</script>

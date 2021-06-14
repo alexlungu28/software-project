@@ -5,6 +5,7 @@ use App\Http\Controllers\CourseEditionController;
 use App\Http\Controllers\CourseEditionUserController;
 use App\Http\Controllers\GroupController;
 use App\Http\Controllers\AttendanceController;
+use App\Http\Controllers\ImportController;
 use App\Http\Controllers\InterventionsController;
 use App\Http\Controllers\NotesController;
 use App\Http\Controllers\RubricController;
@@ -104,10 +105,13 @@ Route::post('/rubricDataStore/{id}', [RubricDataController::class, 'store']);
 | Import/Export student Routes
 |--------------------------------------------------------------------------
 */
-Route::get('/export/{edition_id}', 'App\Http\Controllers\ExportController@export')
+Route::get('/exportView/{edition_id}', 'App\Http\Controllers\ExportController@exportView')
     ->name('export')
     ->middleware(['loggedIn', 'role:lecturer']);
-Route::get('/importExportView/{edition_id}', 'App\Http\Controllers\ImportController@importExportView')
+Route::get('/exportUserList/{edition_id}', 'App\Http\Controllers\ExportController@exportUserList')
+    ->name('exportUserList')
+    ->middleware(['loggedIn', 'role:lecturer']);
+Route::get('/importView/{edition_id}', 'App\Http\Controllers\ImportController@importView')
     ->name('importTAsStudents')
     ->middleware(['loggedIn', 'role:lecturer']);
 Route::post('/import/{edition_id}', 'App\Http\Controllers\ImportController@import')
@@ -117,7 +121,15 @@ Route::post('/importTA/{edition_id}', 'App\Http\Controllers\ImportController@imp
     ->name('importTA')
     ->middleware(['loggedIn', 'role:lecturer']);
 
+/*
+|--------------------------------------------------------------------------
+| Import/Export student Routes
+|--------------------------------------------------------------------------
+*/
 
+Route::post('importGitanalysis/{group_id}/{week}', [ImportController::class, 'importGitanalysis'])
+    ->name('importGitanalysis')
+    ->middleware(['loggedIn', 'role:lecturer,HeadTA,TA']);
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home')->middleware('loggedIn');
 

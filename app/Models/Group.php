@@ -84,4 +84,14 @@ class Group extends Model
     {
         return $this->hasMany(RubricData::class);
     }
+
+    /**
+     * Returns all gitanalyses that this are linked to this group.
+     *
+     * @return HasMany
+     */
+    public function gitanalyses()
+    {
+        return $this->hasMany(Gitanalysis::class);
+    }
 }
