@@ -313,3 +313,6 @@ Route::get('/group/{group_id}/week/{week_id}', [GroupController::class, 'viewWee
 Route::get('/routeError', function () {
     echo "A routing error has occurred";
 })->name('routeError');
+
+Route::put('/notifications/markAsRead', [NotificationController::class, 'markAsRead'])
+    ->middleware(['loggedIn']);

@@ -3,15 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
-use App\Notifications\DeadlinePassed;
-use Carbon\Carbon;
+use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Notifications\DatabaseNotificationCollection;
+use Illuminate\Routing\Redirector;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Routing\Controller as BaseController;
 
 class NotificationController extends BaseController
@@ -105,5 +104,23 @@ class NotificationController extends BaseController
             'notifications' => $unread,
             'users' => $users
         ]);
+    }
+
+    /**
+     * Marks a notification as read.
+     *
+     * @param Request $request
+     * @return Application|Redirector|RedirectResponse
+     */
+    public function markAsRead(Request $request)
+    {
+        $id = $request->input('id');
+        $editionId = $request->input('edition_id');
+        Auth::user()->unreadNotifications->map(function ($notification) use ($id) {
+            if ($notification->id === $id) {
+                $notification->markAsRead();
+            }
+        });
+        return redirect('/notifications/' . $editionId);
     }
 }
