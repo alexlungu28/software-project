@@ -38,8 +38,8 @@
                                         @php
                                             $note = App\Models\Note::find(preg_replace('/[^0-9]/', '', $intervention->reason));
                                         @endphp
-                                        @include('/interventions/intervention_view_note1')
-                                        <button type="button" name="viewNotee" class="btn btn-info rounded-pill" data-toggle="modal" data-target="{{"#viewNotee" . preg_replace('/[^0-9]/', '', $intervention->reason)}}">Note</button>
+                                        @include('/interventions/intervention_view_note')
+                                        <button type="button" name="viewNote" class="btn btn-info rounded-pill" data-toggle="modal" data-target="{{"#viewNote" . preg_replace('/[^0-9]/', '', $intervention->reason)}}">Note</button>
                                     @else
                                         <div style="overflow-x: hidden; overflow-y:auto;
                                                                    text-overflow: clip;

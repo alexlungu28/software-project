@@ -21,7 +21,17 @@
 
                         <div class="form-group">
                             <label>Reason</label>
-                            <h4>{{$intervention->reason}}</h4>
+
+                            @if(preg_match("/^(note)\d+$/i", $intervention->reason))
+                                @php
+                                    $note = App\Models\Note::find(preg_replace('/[^0-9]/', '', $intervention->reason));
+                                @endphp
+
+                                @include('/interventions/intervention_note_status_modal')
+                                <button type="button" name="{{"statusNote" . $note->id}}" class="btn btn-info rounded-pill"data-toggle="modal" data-target="{{"#statusNote" . $note->id}}" value="note1">Note</button>
+                            @else
+                                <textarea type="text" class="form-control" id="editReason" name="editReason" rows="4" value="">{{$intervention->reason}}</textarea>
+                            @endif
                         </div>
 
                         <div class="form-group">

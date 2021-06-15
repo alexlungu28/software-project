@@ -27,8 +27,8 @@
                                     $note = App\Models\Note::find(preg_replace('/[^0-9]/', '', $intervention->reason));
                                 @endphp
 
-                                @include('/interventions/intervention_view_note')
-                                <button type="button" name="{{"viewNotee" . $note->id}}" class="btn btn-info rounded-pill"data-toggle="modal" data-target="{{"#viewNotee" . $note->id}}" value="note1">Note</button>
+                                @include('/interventions/intervention_view_note_edit_modal')
+                                <button type="button" name="{{"viewNoteEdit" . $note->id}}" class="btn btn-info rounded-pill"data-toggle="modal" data-target="{{"#viewNoteEdit" . $note->id}}" value="note1">Note</button>
                             @else
                             <textarea type="text" class="form-control" id="editReason" name="editReason" rows="4" value="">{{$intervention->reason}}</textarea>
                         @endif

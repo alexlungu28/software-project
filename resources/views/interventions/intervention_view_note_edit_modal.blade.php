@@ -1,4 +1,4 @@
-<div class="modal fade" id="{{"viewNotee" . preg_replace('/[^0-9]/', '', $intervention->reason)}}">
+<div class="modal fade" id="{{"viewNoteEdit" . preg_replace('/[^0-9]/', '', $intervention->reason)}}">
     <div class="modal-dialog">
 
         <div class="modal-content">
