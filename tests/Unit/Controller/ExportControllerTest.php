@@ -28,8 +28,9 @@ class ExportControllerTest extends TestCase
      */
     public function testUserCanExportUserList()
     {
+        Excel::fake();
         $response = $this->get(route('exportUserList', [1]));
-
+        Excel::assertDownloaded('user_list.csv');
         $this->assertEquals(200, $response->getStatusCode());
         $response->assertOk();
     }

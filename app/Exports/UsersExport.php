@@ -57,5 +57,5 @@ class UsersExport implements FromCollection, WithHeadings
                 'affiliation',
                 'role'
             )->get();
-        }
     }
+}
