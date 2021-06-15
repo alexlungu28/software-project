@@ -95,7 +95,7 @@
         </div>
 
         <div class="container" style="display:inline-flex;">
-            <div class="card bg-light mt-3" style="color: black; font-size: 1.2rem;">
+            <div class="card bg-light mt-5" style="color: black; font-size: 1.2rem; width: 500px">
                 <div class="card-header">
                     Git analysis importing
                 </div>

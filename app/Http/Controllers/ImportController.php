@@ -79,6 +79,12 @@ class ImportController extends Controller
             echo "Error parsing JSON";
             return null;
         }
+        $this->saveGitAnalysis($parsedData, $groupId, $week);
+        return back();
+    }
+
+    public function saveGitAnalysis($parsedData, $groupId, $week)
+    {
         try {
             $gitinspector = $parsedData->gitinspector;
             $authors = $gitinspector->changes->authors;
@@ -131,7 +137,6 @@ class ImportController extends Controller
                     'updated_at' => now(),
                 ]
             );
-            return back();
         } catch (Error $error) {
             echo "Error retrieving data from parsed JSON, make sure gitanalysis was run with the Grading setting";
         }
