@@ -8,7 +8,7 @@
     <span class="navbar-toggler-icon icon-bar"></span>
     <span class="navbar-toggler-icon icon-bar"></span>
     </button>
-    <div class="collapse navbar-collapse justify-content-end">
+      <div class="collapse navbar-collapse justify-content-end">
       <form class="navbar-form">
         <div class="input-group no-border">
         <input type="text" value="" class="form-control" placeholder="Search...">
@@ -27,14 +27,14 @@
             </p>
           </a>
         </li>
-        <li class="nav-item dropdown">
+          <li class="nav-item dropdown">
           <a class="nav-link" href="http://example.com" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             <i class="material-icons">notifications</i>
-                @if(auth()->check())
+              @if(auth()->check())
                   @if(auth()->user() != null)
                       <span class="notification">{{count(auth()->user()->unreadNotifications)}}</span>
                   @endif
-                @endif
+              @endif
             <p class="d-lg-none d-md-block">
               {{ __('Some Actions') }}
             </p>
@@ -48,7 +48,7 @@
                         </a>
                     @endforeach
                   @endif
-              @endunless
+              @endif
           </div>
         </li>
         <li class="nav-item dropdown">

@@ -19,6 +19,8 @@ class GroupControllerTest extends TestCase
      */
     private function before() {
         Auth::shouldReceive('id')->andReturn(1);
+        Auth::shouldReceive('check')->andReturn(true);
+        Auth::shouldReceive('user')->andReturn(null);
         Group::insert(
             [
                 'group_name' => 'Group 1',
