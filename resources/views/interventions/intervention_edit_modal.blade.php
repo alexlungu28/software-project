@@ -42,7 +42,7 @@
 
                         <div class="form-group">
                             <label for="editStart">Starting</label>
-                            <input type='text' class="form-control" id='{{"editStart" . $intervention->id}}' name="{{"editStart" . $intervention->id}}" value="{{$intervention->start_day}}" />
+                            <input type='text' class="form-control" id='{{"editStart" . $intervention->id}}' name="{{"editStart" . $intervention->id}}" value="{{$intervention->start_day}}" required/>
                         </div>
                         <script type="text/javascript">
                             $(function () {
@@ -58,7 +58,7 @@
 
                         <div class="form-group">
                             <label for="editEnd">Ending</label>
-                            <input type='text' class="form-control" id='{{"editEnd" . $intervention->id}}' name="{{"editEnd" . $intervention->id}}" value="{{$intervention->end_day}}"/>
+                            <input type='text' class="form-control" id='{{"editEnd" . $intervention->id}}' name="{{"editEnd" . $intervention->id}}" value="{{$intervention->end_day}}" required/>
                         </div>
                         <script type="text/javascript">
                             $(function () {

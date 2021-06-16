@@ -46,13 +46,13 @@
                         <div class="form-group">
                             <label for="createStart">Starting</label>
 
-                            <input type='date' class="form-control" id='{{"createStart" . $edition_id}}' name="{{"createStart" . $edition_id}}" value="" />
+                            <input type='date' class="form-control" id='{{"createStart" . $edition_id}}' name="{{"createStart" . $edition_id}}" value="" required />
                         </div>
 
 
                         <div class="form-group">
                             <label for="createEnd">Ending</label>
-                            <input type='date' class="form-control" id='{{"createEnd" . $edition_id}}' name="{{"createEnd" . $edition_id}}" value="" />
+                            <input type='date' class="form-control" id='{{"createEnd" . $edition_id}}' name="{{"createEnd" . $edition_id}}" value="" required/>
                         </div>
 
 
