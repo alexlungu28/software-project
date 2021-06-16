@@ -61,9 +61,26 @@ class InterventionsController extends Controller
             }
         }
 
-       // sort active interventions by end date,
-        // and closed interventions by status (first unsolved, then solved)
 
+        $interventions = $this->sortIndividualInterventions($interventions);
+
+        //$interventions = $interventionsActive->concat($interventionsClosed);
+
+        return view('interventions', [
+            "interventions" => $interventions,
+            "edition_id" => $editionId,
+            "notes" => $notes,
+            "groupNotes" => $groupNotes
+        ]);
+    }
+
+    /**
+     * sort active interventions by end date,
+     * and closed interventions by status (first unsolved, then solved)
+     * @return $interventons
+     *
+     */
+    public function sortIndividualInterventions($interventions) {
         $interventionsActive = [];
         $interventionsClosed = [];
         if ($interventions != []) {
@@ -88,14 +105,8 @@ class InterventionsController extends Controller
             $interventions = $interventionsActive->merge($interventionsClosed);
         }
 
-        //$interventions = $interventionsActive->concat($interventionsClosed);
+        return $interventions;
 
-        return view('interventions', [
-            "interventions" => $interventions,
-            "edition_id" => $editionId,
-            "notes" => $notes,
-            "groupNotes" => $groupNotes
-        ]);
     }
 
     /**
