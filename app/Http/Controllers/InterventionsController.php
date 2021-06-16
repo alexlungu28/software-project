@@ -7,6 +7,7 @@ use App\Models\Group;
 use App\Models\GroupUser;
 use App\Models\Intervention;
 use App\Models\Note;
+use App\Models\NoteGroup;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
@@ -37,6 +38,8 @@ class InterventionsController extends Controller
             ->pluck('groups.id');
         $notes = [];
         $interventions = [];
+        $groupNotes = [];
+
         foreach ($groupIds as $groupId) {
             if (Note::where('problem_signal', '>', 1)->where('group_id', $groupId)->exists()) {
                 $notesAux = Note::where('problem_signal', '>', 1)->where('group_id', $groupId)->get();
@@ -48,6 +51,13 @@ class InterventionsController extends Controller
             if (Intervention::where('group_id', '=', $groupId)->exists()) {
                 $interventionsAux = Intervention::where('group_id', $groupId)->get();
                 $interventions = $interventionsAux->merge($interventions);
+            }
+
+            if (NoteGroup::where('problem_signal', '>', 1)->where('group_id', $groupId)->exists()) {
+                $groupNotesAux = NoteGroup::where('problem_signal', '>', 1)->where('group_id', $groupId)->get();
+                foreach ($groupNotesAux as $groupNote) {
+                    array_push($groupNotes, $groupNote);
+                }
             }
         }
 
@@ -83,7 +93,8 @@ class InterventionsController extends Controller
         return view('interventions', [
             "interventions" => $interventions,
             "edition_id" => $editionId,
-            "notes" => $notes
+            "notes" => $notes,
+            "groupNotes" => $groupNotes
         ]);
     }
 

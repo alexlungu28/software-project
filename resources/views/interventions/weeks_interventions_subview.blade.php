@@ -8,10 +8,10 @@
                 <div class="tab-pane active" id="profile">
                     <table class="table"  style="table-layout:fixed;">
                         <thead class="text-primary">
-                        <th style="width:25%">Name</th>
+                        <th style="width:20%">Name</th>
                         <th style="width:35%">Action</th>
                         <th style="width:20%">Ending</th>
-                        <th style="width:20%">View / Change Status</th>
+                        <th style="width:25%">View / Change Status</th>
                         </thead>
                         <tbody>
                         @foreach($group->groupIndividualInterventions->sortBy('end_day')->sortBy('status') as $intervention)

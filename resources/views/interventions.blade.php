@@ -21,11 +21,11 @@
                     <a class="nav-link" id="pills-problemCases-tab" data-toggle="pill" href="#problemCases" role="tab" aria-controls="problemCases" aria-selected="false">Problem Cases - Individual</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" id="pills-contact-tab" data-toggle="pill" href="#pills-contact" role="tab" aria-controls="pills-contact" aria-selected="false">Interventions - Group</a>
+                    <a class="nav-link" id="pills-contact-tab" data-toggle="pill" href="" role="tab" aria-controls="problemCases" aria-selected="false">Interventions - Group</a>
                 </li>
 
                 <li class="nav-item">
-                    <a class="nav-link" id="pills-contact-tab" data-toggle="pill" href="#pills-contact" role="tab" aria-controls="pills-contact" aria-selected="false">Problem Cases - Group</a>
+                    <a class="nav-link" id="pills-groupProblemCases-tab" data-toggle="pill" href="#groupProblemCases" role="tab" aria-controls="pills-groupProblemCases" aria-selected="false">Problem Cases - Group</a>
                 </li>
 
             </ul>
@@ -35,8 +35,7 @@
 
                 @include ('/interventions/interventions_problem_cases_tab')
 
-                <div class="tab-pane fade show" id="pills-contact" role="tabpanel" aria-labelledby="pills-contact-tab">
-                <p>salut</p>
+               @include ('/group_interventions/group_problem_cases_tab')
                 </div>
 
             </div>
