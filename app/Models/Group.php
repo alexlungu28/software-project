@@ -50,6 +50,17 @@ class Group extends Model
     }
 
     /**
+     * Returns the users with their grade from the group.
+     *
+     * @return BelongsToMany
+     */
+    public function usersWithGrade()
+    {
+        return $this->belongsToMany(Group::class, 'group_user')
+                    ->withPivot('student_grade');
+    }
+
+    /**
      * Creates the notes relation.
      *
      * @return HasMany

@@ -10,6 +10,7 @@
             </div>
             <div class="card-body">
                 <a class="btn btn-info" href="{{ route('exportUserList', [$edition_id]) }}">Export User List</a>
+                <a class="btn btn-info" href="{{ route('exportGrades', [$edition_id]) }}">Export Grades</a>
             </div>
         </div>
     </div>
