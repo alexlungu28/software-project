@@ -105,7 +105,7 @@
         </div>
 
         <div class="container" style="display:inline-flex;">
-            <div class="card bg-light mt-5" style="color: black; font-size: 1.2rem; width: 500px">
+            <div class="card bg-light mt-5" style="color: black; font-size: 1.2rem; width: 500px; margin-right: 20px">
                 <div class="card-header">
                     Git analysis importing
                 </div>
@@ -118,8 +118,7 @@
                     </form>
                 </div>
             </div>
-        </div>
-        <div class="container" style="display:inline-flex;">
+
             <div class="card bg-light mt-5" style="color: black; font-size: 1.2rem; width: 500px">
                 <div class="card-header">
                     Buddycheck importing
@@ -127,7 +126,7 @@
                 <div class="card-body">
                     <form action="{{ route('importBuddycheck', [$group_id, $week]) }}" method="POST" enctype="multipart/form-data">
                         @csrf
-                        <input type="file" name="file" class="form-control">
+                        <input type="file" name="file" class="form-control" required>
                         <br>
                         <button class="btn btn-info">Import Buddycheck from a .csv file with students in this group</button>
                     </form>
