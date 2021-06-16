@@ -123,4 +123,17 @@ class NotificationController extends BaseController
         });
         return redirect('/notifications/' . $editionId);
     }
+
+    /**
+     * Marks all notifications of the logged in user as read.
+     *
+     * @param Request $request
+     * @return Application|Redirector|RedirectResponse
+     */
+    public function markAllAsRead(Request $request)
+    {
+        Auth::user()->unreadNotifications->markAsRead();
+        $editionId = $request->input('edition_id');
+        return redirect('/notifications/' . $editionId);
+    }
 }

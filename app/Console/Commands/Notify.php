@@ -117,8 +117,10 @@ class Notify extends Command
         if (!empty($mailApproaching)) {
             foreach ($mailApproaching as $intervention) {
                 $interventionUser = User::find($intervention->user_id);
-                $text = "The deadline for your intervention is in 2 days.
-                \r\nAction to be taken: " . $intervention->action;
+                $text = "The deadline for your intervention is in "
+                    . Carbon::now()->diffInHours($intervention->end_day)
+                    . " hours, on " . $intervention->end_day
+                    . ".\r\nAction to be taken: " . $intervention->action;
                 Mail::raw($text, function ($mail) use ($interventionUser) {
                     $mail->to($interventionUser->email)
                         ->subject('Gradinator: Deadline approaching for individual intervention');

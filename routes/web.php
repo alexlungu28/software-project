@@ -316,3 +316,6 @@ Route::get('/routeError', function () {
 
 Route::put('/notifications/markAsRead', [NotificationController::class, 'markAsRead'])
     ->middleware(['loggedIn']);
+
+Route::put('/notifications/markAllAsRead', [NotificationController::class, 'markAllAsRead'])
+    ->middleware(['loggedIn']);
