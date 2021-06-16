@@ -27,8 +27,7 @@
                                     $note = App\Models\Note::find(preg_replace('/[^0-9]/', '', $intervention->reason));
                                 @endphp
 
-                                @include('/interventions/intervention_note_status_modal')
-                                <button type="button" name="{{"statusNote" . $note->id}}" class="btn btn-info rounded-pill"data-toggle="modal" data-target="{{"#statusNote" . $note->id}}" value="note1">Note</button>
+                                @include('/interventions/intervention_view_note_from_status_modal')
                             @else
                                 <textarea type="text" class="form-control" id="editReason" name="editReason" rows="4" value="">{{$intervention->reason}}</textarea>
                             @endif
@@ -115,7 +114,7 @@
                                 </div>
 
                                 <div class="tab-pane fade show" id={{"extend" . $intervention->id}} role="tabpanel" aria-labelledby="pills-extend-tab">
-                                    <form id={{"statusIntervention" . $intervention->id}} method="post" value = "<?php echo csrf_token(); ?>" action="{{action('App\Http\Controllers\InterventionsController@statusExtend',$intervention->id)}}">
+                                    <form id={{"statusIntervention" . $intervention->id}} method="post" value = "<?php echo csrf_token(); ?>" action="{{action('App\Http\Controllers\InterventionsController@statusExtend',$intervention->id)}}" required>
                                         <input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
                                         <label for="solvedNote">Note</label>
                                         <input type='date'  data-date-format="DD-MM-YYYY" class="form-control" id='{{"extend_end" . $intervention->id}}' name="{{"extend_end" . $intervention->id}}" value="" />
