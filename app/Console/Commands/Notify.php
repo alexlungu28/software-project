@@ -38,6 +38,43 @@ class Notify extends Command
     }
 
     /**
+     * Sends an email notification to users.
+     * @param $users: the users that will receive the notification - only for passed deadlines
+     * @param $mailPassed: the interventions with an expired deadline
+     * @param $mailApproaching: the interventions with a deadline coming soon
+     */
+    private function mail($users, &$mailPassed, $mailApproaching)
+    {
+        if (!empty($mailPassed)) {
+            $users->map(function ($user) use (&$mailPassed) {
+                $text = "";
+                foreach ($mailPassed as $intervention) {
+                    $interventionUser = User::find($intervention->user_id);
+                    $text .= "Intervention deadline passed for student " . $interventionUser->first_name . " "
+                        . $interventionUser->last_name . ", group " . $intervention->group_id . ". Deadline was on "
+                        . $intervention->end_day . "\r\n";
+                }
+                Mail::raw($text, function ($mail) use ($user) {
+                    $mail->to($user->email)->subject('Gradinator: Deadline passed for individual intervention');
+                });
+            });
+        }
+        if (!empty($mailApproaching)) {
+            foreach ($mailApproaching as $intervention) {
+                $interventionUser = User::find($intervention->user_id);
+                $text = "The deadline for your intervention is in "
+                    . Carbon::now()->diffInHours($intervention->end_day)
+                    . " hours, on " . $intervention->end_day
+                    . ".\r\nAction to be taken: " . $intervention->action;
+                Mail::raw($text, function ($mail) use ($interventionUser) {
+                    $mail->to($interventionUser->email)
+                        ->subject('Gradinator: Deadline approaching for individual intervention');
+                });
+            }
+        }
+    }
+
+    /**
      * Execute the console command.
      *
      * @return void
@@ -100,32 +137,6 @@ class Notify extends Command
                     }
                 });
             });
-        if (!empty($mailPassed)) {
-            $users->map(function ($user) use (&$mailPassed) {
-                $text = "";
-                foreach ($mailPassed as $intervention) {
-                    $interventionUser = User::find($intervention->user_id);
-                    $text .= "Intervention deadline passed for student " . $interventionUser->first_name . " "
-                        . $interventionUser->last_name . ", group " . $intervention->group_id . ". Deadline was on "
-                    . $intervention->end_day . "\r\n";
-                }
-                Mail::raw($text, function ($mail) use ($user) {
-                    $mail->to($user->email)->subject('Gradinator: Deadline passed for individual intervention');
-                });
-            });
-        }
-        if (!empty($mailApproaching)) {
-            foreach ($mailApproaching as $intervention) {
-                $interventionUser = User::find($intervention->user_id);
-                $text = "The deadline for your intervention is in "
-                    . Carbon::now()->diffInHours($intervention->end_day)
-                    . " hours, on " . $intervention->end_day
-                    . ".\r\nAction to be taken: " . $intervention->action;
-                Mail::raw($text, function ($mail) use ($interventionUser) {
-                    $mail->to($interventionUser->email)
-                        ->subject('Gradinator: Deadline approaching for individual intervention');
-                });
-            }
-        }
+        $this->mail($users, $mailPassed, $mailApproaching);
     }
 }
