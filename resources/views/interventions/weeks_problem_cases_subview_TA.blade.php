@@ -8,10 +8,10 @@
                     <div class="tab-pane active" id="profile">
                         <table class="table" style="table-layout:fixed;">
                             <thead class="text-primary">
-                            <th style="width:35%">Name</th>
+                            <th style="width:25%">Name</th>
                             <th style="width:10%">Week</th>
-                            <th style="width:35%">Note</th>
-                            <th style="width:20%">Signal</th>
+                            <th style="width:44%">Note</th>
+                            <th style="width:15%">Signal</th>
 
                             </thead>
                             <tbody>
@@ -44,7 +44,7 @@
                                 @if($note->problem_signal >= 2)
                                     <tr>
                                         <td>
-                                            {{$note->user->first_name . ' ' . $note->user->last_name}}
+                                            {{$note->user->first_name . ' ' . $note->user->last_name}} Zamfirescu Toma
                                         </td>
                                         <td>
                                             {{$note->week}}
