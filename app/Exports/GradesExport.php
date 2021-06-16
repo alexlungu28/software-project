@@ -54,7 +54,8 @@ class GradesExport implements FromCollection, WithHeadings
                 ->join(
                     'course_edition_user',
                     'group_user.user_id',
-                    '=', 'course_edition_user.user_id'
+                    '=',
+                    'course_edition_user.user_id'
                 )
                 ->where('role', '=', 'student')
                 ->whereRaw('course_edition_user.course_edition_id = groups.course_edition_id')
