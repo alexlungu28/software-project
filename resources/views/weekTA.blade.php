@@ -11,11 +11,12 @@
         $names = json_decode($gitanalyses[0]->names);
         $emails = json_decode($gitanalyses[0]->emails);
         $blame = json_decode($gitanalyses[0]->blame);
+        $activity = json_decode($gitanalyses[0]->activity);
 
         $dataPoints = array_fill(0, count($emails), null);
         $count = 0;
         foreach ($emails as $email) {
-            $dataPoints[$count] = array("label"=>"$email", "y"=>$blame[$count]->percentage_in_comments);
+            $dataPoints[$count] = array("label"=>"$email", "y"=>$activity[$count]->percentage_of_changes);
             $count++;
         }
     } else {
@@ -49,6 +50,15 @@
                     chart.render();
 
                 }
+            </script>
+            <meta charset="utf-8" />
+            <link rel="stylesheet" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css" />
+            <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
+            <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+            <script>
+                $(document).ready( function () {
+                    $('#table').DataTable();
+                } );
             </script>
         </head>
     <div class="content">
@@ -97,7 +107,7 @@
                     <div class="card-body">
                         <form action="{{ route('importGitanalysis', [$group_id, $week]) }}" method="POST" enctype="multipart/form-data">
                             @csrf
-                            <input type="file" name="file" class="form-control">
+                            <input type="file" name="file" class="form-control" required>
                             <br>
                             <button class="btn btn-info">Import Git analysis from a txt file containing JSON</button>
                         </form>
@@ -108,6 +118,73 @@
                 @if(DB::table('gitanalyses')->where('group_id', "=", $group_id)->where('week_number', '=', $week)->exists())
                     <div id="chartContainer" style="height: 370px; width: 100%;"></div>
                     <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+                    <div class="card">
+                        <div class="card-header card-header-primary">
+                            <h4 class="card-title ">Gitinspector Details</h4>
+                        </div>
+                        <div class="card-body">
+                            <table id ="table" class="table">
+                                <thead class=" text-primary">
+                                <th>
+                                    Name
+                                </th>
+                                <th>
+                                    Commits
+                                </th>
+                                <th>
+                                    Insertions
+                                </th>
+                                <th>
+                                    Deletions
+                                </th>
+                                <th>
+                                    Rows
+                                </th>
+                                <th>
+                                    Stability
+                                </th>
+                                <th>
+                                    Age
+                                </th>
+                                <th>
+                                    Percentage in comments
+                                </th>
+                                </thead>
+                                <tbody>
+                                @for($i = 0;$i < count($names); $i++)
+                                    <tr>
+                                        <td>
+                                            {{$names[$i]}}
+                                        </td>
+                                        <td>
+                                            {{$activity[$i]->commits}}
+                                        </td>
+                                        <td>
+                                            {{$activity[$i]->insertions}}
+                                        </td>
+                                        <td>
+                                            {{$activity[$i]->deletions}}
+                                        </td>
+                                        <td>
+                                            {{$blame[$i]->rows}}
+                                        </td>
+                                        <td>
+                                            {{$blame[$i]->stability}}
+                                        </td>
+                                        <td>
+                                            {{$blame[$i]->age}}
+                                        </td>
+                                        <td>
+                                            {{$blame[$i]->percentage_in_comments}}
+                                        </td>
+
+                                    </tr>
+                                @endfor
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
                 @endif
             </div>
         </div>
