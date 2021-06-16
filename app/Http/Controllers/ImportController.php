@@ -62,6 +62,4 @@ class ImportController extends Controller
         Excel::import(new CourseEditionTAImport($editionId), request()->file('file'));
         return back();
     }
-
-
 }
