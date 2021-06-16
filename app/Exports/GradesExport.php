@@ -50,7 +50,7 @@ class GradesExport implements FromCollection, WithHeadings
         $allGroups = Group::all()->where('course_edition_id', '=', $this->editionId);
         foreach ($allGroups as $group) {
             $groupGrades = $group->usersWithGrade()
-                ->join('users', 'user_id', '=', 'users.id')
+                ->join('users', 'group_user.user_id', '=', 'users.id')
                 ->join(
                     'course_edition_user',
                     'group_user.user_id',

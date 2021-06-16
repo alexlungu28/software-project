@@ -34,4 +34,18 @@ class ExportControllerTest extends TestCase
         $this->assertEquals(200, $response->getStatusCode());
         $response->assertOk();
     }
+
+    /**
+     * Test to verify a user can export grades.
+     *
+     * @return void
+     */
+    public function testUserCanExportGrades()
+    {
+        Excel::fake();
+        $response = $this->get(route('exportGrades', [1]));
+        Excel::assertDownloaded('grades.csv');
+        $this->assertEquals(200, $response->getStatusCode());
+        $response->assertOk();
+    }
 }
