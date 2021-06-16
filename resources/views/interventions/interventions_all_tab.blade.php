@@ -7,7 +7,9 @@
         <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
         <script>
             $(document).ready( function () {
-                $('#tableInterventions').DataTable();
+                $('#tableInterventions').DataTable({
+                    "order" : []
+                });
             } );
 
         </script>
@@ -23,7 +25,7 @@
             <div class="card-body">
                 <div class="table-responsive">
 
-                    <table class="table table-hover" id="tableInterventions" style="table-layout:fixed;">
+                    <table class="table table-hover" id="tableInterventions" style="table-layout:fixed; overflow:auto">
                         <thead>
                         <tr>
                             <th style="width:15%">Name</th>
