@@ -28,6 +28,7 @@ class CreateInterventionsIndividualTable extends Migration
             $table->date('end_day');
             $table->integer('status');
             $table->text('status_note')->nullable();
+            $table->integer('visible_ta');
 
             $table->timestamps();
         });

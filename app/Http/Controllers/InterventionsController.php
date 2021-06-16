@@ -51,7 +51,11 @@ class InterventionsController extends Controller
             }
         }
 
-       // sort active interventions by end date, and closed interventions by status (first unsolved, then solved)
+       // sort active interventions by end date,
+        // and closed interventions by status (first unsolved, then solved)
+
+        $interventionsActive = [];
+        $interventionsClosed = [];
         if ($interventions != []) {
             if ($interventions->where('status', '<', '3')->first() != null) {
                 $interventionsActive = $interventions->where('status', '<', '3')->sortBy('end_day');
@@ -73,6 +77,8 @@ class InterventionsController extends Controller
         } else {
             $interventions = $interventionsActive->merge($interventionsClosed);
         }
+
+        //$interventions = $interventionsActive->concat($interventionsClosed);
 
         return view('interventions', [
             "interventions" => $interventions,
@@ -102,6 +108,9 @@ class InterventionsController extends Controller
         $intervention->action = $request->get('editAction');
         $intervention->start_day = $request->input('editStart'. $interventionId);
         $intervention->end_day = $request->input('editEnd' . $interventionId);
+        $intervention->visible_ta = $request->get('editVisibility' .$interventionId);
+
+     //   return dd($request);
 
         $intervention->save();
 
@@ -137,6 +146,7 @@ class InterventionsController extends Controller
         $intervention->start_day = $request->input('createStart' . $editionId);
         $intervention->end_day = $request->input('createEnd' . $editionId);
         $intervention->status = 1; //active
+        $intervention->visible_ta = 1; //visible by default
 
         $intervention->save();
 
@@ -162,6 +172,7 @@ class InterventionsController extends Controller
         $intervention->start_day = $request->input('createStartNote' . $noteId);
         $intervention->end_day = $request->input('createEndNote' . $noteId);
         $intervention->status = 1;
+        $intervention->visible_ta = 1; //visible by default
 
         $intervention->save();
 
