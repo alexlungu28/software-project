@@ -52,26 +52,27 @@ class InterventionsController extends Controller
         }
 
        // sort active interventions by end date, and closed interventions by status (first unsolved, then solved)
-        if($interventions != []) {
-            if ($interventions->where('status', '<', '3')->first() != null)
+        if ($interventions != []) {
+            if ($interventions->where('status', '<', '3')->first() != null) {
                 $interventionsActive = $interventions->where('status', '<', '3')->sortBy('end_day');
-            else
+            } else {
                 $interventionsActive = [];
+            }
 
-            if ($interventions->where('status', '>', '2')->first() != null)
+            if ($interventions->where('status', '>', '2')->first() != null) {
                 $interventionsClosed = $interventions->where('status', '>', '2')->sortBy('status');
-            else {
+            } else {
                 $interventionsClosed = [];
             }
         }
-            if($interventionsActive == []) {
-                $interventions = $interventionsClosed;
-            }
-            else if ($interventionsClosed == []) {
-                $interventions = $interventionsActive;
-            } else {
-                $interventions = $interventionsActive->merge($interventionsClosed);
-            }
+
+        if ($interventionsActive == []) {
+            $interventions = $interventionsClosed;
+        } elseif ($interventionsClosed == []) {
+            $interventions = $interventionsActive;
+        } else {
+            $interventions = $interventionsActive->merge($interventionsClosed);
+        }
 
         return view('interventions', [
             "interventions" => $interventions,
