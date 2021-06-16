@@ -123,13 +123,17 @@ Route::post('/importTA/{edition_id}', 'App\Http\Controllers\ImportController@imp
 
 /*
 |--------------------------------------------------------------------------
-| Import/Export student Routes
+| Import report routes
 |--------------------------------------------------------------------------
 */
 
 Route::post('importGitanalysis/{group_id}/{week}', [ImportController::class, 'importGitanalysis'])
     ->name('importGitanalysis')
     ->middleware(['loggedIn', 'role:lecturer,HeadTA,TA']);
+
+Route::post('importBuddycheck/{group_id}/{week}', [ImportController::class, 'importBuddycheck'])
+    ->name('importBuddycheck')
+    ->middleware(['loggedIn', 'role:lecturer,HeadTA']);
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home')->middleware('loggedIn');
 

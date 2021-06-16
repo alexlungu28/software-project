@@ -9,6 +9,8 @@ use App\Imports\GroupsTAImport;
 use App\Imports\GroupUserImport;
 use App\Imports\GroupUserTAImport;
 use App\Models\Gitanalysis;
+use App\Models\Group;
+use App\Models\User;
 use Error;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
@@ -139,6 +141,58 @@ class ImportController extends Controller
             );
         } catch (Error $error) {
             echo "Error retrieving data from parsed JSON, make sure gitanalysis was run with the Grading setting";
+        }
+    }
+
+    public function importBuddycheck($groupId, $week)
+    {
+        $csvFile = request()->file('file');
+        $file_handle = fopen($csvFile->getPathname(), 'r');
+        if ($file_handle == false) {
+            echo "Error reading file";
+            return back();
+        }
+        $csvHeaders = fgetcsv($file_handle, 0, ';');
+        $csvJson = array();
+
+        while ($row = fgetcsv($file_handle, 0, ';')) {
+            $csvJson[] = json_encode(array_combine($csvHeaders, $row));
+        }
+
+        fclose($file_handle);
+        $this->saveBuddycheck($csvJson, $groupId, $week);
+        return back();
+    }
+
+    public function saveBuddycheck($parsedData, $groupId, $week)
+    {
+        try {
+            $users = Group::find($groupId)->users;
+
+            foreach ($parsedData as $row) {
+                $jsonRow = json_decode($row);
+                $student = User::where('net_id', '=', $jsonRow->Email)->first();
+                if ($users->contains($student)) {
+                    DB::table('buddychecks')->updateOrInsert(
+                        [
+                            'user_id' => $student->id,
+                            'group_id' => $groupId,
+                            'week' => $week,
+                        ],
+                        [
+                            'user_id' => $student->id,
+                            'group_id' => $groupId,
+                            'week' => $week,
+                            'data' => $row,
+                            'created_at' => now(),
+                            'updated_at' => now(),
+                        ]
+                    );
+                }
+            }
+        } catch (Error $error) {
+            echo "Error retrieving data from parsed csv\n"
+            . "Make sure all rows in the csv correspond to a student in this group";
         }
     }
 }

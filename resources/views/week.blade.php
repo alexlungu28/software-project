@@ -119,6 +119,21 @@
                 </div>
             </div>
         </div>
+        <div class="container" style="display:inline-flex;">
+            <div class="card bg-light mt-5" style="color: black; font-size: 1.2rem; width: 500px">
+                <div class="card-header">
+                    Buddycheck importing
+                </div>
+                <div class="card-body">
+                    <form action="{{ route('importBuddycheck', [$group_id, $week]) }}" method="POST" enctype="multipart/form-data">
+                        @csrf
+                        <input type="file" name="file" class="form-control">
+                        <br>
+                        <button class="btn btn-info">Import Buddycheck from a .csv file with students in this group</button>
+                    </form>
+                </div>
+            </div>
+        </div>
         <div class="container-fluid">
             @if(DB::table('gitanalyses')->where('group_id', "=", $group_id)->where('week_number', '=', $week)->exists())
                 <div id="chartContainer" style="height: 370px; width: 100%;"></div>
