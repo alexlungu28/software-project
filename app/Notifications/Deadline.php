@@ -7,22 +7,25 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
-class DeadlinePassed extends Notification
+class Deadline extends Notification
 {
     use Queueable;
 
     private $intervention;
+    private $status;
 
     /**
      * Create a new notification instance.
      *
      * @return void
      */
-    public function __construct($intervention)
+    public function __construct($intervention, $status)
     {
         $this->intervention = $intervention;
+        $this->status = $status;
     }
 
     /**
@@ -82,6 +85,6 @@ class DeadlinePassed extends Notification
      */
     public function toArray($notifiable)
     {
-        return ['Deadline passed' => $this->intervention];
+        return ['Deadline ' . $this->status => $this->intervention];
     }
 }
