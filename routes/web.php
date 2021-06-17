@@ -8,6 +8,7 @@ use App\Http\Controllers\AttendanceController;
 use App\Http\Controllers\ImportController;
 use App\Http\Controllers\InterventionsController;
 use App\Http\Controllers\NotesController;
+use App\Http\Controllers\ReportImportController;
 use App\Http\Controllers\RubricController;
 use App\Http\Controllers\RubricDataController;
 use App\Http\Controllers\RubricEntryController;
@@ -123,13 +124,17 @@ Route::post('/importTA/{edition_id}', 'App\Http\Controllers\ImportController@imp
 
 /*
 |--------------------------------------------------------------------------
-| Import/Export student Routes
+| Import report routes
 |--------------------------------------------------------------------------
 */
 
-Route::post('importGitanalysis/{group_id}/{week}', [ImportController::class, 'importGitanalysis'])
+Route::post('importGitanalysis/{group_id}/{week}', [ReportImportController::class, 'importGitanalysis'])
     ->name('importGitanalysis')
     ->middleware(['loggedIn', 'role:lecturer,HeadTA,TA']);
+
+Route::post('importBuddycheck/{group_id}/{week}', [ReportImportController::class, 'importBuddycheck'])
+    ->name('importBuddycheck')
+    ->middleware(['loggedIn', 'role:lecturer,HeadTA']);
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home')->middleware('loggedIn');
 

@@ -38,12 +38,12 @@
         if ($latestGitAnalyses != -1) {
             $names = json_decode($gitanalyses[$latestGitAnalyses]->names);
             $emails = json_decode($gitanalyses[$latestGitAnalyses]->emails);
-            $blame = json_decode($gitanalyses[$latestGitAnalyses]->blame);
+            $activity = json_decode($gitanalyses[$latestGitAnalyses]->activity);
 
             $dataPoints = array_fill(0, count($emails), null);
             $count = 0;
             foreach ($emails as $email) {
-                $dataPoints[$count] = array("label"=>"$email", "y"=>$blame[$count]->percentage_in_comments);
+                $dataPoints[$count] = array("label"=>"$email", "y"=>$activity[$count]->percentage_of_changes);
                 $count++;
             }
         } else {
