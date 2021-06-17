@@ -35,6 +35,7 @@ class NotesControllerTest extends TestCase
     {
         Auth::shouldReceive('check')->andReturn(true);
         Auth::shouldReceive('id')->andReturn(1);
+        Auth::shouldReceive('user')->andReturn(null);
 
         User::insert(
             [
