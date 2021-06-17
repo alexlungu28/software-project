@@ -45,13 +45,13 @@
 
                         <div class="form-group">
                             <label for="createStart">Starting</label>
-                            <input type='date' class="form-control" id='{{"createStartNote" . $note->id}}' name="{{"createStartNote" . $note->id}}" value="" />
+                            <input type='date' class="form-control" id='{{"createStartNote" . $note->id}}' name="{{"createStartNote" . $note->id}}" value="" required/>
                         </div>
 
 
                         <div class="form-group">
                             <label for="createEnd">Ending</label>
-                            <input type='date'  data-date-format="DD-MM-YYYY" class="form-control" id='{{"createEndNote" . $note->id}}' name="{{"createEndNote" . $note->id}}" value="" />
+                            <input type='date'  data-date-format="DD-MM-YYYY" class="form-control" id='{{"createEndNote" . $note->id}}' name="{{"createEndNote" . $note->id}}" value="" required/>
                         </div>
 
 

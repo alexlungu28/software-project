@@ -8,12 +8,10 @@
                 <div class="tab-pane active" id="profile">
                     <table class="table"  style="table-layout:fixed;">
                         <thead class="text-primary">
-                        <th>Name</th>
-                        <th>Reason</th>
-                        <th style="width:15%">Action</th>
-
-                        <th>Ending</th>
-                        <th></th>
+                        <th style="width:20%">Name</th>
+                        <th style="width:35%">Action</th>
+                        <th style="width:20%">Ending</th>
+                        <th style="width:25%">View / Change Status</th>
                         </thead>
                         <tbody>
                         @foreach($group->groupIndividualInterventions->sortBy('end_day')->sortBy('status') as $intervention)
@@ -22,25 +20,6 @@
                                 <td>{{App\Models\User::find($intervention->user_id)->first_name . " " . App\Models\User::find($intervention->user_id)->last_name }}</td>
 
 
-                                <td>
-
-                                    @if(preg_match("/^(note)\d+$/i", $intervention->reason))
-                                        @php
-                                            $note = App\Models\Note::find(preg_replace('/[^0-9]/', '', $intervention->reason));
-                                        @endphp
-
-                                        @include('/interventions/intervention_view_note')
-                                        <button type="button" name="viewNote" class="btn btn-info rounded-pill" data-toggle="modal" data-target="{{"#viewNote" . preg_replace('/[^0-9]/', '', $intervention->reason)}}">Note</button>
-                                    @else
-                                        <div style="overflow-x: hidden; overflow-y:auto;
-                                                                   text-overflow: clip;
-                                                                   display: -webkit-box;
-                                                                   -webkit-line-clamp: 5; /* number of lines to show */
-                                                                   -webkit-box-orient: vertical;">
-                                        {{$intervention->reason}}
-                                        </div>
-                                    @endif
-                                </td>
 
                                 <td>       <div style="overflow-x: hidden; overflow-y:auto;
                                                                    text-overflow: clip;

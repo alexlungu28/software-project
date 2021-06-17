@@ -1,17 +1,31 @@
 <div class="tab-pane fade show active" id="allInterventions" role="tabpanel" aria-labelledby="pills-allInterventions-tab">
-
+    <button type="button" name="createIntervention" class="btn btn-danger rounded-pill" data-toggle="modal" data-target="{{"#createIntervention" . $edition_id}}" style="float:right">Create Intervention</button>
     <div class="table-responsive">
 
-        <h3>Interventions</h3>
+        <link rel="stylesheet" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css" />
+        <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
+        <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+        <script>
+            $(document).ready( function () {
+                $('#tableInterventions').DataTable({
+                    "order" : []
+                });
+            } );
 
-        <button type="button" name="createIntervention" class="btn btn-danger rounded-pill" data-toggle="modal" data-target="{{"#createIntervention" . $edition_id}}" style="float:right">Create Intervention</button>
+        </script>
+
+
 
         <div class="card">
+            <div class="card-header card-header-primary">
+                <input type = "hidden" name = "_token" value = "<?php echo csrf_token(); ?>">
+                <h4 class="card-title ">Interventions</h4>
+            </div>
 
-            <div class="card-block table-border-style">
+            <div class="card-body">
                 <div class="table-responsive">
 
-                    <table class="table table-hover" style="table-layout:fixed;">
+                    <table class="table table-hover" id="tableInterventions" style="table-layout:fixed; overflow:auto">
                         <thead>
                         <tr>
                             <th style="width:15%">Name</th>
@@ -38,8 +52,8 @@
                                         @php
                                             $note = App\Models\Note::find(preg_replace('/[^0-9]/', '', $intervention->reason));
                                         @endphp
-                                        @include('/interventions/intervention_view_note1')
-                                        <button type="button" name="viewNotee" class="btn btn-info rounded-pill" data-toggle="modal" data-target="{{"#viewNotee" . preg_replace('/[^0-9]/', '', $intervention->reason)}}">Note</button>
+                                        @include('/interventions/intervention_view_note')
+                                        <button type="button" name="viewNote" class="btn btn-info rounded-pill" data-toggle="modal" data-target="{{"#viewNote" . preg_replace('/[^0-9]/', '', $intervention->reason)}}">Note</button>
                                     @else
                                         <div style="overflow-x: hidden; overflow-y:auto;
                                                                    text-overflow: clip;
@@ -91,6 +105,13 @@
                                     @csrf
                                     <input type="hidden" name="_method" value="POST">
                                     <td align="right">
+
+                                        @if ($intervention->visible_ta == 1)
+                                            <i title="Visible to TAs" style="font-size:24px; vertical-align: middle" class="fa">&#xf046;</i>
+                                        @else
+                                            <i title="Not Visible to TAs" style="font-size:24px; vertical-align: middle" class="fa">&#xf147;</i>
+                                        @endif
+
                                         <button type="button" name="update" class="btn btn-info " value="1"  data-toggle="modal" data-target="{{"#editIntervention" . $intervention->id}}">Edit</button>
                                         <button type="button" name="update" class="btn btn-dark" value="2" data-toggle="modal" data-target="{{"#deleteIntervention" . $intervention->id}}"> <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
                                                 <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"/>

@@ -7,6 +7,7 @@ use App\Models\Group;
 use App\Models\GroupUser;
 use App\Models\Intervention;
 use App\Models\Note;
+use App\Models\NoteGroup;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
@@ -37,6 +38,8 @@ class InterventionsController extends Controller
             ->pluck('groups.id');
         $notes = [];
         $interventions = [];
+        $groupNotes = [];
+
         foreach ($groupIds as $groupId) {
             if (Note::where('problem_signal', '>', 1)->where('group_id', $groupId)->exists()) {
                 $notesAux = Note::where('problem_signal', '>', 1)->where('group_id', $groupId)->get();
@@ -49,25 +52,61 @@ class InterventionsController extends Controller
                 $interventionsAux = Intervention::where('group_id', $groupId)->get();
                 $interventions = $interventionsAux->merge($interventions);
             }
+
+            if (NoteGroup::where('problem_signal', '>', 1)->where('group_id', $groupId)->exists()) {
+                $groupNotesAux = NoteGroup::where('problem_signal', '>', 1)->where('group_id', $groupId)->get();
+                foreach ($groupNotesAux as $groupNote) {
+                    array_push($groupNotes, $groupNote);
+                }
+            }
         }
-        //sort active interventions by end date, and closed interventions by status (first unsolved, then solved)
-//        if($interventions->where('status', '<', '3')->first() != null)
-//            $interventionsActive = $interventions->where('status', '<', '3')->sortBy('end_day');
-//        else
-//            $interventionsActive = [];
-//
-//        if ($interventions->where('status', '>', '2')->first() != null)
-//            $interventionsClosed = $interventions->where('status', '>', '2')->sortBy('status');
-//        else
-//            $interventionsClosed = [];
-//
-//        $interventions = $interventionsActive->merge($interventionsClosed);
+
+
+        $interventions = $this->sortIndividualInterventions($interventions);
+
+        //$interventions = $interventionsActive->concat($interventionsClosed);
 
         return view('interventions', [
             "interventions" => $interventions,
             "edition_id" => $editionId,
-            "notes" => $notes
+            "notes" => $notes,
+            "groupNotes" => $groupNotes
         ]);
+    }
+
+    /**
+     * sort active interventions by end date,
+     * and closed interventions by status (first unsolved, then solved)
+     * @return $interventons
+     *
+     */
+    public function sortIndividualInterventions($interventions)
+    {
+        $interventionsActive = [];
+        $interventionsClosed = [];
+        if ($interventions != []) {
+            if ($interventions->where('status', '<', '3')->first() != null) {
+                $interventionsActive = $interventions->where('status', '<', '3')->sortBy('end_day');
+            } else {
+                $interventionsActive = [];
+            }
+
+            if ($interventions->where('status', '>', '2')->first() != null) {
+                $interventionsClosed = $interventions->where('status', '>', '2')->sortBy('status');
+            } else {
+                $interventionsClosed = [];
+            }
+        }
+
+        if ($interventionsActive == []) {
+            $interventions = $interventionsClosed;
+        } elseif ($interventionsClosed == []) {
+            $interventions = $interventionsActive;
+        } else {
+            $interventions = $interventionsActive->merge($interventionsClosed);
+        }
+
+        return $interventions;
     }
 
     /**
@@ -91,6 +130,9 @@ class InterventionsController extends Controller
         $intervention->action = $request->get('editAction');
         $intervention->start_day = $request->input('editStart'. $interventionId);
         $intervention->end_day = $request->input('editEnd' . $interventionId);
+        $intervention->visible_ta = $request->get('editVisibility' .$interventionId);
+
+     //   return dd($request);
 
         $intervention->save();
 
@@ -126,6 +168,7 @@ class InterventionsController extends Controller
         $intervention->start_day = $request->input('createStart' . $editionId);
         $intervention->end_day = $request->input('createEnd' . $editionId);
         $intervention->status = 1; //active
+        $intervention->visible_ta = 1; //visible by default
 
         $intervention->save();
 
@@ -151,6 +194,7 @@ class InterventionsController extends Controller
         $intervention->start_day = $request->input('createStartNote' . $noteId);
         $intervention->end_day = $request->input('createEndNote' . $noteId);
         $intervention->status = 1;
+        $intervention->visible_ta = 1; //visible by default
 
         $intervention->save();
 
