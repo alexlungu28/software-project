@@ -40,7 +40,6 @@ class ImportController extends Controller
      */
     public function import($editionId): RedirectResponse
     {
-
         Excel::import(new UsersImport, request()->file('file'));
         Excel::import(new GroupsImport($editionId), request()->file('file'));
         Excel::import(new GroupUserImport($editionId), request()->file('file'));

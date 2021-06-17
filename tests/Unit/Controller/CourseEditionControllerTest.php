@@ -260,6 +260,7 @@ class CourseEditionControllerTest extends TestCase
      */
     public function testViewLecturer() {
         $this->before();
+        Auth::shouldReceive('user')->andReturn(null);
         CourseEdition::insert(
             [
                 'course_id' => 1,
@@ -275,6 +276,8 @@ class CourseEditionControllerTest extends TestCase
      */
     public function testViewTA() {
         Auth::shouldReceive('id')->twice()->andReturn(1);
+        Auth::shouldReceive('check')->andReturn(true);
+        Auth::shouldReceive('user')->andReturn(null);
         Group::insert(
             [
                 'group_name' => 'Group 1',

@@ -19,7 +19,7 @@ class CreateNotesTable extends Migration
             $table->foreignId('group_id')->references('id')->on('groups')->cascadeOnDelete();
             $table->integer('week');
             $table->integer("problem_signal")->nullable();
-            $table->string("note")->nullable();
+            $table->text("note")->nullable();
 
             $table->timestamps();
         });
