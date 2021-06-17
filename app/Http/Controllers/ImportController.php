@@ -18,11 +18,11 @@ use Maatwebsite\Excel\Facades\Excel;
 class ImportController extends Controller
 {
     /**
-     * View of the import export page.
+     * View of the import page.
      *
      * @return Application|Factory|View
      */
-    public function importExportView($editionId)
+    public function importView($editionId)
     {
         return view('import', [
             "edition_id" => $editionId,
@@ -40,7 +40,6 @@ class ImportController extends Controller
      */
     public function import($editionId): RedirectResponse
     {
-
         Excel::import(new UsersImport, request()->file('file'));
         Excel::import(new GroupsImport($editionId), request()->file('file'));
         Excel::import(new GroupUserImport($editionId), request()->file('file'));

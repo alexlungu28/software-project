@@ -7,7 +7,12 @@ use Illuminate\Support\Facades\Schema;
 class CreateInterventionsIndividualTable extends Migration
 {
     /**
-     * Run the migrations.
+     * Create the individual interventions migration.
+     * status:
+     *        - 1 active
+     *        - 2 active - extended
+     *        - 3 closed - unsolved
+     *        - 4 closed - solved
      *
      * @return void
      */
@@ -17,10 +22,12 @@ class CreateInterventionsIndividualTable extends Migration
             $table->id();
             $table->foreignId('user_id')->references('id')->on('users')->cascadeOnDelete();
             $table->foreignId('group_id')->references('id')->on('groups')->cascadeOnDelete();
-            $table->string("reason")->nullable();
-            $table->string("action")->nullable();
+            $table->text("reason")->nullable();
+            $table->text("action")->nullable();
             $table->date('start_day');
             $table->date('end_day');
+            $table->integer('status');
+            $table->text('status_note')->nullable();
 
             $table->timestamps();
         });

@@ -44,6 +44,22 @@ class CourseEdition extends Model
         return $this->belongsToMany(User::class, 'course_edition_user');
     }
 
+    /**
+     * Returns the users with their role for a course edition.
+     *
+     * @return BelongsToMany
+     */
+    public function usersWithRole()
+    {
+        return $this->belongsToMany(User::class, 'course_edition_user')
+                    ->withPivot('role');
+    }
+
+    /**
+     * Returns the teaching assistents for a course edition.
+     *
+     * @return BelongsToMany
+     */
     public function teachingAssistants()
     {
         return $this->belongsToMany(User::class, 'course_edition_user')->wherePivot('role', '=', 'TA');

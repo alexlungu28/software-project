@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Rubric;
 use App\Models\RubricData;
+use App\Models\RubricEntry;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
@@ -101,7 +102,14 @@ class RubricController extends Controller
     public function destroy(Request $request)
     {
         $courseEdition = Rubric::find($request->input('id'))->course_edition_id;
-        Rubric::destroy($request->input('id'));
+        if ($request->input('hardDelete') == "Yes") {
+            $rubricId = $request->input('id');
+            RubricData::withTrashed()->where('rubric_id', '=', $rubricId)->forceDelete();
+            RubricEntry::withTrashed()->where('rubric_id', '=', $rubricId)->forceDelete();
+            Rubric::find($request->input('id'))->forceDelete();
+        } else {
+            Rubric::destroy($request->input('id'));
+        }
         return redirect('/viewRubrics/' . $courseEdition);
     }
 

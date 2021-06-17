@@ -15,7 +15,7 @@ class CreateRubricDataTable extends Migration
     {
         Schema::create('rubric_data', function (Blueprint $table) {
             $table->id();
-            $table->integer('rubric_id');
+            $table->foreignId('rubric_id')->references('id')->on('rubrics')->cascadeOnDelete();
             $table->integer('group_id');
             $table->integer('row_number')->unsigned();
             $table->integer('value');

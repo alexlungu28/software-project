@@ -1,10 +1,12 @@
 <?php
 
-namespace Tests\Unit;
+namespace Tests\Unit\Controller;
 
+use App\Http\Controllers\ReportImportController;
 use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Illuminate\Http\UploadedFile;
 use Maatwebsite\Excel\Facades\Excel;
+use PHPMD\Report;
 use Tests\TestCase;
 
 class ImportControllerTest extends TestCase
@@ -13,11 +15,11 @@ class ImportControllerTest extends TestCase
     use withoutMiddleware;
 
     /**
-     * Test to verify ImportExport view route.
+     * Test to verify Import view route.
      */
-    public function testImportExportView()
+    public function testImportView()
     {
-        $response = $this->get('/importExportView/1');
+        $response = $this->get('/importView/1');
         $response->assertStatus(200);
     }
 
@@ -58,21 +60,5 @@ class ImportControllerTest extends TestCase
 
         $this->assertEquals(302, $response->getStatusCode());
         $response->assertRedirect('');
-    }
-
-    /**
-     * Test to verify a user can export the list of students.
-     *
-     * @return void
-     */
-    public function testUserCanExportStudents()
-    {
-
-        Excel::fake();
-
-        $response = $this->get(route('export', [1]));
-
-        $this->assertEquals(200, $response->getStatusCode());
-        $response->assertOk();
     }
 }

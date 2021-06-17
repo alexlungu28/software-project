@@ -17,6 +17,7 @@ class CreateGroupUserTable extends Migration
             $table->id();
             $table->foreignId('user_id')->references('id')->on('users')->cascadeOnDelete();
             $table->foreignId('group_id')->references('id')->on('groups')->cascadeOnDelete();
+            $table->float('student_grade')->nullable();
             $table->timestamps();
         });
     }

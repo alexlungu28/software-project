@@ -25,7 +25,7 @@
       </li>
       <li class="nav-item{{ $activePage == 'rubrics' ? ' active' : '' }}">
         <a class="nav-link" href={{ route('viewRubrics', [$edition_id]) }}>
-          <i class="material-icons">rubrics</i>
+          <i class="material-icons">assignment</i>
           <p>{{ __('Rubrics') }}</p>
         </a>
       </li>
@@ -38,7 +38,7 @@
 
         <li class="nav-item{{ $activePage == 'interventions' ? ' active' : '' }}">
             <a class="nav-link" href={{ route('interventions', [$edition_id]) }}>
-                <i class="material-icons">interventions</i>
+                <i class="material-icons">report</i>
                 <p>{{ __('Interventions') }}</p>
             </a>
         </li>
@@ -59,21 +59,27 @@
         @endif
         <li class="nav-item{{ $activePage == 'userList' ? ' active' : '' }}">
             <a class="nav-link" href="{{ route('studentList', [$edition_id]) }}">
-                <i class="material-icons">S</i>
-                <p>{{ __('UserList') }}</p>
+                <i class="material-icons">list</i>
+                <p>{{ __('User List') }}</p>
             </a>
         </li>
         <li class="nav-item{{ $activePage == 'assignTaToGroups' ? ' active' : '' }}">
             <a class="nav-link" href="{{ route('assignTaToGroups', [$edition_id]) }}">
-                <i class="material-icons">TA</i>
-                <p>{{ __('Assign TA to Groups') }}</p>
+                <i class="material-icons">workspaces</i>
+                <p>{{ __('Assign TAs to Groups') }}</p>
             </a>
         </li>
 
         <li class="nav-item{{ $activePage == 'import' ? ' active' : '' }}">
             <a class="nav-link" href="{{ route('importTAsStudents', [$edition_id]) }}">
-                <i class="material-icons">mp</i>
-                <p>{{ __('Import TAs/Students CSVs') }}</p>
+                <i class="material-icons">download</i>
+                <p>{{ __('Import') }}</p>
+            </a>
+        </li>
+        <li class="nav-item{{ $activePage == 'export' ? ' active' : '' }}">
+            <a class="nav-link" href="{{ route('export', [$edition_id]) }}">
+                <i class="material-icons">upload</i>
+                <p>{{ __('Export') }}</p>
             </a>
         </li>
 

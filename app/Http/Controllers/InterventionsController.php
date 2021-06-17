@@ -18,8 +18,6 @@ use Illuminate\Support\Facades\DB;
 
 class InterventionsController extends Controller
 {
-
-
     /**
      * Show all interventions of current course edition.
      *
@@ -28,24 +26,42 @@ class InterventionsController extends Controller
      */
     public function showAllInterventions($editionId)
     {
-        $interventions = Intervention::all()->sortBy('end_day');
-       // return $interventions;
+
+
+        //fetching the notes and interventions of the current course edition.
+        //first, the groupIds of the current course edition are collected,
+        // then the notes and interventions are directly selected from the database and passed to the view.
         $groupIds = DB::table('groups')
             ->select('groups.id')
             ->where('groups.course_edition_id', '=', $editionId)
             ->pluck('groups.id');
         $notes = [];
+        $interventions = [];
         foreach ($groupIds as $groupId) {
             if (Note::where('problem_signal', '>', 1)->where('group_id', $groupId)->exists()) {
                 $notesAux = Note::where('problem_signal', '>', 1)->where('group_id', $groupId)->get();
-                foreach ($notesAux as $note) {
-                    array_push($notes, $note);
+                foreach ($notesAux as $noteGroup) {
+                    array_push($notes, $noteGroup);
                 }
             }
+
+            if (Intervention::where('group_id', '=', $groupId)->exists()) {
+                $interventionsAux = Intervention::where('group_id', $groupId)->get();
+                $interventions = $interventionsAux->merge($interventions);
+            }
         }
-
-
-
+        //sort active interventions by end date, and closed interventions by status (first unsolved, then solved)
+//        if($interventions->where('status', '<', '3')->first() != null)
+//            $interventionsActive = $interventions->where('status', '<', '3')->sortBy('end_day');
+//        else
+//            $interventionsActive = [];
+//
+//        if ($interventions->where('status', '>', '2')->first() != null)
+//            $interventionsClosed = $interventions->where('status', '>', '2')->sortBy('status');
+//        else
+//            $interventionsClosed = [];
+//
+//        $interventions = $interventionsActive->merge($interventionsClosed);
 
         return view('interventions', [
             "interventions" => $interventions,
@@ -54,12 +70,24 @@ class InterventionsController extends Controller
         ]);
     }
 
+    /**
+     * Controller for editing interventions.
+     * The reason, action, and starting and ending dates can be changed.
+     *
+     * @param Request $request
+     * @param $interventionId
+     * @return RedirectResponse
+     */
     public function editIntervention(Request $request, $interventionId)
     {
         $intervention          = Intervention::find($interventionId);
 
-        //return $request->get('editStart1');
-        $intervention->reason = $request->get('editReason');
+        //if the reason is of the format 'note\d', then the request will be empty,
+        // so we should make sure the reason it is not updated with an empty string.
+        if (preg_match("/^(note)\d+$/i", $intervention->reason) == false) {
+            $intervention->reason = $request->get('editReason');
+        }
+
         $intervention->action = $request->get('editAction');
         $intervention->start_day = $request->input('editStart'. $interventionId);
         $intervention->end_day = $request->input('editEnd' . $interventionId);
@@ -69,13 +97,21 @@ class InterventionsController extends Controller
         return back();
     }
 
-
+    /**
+     * Controller for creating interventions.
+     * The request has the userId, reason, action, and starting and ending dates.
+     *
+     * @param Request $request
+     * @param $editionId
+     * @return RedirectResponse
+     */
     public function createIntervention(Request $request, $editionId)
     {
         $intervention          = new Intervention();
         $userId = $request->get('createUser');
         $intervention->user_id = $userId;
 
+        //find groupId based on user_id
         $groupId = DB::table('group_user')
                     ->join('course_edition_user', 'group_user.user_id', '=', 'course_edition_user.user_id')
                     ->select('group_user.group_id')
@@ -89,16 +125,20 @@ class InterventionsController extends Controller
         $intervention->action = $request->get('createAction');
         $intervention->start_day = $request->input('createStart' . $editionId);
         $intervention->end_day = $request->input('createEnd' . $editionId);
-
-       // return $intervention;
+        $intervention->status = 1; //active
 
         $intervention->save();
 
         return back();
     }
 
-
-
+    /**
+     * Create an intervention that is directly related to a note.
+     *
+     * @param Request $request
+     * @param $noteId
+     * @return RedirectResponse
+     */
     public function createInterventionNote(Request $request, $noteId)
     {
         $intervention          = new Intervention();
@@ -110,18 +150,92 @@ class InterventionsController extends Controller
         $intervention->action = $request->get('createAction');
         $intervention->start_day = $request->input('createStartNote' . $noteId);
         $intervention->end_day = $request->input('createEndNote' . $noteId);
-
-
+        $intervention->status = 1;
 
         $intervention->save();
 
         return back();
     }
 
+    /**
+     * Controller for deleting interventions.
+     *
+     * @param Request $request
+     * @param $interventionId
+     * @return RedirectResponse
+     */
     public function deleteIntervention(Request $request, $interventionId)
     {
         $intervention = Intervention::find($interventionId);
         $intervention->delete();
+        return back();
+    }
+
+    /**
+     * Controller for changing the status of the intervention to active.
+     *
+     * @param Request $request
+     * @param $interventionId
+     * @return RedirectResponse
+     */
+    public function statusActive(Request $request, $interventionId)
+    {
+        $intervention = Intervention::find($interventionId);
+        $intervention->status = 1;
+        $intervention->status_note = $request->get('active_note');
+        $intervention->save();
+        return back();
+    }
+
+    /**
+     * Controller for changing the status of the intervention to extended.
+     * The status note and the new ending date are passed in the request.
+     *
+     * @param Request $request
+     * @param $interventionId
+     * @return RedirectResponse
+     */
+    public function statusExtend(Request $request, $interventionId)
+    {
+        $intervention = Intervention::find($interventionId);
+        $intervention->status = 2;
+        $intervention->end_day = $request->get('extend_end' . $interventionId);
+        $intervention->status_note = $request->get('extend_note');
+        $intervention->save();
+        return back();
+    }
+
+    /**
+     * Controller for changing the status of the intervention to closed - unsolved.
+     * The status note is passed in the request.
+     *
+     * @param Request $request
+     * @param $interventionId
+     * @return RedirectResponse
+     */
+    public function statusUnsolved(Request $request, $interventionId)
+    {
+        $intervention = Intervention::find($interventionId);
+        $intervention->status = 3;
+        $intervention->status_note = $request->get('unsolved_note');
+        $intervention->save();
+        return back();
+    }
+
+    /**
+     * Controller for changing the status of the intervention to closed - solved.
+     * The status note is passed in the request.
+     *
+     * @param Request $request
+     * @param $interventionId
+     * @return RedirectResponse
+     */
+    public function statusSolved(Request $request, $interventionId)
+    {
+        $intervention = Intervention::find($interventionId);
+        $intervention->status = 4;
+        $intervention->status_note = $request->get('solved_note');
+        $intervention->save();
         return back();
     }
 }

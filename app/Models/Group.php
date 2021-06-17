@@ -50,6 +50,17 @@ class Group extends Model
     }
 
     /**
+     * Returns the users with their grade from the group.
+     *
+     * @return BelongsToMany
+     */
+    public function usersWithGrade()
+    {
+        return $this->belongsToMany(Group::class, 'group_user')
+                    ->withPivot('student_grade');
+    }
+
+    /**
      * Creates the notes relation.
      *
      * @return HasMany
@@ -83,5 +94,15 @@ class Group extends Model
     public function rubricData()
     {
         return $this->hasMany(RubricData::class);
+    }
+
+    /**
+     * Returns all gitanalyses that this are linked to this group.
+     *
+     * @return HasMany
+     */
+    public function gitanalyses()
+    {
+        return $this->hasMany(Gitanalysis::class);
     }
 }
