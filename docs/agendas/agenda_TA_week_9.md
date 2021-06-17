@@ -48,8 +48,13 @@ Everyone has provided all questions they had.
 
 # Question round
 - Is there any feedback on the report?
+    - Yes, it's all included in the feedback sent on mattermost.
 - Maybe advice on wrapping stuff up?
+    - Focus on the report, for some sections speculate on some things that the application will be like.
+      Do polishing after the report deadline as there are even some days after the presentation.
+- Is buddycheck a standard form across all courses?
+    - I don't think it is as they change it from edition to edition to address nuances from a previous year.
 
 # Closing
 
-Next week's meeting will be on the same day at the same time, ... at ....
+Next week's meeting will be on the same day at the same time, 21-06-2021 at 14:30.

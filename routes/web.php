@@ -8,6 +8,8 @@ use App\Http\Controllers\AttendanceController;
 use App\Http\Controllers\ImportController;
 use App\Http\Controllers\InterventionsController;
 use App\Http\Controllers\NotesController;
+use App\Http\Controllers\NotificationController;
+use App\Http\Controllers\ReportImportController;
 use App\Http\Controllers\RubricController;
 use App\Http\Controllers\RubricDataController;
 use App\Http\Controllers\RubricEntryController;
@@ -111,6 +113,9 @@ Route::get('/exportView/{edition_id}', 'App\Http\Controllers\ExportController@ex
 Route::get('/exportUserList/{edition_id}', 'App\Http\Controllers\ExportController@exportUserList')
     ->name('exportUserList')
     ->middleware(['loggedIn', 'role:lecturer']);
+Route::get('/exportIndividualGrades/{edition_id}', 'App\Http\Controllers\ExportController@exportIndividualGrades')
+    ->name('exportGrades')
+    ->middleware(['loggedIn', 'role:lecturer']);
 Route::get('/importView/{edition_id}', 'App\Http\Controllers\ImportController@importView')
     ->name('importTAsStudents')
     ->middleware(['loggedIn', 'role:lecturer']);
@@ -123,13 +128,17 @@ Route::post('/importTA/{edition_id}', 'App\Http\Controllers\ImportController@imp
 
 /*
 |--------------------------------------------------------------------------
-| Import/Export student Routes
+| Import report routes
 |--------------------------------------------------------------------------
 */
 
-Route::post('importGitanalysis/{group_id}/{week}', [ImportController::class, 'importGitanalysis'])
+Route::post('importGitanalysis/{group_id}/{week}', [ReportImportController::class, 'importGitanalysis'])
     ->name('importGitanalysis')
     ->middleware(['loggedIn', 'role:lecturer,HeadTA,TA']);
+
+Route::post('importBuddycheck/{group_id}/{week}', [ReportImportController::class, 'importBuddycheck'])
+    ->name('importBuddycheck')
+    ->middleware(['loggedIn', 'role:lecturer,HeadTA']);
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home')->middleware('loggedIn');
 
@@ -149,9 +158,13 @@ Route::get('map', function () {
     return view('pages.map');
 })->name('map');
 
-Route::get('notifications', function () {
-    return view('pages.notifications');
-})->name('notifications');
+Route::get('notificationsOld', function () {
+    return view('pages.notificationsOld', ['edition_id' => 1]);
+})->name('notificationsOld');
+
+Route::get('notifications/{edition_id}', [NotificationController::class, 'view'])
+    ->name('notifications')
+    ->middleware(['loggedIn']);
 
 Route::get('rtl-support', function () {
     return view('pages.language');
@@ -332,3 +345,9 @@ Route::get('/group/{group_id}/week/{week_id}', [GroupController::class, 'viewWee
 Route::get('/routeError', function () {
     echo "A routing error has occurred";
 })->name('routeError');
+
+Route::put('/notifications/markAsRead', [NotificationController::class, 'markAsRead'])
+    ->middleware(['loggedIn']);
+
+Route::put('/notifications/markAllAsRead', [NotificationController::class, 'markAllAsRead'])
+    ->middleware(['loggedIn']);

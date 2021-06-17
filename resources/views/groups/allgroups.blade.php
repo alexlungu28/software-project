@@ -13,7 +13,7 @@
                                 <p>@php
                                         $i = 0;
                                         foreach($group->groupnotes as $note)
-                                            if($note->problem_signal != 0)
+                                            if($note->problem_signal != 1)
                                                 $i++;
                                         if ($i == 1)
                                             echo $i . ' group problem <br>';
@@ -23,8 +23,12 @@
                                     @php
                                         $i = 0;
                                         foreach($group->notes as $note)
-                                            if($note->problem_signal != 0)
+                                            if($note->problem_signal != 1)
                                                 $i++;
+                                        foreach($group->groupIndividualInterventions as $interventionIndividual)
+                                            if($interventionIndividual->status >= 3)
+                                                if(preg_match("/^(note)\d+$/i", $interventionIndividual->reason))
+                                                    $i--;
                                         if ($i == 1)
                                             echo $i . ' individual problem';
                                         if ($i > 1)

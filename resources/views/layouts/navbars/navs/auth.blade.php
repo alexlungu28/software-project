@@ -8,7 +8,7 @@
     <span class="navbar-toggler-icon icon-bar"></span>
     <span class="navbar-toggler-icon icon-bar"></span>
     </button>
-    <div class="collapse navbar-collapse justify-content-end">
+      <div class="collapse navbar-collapse justify-content-end">
       <form class="navbar-form">
         <div class="input-group no-border">
         <input type="text" value="" class="form-control" placeholder="Search...">
@@ -27,20 +27,28 @@
             </p>
           </a>
         </li>
-        <li class="nav-item dropdown">
+          <li class="nav-item dropdown">
           <a class="nav-link" href="http://example.com" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             <i class="material-icons">notifications</i>
-            <span class="notification">5</span>
+              @if(auth()->check())
+                  @if(auth()->user() != null)
+                      <span class="notification">{{count(auth()->user()->unreadNotifications)}}</span>
+                  @endif
+              @endif
             <p class="d-lg-none d-md-block">
               {{ __('Some Actions') }}
             </p>
           </a>
           <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
-            <a class="dropdown-item" href="#">{{ __('Mike John responded to your email') }}</a>
-            <a class="dropdown-item" href="#">{{ __('You have 5 new tasks') }}</a>
-            <a class="dropdown-item" href="#">{{ __('You\'re now friend with Andrew') }}</a>
-            <a class="dropdown-item" href="#">{{ __('Another Notification') }}</a>
-            <a class="dropdown-item" href="#">{{ __('Another One') }}</a>
+              @if(auth()->check())
+                  @if(auth()->user() != null)
+                    @foreach(auth()->user()->unreadNotifications as $notification)
+                        <a class="dropdown-item" href="{{route('group', $notification->data['Deadline passed']['group_id'])}}">
+                            {{ 'Intervention deadline passed: Group ' . $notification->data['Deadline passed']['group_id'] }}
+                        </a>
+                    @endforeach
+                  @endif
+              @endif
           </div>
         </li>
         <li class="nav-item dropdown">
