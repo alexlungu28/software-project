@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\GradesExport;
 use App\Exports\UsersExport;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
@@ -33,5 +34,16 @@ class ExportController extends Controller
     public function exportUserList($editionId): BinaryFileResponse
     {
         return Excel::download(new UsersExport($editionId), 'user_list.csv');
+    }
+
+    /**
+     * Exports grades.
+     *
+     * @param $editionId
+     * @return BinaryFileResponse
+     */
+    public function exportIndividualGrades($editionId): BinaryFileResponse
+    {
+        return Excel::download(new GradesExport($editionId), 'grades.csv');
     }
 }
