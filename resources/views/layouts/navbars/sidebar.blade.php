@@ -73,7 +73,7 @@
         <li class="nav-item{{ $activePage == 'import' ? ' active' : '' }}">
             <a class="nav-link" href="{{ route('importTAsStudents', [$edition_id]) }}">
                 <i class="material-icons">download</i>
-                <p>{{ __('Import TAs/Students CSVs') }}</p>
+                <p>{{ __('Import') }}</p>
             </a>
         </li>
         <li class="nav-item{{ $activePage == 'export' ? ' active' : '' }}">
