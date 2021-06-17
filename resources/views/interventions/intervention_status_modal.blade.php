@@ -29,7 +29,7 @@
 
                                 @include('/interventions/intervention_view_note_from_status_modal')
                             @else
-                                <h4>
+
                                     <div style="overflow-x: hidden; overflow-y:auto;
                                                                    text-overflow: clip;
                                                                    display: -webkit-box;
@@ -37,14 +37,14 @@
                                                                    -webkit-box-orient: vertical;">
                                         {{$intervention->reason}}
                                     </div>
-                                </h4>
+
 
                             @endif
                         </div>
 
                         <div class="form-group">
                             <label>Action</label>
-                            <h4>
+
                                 <div style="overflow-x: hidden; overflow-y:auto;
                                                                    text-overflow: clip;
                                                                    display: -webkit-box;
@@ -52,7 +52,7 @@
                                                                    -webkit-box-orient: vertical;">
                                     {{$intervention->action}}
                                 </div>
-                            </h4>
+
 
                         <div class="form-group">
                             <label>Date</label>
