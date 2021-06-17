@@ -80,7 +80,8 @@ class InterventionsController extends Controller
      * @return $interventons
      *
      */
-    public function sortIndividualInterventions($interventions) {
+    public function sortIndividualInterventions($interventions)
+    {
         $interventionsActive = [];
         $interventionsClosed = [];
         if ($interventions != []) {
@@ -106,7 +107,6 @@ class InterventionsController extends Controller
         }
 
         return $interventions;
-
     }
 
     /**
