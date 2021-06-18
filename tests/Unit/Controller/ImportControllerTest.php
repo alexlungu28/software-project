@@ -4,6 +4,7 @@ namespace Tests\Unit\Controller;
 
 use App\Http\Controllers\ReportImportController;
 use App\Models\CourseEditionUser;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Auth;
@@ -15,6 +16,7 @@ class ImportControllerTest extends TestCase
 {
 
     use withoutMiddleware;
+    use RefreshDatabase;
 
     public function before()
     {

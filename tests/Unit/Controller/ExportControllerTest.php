@@ -3,6 +3,7 @@
 namespace Tests\Unit\Controller;
 
 use App\Models\CourseEditionUser;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Auth;
@@ -13,6 +14,7 @@ class ExportControllerTest extends TestCase
 {
 
     use withoutMiddleware;
+    use RefreshDatabase;
 
     public function before() {
         CourseEditionUser::insert(

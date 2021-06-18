@@ -3,6 +3,7 @@
 namespace Tests\Unit\Controller;
 
 use App\Http\Controllers\ReportImportController;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Illuminate\Http\UploadedFile;
 use Maatwebsite\Excel\Facades\Excel;
@@ -12,6 +13,7 @@ use Tests\TestCase;
 class ReportImportControllerTest extends TestCase
 {
     use withoutMiddleware;
+    use RefreshDatabase;
 
     public function testGitAnalysisImportStores()
     {
