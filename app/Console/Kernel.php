@@ -28,14 +28,6 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-//        $schedule->call(function () {
-//            DB::table('recent_users')->delete();
-//        })->daily();
-        //$schedule->command(__DIR__.'/Commands/Notify')->everyMinute();
-//        $schedule->call(function () {
-//            Mail::raw("test2", function ($mail) {
-//                $mail->to('test@gmail.com')->subject('subject2');
-//            });
-//        })->everyMinute();
+        $schedule->command('notify')->daily();
     }
 }
