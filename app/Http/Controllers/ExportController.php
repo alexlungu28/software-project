@@ -57,5 +57,4 @@ class ExportController extends Controller
     {
         return Excel::download(new GradesExport($editionId), 'rubrics.csv');
     }
-
 }
