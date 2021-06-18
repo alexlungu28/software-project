@@ -275,7 +275,7 @@ class CourseEditionControllerTest extends TestCase
      * Test to verify that the correct view is returned according to user role.
      */
     public function testViewTA() {
-        Auth::shouldReceive('id')->twice()->andReturn(1);
+        Auth::shouldReceive('id')->times(3)->andReturn(1);
         Auth::shouldReceive('check')->andReturn(true);
         Auth::shouldReceive('user')->andReturn(null);
         Group::insert(
