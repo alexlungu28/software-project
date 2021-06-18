@@ -13,7 +13,7 @@
                 <a class="btn btn-info" href="{{ route('exportGrades', [$edition_id]) }}">Export Grades</a>
                 <a class="btn btn-info" href="{{ route('exportGrades', [$edition_id]) }}">Export Interventions</a>
                 <a class="btn btn-info" href="{{ route('exportGrades', [$edition_id]) }}">Export Notes</a>
-                <a class="btn btn-info" href="{{ route('exportGrades', [$edition_id]) }}">Export Rubrics</a>
+                <a class="btn btn-info" href="{{ route('exportRubrics', [$edition_id]) }}">Export Rubrics</a>
             </div>
         </div>
     </div>

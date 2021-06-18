@@ -42,8 +42,20 @@ class ExportController extends Controller
      * @param $editionId
      * @return BinaryFileResponse
      */
-    public function exportIndividualGrades($editionId): BinaryFileResponse
+    public function exportGrades($editionId): BinaryFileResponse
     {
         return Excel::download(new GradesExport($editionId), 'grades.csv');
     }
+
+    /**
+     * Exports rubrics.
+     *
+     * @param $editionId
+     * @return BinaryFileResponse
+     */
+    public function exportRubrics($editionId): BinaryFileResponse
+    {
+        return Excel::download(new GradesExport($editionId), 'rubrics.csv');
+    }
+
 }

@@ -7,13 +7,13 @@ use Illuminate\Database\Eloquent\Collection;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 
-class GradesExport implements FromCollection, WithHeadings
+class RubricsExport implements FromCollection, WithHeadings
 {
 
     private $editionId;
 
     /**
-     * GradesExport constructor.
+     * RubricsExport constructor.
      * @param int $editionId
      */
     public function __construct(int $editionId)
@@ -30,12 +30,16 @@ class GradesExport implements FromCollection, WithHeadings
     public function headings(): array
     {
         return [
-            //from user table
-            'OrgDefinedId',
-            'Username',
-            //from groups table
-            'GroupGrade',
-            'IndividualGrade',
+            //from rubrics table
+            'RubricName',
+            'Week',
+            //from course_editions table
+            'CourseEdition',
+            //from rubric_entries table
+            'Description',
+            //from rubric_data table
+            'Value',
+            'Note',
         ];
     }
 
