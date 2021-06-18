@@ -5,6 +5,7 @@ use App\Http\Controllers\CourseEditionController;
 use App\Http\Controllers\CourseEditionUserController;
 use App\Http\Controllers\GroupController;
 use App\Http\Controllers\AttendanceController;
+use App\Http\Controllers\GroupInterventionsController;
 use App\Http\Controllers\ImportController;
 use App\Http\Controllers\InterventionsController;
 use App\Http\Controllers\NotesController;
@@ -336,6 +337,10 @@ Route::post('/statusUnsolved/{id}', [InterventionsController::class, 'statusUnso
 
 Route::post('/statusSolved/{id}', [InterventionsController::class, 'statusSolved'])
     ->name('statusSolved')->middleware(['loggedIn']);
+
+//Group Interventions
+Route::post('/createGroupInterventionNote/{id}', [GroupInterventionsController::class, 'createGroupInterventionNote'])
+    ->name('createGroupInterventionNote')->middleware(['loggedIn']);
 
 
 
