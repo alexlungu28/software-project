@@ -15,9 +15,9 @@
                   $course = \App\Models\Course::find($edition->course_id);
           @endphp
           @if (isset($course) && $course != null)
-          {{$course->description}}
-          <br/>
-          {{$edition->year}}
+              {{$course->description}}
+              <br/>
+              {{$edition->year}}
           @endif
       </a>
   </div>
