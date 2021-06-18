@@ -5,9 +5,18 @@
       Tip 2: you can also add an image using data-image tag
   -->
   <div class="logo">
-    <a class="simple-text logo-normal">
-      {{ __('Gradinator') }}
+    <a class="simple-text logo-normal" style="user-select: none">
+        {{ __('Gradinator') }}
     </a>
+      <a class="simple-text logo-normal" style="color: black; font-size: 75%; user-select: none">
+          @php
+              $edition = \App\Models\CourseEdition::find($edition_id);
+              $course = \App\Models\Course::find($edition->course_id);
+          @endphp
+          {{$course->description}}
+          <br/>
+          {{$edition->year}}
+      </a>
   </div>
   <div class="sidebar-wrapper">
     <ul class="nav">
