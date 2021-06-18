@@ -8,6 +8,7 @@ use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithoutMiddleware;
+use Illuminate\Support\Facades\Mail;
 use Tests\TestCase;
 
 class NotifyTest extends TestCase
@@ -51,6 +52,7 @@ class NotifyTest extends TestCase
             ]
         );
         $this->assertDatabaseCount('notifications', 0);
+        Mail::fake();
         $this->artisan('notify');
         $this->assertDatabaseCount('notifications', 1);
     }
@@ -91,6 +93,7 @@ class NotifyTest extends TestCase
             ]
         );
         $this->assertDatabaseCount('notifications', 0);
+        Mail::fake();
         $this->artisan('notify');
         $this->assertDatabaseCount('notifications', 1);
     }
