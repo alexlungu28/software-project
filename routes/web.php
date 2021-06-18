@@ -146,33 +146,33 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 //    return view('pages.table_list');
 //})->name('table');
 
-Route::get('typography', function () {
-    return view('pages.typography');
-})->name('typography');
-
-Route::get('icons', function () {
-    return view('pages.icons');
-})->name('icons');
-
-Route::get('map', function () {
-    return view('pages.map');
-})->name('map');
-
-Route::get('notificationsOld', function () {
-    return view('pages.notificationsOld', ['edition_id' => 1]);
-})->name('notificationsOld');
-
+//Route::get('typography', function () {
+//    return view('pages.typography');
+//})->name('typography');
+//
+//Route::get('icons', function () {
+//    return view('pages.icons');
+//})->name('icons');
+//
+//Route::get('map', function () {
+//    return view('pages.map');
+//})->name('map');
+//
+//Route::get('notificationsOld', function () {
+//    return view('pages.notificationsOld', ['edition_id' => 1]);
+//})->name('notificationsOld');
+//
 Route::get('notifications/{edition_id}', [NotificationController::class, 'view'])
     ->name('notifications')
     ->middleware(['loggedIn']);
 
-Route::get('rtl-support', function () {
-    return view('pages.language');
-})->name('language');
-
-Route::get('upgrade', function () {
-    return view('pages.upgrade');
-})->name('upgrade');
+//Route::get('rtl-support', function () {
+//    return view('pages.language');
+//})->name('language');
+//
+//Route::get('upgrade', function () {
+//    return view('pages.upgrade');
+//})->name('upgrade');
 
 Route::group(['middleware' => 'auth'], function () {
     Route::resource('user', 'App\Http\Controllers\UserController', ['except' => ['show']]);
