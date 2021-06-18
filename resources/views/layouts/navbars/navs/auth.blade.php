@@ -19,14 +19,6 @@
         </div>
       </form>
       <ul class="navbar-nav">
-        <li class="nav-item">
-          <a class="nav-link" href="{{ route('home') }}">
-            <i class="material-icons">dashboard</i>
-            <p class="d-lg-none d-md-block">
-              {{ __('Stats') }}
-            </p>
-          </a>
-        </li>
           <li class="nav-item dropdown">
           <a class="nav-link" href="http://example.com" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             <i class="material-icons">notifications</i>
@@ -43,28 +35,39 @@
               @if(auth()->check())
                   @if(auth()->user() != null)
                     @foreach(auth()->user()->unreadNotifications as $notification)
-                        <a class="dropdown-item" href="{{route('group', $notification->data['Deadline passed']['group_id'])}}">
-                            {{ 'Intervention deadline passed: Group ' . $notification->data['Deadline passed']['group_id'] }}
+                        @php
+                            $group_id = $notification->data['Deadline passed']['group_id'];
+                            $group = App\Models\Group::find($group_id);
+                            $edition = App\Models\CourseEdition::find($group->course_edition_id);
+                            $course = App\Models\Course::find($edition->course_id);
+                            $sameEdition = $edition->id == $edition_id;
+                        @endphp
+                        <a class="dropdown-item" href="{{route('group', $group_id)}}">
+                            @if(!$sameEdition)
+                                {{ 'Intervention deadline passed: ' . $course->description . ', ' . $edition->year . ', ' . $group->group_name }}
+                            @else
+                                {{ 'Intervention deadline passed: ' . $group->group_name }}
+                            @endif
                         </a>
                     @endforeach
                   @endif
               @endif
           </div>
         </li>
-        <li class="nav-item dropdown">
-          <a class="nav-link" href="#pablo" id="navbarDropdownProfile" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            <i class="material-icons">person</i>
-            <p class="d-lg-none d-md-block">
-              {{ __('Account') }}
-            </p>
-          </a>
-          <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownProfile">
-            <a class="dropdown-item" href="{{ route('profile.edit') }}">{{ __('Profile') }}</a>
-            <a class="dropdown-item" href="#">{{ __('Settings') }}</a>
-            <div class="dropdown-divider"></div>
-            <a class="dropdown-item" href="" onclick="event.preventDefault();document.getElementById('logout-form').submit();">{{ __('Log out') }}</a>
-          </div>
-        </li>
+{{--        <li class="nav-item dropdown">--}}
+{{--          <a class="nav-link" href="#pablo" id="navbarDropdownProfile" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">--}}
+{{--            <i class="material-icons">person</i>--}}
+{{--            <p class="d-lg-none d-md-block">--}}
+{{--              {{ __('Account') }}--}}
+{{--            </p>--}}
+{{--          </a>--}}
+{{--          <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownProfile">--}}
+{{--            <a class="dropdown-item" href="{{ route('profile.edit') }}">{{ __('Profile') }}</a>--}}
+{{--            <a class="dropdown-item" href="#">{{ __('Settings') }}</a>--}}
+{{--            <div class="dropdown-divider"></div>--}}
+{{--            <a class="dropdown-item" href="" onclick="event.preventDefault();document.getElementById('logout-form').submit();">{{ __('Log out') }}</a>--}}
+{{--          </div>--}}
+{{--        </li>--}}
       </ul>
     </div>
   </div>

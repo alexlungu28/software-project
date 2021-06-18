@@ -28,13 +28,29 @@
                                             @foreach($notifications as $key=>$notification)
                                                 <tr>
                                                     <div class="card card-stats">
+                                                        @php
+                                                            $groupId = $notification->data['Deadline passed']['group_id'];
+                                                            $group = \App\Models\Group::find($groupId);
+                                                            $edition = \App\Models\CourseEdition::find($group->course_edition_id);
+                                                            $sameEdition = $edition->id == $edition_id;
+                                                            $course = \App\Models\Course::find($edition->course_id);
+                                                        @endphp
                                                         <button class="btn">
-                                                            <a class="nav-link" href="{{ route('group', $notification->data['Deadline passed']['group_id']) }}"
+                                                            <a class="nav-link" href="{{ route('group', $groupId) }}"
                                                             style="color: black;">
-                                                            {{$users[$key]->first_name
-                                                            . ' ' . $users[$key]->last_name
-                                                            . ' - Group ' . $notification->data['Deadline passed']['group_id']
-                                                            . ' - ' . $notification->data['Deadline passed']['end_day']}}
+                                                                @if($sameEdition)
+                                                                    {{$users[$key]->first_name
+                                                                    . ' ' . $users[$key]->last_name
+                                                                    . ' - ' . $group->group_name
+                                                                    . ' - ' . $notification->data['Deadline passed']['end_day']}}
+                                                                @else
+                                                                    {{$users[$key]->first_name
+                                                                    . ' ' . $users[$key]->last_name
+                                                                    . ' - ' . $course->description
+                                                                    . ' - ' . $edition->year
+                                                                    . ' - ' . $group->group_name
+                                                                    . ' - ' . $notification->data['Deadline passed']['end_day']}}
+                                                                @endif
                                                             </a>
                                                         </button>
                                                         <form method="post" action="/notifications/markAsRead">

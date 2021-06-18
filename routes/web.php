@@ -146,43 +146,9 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 //    return view('pages.table_list');
 //})->name('table');
 
-Route::get('typography', function () {
-    return view('pages.typography');
-})->name('typography');
-
-Route::get('icons', function () {
-    return view('pages.icons');
-})->name('icons');
-
-Route::get('map', function () {
-    return view('pages.map');
-})->name('map');
-
-Route::get('notificationsOld', function () {
-    return view('pages.notificationsOld', ['edition_id' => 1]);
-})->name('notificationsOld');
-
 Route::get('notifications/{edition_id}', [NotificationController::class, 'view'])
     ->name('notifications')
     ->middleware(['loggedIn']);
-
-Route::get('rtl-support', function () {
-    return view('pages.language');
-})->name('language');
-
-Route::get('upgrade', function () {
-    return view('pages.upgrade');
-})->name('upgrade');
-
-Route::group(['middleware' => 'auth'], function () {
-    Route::resource('user', 'App\Http\Controllers\UserController', ['except' => ['show']]);
-    Route::get('profile', ['as' => 'profile.edit', 'uses' => 'App\Http\Controllers\ProfileController@edit']);
-    Route::put('profile', ['as' => 'profile.update', 'uses' => 'App\Http\Controllers\ProfileController@update']);
-    Route::put(
-        'profile/password',
-        ['as' => 'profile.password', 'uses' => 'App\Http\Controllers\ProfileController@password']
-    );
-});
 
 
 Route::get('unauthorized', function () {
