@@ -37,37 +37,27 @@ class GroupInterventionsController extends Controller
             ->select('groups.id')
             ->where('groups.course_edition_id', '=', $editionId)
             ->pluck('groups.id');
-        $notes = [];
-        $interventions = [];
         $groupNotes = [];
+        $groupInterventions = [];
 
-        foreach ($groupIds as $groupId) {
-            if (Note::where('problem_signal', '>', 1)->where('group_id', $groupId)->exists()) {
-                $notesAux = Note::where('problem_signal', '>', 1)->where('group_id', $groupId)->get();
-                foreach ($notesAux as $noteGroup) {
-                    array_push($notes, $noteGroup);
-                }
-            }
 
-            if (GroupIntervention::where('group_id', '=', $groupId)->exists()) {
-                $groupInterventionsAux = GroupIntervention::where('group_id', $groupId)->get();
-                $groupInterventions = $groupInterventionsAux->merge($groupInterventions);
-            }
+        if (GroupIntervention::where('group_id', '=', $groupId)->exists()) {
+            $groupInterventionsAux = GroupIntervention::where('group_id', $groupId)->get();
+            $groupInterventions = $groupInterventionsAux->merge($groupInterventions);
+        }
 
-            if (NoteGroup::where('problem_signal', '>', 1)->where('group_id', $groupId)->exists()) {
-                $groupNotesAux = NoteGroup::where('problem_signal', '>', 1)->where('group_id', $groupId)->get();
-                foreach ($groupNotesAux as $groupNote) {
-                    array_push($groupNotes, $groupNote);
-                }
+        if (NoteGroup::where('problem_signal', '>', 1)->where('group_id', $groupId)->exists()) {
+            $groupNotesAux = NoteGroup::where('problem_signal', '>', 1)->where('group_id', $groupId)->get();
+            foreach ($groupNotesAux as $groupNote) {
+                array_push($groupNotes, $groupNote);
             }
         }
 
-
-        $groupInterventions = $this->sortGroupInterventions($interventions);
+        $groupInterventions = $this->sortGroupInterventions($groupInterventions);
 
         //$interventions = $interventionsActive->concat($interventionsClosed);
 
-        return view('group_interventions', [
+        return view('/group_interventions/group_interventions_all_tab', [
             "groupInterventions" => $groupInterventions,
         ]);
     }
@@ -78,7 +68,7 @@ class GroupInterventionsController extends Controller
      * @return $interventons
      *
      */
-    public function sortIndividualInterventions($groupInterventions)
+    public function sortGroupInterventions($groupInterventions)
     {
         $groupInterventionsActive = [];
         $groupInterventionsClosed = [];
@@ -117,11 +107,11 @@ class GroupInterventionsController extends Controller
      */
     public function editGroupIntervention(Request $request, $interventionId)
     {
-        $groupIntervention          = Intervention::find($interventionId);
+        $groupIntervention          = InterventionGroup::find($interventionId);
 
         //if the reason is of the format 'note\d', then the request will be empty,
         // so we should make sure the reason it is not updated with an empty string.
-        if (preg_match("/^(note)\d+$/i", $groupIntervention->reason) == false) {
+        if (preg_match("/^(groupNote)\d+$/i", $groupIntervention->reason) == false) {
             $groupIntervention->reason = $request->get('editGroupReason');
         }
 
@@ -178,7 +168,7 @@ class GroupInterventionsController extends Controller
         $groupNote = NoteGroup::find($groupNoteId);
 
         $groupIntervention->group_id = $groupNote->group_id;
-        $groupIntervention->reason = "createGroupNote" . $groupNoteId;
+        $groupIntervention->reason = "groupNote" . $groupNoteId;
 
         $groupIntervention->action = $request->get('createGroupAction');
         $groupIntervention->start_day = $request->input('createStartGroupNote' . $groupNoteId);
@@ -198,9 +188,9 @@ class GroupInterventionsController extends Controller
      * @param $interventionId
      * @return RedirectResponse
      */
-    public function deleteIntervention(Request $request, $interventionId)
+    public function deleteGroupIntervention(Request $request, $interventionId)
     {
-        $groupIntervention = GroupIntervention::find($interventionId);
+        $groupIntervention = InterventionGroup::find($interventionId);
         $groupIntervention->delete();
         return back();
     }
@@ -212,11 +202,11 @@ class GroupInterventionsController extends Controller
      * @param $groupInterventionId
      * @return RedirectResponse
      */
-    public function statusActive(Request $request, $groupInterventionId)
+    public function statusGroupActive(Request $request, $groupInterventionId)
     {
-        $groupIntervention = GroupIntervention::find($groupInterventionId);
+        $groupIntervention = InterventionGroup::find($groupInterventionId);
         $groupIntervention->status = 1;
-        $groupIntervention->status_note = $request->get('active_note');
+        $groupIntervention->status_note = $request->get('active_group_note');
         $groupIntervention->save();
         return back();
     }
@@ -229,12 +219,12 @@ class GroupInterventionsController extends Controller
      * @param $groupInterventionId
      * @return RedirectResponse
      */
-    public function statusExtend(Request $request, $groupInterventionId)
+    public function statusGroupExtend(Request $request, $groupInterventionId)
     {
-        $groupIntervention = GroupIntervention::find($groupInterventionId);
+        $groupIntervention = InterventionGroup::find($groupInterventionId);
         $groupIntervention->status = 2;
-        $groupIntervention->end_day = $request->get('extend_end' . $groupInterventionId);
-        $groupIntervention->status_note = $request->get('extend_note');
+        $groupIntervention->end_day = $request->get('extend_group_end' . $groupInterventionId);
+        $groupIntervention->status_note = $request->get('extend_group_note');
         $groupIntervention->save();
         return back();
     }
@@ -247,11 +237,11 @@ class GroupInterventionsController extends Controller
      * @param $interventionId
      * @return RedirectResponse
      */
-    public function statusUnsolved(Request $request, $groupInterventionId)
+    public function statusGroupUnsolved(Request $request, $groupInterventionId)
     {
-        $groupIntervention = GroupIntervention::find($groupInterventionId);
+        $groupIntervention = InterventionGroup::find($groupInterventionId);
         $groupIntervention->status = 3;
-        $groupIntervention->status_note = $request->get('unsolved_note');
+        $groupIntervention->status_note = $request->get('unsolved_group_note');
         $groupIntervention->save();
         return back();
     }
@@ -264,12 +254,12 @@ class GroupInterventionsController extends Controller
      * @param $interventionId
      * @return RedirectResponse
      */
-    public function statusSolved(Request $request, $interventionId)
+    public function statusGroupSolved(Request $request, $interventionId)
     {
-        $intervention = Intervention::find($interventionId);
-        $intervention->status = 4;
-        $intervention->status_note = $request->get('solved_note');
-        $intervention->save();
+        $groupIntervention = InterventionGroup::find($interventionId);
+        $groupIntervention->status = 4;
+        $groupIntervention->status_note = $request->get('solved_group_note');
+        $groupIntervention->save();
         return back();
     }
 }

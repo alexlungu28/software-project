@@ -27,20 +27,21 @@
                             foreach($groupNotes as $groupNote) {
                                 array_push($groupNotesGood, $groupNote);
                             }
-                            $interventionNotes = [];
-                           // foreach($interventions as $intervention) {
-                            //    if(preg_match("/^(note)\d+$/i", $intervention->reason)) {
-                            //        $groupNote = App\Models\Note::find(preg_replace('/[^0-9]/', '', $intervention->reason));
-                            //        array_push($interventionNotes, $note);
-                            //    }
-                           // }
+                            $groupInterventionNotes = [];
+                            foreach($groupInterventions as $intervention) {
+                                if(preg_match("/^(groupNote)\d+$/i", $intervention->reason)) {
+                                    $groupNote = App\Models\NoteGroup::find(preg_replace('/[^0-9]/', '', $intervention->reason));
+                                    array_push($groupInterventionNotes, $groupNote);
+                                }
+                            }
+                            $groupNotesNoInterventions = array_diff($groupNotesGood, $groupInterventionNotes);
                           //  $notesNoInterventions = [];
                             //return dd($notesNoInterventions);
                         @endphp
 
 
 
-                        @foreach($groupNotesGood as $note)
+                        @foreach($groupNotesNoInterventions as $note)
                             <tr>
 
                                 <td>{{App\Models\Group::find($note->group_id)->group_name}}</td>

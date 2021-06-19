@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\CourseEditionUser;
 use App\Models\Group;
 use App\Models\GroupUser;
+use App\Models\InterventionGroup;
 use App\Models\Intervention;
 use App\Models\Note;
 use App\Models\NoteGroup;
@@ -39,6 +40,7 @@ class InterventionsController extends Controller
         $notes = [];
         $interventions = [];
         $groupNotes = [];
+        $groupInterventions = [];
 
         foreach ($groupIds as $groupId) {
             if (Note::where('problem_signal', '>', 1)->where('group_id', $groupId)->exists()) {
@@ -53,6 +55,11 @@ class InterventionsController extends Controller
                 $interventions = $interventionsAux->merge($interventions);
             }
 
+            if (InterventionGroup::where('group_id', '=', $groupId)->exists()) {
+                $groupInterventionsAux = InterventionGroup::where('group_id', $groupId)->get();
+                $groupInterventions = $groupInterventionsAux->merge($groupInterventions);
+            }
+
             if (NoteGroup::where('problem_signal', '>', 1)->where('group_id', $groupId)->exists()) {
                 $groupNotesAux = NoteGroup::where('problem_signal', '>', 1)->where('group_id', $groupId)->get();
                 foreach ($groupNotesAux as $groupNote) {
@@ -61,8 +68,11 @@ class InterventionsController extends Controller
             }
         }
 
+        $groupInterventions = $this->sortGroupInterventions($groupInterventions);
 
         $interventions = $this->sortIndividualInterventions($interventions);
+
+
 
         //$interventions = $interventionsActive->concat($interventionsClosed);
 
@@ -70,7 +80,8 @@ class InterventionsController extends Controller
             "interventions" => $interventions,
             "edition_id" => $editionId,
             "notes" => $notes,
-            "groupNotes" => $groupNotes
+            "groupNotes" => $groupNotes,
+            "groupInterventions" => $groupInterventions
         ]);
     }
 
@@ -107,6 +118,37 @@ class InterventionsController extends Controller
         }
 
         return $interventions;
+    }
+
+    public function sortGroupInterventions($groupInterventions)
+    {
+        $groupInterventionsActive = [];
+        $groupInterventionsClosed = [];
+
+        if ($groupInterventions != []) {
+            if ($groupInterventions->where('status', '<', '3')->first() != null) {
+                $groupInterventionsActive = $groupInterventions->where('status', '<', '3')->sortBy('end_day');
+            } else {
+                $groupInterventionsActive = [];
+            }
+
+            if ($groupInterventions->where('status', '>', '2')->first() != null) {
+                $groupInterventionsClosed = $groupInterventions->where('status', '>', '2')->sortBy('status');
+            } else {
+                $groupInterventionsClosed = [];
+            }
+        }
+
+
+        if ($groupInterventionsActive == []) {
+            $groupInterventions = $groupInterventionsClosed;
+        } elseif ($groupInterventionsClosed == []) {
+            $groupInterventions = $groupInterventionsActive;
+        } else {
+            $groupInterventions = $groupInterventionsActive->merge($groupInterventionsClosed);
+        }
+
+        return $groupInterventions;
     }
 
     /**
