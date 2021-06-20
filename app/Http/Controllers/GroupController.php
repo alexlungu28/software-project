@@ -63,13 +63,13 @@ class GroupController extends Controller
     {
         $groupNotesGood = [];
         $groupNotes = NoteGroup::where('group_id', $id)->orderByDesc('week')->get();
-        foreach($groupNotes as $groupNote) {
+        foreach ($groupNotes as $groupNote) {
             array_push($groupNotesGood, $groupNote);
         }
         $groupInterventions = InterventionGroup::where('group_id', $id)->get();
         $groupInterventionNotes = [];
-        foreach($groupInterventions as $intervention) {
-            if(preg_match("/^(groupNote)\d+$/i", $intervention->reason)) {
+        foreach ($groupInterventions as $intervention) {
+            if (preg_match("/^(groupNote)\d+$/i", $intervention->reason)) {
                 $groupNote = NoteGroup::find(preg_replace('/[^0-9]/', '', $intervention->reason));
                 array_push($groupInterventionNotes, $groupNote);
             }
@@ -92,13 +92,13 @@ class GroupController extends Controller
     {
         $notesGood = [];
         $notes = Note::where('group_id', $id)->orderByDesc('week')->get();
-        foreach($notes as $note) {
+        foreach ($notes as $note) {
             array_push($notesGood, $note);
         }
         $interventions = Intervention::where('group_id', $id)->get();
         $interventionNotes = [];
-        foreach($interventions as $intervention) {
-            if(preg_match("/^(note)\d+$/i", $intervention->reason)) {
+        foreach ($interventions as $intervention) {
+            if (preg_match("/^(note)\d+$/i", $intervention->reason)) {
                 $note = Note::find(preg_replace('/[^0-9]/', '', $intervention->reason));
                 array_push($interventionNotes, $note);
             }

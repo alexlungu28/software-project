@@ -97,12 +97,12 @@ class InterventionsController extends Controller
     {
 
         $groupNotesGood = [];
-        foreach($groupNotes as $groupNote) {
+        foreach ($groupNotes as $groupNote) {
             array_push($groupNotesGood, $groupNote);
         }
         $groupInterventionNotes = [];
-        foreach($groupInterventions as $intervention) {
-            if(preg_match("/^(groupNote)\d+$/i", $intervention->reason)) {
+        foreach ($groupInterventions as $intervention) {
+            if (preg_match("/^(groupNote)\d+$/i", $intervention->reason)) {
                 $groupNote = NoteGroup::find(preg_replace('/[^0-9]/', '', $intervention->reason));
                 array_push($groupInterventionNotes, $groupNote);
             }
@@ -124,12 +124,12 @@ class InterventionsController extends Controller
     public function getNotesNoInterventions($notes, $interventions)
     {
         $notesGood = [];
-        foreach($notes as $note) {
+        foreach ($notes as $note) {
             array_push($notesGood, $note);
         }
         $interventionNotes = [];
-        foreach($interventions as $intervention) {
-            if(preg_match("/^(note)\d+$/i", $intervention->reason)) {
+        foreach ($interventions as $intervention) {
+            if (preg_match("/^(note)\d+$/i", $intervention->reason)) {
                 $note = Note::find(preg_replace('/[^0-9]/', '', $intervention->reason));
                 array_push($interventionNotes, $note);
             }
