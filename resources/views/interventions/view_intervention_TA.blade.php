@@ -35,7 +35,7 @@
                                                                    display: -webkit-box;
                                                                    -webkit-line-clamp: 5; /* number of lines to show */
                                                                    -webkit-box-orient: vertical;">
-                                    {{$intervention->action}}
+                                    {{$intervention->reason}}
                                 </div>
                             </h4>
 

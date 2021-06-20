@@ -8,7 +8,6 @@
 
 @section('content')
 
-
     @php
     $user =auth()->user();
     $userId = $user->id;
@@ -89,7 +88,7 @@
     <div class="content" style="display: flex">
         <div class="container-fluid">
             <button type="submit" name="update" class="btn btn-dark rounded-pill" onclick="window.location='{{ route('groups', ['edition_id'=>$edition_id]) }}'">Back!</button>
-
+            <h3>{{$group->group_name}}</h3>
             <div class="row">
                 @for($w=1; $w<=10; $w++)
                 <div class="col-lg-1 col-md-3 col-sm-6">
@@ -162,8 +161,36 @@
                 </div>
             </div>
 
-                @include ('/interventions/weeks_problem_cases_subview')
-                @include ('/interventions/weeks_interventions_subview')
+
+            <div class="container-fluid">
+            <ul class="nav nav-pills " id="problemsInterventions" role="tablist">
+
+                    <li  style="margin:0 2px" class="nav-item">
+                        <a class="nav-link active" id="pills-individual-tab" data-toggle="pill" href="#individualProblemsInterventions" role="tab" aria-controls="individualProblemsInterventions" aria-selected="false">Individual Problem Cases/ Interventions</a>
+                    </li>
+
+                    <li  style="margin:0 2px" class="nav-item">
+                        <a class="nav-link" id="pills-group-tab" data-toggle="pill" href="#groupProblemsInterventions" role="tab" aria-controls="groupProblemsInterventions" aria-selected="false">Group Problem Cases/ Interventions</a>
+                    </li>
+                </ul>
+
+                <div class="tab-content" id="pills-problemsInterventionsContent">
+                    <div class="tab-pane fade show active" id="individualProblemsInterventions" role="tabpanel" aria-labelledby="pills-individual-tab">
+                        <div class="row">
+                            @include ('/interventions/weeks_problem_cases_subview')
+                            @include ('/interventions/weeks_interventions_subview')
+                        </div>
+                    </div>
+
+                    <div class="tab-pane fade show" id="groupProblemsInterventions" role="tabpanel" aria-labelledby="pills-group-tab">
+                        <div class="row">
+                            @include ('/group_interventions/weeks_group_problem_cases_subview')
+                            @include ('/group_interventions/weeks_group_interventions_subview')
+                        </div>
+                    </div>
+
+                </div>
+            </div>
 
             </div>
         </div>
@@ -316,20 +343,38 @@
                                 </div>
                             </div>
 
-                            <div class="row">
 
-                            @include ('/interventions/weeks_problem_cases_subview_TA')
-                            @include ('/interventions/weeks_interventions_subview_TA')
+                            <div class="container-fluid">
+                                <ul class="nav nav-pills " id="problemsInterventionsTA" role="tablist">
 
+                                    <li  style="margin:0 2px" class="nav-item">
+                                        <a class="nav-link active" id="pills-individualTA-tab" data-toggle="pill" href="#individualProblemsInterventionsTA" role="tab" aria-controls="individualProblemsInterventionsTA" aria-selected="false">Individual Problem Cases/ Interventions</a>
+                                    </li>
+
+                                    <li  style="margin:0 2px" class="nav-item">
+                                        <a class="nav-link" id="pills-groupTA-tab" data-toggle="pill" href="#groupProblemsInterventionsTA" role="tab" aria-controls="groupProblemsInterventionsTA" aria-selected="false">Group Problem Cases/ Interventions</a>
+                                    </li>
+                                </ul>
+
+                                <div class="tab-content" id="pills-problemsInterventionsTAContent">
+                                    <div class="tab-pane fade show active" id="individualProblemsInterventionsTA" role="tabpanel" aria-labelledby="pills-individualTA-tab">
+                                        <div class="row">
+                                            @include ('/interventions/weeks_problem_cases_subview_TA')
+                                            @include ('/interventions/weeks_interventions_subview_TA')
+                                        </div>
+                                    </div>
+
+                                    <div class="tab-pane fade show" id="groupProblemsInterventionsTA" role="tabpanel" aria-labelledby="pills-groupTA-tab">
+                                        <div class="row">
+                                            @include ('/group_interventions/weeks_group_problem_cases_subview_TA')
+                                            @include ('/group_interventions/weeks_group_interventions_subview_TA')
+                                        </div>
+                                    </div>
+
+                                </div>
                             </div>
-
-
-                        </div>
+                    </div>
                     </div>
     @endif
-
-
-
-
 
 @endsection

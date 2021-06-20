@@ -69,21 +69,76 @@ class InterventionsController extends Controller
         }
 
         $groupInterventions = $this->sortGroupInterventions($groupInterventions);
-
         $interventions = $this->sortIndividualInterventions($interventions);
 
-
-
-        //$interventions = $interventionsActive->concat($interventionsClosed);
+        $notesNoInterventions = $this->getNotesNoInterventions($notes, $interventions);
+        $groupNotesNoInterventions = $this->getGroupNotesNoInterventions($groupNotes, $groupInterventions);
 
         return view('interventions', [
             "interventions" => $interventions,
             "edition_id" => $editionId,
             "notes" => $notes,
             "groupNotes" => $groupNotes,
-            "groupInterventions" => $groupInterventions
+            "groupInterventions" => $groupInterventions,
+            "notesNoInterventions" => $notesNoInterventions,
+            "groupNotesNoInterventions" => $groupNotesNoInterventions
         ]);
     }
+
+    /**
+     * Function that returns the list of group notes that
+     * do not have interventions related to them.
+     * This is needed in the 'problem cases' subview.
+     * @param $id group_id
+     * @return array
+     *
+     */
+    public function getGroupNotesNoInterventions($groupNotes, $groupInterventions)
+    {
+
+        $groupNotesGood = [];
+        foreach($groupNotes as $groupNote) {
+            array_push($groupNotesGood, $groupNote);
+        }
+        $groupInterventionNotes = [];
+        foreach($groupInterventions as $intervention) {
+            if(preg_match("/^(groupNote)\d+$/i", $intervention->reason)) {
+                $groupNote = NoteGroup::find(preg_replace('/[^0-9]/', '', $intervention->reason));
+                array_push($groupInterventionNotes, $groupNote);
+            }
+        }
+        $groupNotesNoInterventions = array_diff($groupNotesGood, $groupInterventionNotes);
+
+        return $groupNotesNoInterventions;
+    }
+
+
+    /**
+     * Function that returns the list of individual notes that
+     * do not have interventions related to them.
+     * This is needed in the 'problem cases' subview.
+     * @param $edition_id edition_id
+     * @return list of notes that do not have related interventions yet.
+     *
+     */
+    public function getNotesNoInterventions($notes, $interventions)
+    {
+        $notesGood = [];
+        foreach($notes as $note) {
+            array_push($notesGood, $note);
+        }
+        $interventionNotes = [];
+        foreach($interventions as $intervention) {
+            if(preg_match("/^(note)\d+$/i", $intervention->reason)) {
+                $note = Note::find(preg_replace('/[^0-9]/', '', $intervention->reason));
+                array_push($interventionNotes, $note);
+            }
+        }
+        $notesNoInterventions = array_diff($notesGood, $interventionNotes);
+
+        return $notesNoInterventions;
+    }
+
 
     /**
      * sort active interventions by end date,
@@ -152,36 +207,6 @@ class InterventionsController extends Controller
     }
 
     /**
-     * Controller for editing interventions.
-     * The reason, action, and starting and ending dates can be changed.
-     *
-     * @param Request $request
-     * @param $interventionId
-     * @return RedirectResponse
-     */
-    public function editIntervention(Request $request, $interventionId)
-    {
-        $intervention          = Intervention::find($interventionId);
-
-        //if the reason is of the format 'note\d', then the request will be empty,
-        // so we should make sure the reason it is not updated with an empty string.
-        if (preg_match("/^(note)\d+$/i", $intervention->reason) == false) {
-            $intervention->reason = $request->get('editReason');
-        }
-
-        $intervention->action = $request->get('editAction');
-        $intervention->start_day = $request->input('editStart'. $interventionId);
-        $intervention->end_day = $request->input('editEnd' . $interventionId);
-        $intervention->visible_ta = $request->get('editVisibility' .$interventionId);
-
-     //   return dd($request);
-
-        $intervention->save();
-
-        return back();
-    }
-
-    /**
      * Controller for creating interventions.
      * The request has the userId, reason, action, and starting and ending dates.
      *
@@ -237,6 +262,36 @@ class InterventionsController extends Controller
         $intervention->end_day = $request->input('createEndNote' . $noteId);
         $intervention->status = 1;
         $intervention->visible_ta = 1; //visible by default
+
+        $intervention->save();
+
+        return back();
+    }
+
+    /**
+     * Controller for editing interventions.
+     * The reason, action, and starting and ending dates can be changed.
+     *
+     * @param Request $request
+     * @param $interventionId
+     * @return RedirectResponse
+     */
+    public function editIntervention(Request $request, $interventionId)
+    {
+        $intervention          = Intervention::find($interventionId);
+
+        //if the reason is of the format 'note\d', then the request will be empty,
+        // so we should make sure the reason it is not updated with an empty string.
+        if (preg_match("/^(note)\d+$/i", $intervention->reason) == false) {
+            $intervention->reason = $request->get('editReason');
+        }
+
+        $intervention->action = $request->get('editAction');
+        $intervention->start_day = $request->input('editStart'. $interventionId);
+        $intervention->end_day = $request->input('editEnd' . $interventionId);
+        $intervention->visible_ta = $request->get('editVisibility' .$interventionId);
+
+        //   return dd($request);
 
         $intervention->save();
 
