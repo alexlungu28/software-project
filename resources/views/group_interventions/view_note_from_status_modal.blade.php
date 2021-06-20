@@ -1,5 +1,5 @@
-<div class="tab-content" id="pills-edit">
-    <div class="tab-pane fade show" id={{"groupNoteIntervEdit" . $note->id}} role="tabpanel" aria-labelledby="pills-group-note-tab">
+<div class="tab-content" id="pills-statusNote">
+    <div class="tab-pane fade show" id={{"noteStatus" . $note->id}} role="tabpanel" aria-labelledby="pills-noteStatus-tab">
         <h4 ><b>Problematic Note</b></h4>
         <div class="form-group">
             <label for="name">Week</label>
@@ -8,19 +8,19 @@
 
         <div class="form-group">
             @if($note->problem_signal == 1)
-                <button class="btn btn-success rounded-pill pointer-event-none" disabled>All good!</button>
+                <button class="btn btn-success rounded-pill" cursor="default" >All good!</button>
             @elseif($note->problem_signal == 2)
-                <button class="btn btn-warning rounded-pill pointer-event-none" disabled>Warning!</button>
+                <button class="btn btn-warning rounded-pill" cursor="default" >Warning!</button>
             @elseif($note->problem_signal == 3)
-                <button class="btn btn-danger rounded-pill pointer-event-none" disabled>Problematic!</button>
+                <button class="btn btn-danger rounded-pill" cursor="default" >Problematic!</button>
             @else
                 {{$problemSignal = " "}}
             @endif
         </div>
 
-
         <div class="form-group">
             <label for="viewReason">Note</label>
+
                 <div style="overflow-x: hidden; overflow-y:auto;
                                                                    text-overflow: clip;
                                                                    display: -webkit-box;
@@ -28,18 +28,15 @@
                                                                    -webkit-box-orient: vertical;">
                     {{$note->note}}
                 </div>
-
         </div>
 
-
-
-        <button type="button" class="btn btn-default btn-block" id="pills-hide-group-tab" data-toggle="pill" href={{"#hideGroupNote" . $note->id}} role="tab" aria-controls="active" aria-selected="false">Hide Note</button>
+        <button type="button" class="btn btn-outline-success btn-block" id="pills-hideNoteStatus-tab" data-toggle="pill" href={{"#hideNoteStatus" . $note->id}} role="tab" aria-controls="active" aria-selected="false">Hide Note</button>
 
     </div>
 
-    <div class="tab-pane fade show active" id={{"hideGroupNote" . $note->id}} role="tabpanel" aria-labelledby="pills-hide-group-tab">
+    <div class="tab-pane fade show active" id={{"hideNoteStatus" . $note->id}} role="tabpanel" aria-labelledby="pills-hideNoteStatus-tab">
         <div>
-            <button type="button" class="btn btn-default" id="pills-group-note-tab" data-toggle="pill" href={{"#groupNoteIntervEdit" . $note->id}} role="tab" aria-controls="active" aria-selected="false">Group Note</button>
+        <button type="button" class="btn btn-default" id="pills-note-tab" data-toggle="pill" href={{"#noteStatus" . $note->id}} role="tab" aria-controls="active" aria-selected="false">Note</button>
         </div>
-    </div>
+        </div>
 </div>

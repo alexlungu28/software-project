@@ -18,15 +18,12 @@
 
                         <div class="form-group">
                             <label>Reason</label>
-
                             @if(preg_match("/^(groupNote)\d+$/i", $intervention->reason))
                                 @php
                                     $note = App\Models\NoteGroup::find(preg_replace('/[^0-9]/', '', $intervention->reason));
                                 @endphp
-
-{{--                                @include('/group_interventions/view_note_from_status_modal')--}}
+                               @include('/group_interventions/view_note_from_status_modal')
                             @else
-
                                     <div style="overflow-x: hidden; overflow-y:auto;
                                                                    text-overflow: clip;
                                                                    display: -webkit-box;
@@ -34,8 +31,6 @@
                                                                    -webkit-box-orient: vertical;">
                                         {{$intervention->reason}}
                                     </div>
-
-
                             @endif
                         </div>
 
@@ -49,7 +44,7 @@
                                                                    -webkit-box-orient: vertical;">
                                     {{$intervention->action}}
                                 </div>
-
+                        </div>
 
                         <div class="form-group">
                             <label>Date</label>
@@ -72,7 +67,7 @@
 
 
                         <div class="form-group">
-                            <label for="note">Status Note</label>
+                            <label>Status Note</label>
                             <h4>
                                 <div style="overflow-x: hidden; overflow-y:auto;
                                                                    text-overflow: clip;
@@ -122,6 +117,7 @@
                                         <input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
                                         <label>Note</label>
                                         <textarea type="text" class="form-control" id="active_group_note" name="active_group_note" rows="4" value="">{{$intervention->status_note}}</textarea>
+
                                         <button type="submit" class="btn btn-success">Change Status</button>
                                     </form>
                                 </div>

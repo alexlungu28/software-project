@@ -47,12 +47,7 @@
                             <label for="createEnd">Ending</label>
                             <input type='date'  data-date-format="DD-MM-YYYY" class="form-control" id='{{"createEndGroupNote" . $note->id}}' name="{{"createEndGroupNote" . $note->id}}" value="" required/>
                         </div>
-
-
                     </div>
-
-
-
 
                     <div class="modal-footer">
                         <button type="button" id="close" class="btn btn-default pull-left" data-dismiss="modal">Close</button>

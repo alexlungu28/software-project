@@ -8,8 +8,6 @@
 
             </div>
 
-
-
             <div class="modal-body">
                 <form id={{"deleteGroupIntervention" . $intervention->id}} method="post" value = "<?php echo csrf_token(); ?>" action="{{action('App\Http\Controllers\GroupInterventionsController@deleteGroupIntervention',$intervention->id)}}">
                     <input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">

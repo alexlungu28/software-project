@@ -18,9 +18,6 @@
                         <!-- (Optional) Latest compiled and minified JavaScript translation files -->
                         <script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/js/i18n/defaults-*.min.js"></script>
 
-
-
-
                         <div class="form-group" >
                             <label for="group">Group</label>
                             <select class="selectpicker" data-live-search="true" name="createGroup" id="createGroup" >
@@ -54,11 +51,7 @@
                             <label for="createGroupEnd">Ending</label>
                             <input type='date' class="form-control" id='{{"createGroupEnd" . $edition_id}}' name="{{"createGroupEnd" . $edition_id}}" value="" required/>
                         </div>
-
-
                     </div>
-
-
 
 
                     <div class="modal-footer">

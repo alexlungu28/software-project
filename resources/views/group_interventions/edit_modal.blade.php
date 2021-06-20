@@ -8,8 +8,6 @@
 
             </div>
 
-
-
             <div class="modal-body">
                 <form id="{{"editGroupIntervention" . $intervention->id}}" method="post" value = "<?php echo csrf_token(); ?>" action="{{action('App\Http\Controllers\GroupInterventionsController@editGroupIntervention',$intervention->id)}}">
                     <input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
@@ -41,8 +39,7 @@
                                     //return dd($note);
                                 @endphp
 
-
-                                @include('/group_interventions/group_intervention_view_note_from_edit_modal')
+                                @include('/group_interventions/view_note_from_edit_modal')
                             @else
 
                                     <div style="overflow-x: hidden; overflow-y:auto;
@@ -52,10 +49,8 @@
                                                                    -webkit-box-orient: vertical;">
                                         <textarea type="text" class="form-control" id="editGroupReason" name="editGroupReason" rows="4" value="">{{$intervention->reason}}</textarea>
                                     </div>
-
                             @endif
                         </div>
-
 
                         <div class="form-group">
                             <label for="editGroupAction">Action</label>
@@ -67,16 +62,11 @@
                             <input type='date' class="form-control" id='{{"editGroupStart" . $intervention->id}}' name="{{"editGroupStart" . $intervention->id}}" value="{{$intervention->start_day}}" required/>
                         </div>
 
-
-
                         <div class="form-group">
                             <label for="editEnd">Ending</label>
                             <input type='date' class="form-control" id='{{"editGroupEnd" . $intervention->id}}' name="{{"editGroupEnd" . $intervention->id}}" value="{{$intervention->end_day}}" required/>
                         </div>
-
                     </div>
-
-
 
 
                     <div class="modal-footer">
