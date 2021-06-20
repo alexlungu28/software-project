@@ -36,19 +36,19 @@ class GroupController extends Controller
 
 
         $notesNoInterventions = $this->getNotesNoInterventions($id);
-        $groupNotesNoInterventions = $this->getGroupNotesNoInterventions($id);
+        $gNotesNoInterv = $this->getGroupNotesNoInterventions($id);
 
-        $groupInterventions = Group::find($id)->groupGroupInterventions->sortBy('end_day')->sortBy('status');
+        $gInterventions = Group::find($id)->groupGroupInterventions->sortBy('end_day')->sortBy('status');
         $interventions = Group::find($id)->groupIndividualInterventions->sortBy('end_day')->sortBy('status');
 
 
             return view('weeks', ['edition_id' => $editionId, 'group_id' => $id,
                 'group' => Group::find($id), 'users' => $usersFromGroup,
                 'gitanalyses' => $gitanalyses,
-                'groupNotesNoInterventions' => $groupNotesNoInterventions,
+                'groupNotesNoInterventions' => $gNotesNoInterv,
                 'notesNoInterventions' => $notesNoInterventions,
                 'interventions' => $interventions,
-                'groupInterventions' => $groupInterventions]);
+                'groupInterventions' => $gInterventions]);
     }
 
     /**
@@ -61,22 +61,22 @@ class GroupController extends Controller
      */
     public function getGroupNotesNoInterventions($id)
     {
-        $groupNotesGood = [];
-        $groupNotes = NoteGroup::where('group_id', $id)->orderByDesc('week')->get();
-        foreach ($groupNotes as $groupNote) {
-            array_push($groupNotesGood, $groupNote);
+        $gNotesGood = [];
+        $gNotes = NoteGroup::where('group_id', $id)->orderByDesc('week')->get();
+        foreach ($gNotes as $groupNote) {
+            array_push($gNotesGood, $groupNote);
         }
-        $groupInterventions = InterventionGroup::where('group_id', $id)->get();
-        $groupInterventionNotes = [];
-        foreach ($groupInterventions as $intervention) {
+        $gInterventions = InterventionGroup::where('group_id', $id)->get();
+        $gInterventionNotes = [];
+        foreach ($gInterventions as $intervention) {
             if (preg_match("/^(groupNote)\d+$/i", $intervention->reason)) {
-                $groupNote = NoteGroup::find(preg_replace('/[^0-9]/', '', $intervention->reason));
-                array_push($groupInterventionNotes, $groupNote);
+                $gNote = NoteGroup::find(preg_replace('/[^0-9]/', '', $intervention->reason));
+                array_push($gInterventionNotes, $groupNote);
             }
         }
-        $groupNotesNoInterventions = array_diff($groupNotesGood, $groupInterventionNotes);
+        $gNotesNoInterv = array_diff($gNotesGood, $gInterventionNotes);
 
-        return $groupNotesNoInterventions;
+        return $gNotesNoInterv;
     }
 
 

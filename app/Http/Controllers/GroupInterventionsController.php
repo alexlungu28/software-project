@@ -33,33 +33,33 @@ class GroupInterventionsController extends Controller
         //fetching the notes and interventions of the current course edition.
         //first, the groupIds of the current course edition are collected,
         // then the notes and interventions are directly selected from the database and passed to the view.
-        $groupIds = DB::table('groups')
-            ->select('groups.id')
-            ->where('groups.course_edition_id', '=', $editionId)
-            ->pluck('groups.id');
-        $groupNotes = [];
-        $groupInterventions = [];
-
-
-        if (GroupIntervention::where('group_id', '=', $groupId)->exists()) {
-            $groupInterventionsAux = GroupIntervention::where('group_id', $groupId)->get();
-            $groupInterventions = $groupInterventionsAux->merge($groupInterventions);
-        }
-
-        if (NoteGroup::where('problem_signal', '>', 1)->where('group_id', $groupId)->exists()) {
-            $groupNotesAux = NoteGroup::where('problem_signal', '>', 1)->where('group_id', $groupId)->get();
-            foreach ($groupNotesAux as $groupNote) {
-                array_push($groupNotes, $groupNote);
-            }
-        }
-
-        $groupInterventions = $this->sortGroupInterventions($groupInterventions);
-
-        //$interventions = $interventionsActive->concat($interventionsClosed);
-
-        return view('/group_interventions/group_interventions_all_tab', [
-            "groupInterventions" => $groupInterventions,
-        ]);
+//        $groupIds = DB::table('groups')
+//            ->select('groups.id')
+//            ->where('groups.course_edition_id', '=', $editionId)
+//            ->pluck('groups.id');
+//        $groupNotes = [];
+//        $groupInterventions = [];
+//
+//
+//        if (GroupIntervention::where('group_id', '=', $groupId)->exists()) {
+//            $groupInterventionsAux = GroupIntervention::where('group_id', $groupId)->get();
+//            $groupInterventions = $groupInterventionsAux->merge($groupInterventions);
+//        }
+//
+//        if (NoteGroup::where('problem_signal', '>', 1)->where('group_id', $groupId)->exists()) {
+//            $groupNotesAux = NoteGroup::where('problem_signal', '>', 1)->where('group_id', $groupId)->get();
+//            foreach ($groupNotesAux as $groupNote) {
+//                array_push($groupNotes, $groupNote);
+//            }
+//        }
+//
+//        $groupInterventions = $this->sortGroupInterventions($groupInterventions);
+//
+//        //$interventions = $interventionsActive->concat($interventionsClosed);
+//
+//        return view('/group_interventions/group_interventions_all_tab', [
+//            "groupInterventions" => $groupInterventions,
+//        ]);
     }
 
     /**
@@ -70,28 +70,28 @@ class GroupInterventionsController extends Controller
      */
     public function sortGroupInterventions($groupInterventions)
     {
-        $groupInterventionsActive = [];
-        $groupInterventionsClosed = [];
+        $gInterventionsActive = [];
+        $gInterventionsClosed = [];
         if ($groupInterventions != []) {
             if ($groupInterventions->where('status', '<', '3')->first() != null) {
-                $groupInterventionsActive = $groupInterventions->where('status', '<', '3')->sortBy('end_day');
+                $gInterventionsActive = $groupInterventions->where('status', '<', '3')->sortBy('end_day');
             } else {
-                $groupInterventionsActive = [];
+                $gInterventionsActive = [];
             }
 
             if ($groupInterventions->where('status', '>', '2')->first() != null) {
-                $groupInterventionsClosed = $groupInterventions->where('status', '>', '2')->sortBy('status');
+                $gInterventionsClosed = $groupInterventions->where('status', '>', '2')->sortBy('status');
             } else {
-                $groupInterventionsClosed = [];
+                $gInterventionsClosed = [];
             }
         }
 
-        if ($groupInterventionsActive == []) {
-            $groupInterventions = $groupInterventionsClosed;
-        } elseif ($groupInterventionsClosed == []) {
-            $groupInterventions = $groupInterventionsActive;
+        if ($gInterventionsActive == []) {
+            $groupInterventions = $gInterventionsClosed;
+        } elseif ($gInterventionsClosed == []) {
+            $groupInterventions = $gInterventionsActive;
         } else {
-            $groupInterventions = $groupInterventionsActive->merge($groupInterventionsClosed);
+            $groupInterventions = $gInterventionsActive->merge($gInterventionsClosed);
         }
 
         return $groupInterventions;
