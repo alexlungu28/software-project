@@ -14,6 +14,7 @@ use App\Http\Controllers\ReportImportController;
 use App\Http\Controllers\RubricController;
 use App\Http\Controllers\RubricDataController;
 use App\Http\Controllers\RubricEntryController;
+use App\Models\Group;
 use Illuminate\Support\Facades\Route;
 use App\Models\Rubric;
 
@@ -373,7 +374,8 @@ Route::post('/statusGroupSolved/{id}', [GroupInterventionsController::class, 'st
 
 
 
-
+Route::get('/userSummary/{courseUserId}', [GroupController::class, 'userSummary'])
+    ->name('userSummary')->middleware(['loggedIn']);
 
 
 

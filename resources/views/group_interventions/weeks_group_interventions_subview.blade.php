@@ -17,7 +17,7 @@
                             $groupInterventions are passed through the GroupController.
                              -->
                         @foreach($groupInterventions as $intervention)
-
+                            @if($intervention->visible_ta == 1 && $user -> role == 'TA')
                             <tr>
                                 <td>       <div style="overflow-x: hidden; overflow-y:auto;
                                                                    text-overflow: clip;
@@ -50,6 +50,7 @@
                                 </td>
 
                             </tr>
+                            @endif
                             @include ('/group_interventions/status_modal')
                         @endforeach
 

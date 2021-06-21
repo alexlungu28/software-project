@@ -107,28 +107,27 @@ if ($latestGitAnalyses != -1) {
                                             <th>Email</th>
                                             </thead>
                                             <tbody>
-                                            @foreach($users as $user)
-                                                @if(DB::table('course_edition_user')->where("user_id","=", $user->user_id)->where('role','=','student')->exists())
+                                            @foreach($users as $courseUser)
+                                                @if(DB::table('course_edition_user')->where("user_id","=", $courseUser->user_id)->where('role','=','student')->exists())
                                                     <tr>
+                                                        @php
+                                                            $user = App\Models\User::find($courseUser->user_id);
+                                                        @endphp
                                                         <td>
-                                                            {{DB::table('users')
-                                                                    ->where('id', '=', $user->user_id)
-                                                                    ->value('net_id')}}
+                                                            {{$user->net_id}}
                                                         </td>
                                                         <td>
-                                                            {{DB::table('users')
-                                                                    ->where('id', '=', $user->user_id)
-                                                                    ->value('last_name')}}
+                                                            {{$user->first_name}}
                                                         </td>
                                                         <td>
-                                                            {{DB::table('users')
-                                                                    ->where('id', '=', $user->user_id)
-                                                                    ->value('first_name')}}
+                                                            {{$user->last_name}}
                                                         </td>
                                                         <td>
-                                                            {{DB::table('users')
-                                                                    ->where('id', '=', $user->user_id)
-                                                                    ->value('email')}}
+                                                            {{$user->email}}
+                                                        </td>
+
+                                                        <td>
+                                                            <button type="submit" name="update" class="btn btn-dark rounded-pill" onclick="window.location='{{ route('userSummary', ['courseUserId'=>$courseUser->user_id]) }}'">Summary!</button>
                                                         </td>
                                                     </tr>
                                                 @endif

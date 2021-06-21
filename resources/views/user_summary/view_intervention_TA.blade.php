@@ -1,4 +1,4 @@
-<div class="modal fade" id="{{"viewInterventionTA" . $intervention->id}}">
+<div class="modal fade" id="{{"viewInterventionTASummary" . $intervention->id}}">
     <div class="modal-dialog">
         <div class="modal-content">
 
@@ -27,9 +27,16 @@
                                 $note = App\Models\Note::find(preg_replace('/[^0-9]/', '', $intervention->reason));
                             @endphp
 
-                            @include('/interventions/view_note_from_status_modal')
+                            <div style="overflow-x: hidden; overflow-y:auto;
+                                                                   text-overflow: clip;
+                                                                   display: -webkit-box;
+                                                                   -webkit-line-clamp: 5; /* number of lines to show */
+                                                                   -webkit-box-orient: vertical;">{{"The problematic note from week " . $note->week . ": " .
+                                $note->note}}
+                            </div>
+
                         @else
-                            <h4>
+
                                 <div style="overflow-x: hidden; overflow-y:auto;
                                                                    text-overflow: clip;
                                                                    display: -webkit-box;
@@ -37,14 +44,13 @@
                                                                    -webkit-box-orient: vertical;">
                                     {{$intervention->reason}}
                                 </div>
-                            </h4>
 
                         @endif
                     </div>
 
                     <div class="form-group">
                         <label>Action</label>
-                        <h4>
+
                             <div style="overflow-x: hidden; overflow-y:auto;
                                                                    text-overflow: clip;
                                                                    display: -webkit-box;
@@ -52,7 +58,6 @@
                                                                    -webkit-box-orient: vertical;">
                                 {{$intervention->action}}
                             </div>
-                        </h4>
 
                         <div class="form-group">
                             <label>Date</label>
@@ -76,7 +81,6 @@
 
                         <div class="form-group">
                             <label for="note">Status Note</label>
-                            <h4>
                                 <div style="overflow-x: hidden; overflow-y:auto;
                                                                    text-overflow: clip;
                                                                    display: -webkit-box;
@@ -84,7 +88,6 @@
                                                                    -webkit-box-orient: vertical;">
                                     {{$intervention->status_note}}
                                 </div>
-                            </h4>
                         </div>
 
 

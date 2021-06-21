@@ -2,12 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Attendance;
+use App\Models\CourseEditionUser;
 use App\Models\Group;
 use App\Models\Intervention;
 use App\Models\InterventionGroup;
 use App\Models\Note;
 use App\Models\NoteGroup;
 use App\Models\Rubric;
+use App\Models\User;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
@@ -15,6 +18,7 @@ use Illuminate\Contracts\View\View;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
+/** *  @SuppressWarnings(PHPMD) */
 class GroupController extends Controller
 {
     /**
@@ -49,6 +53,56 @@ class GroupController extends Controller
                 'notesNoInterventions' => $notesNoInterventions,
                 'interventions' => $interventions,
                 'groupInterventions' => $gInterventions]);
+    }
+
+    public function userSummary($courseUserId)
+    {
+        $courseUser =CourseEditionUser::find($courseUserId);
+        $editionId = $courseUser->course_edition_id;
+        $userId = $courseUser->user_id;
+
+        $userLoggedIn =auth()->user();
+        $userLoggedInId = $userLoggedIn->id;
+        $role = CourseEditionUser::where('user_id', '=', $userLoggedInId)
+                                    ->where('course_edition_id', '=', $editionId)
+                                    ->first()->role;
+
+
+        $user = User::find($userId);
+
+        $groupId = DB::table('group_user')
+            ->join('course_edition_user', 'group_user.user_id', '=', 'course_edition_user.user_id')
+            ->select('group_user.group_id')
+            ->where('group_user.user_id', '=', $userId)
+            ->where('course_edition_user.course_edition_id', '=', $editionId)
+            ->pluck('group_user.group_id')->first();
+
+
+        $attendances = Attendance::where('user_id', '=', $userId)
+                                    ->where('group_id', '=', $groupId)
+                                    ->orderBy('week')->get();
+
+        $notes = Note::where('user_id', '=', $userId)
+                        ->where('group_id', '=', $groupId)
+                        ->orderBy('week')->get();
+
+        $groupNotes = NoteGroup::where('group_id', '=', $groupId)
+                                    ->orderBy('week')->get();
+
+        $interventions = Intervention::where('user_id', '=', $userId)
+                                        ->where('group_id', '=', $groupId)
+                                        ->orderBy('end_day')->get();
+
+        $groupInterventions = InterventionGroup::where('group_id', '=', $groupId)
+                                                    ->orderBy('end_day')->get();
+
+
+        return view('user_summary', [
+                'attendances' => $attendances, 'user'=> $user, 'edition_id' => $editionId,
+                'notes' => $notes, 'groupNotes'=>$groupNotes,
+                'interventions' => $interventions, 'groupInterventions' => $groupInterventions,
+                'role' => $role
+            ]);
     }
 
     /**
