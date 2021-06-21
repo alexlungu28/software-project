@@ -25,9 +25,9 @@
                             <table class="table table-hover"  style="table-layout:fixed; overflow:auto">
                                 <thead>
                                 <tr>
-                                    <th style="width: 15%">Week</th>
-                                    <th style="width: 35%">Status</th>
-                                    <th style="width: 50%">Reason (if late or absent)</th>
+                                    <th style="width: 15%; text-align: center">Week</th>
+                                    <th style="width: 25%; text-align: center">Status</th>
+                                    <th style="width: 60%; text-align: center">Reason (if late or absent)</th>
 
                                 </tr>
                                 </thead>
@@ -41,17 +41,17 @@
 
                                     <tr>
 
-                                        <td>
+                                        <td style="text-align: center;">
                                             {{$at->week}}
                                         </td>
 
                                         <td>
                                             @if($at->status == 1)
-                                                <button class="btn btn-info rounded-pill" cursor="default" >Present</button>
+                                                <button style="width:100%" class="btn btn-success rounded-pill" cursor="default" >Present</button>
                                             @elseif($at->status == 2)
-                                                <button class="btn btn-warning rounded-pill" cursor="default" >Late</button>
+                                                <button style="width:100%" class="btn btn-warning rounded-pill" cursor="default" >Late</button>
                                             @elseif($at->status == 3)
-                                                <button class="btn btn-danger rounded-pill" cursor="default" >Absent</button>
+                                                <button style="width:100%" class="btn btn-danger rounded-pill" cursor="default" >Absent</button>
                                             @else
                                                 {{" "}}
                                             @endif
