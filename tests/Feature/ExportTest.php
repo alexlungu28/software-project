@@ -173,7 +173,6 @@ class ExportTest extends TestCase
         Excel::assertDownloaded('rubrics.csv', function(RubricsExport $export) {
             // Assert that the correct export is downloaded.
             $this->assertEquals([
-                'CourseEdition',
                 'Group',
                 'RubricName',
                 'Week',

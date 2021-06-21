@@ -31,8 +31,6 @@ class RubricsExport implements FromCollection, WithHeadings, WithStrictNullCompa
     public function headings(): array
     {
         return [
-            //from course_editions table
-            'CourseEdition',
             //from groups table
             'Group',
             //from rubrics table
@@ -57,12 +55,6 @@ class RubricsExport implements FromCollection, WithHeadings, WithStrictNullCompa
         foreach ($allRubrics as $rubric) {
             $rubric = $rubric
                 ->join(
-                    'course_editions',
-                    'rubrics.course_edition_id',
-                    '=',
-                    'course_editions.id'
-                )
-                ->join(
                     'rubric_entries',
                     'rubrics.id',
                     '=',
@@ -83,7 +75,6 @@ class RubricsExport implements FromCollection, WithHeadings, WithStrictNullCompa
                 ->whereRaw('rubric_entries.distance = rubric_data.row_number')
                 ->where('rubric_entries.is_row', '=', '1')
                 ->select(
-                    'course_editions.year',
                     'groups.group_name',
                     'rubrics.name',
                     'rubrics.week',
