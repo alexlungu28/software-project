@@ -260,7 +260,7 @@ Route::get('/attendance/{edition_id}', [AttendanceController::class, 'index'])
 
 //Route::get('/attendance/{id}/{week}/{present}', [AttendanceController::class, 'create']);
 
-Route::post('/attendanceupdate/{id}', [AttendanceController::class, 'update'])
+Route::post('/attendanceupdate/{attendance_id}', [AttendanceController::class, 'update'])
     ->name('attendanceupdate')->middleware(['loggedIn']);
 
 Route::get('/attend/{group_id}/{week_id}', [AttendanceController::class, 'weekGroup'])
@@ -271,10 +271,10 @@ Route::get('/notes/{edition_id}', [NotesController::class, 'index'])
     ->name('allNotes')->middleware(['loggedIn', 'role:lecturer,HeadTA,TA']);
 
 
-Route::post('/noteUpdate/{id}', [NotesController::class, 'update'])
+Route::post('/noteUpdate/{note_id}', [NotesController::class, 'update'])
     ->name('noteUpdate')->middleware(['loggedIn']);
 
-Route::post('/groupNoteUpdate/{id}', [NotesController::class, 'groupNoteUpdate'])
+Route::post('/groupNoteUpdate/{group_note_id}', [NotesController::class, 'groupNoteUpdate'])
     ->name('groupNoteUpdate')->middleware(['loggedIn']);
 
 Route::get('/note/{group_id}/{week_id}', [NotesController::class, 'weekGroup'])
@@ -287,57 +287,57 @@ Route::get('/note/{group_id}/{week_id}', [NotesController::class, 'weekGroup'])
 Route::get('/interventions/{edition_id}', [InterventionsController::class, 'showAllInterventions'])
     ->name('interventions')->middleware(['loggedIn', 'role:lecturer,HeadTA']);
 
-Route::post('/editIntervention/{id}', [InterventionsController::class, 'editIntervention'])
+Route::post('/editIntervention/{intervention_id}', [InterventionsController::class, 'editIntervention'])
     ->name('editIntervention')->middleware(['loggedIn']);
 
-Route::post('/createIntervention/{id}', [InterventionsController::class, 'createIntervention'])
+Route::post('/createIntervention/{edition_id}', [InterventionsController::class, 'createIntervention'])
     ->name('createIntervention')->middleware(['loggedIn']);
 
-Route::post('/createInterventionNote/{id}', [InterventionsController::class, 'createInterventionNote'])
+Route::post('/createInterventionNote/{note_id}', [InterventionsController::class, 'createInterventionNote'])
     ->name('createInterventionNote')->middleware(['loggedIn']);
 
-Route::post('/deleteIntervention/{id}', [InterventionsController::class, 'deleteIntervention'])
+Route::post('/deleteIntervention/{intervention_id}', [InterventionsController::class, 'deleteIntervention'])
     ->name('deleteIntervention')->middleware(['loggedIn']);
 
-Route::post('/statusActive/{id}', [InterventionsController::class, 'statusActive'])
+Route::post('/statusActive/{intervention_id}', [InterventionsController::class, 'statusActive'])
     ->name('statusActive')->middleware(['loggedIn']);
 
-Route::post('/statusExtend/{id}', [InterventionsController::class, 'statusExtend'])
+Route::post('/statusExtend/{intervention_id}', [InterventionsController::class, 'statusExtend'])
     ->name('statusExtend')->middleware(['loggedIn']);
 
-Route::post('/statusUnsolved/{id}', [InterventionsController::class, 'statusUnsolved'])
+Route::post('/statusUnsolved/{intervention_id}', [InterventionsController::class, 'statusUnsolved'])
     ->name('statusUnsolved')->middleware(['loggedIn']);
 
-Route::post('/statusSolved/{id}', [InterventionsController::class, 'statusSolved'])
+Route::post('/statusSolved/{intervention_id}', [InterventionsController::class, 'statusSolved'])
     ->name('statusSolved')->middleware(['loggedIn']);
 
 
 //Group Interventions
-Route::post('/createGroupInterventionNote/{id}', [GroupInterventionsController::class, 'createGroupInterventionNote'])
+Route::post('/createGroupInterventionNote/{group_note_id}', [GroupInterventionsController::class, 'createGroupInterventionNote'])
     ->name('createGroupInterventionNote')->middleware(['loggedIn']);
 
-Route::post('/createGroupIntervention/{id}', [GroupInterventionsController::class, 'createGroupIntervention'])
+Route::post('/createGroupIntervention/{edition_id}', [GroupInterventionsController::class, 'createGroupIntervention'])
     ->name('createGroupIntervention')->middleware(['loggedIn']);
 
 Route::get('/groupInterventions/{$edition_id}', [GroupInterventionsController::class, 'showAllGroupInterventions'])
     ->name('groupInterventions')->middleware(['loggedIn', 'role:lecturer,HeadTA']);
 
-Route::post('/editGroupIntervention/{id}', [GroupInterventionsController::class, 'editGroupIntervention'])
+Route::post('/editGroupIntervention/{intervention_group_id}', [GroupInterventionsController::class, 'editGroupIntervention'])
     ->name('editGroupIntervention')->middleware(['loggedIn']);
 
-Route::post('/deleteGroupIntervention/{id}', [GroupInterventionsController::class, 'deleteGroupIntervention'])
+Route::post('/deleteGroupIntervention/{intervention_group_id}', [GroupInterventionsController::class, 'deleteGroupIntervention'])
     ->name('deleteGroupIntervention')->middleware(['loggedIn']);
 
-Route::post('/statusGroupActive/{id}', [GroupInterventionsController::class, 'statusGroupActive'])
+Route::post('/statusGroupActive/{intervention_group_id}', [GroupInterventionsController::class, 'statusGroupActive'])
     ->name('statusGroupActive')->middleware(['loggedIn']);
 
-Route::post('/statusGroupExtend/{id}', [GroupInterventionsController::class, 'statusGroupExtend'])
+Route::post('/statusGroupExtend/{intervention_group_id}', [GroupInterventionsController::class, 'statusGroupExtend'])
     ->name('statusGroupExtend')->middleware(['loggedIn']);
 
-Route::post('/statusGroupUnsolved/{id}', [GroupInterventionsController::class, 'statusGroupUnsolved'])
+Route::post('/statusGroupUnsolved/{intervention_group_id}', [GroupInterventionsController::class, 'statusGroupUnsolved'])
     ->name('statusGroupUnsolved')->middleware(['loggedIn']);
 
-Route::post('/statusGroupSolved/{id}', [GroupInterventionsController::class, 'statusGroupSolved'])
+Route::post('/statusGroupSolved/{intervention_group_id}', [GroupInterventionsController::class, 'statusGroupSolved'])
     ->name('statusGroupSolved')->middleware(['loggedIn']);
 
 

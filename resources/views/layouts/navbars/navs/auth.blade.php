@@ -24,7 +24,9 @@
             <i class="material-icons">notifications</i>
               @if(auth()->check())
                   @if(auth()->user() != null)
-                      <span class="notification">{{count(auth()->user()->unreadNotifications)}}</span>
+                      @if(count(auth()->user()->unreadNotifications) > 0)
+                          <span class="notification">{{count(auth()->user()->unreadNotifications)}}</span>
+                      @endif
                   @endif
               @endif
             <p class="d-lg-none d-md-block">
