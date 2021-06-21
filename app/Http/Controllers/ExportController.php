@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Exports\GradesExport;
+use App\Exports\RubricsExport;
 use App\Exports\UsersExport;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
@@ -55,6 +56,6 @@ class ExportController extends Controller
      */
     public function exportRubrics($editionId): BinaryFileResponse
     {
-        return Excel::download(new GradesExport($editionId), 'rubrics.csv');
+        return Excel::download(new RubricsExport($editionId), 'rubrics.csv');
     }
 }

@@ -6,8 +6,9 @@ use App\Models\Group;
 use Illuminate\Database\Eloquent\Collection;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\WithHeadings;
+use Maatwebsite\Excel\Concerns\WithStrictNullComparison;
 
-class GradesExport implements FromCollection, WithHeadings
+class GradesExport implements FromCollection, WithHeadings, WithStrictNullComparison
 {
 
     private $editionId;
@@ -40,7 +41,7 @@ class GradesExport implements FromCollection, WithHeadings
     }
 
     /**
-     * Returns a CSV with all individual grades.
+     * Returns a CSV with all grades.
      *
      */
     public function collection()
