@@ -1,6 +1,7 @@
-<div class="tab-content" id="pills-tabContent">
-    <div class="tab-pane fade show" id={{"noteCreateInt" . $note->id}} role="tabpanel" aria-labelledby="pills-note-tab">
+<div class="tab-content" id="pills-groupNoteEdit">
+    <div class="tab-pane fade show" id={{"groupNoteEdit" . $note->id}} role="tabpanel" aria-labelledby="pills-groupNoteEdit-tab">
         <h4 ><b>Problematic Note</b></h4>
+
         <div class="form-group">
             <label for="name">Week</label>
             <h4 ><b>{{$note->week}}</b></h4>
@@ -8,20 +9,18 @@
 
         <div class="form-group">
             @if($note->problem_signal == 1)
-                <button class="btn btn-success rounded-pill" cursor="default" >All good!</button>
+                <button class="btn btn-success rounded-pill pointer-event-none" disabled>All good!</button>
             @elseif($note->problem_signal == 2)
-                <button class="btn btn-warning rounded-pill" cursor="default" >Warning!</button>
+                <button class="btn btn-warning rounded-pill pointer-event-none" disabled>Warning!</button>
             @elseif($note->problem_signal == 3)
-                <button class="btn btn-danger rounded-pill" cursor="default" >Problematic!</button>
+                <button class="btn btn-danger rounded-pill pointer-event-none" disabled>Problematic!</button>
             @else
                 {{$problemSignal = " "}}
             @endif
         </div>
 
-
         <div class="form-group">
             <label for="viewReason">Note</label>
-            <h4>
                 <div style="overflow-x: hidden; overflow-y:auto;
                                                                    text-overflow: clip;
                                                                    display: -webkit-box;
@@ -29,18 +28,15 @@
                                                                    -webkit-box-orient: vertical;">
                     {{$note->note}}
                 </div>
-            </h4>
         </div>
 
-
-
-        <button type="button" class="btn btn-outline-success btn-block" id="pills-hide-tab" data-toggle="pill" href={{"#hideCreate" . $note->id}} role="tab" aria-controls="active" aria-selected="false">Hide Note</button>
+        <button type="button" class="btn btn-default btn-block" id="pills-hide-group-tab" data-toggle="pill" href={{"#hideGroupNoteEdit" . $note->id}} role="tab" aria-controls="active" aria-selected="false">Hide Note</button>
 
     </div>
 
-    <div class="tab-pane fade show active" id={{"hideCreate" . $note->id}} role="tabpanel" aria-labelledby="pills-hide-tab">
+    <div class="tab-pane fade show active" id={{"hideGroupNoteEdit" . $note->id}} role="tabpanel" aria-labelledby="pills-hideGroupNoteEdit-tab">
         <div>
-            <button type="button" class="btn btn-default" id="pills-note-tab" data-toggle="pill" href={{"#noteCreateInt" . $note->id}} role="tab" aria-controls="active" aria-selected="false">Note</button>
+            <button type="button" class="btn btn-default" id="pills-groupNoteEdit-tab" data-toggle="pill" href={{"#groupNoteEdit" . $note->id}} role="tab" aria-controls="active" aria-selected="false">Group Note</button>
         </div>
     </div>
 </div>
