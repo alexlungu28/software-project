@@ -1,4 +1,4 @@
-<div class="modal fade" id="{{"viewNotee" . preg_replace('/[^0-9]/', '', $intervention->reason)}}">
+<div class="modal fade" id="{{"viewGroupNote" . preg_replace('/[^0-9]/', '', $intervention->reason)}}">
     <div class="modal-dialog">
 
         <div class="modal-content">
@@ -16,8 +16,6 @@
                     <div class="box-body">
 
                         <div class="form-group">
-                            <label for="name">Name</label>
-                            <h4 ><b>{{App\Models\User::find($note->user_id)->first_name . " " . App\Models\User::find($note->user_id)->last_name }}</b></h4>
                             <label for="name">Group</label>
                             <h4 ><b>{{App\Models\Group::find($note->group_id)->group_name}}</b></h4>
                             <label for="name">Week</label>
@@ -38,8 +36,14 @@
 
 
                         <div class="form-group">
-                            <label for="viewReason">Note</label>
-                            <h4>{{$note->note}}</h4>
+                            <label for="viewNote">Note</label>
+                            <div style="overflow-x: hidden; overflow-y:auto;
+                                                                   text-overflow: clip;
+                                                                   display: -webkit-box;
+                                                                   -webkit-line-clamp: 5; /* number of lines to show */
+                                                                   -webkit-box-orient: vertical;">
+                                {{$note->note}}
+                            </div>
                         </div>
 
 
@@ -52,7 +56,13 @@
 
                     <div class="modal-footer">
                         <button type="button" id="close" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
-
+                        <script type="text/javascript">
+                            $(window).on('load', function (e) {
+                                $('#close').on('click', function (e) {
+                                    $("#div").load(" #div > *");
+                                });
+                            });
+                        </script>
 
                     </div>
 

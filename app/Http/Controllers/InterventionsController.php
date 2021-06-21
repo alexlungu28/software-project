@@ -5,8 +5,10 @@ namespace App\Http\Controllers;
 use App\Models\CourseEditionUser;
 use App\Models\Group;
 use App\Models\GroupUser;
+use App\Models\InterventionGroup;
 use App\Models\Intervention;
 use App\Models\Note;
+use App\Models\NoteGroup;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
@@ -37,6 +39,9 @@ class InterventionsController extends Controller
             ->pluck('groups.id');
         $notes = [];
         $interventions = [];
+        $groupNotes = [];
+        $groupInterventions = [];
+
         foreach ($groupIds as $groupId) {
             if (Note::where('problem_signal', '>', 1)->where('group_id', $groupId)->exists()) {
                 $notesAux = Note::where('problem_signal', '>', 1)->where('group_id', $groupId)->get();
@@ -49,53 +54,168 @@ class InterventionsController extends Controller
                 $interventionsAux = Intervention::where('group_id', $groupId)->get();
                 $interventions = $interventionsAux->merge($interventions);
             }
+
+            if (InterventionGroup::where('group_id', '=', $groupId)->exists()) {
+                $gInterventionsAux = InterventionGroup::where('group_id', $groupId)->get();
+                $groupInterventions = $gInterventionsAux->merge($groupInterventions);
+            }
+
+            if (NoteGroup::where('problem_signal', '>', 1)->where('group_id', $groupId)->exists()) {
+                $groupNotesAux = NoteGroup::where('problem_signal', '>', 1)->where('group_id', $groupId)->get();
+                foreach ($groupNotesAux as $groupNote) {
+                    array_push($groupNotes, $groupNote);
+                }
+            }
         }
-        //sort active interventions by end date, and closed interventions by status (first unsolved, then solved)
-//        if($interventions->where('status', '<', '3')->first() != null)
-//            $interventionsActive = $interventions->where('status', '<', '3')->sortBy('end_day');
-//        else
-//            $interventionsActive = [];
-//
-//        if ($interventions->where('status', '>', '2')->first() != null)
-//            $interventionsClosed = $interventions->where('status', '>', '2')->sortBy('status');
-//        else
-//            $interventionsClosed = [];
-//
-//        $interventions = $interventionsActive->merge($interventionsClosed);
+
+        $groupInterventions = $this->sortGroupInterventions($groupInterventions);
+        $interventions = $this->sortIndividualInterventions($interventions);
+
+        $notesNoInterventions = $this->getNotesNoInterventions($notes, $interventions);
+        $gNotesNoInterv = $this->getGroupNotesNoInterventions($groupNotes, $groupInterventions);
 
         return view('interventions', [
             "interventions" => $interventions,
             "edition_id" => $editionId,
-            "notes" => $notes
+            "notes" => $notes,
+            "groupNotes" => $groupNotes,
+            "groupInterventions" => $groupInterventions,
+            "notesNoInterventions" => $notesNoInterventions,
+            "groupNotesNoInterventions" => $gNotesNoInterv
         ]);
     }
 
-    /**
-     * Controller for editing interventions.
-     * The reason, action, and starting and ending dates can be changed.
-     *
-     * @param Request $request
-     * @param $interventionId
-     * @return RedirectResponse
-     */
-    public function editIntervention(Request $request, $interventionId)
-    {
-        $intervention          = Intervention::find($interventionId);
 
-        //if the reason is of the format 'note\d', then the request will be empty,
-        // so we should make sure the reason it is not updated with an empty string.
-        if (preg_match("/^(note)\d+$/i", $intervention->reason) == false) {
-            $intervention->reason = $request->get('editReason');
+    /**
+     *
+     * Function that returns the list of group notes that
+     * do not have interventions related to them.
+     * This is needed in the 'problem cases' subview.
+     * @param $id group_id
+     * @return array
+     *
+     * @codeCoverageIgnore
+     */
+    public function getGroupNotesNoInterventions($groupNotes, $groupInterventions)
+    {
+
+        $groupNotesGood = [];
+        foreach ($groupNotes as $groupNote) {
+            array_push($groupNotesGood, $groupNote);
+        }
+        $gInterventionNotes = [];
+        foreach ($groupInterventions as $intervention) {
+            if (preg_match("/^(groupNote)\d+$/i", $intervention->reason)) {
+                $groupNote = NoteGroup::find(preg_replace('/[^0-9]/', '', $intervention->reason));
+                array_push($gInterventionNotes, $groupNote);
+            }
+        }
+        $gNotesNoInterv = array_diff($groupNotesGood, $gInterventionNotes);
+
+        return $gNotesNoInterv;
+    }
+
+
+    /**
+     * Function that returns the list of individual notes that
+     * do not have interventions related to them.
+     * This is needed in the 'problem cases' subview.
+     * @param $edition_id edition_id
+     * @return list of notes that do not have related interventions yet.
+     *
+     * @codeCoverageIgnore
+     */
+    public function getNotesNoInterventions($notes, $interventions)
+    {
+        $notesGood = [];
+        foreach ($notes as $note) {
+            array_push($notesGood, $note);
+        }
+        $interventionNotes = [];
+        foreach ($interventions as $intervention) {
+            if (preg_match("/^(note)\d+$/i", $intervention->reason)) {
+                $note = Note::find(preg_replace('/[^0-9]/', '', $intervention->reason));
+                array_push($interventionNotes, $note);
+            }
+        }
+        $notesNoInterventions = array_diff($notesGood, $interventionNotes);
+
+        return $notesNoInterventions;
+    }
+
+    /**
+     * sort active interventions by end date,
+     * and closed interventions by status (first unsolved, then solved)
+     * @return $interventons
+     *
+     * @codeCoverageIgnore
+     */
+    public function sortIndividualInterventions($interventions)
+    {
+        $interventionsActive = [];
+        $interventionsClosed = [];
+        if ($interventions != []) {
+            if ($interventions->where('status', '<', '3')->first() != null) {
+                $interventionsActive = $interventions->where('status', '<', '3')->sortBy('end_day');
+            } else {
+                $interventionsActive = [];
+            }
+
+            if ($interventions->where('status', '>', '2')->first() != null) {
+                $interventionsClosed = $interventions->where('status', '>', '2')->sortBy('status');
+            } else {
+                $interventionsClosed = [];
+            }
         }
 
-        $intervention->action = $request->get('editAction');
-        $intervention->start_day = $request->input('editStart'. $interventionId);
-        $intervention->end_day = $request->input('editEnd' . $interventionId);
+        if ($interventionsActive == []) {
+            $interventions = $interventionsClosed;
+        } elseif ($interventionsClosed == []) {
+            $interventions = $interventionsActive;
+        } else {
+            $interventions = $interventionsActive->merge($interventionsClosed);
+        }
 
-        $intervention->save();
-
-        return back();
+        return $interventions;
     }
+
+    /*
+     * Sort interventions: active and extended based on end_day,
+     * solved and unsolved based on status. (first unsolved, then solved).
+     *
+     * @codeCoverageIgnoreStart
+     */
+    public function sortGroupInterventions($groupInterventions)
+    {
+        $gInterventionsActive = [];
+        $gInterventionsClosed = [];
+
+        if ($groupInterventions != []) {
+            if ($groupInterventions->where('status', '<', '3')->first() != null) {
+                $gInterventionsActive = $groupInterventions->where('status', '<', '3')->sortBy('end_day');
+            } else {
+                $gInterventionsActive = [];
+            }
+
+            if ($groupInterventions->where('status', '>', '2')->first() != null) {
+                $gInterventionsClosed = $groupInterventions->where('status', '>', '2')->sortBy('status');
+            } else {
+                $gInterventionsClosed = [];
+            }
+        }
+
+        if ($gInterventionsActive == []) {
+            $groupInterventions = $gInterventionsClosed;
+        } elseif ($gInterventionsClosed == []) {
+            $groupInterventions = $gInterventionsActive;
+        } else {
+            $groupInterventions = $gInterventionsActive->merge($gInterventionsClosed);
+        }
+
+        return $groupInterventions;
+    }
+    //@codeCoverageIgnoreEnd
+
 
     /**
      * Controller for creating interventions.
@@ -126,6 +246,7 @@ class InterventionsController extends Controller
         $intervention->start_day = $request->input('createStart' . $editionId);
         $intervention->end_day = $request->input('createEnd' . $editionId);
         $intervention->status = 1; //active
+        $intervention->visible_ta = 1; //visible by default
 
         $intervention->save();
 
@@ -151,6 +272,37 @@ class InterventionsController extends Controller
         $intervention->start_day = $request->input('createStartNote' . $noteId);
         $intervention->end_day = $request->input('createEndNote' . $noteId);
         $intervention->status = 1;
+        $intervention->visible_ta = 1; //visible by default
+
+        $intervention->save();
+
+        return back();
+    }
+
+    /**
+     * Controller for editing interventions.
+     * The reason, action, and starting and ending dates can be changed.
+     *
+     * @param Request $request
+     * @param $interventionId
+     * @return RedirectResponse
+     */
+    public function editIntervention(Request $request, $interventionId)
+    {
+        $intervention          = Intervention::find($interventionId);
+
+        //if the reason is of the format 'note\d', then the request will be empty,
+        // so we should make sure the reason it is not updated with an empty string.
+        if (preg_match("/^(note)\d+$/i", $intervention->reason) == false) {
+            $intervention->reason = $request->get('editReason');
+        }
+
+        $intervention->action = $request->get('editAction');
+        $intervention->start_day = $request->input('editStart'. $interventionId);
+        $intervention->end_day = $request->input('editEnd' . $interventionId);
+        $intervention->visible_ta = $request->get('editVisibility' .$interventionId);
+
+        //   return dd($request);
 
         $intervention->save();
 

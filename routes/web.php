@@ -5,6 +5,7 @@ use App\Http\Controllers\CourseEditionController;
 use App\Http\Controllers\CourseEditionUserController;
 use App\Http\Controllers\GroupController;
 use App\Http\Controllers\AttendanceController;
+use App\Http\Controllers\GroupInterventionsController;
 use App\Http\Controllers\ImportController;
 use App\Http\Controllers\InterventionsController;
 use App\Http\Controllers\NotesController;
@@ -113,8 +114,11 @@ Route::get('/exportView/{edition_id}', 'App\Http\Controllers\ExportController@ex
 Route::get('/exportUserList/{edition_id}', 'App\Http\Controllers\ExportController@exportUserList')
     ->name('exportUserList')
     ->middleware(['loggedIn', 'role:lecturer']);
-Route::get('/exportIndividualGrades/{edition_id}', 'App\Http\Controllers\ExportController@exportIndividualGrades')
+Route::get('/exportGrades/{edition_id}', 'App\Http\Controllers\ExportController@exportGrades')
     ->name('exportGrades')
+    ->middleware(['loggedIn', 'role:lecturer']);
+Route::get('/exportRubrics/{edition_id}', 'App\Http\Controllers\ExportController@exportRubrics')
+    ->name('exportRubrics')
     ->middleware(['loggedIn', 'role:lecturer']);
 Route::get('/importView/{edition_id}', 'App\Http\Controllers\ImportController@importView')
     ->name('importTAsStudents')
@@ -276,6 +280,10 @@ Route::post('/groupNoteUpdate/{id}', [NotesController::class, 'groupNoteUpdate']
 Route::get('/note/{group_id}/{week_id}', [NotesController::class, 'weekGroup'])
     ->name('note')->middleware(['loggedIn', 'role:lecturer,HeadTA,TA']);
 
+
+
+//Interventions
+
 Route::get('/interventions/{edition_id}', [InterventionsController::class, 'showAllInterventions'])
     ->name('interventions')->middleware(['loggedIn', 'role:lecturer,HeadTA']);
 
@@ -302,6 +310,39 @@ Route::post('/statusUnsolved/{id}', [InterventionsController::class, 'statusUnso
 
 Route::post('/statusSolved/{id}', [InterventionsController::class, 'statusSolved'])
     ->name('statusSolved')->middleware(['loggedIn']);
+
+
+//Group Interventions
+Route::post('/createGroupInterventionNote/{id}', [GroupInterventionsController::class, 'createGroupInterventionNote'])
+    ->name('createGroupInterventionNote')->middleware(['loggedIn']);
+
+Route::post('/createGroupIntervention/{id}', [GroupInterventionsController::class, 'createGroupIntervention'])
+    ->name('createGroupIntervention')->middleware(['loggedIn']);
+
+Route::get('/groupInterventions/{$edition_id}', [GroupInterventionsController::class, 'showAllGroupInterventions'])
+    ->name('groupInterventions')->middleware(['loggedIn', 'role:lecturer,HeadTA']);
+
+Route::post('/editGroupIntervention/{id}', [GroupInterventionsController::class, 'editGroupIntervention'])
+    ->name('editGroupIntervention')->middleware(['loggedIn']);
+
+Route::post('/deleteGroupIntervention/{id}', [GroupInterventionsController::class, 'deleteGroupIntervention'])
+    ->name('deleteGroupIntervention')->middleware(['loggedIn']);
+
+Route::post('/statusGroupActive/{id}', [GroupInterventionsController::class, 'statusGroupActive'])
+    ->name('statusGroupActive')->middleware(['loggedIn']);
+
+Route::post('/statusGroupExtend/{id}', [GroupInterventionsController::class, 'statusGroupExtend'])
+    ->name('statusGroupExtend')->middleware(['loggedIn']);
+
+Route::post('/statusGroupUnsolved/{id}', [GroupInterventionsController::class, 'statusGroupUnsolved'])
+    ->name('statusGroupUnsolved')->middleware(['loggedIn']);
+
+Route::post('/statusGroupSolved/{id}', [GroupInterventionsController::class, 'statusGroupSolved'])
+    ->name('statusGroupSolved')->middleware(['loggedIn']);
+
+
+
+
 
 
 

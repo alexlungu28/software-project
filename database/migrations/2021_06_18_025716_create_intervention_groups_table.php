@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateInterventionsIndividualTable extends Migration
+class CreateInterventionGroupsTable extends Migration
 {
     /**
      * Create the individual interventions migration.
@@ -18,9 +18,9 @@ class CreateInterventionsIndividualTable extends Migration
      */
     public function up()
     {
-        Schema::create('interventions_individual', function (Blueprint $table) {
+        Schema::create('interventions_group', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->references('id')->on('users')->cascadeOnDelete();
+
             $table->foreignId('group_id')->references('id')->on('groups')->cascadeOnDelete();
             $table->text("reason")->nullable();
             $table->text("action")->nullable();
@@ -41,6 +41,6 @@ class CreateInterventionsIndividualTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('interventions_individual');
+        Schema::dropIfExists('interventions_group');
     }
 }

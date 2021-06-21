@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Http\Controllers;
+namespace Tests\Feature;
 
 use App\Http\Controllers\AttendanceController;
 use App\Models\Attendance;

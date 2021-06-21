@@ -1,7 +1,7 @@
-<div class="tab-pane fade show" id="problemCases" role="tabpanel" aria-labelledby="pills-problemCases-tab">
+<div class="tab-pane fade show" id="groupProblemCases" role="tabpanel" aria-labelledby="pills-groupProblemCases-tab">
     <div class="table-responsive">
 
-        <h3>Problem Cases - Individual</h3>
+        <h3>Problem Cases - Group</h3>
 
         <div class="card">
             <div class="card-block table-border-style">
@@ -10,38 +10,18 @@
                     <table class="table table-hover" style="table-layout:fixed;">
                         <thead>
                         <tr>
-                            <th style="width:15%">Name</th>
-                            <th style="width:10%">Group</th>
+                            <th style="width:15%">Group</th>
                             <th style="width:10%">Week</th>
-                            <th style="width:15%">Problem Signal</th>
-                            <th style="width:30%">Note</th>
+                            <th style="width:20%">Problem Signal</th>
+                            <th style="width:50%">Note</th>
                             <th style="width:20%"></th>
                         </tr>
                         </thead>
 
                         <tbody>
-                        <!--
-                        Fetching the notes that do not have interventions related to them.
-                        -->
-                        @php
-                            $notesGood = [];
-                            foreach($notes as $note) {
-                                array_push($notesGood, $note);
-                            }
-                            $interventionNotes = [];
-                            foreach($interventions as $intervention) {
-                                if(preg_match("/^(note)\d+$/i", $intervention->reason)) {
-                                    $note = App\Models\Note::find(preg_replace('/[^0-9]/', '', $intervention->reason));
-                                    array_push($interventionNotes, $note);
-                                }
-                            }
-                            $notesNoInterventions = array_diff($notesGood, $interventionNotes);
-                            //return dd($notesNoInterventions);
-                        @endphp
 
-                        @foreach($notesNoInterventions as $note)
+                        @foreach($groupNotesNoInterventions as $note)
                             <tr>
-                                <td>{{App\Models\User::find($note->user_id)->first_name . " " . App\Models\User::find($note->user_id)->last_name }}</td>
 
                                 <td>{{App\Models\Group::find($note->group_id)->group_name}}</td>
 
@@ -71,10 +51,10 @@
 
                                     <input type="hidden" name="_method" value="POST">
                                     <td>
-                                        <button type="button" name="update" class="btn btn-info " value="1"  data-toggle="modal" data-target="{{"#createInterventionNote" . $note->id}}">Create Intervention</button>
+                                        <button type="button" name="update" class="btn btn-info " value="1"  data-toggle="modal" data-target="{{"#createGroupInterventionNote" . $note->id}}">Create Group Intervention</button>
                                     </td>
                                 </form>
-                                @include ('/interventions/intervention_create_note_based_modal')
+                                @include ('/group_interventions/create_note_based_modal')
                             </tr>
                         @endforeach
                         </tbody>

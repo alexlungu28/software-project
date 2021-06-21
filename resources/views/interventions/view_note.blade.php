@@ -38,8 +38,14 @@
 
 
                         <div class="form-group">
-                            <label for="viewReason">Note</label>
-                            <h4>{{$note->note}}</h4>
+                            <label for="viewNote">Note</label>
+                            <div style="overflow-x: hidden; overflow-y:auto;
+                                                                   text-overflow: clip;
+                                                                   display: -webkit-box;
+                                                                   -webkit-line-clamp: 5; /* number of lines to show */
+                                                                   -webkit-box-orient: vertical;">
+                                {{$note->note}}
+                            </div>
                         </div>
 
 

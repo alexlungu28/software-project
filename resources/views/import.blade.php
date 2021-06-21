@@ -12,7 +12,7 @@
         <div class="card-body">
             <form action="{{ route('importTA', [$edition_id]) }}" method="POST" enctype="multipart/form-data">
                 @csrf
-                <input type="file" name="file" class="form-control">
+                <input type="file" name="file" class="form-control" required>
                 <br>
                 <button class="btn btn-info">Import TAs from a CSV file</button>
             </form>
@@ -41,7 +41,7 @@
         <div class="card-body">
             <form action="{{ route('import', [$edition_id]) }}" method="POST" enctype="multipart/form-data">
                 @csrf
-                <input type="file" name="file" class="form-control">
+                <input type="file" name="file" class="form-control" required>
                 <br>
                 <button class="btn btn-info" >Import Students from the CSV found at Brightspace>Grades>Export</button>
             </form>

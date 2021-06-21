@@ -91,6 +91,17 @@ class Group extends Model
         return $this->hasMany(Intervention::class);
     }
 
+    /**
+     * Creates the relationship between groups
+     * and group interventions.
+     *
+     * @return HasMany
+     */
+    public function groupGroupInterventions()
+    {
+        return $this->hasMany(InterventionGroup::class);
+    }
+
     public function rubricData()
     {
         return $this->hasMany(RubricData::class);

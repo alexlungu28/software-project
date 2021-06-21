@@ -21,13 +21,38 @@
 
                         <div class="form-group">
                             <label>Reason</label>
-                            <h4>{{$intervention->reason}}</h4>
+
+                            @if(preg_match("/^(note)\d+$/i", $intervention->reason))
+                                @php
+                                    $note = App\Models\Note::find(preg_replace('/[^0-9]/', '', $intervention->reason));
+                                @endphp
+
+                                @include('/interventions/view_note_from_status_modal')
+                            @else
+
+                                    <div style="overflow-x: hidden; overflow-y:auto;
+                                                                   text-overflow: clip;
+                                                                   display: -webkit-box;
+                                                                   -webkit-line-clamp: 5; /* number of lines to show */
+                                                                   -webkit-box-orient: vertical;">
+                                        {{$intervention->reason}}
+                                    </div>
+
+
+                            @endif
                         </div>
 
                         <div class="form-group">
                             <label>Action</label>
-                            <h4>{{$intervention->action}}</h4>
-                        </div>
+
+                                <div style="overflow-x: hidden; overflow-y:auto;
+                                                                   text-overflow: clip;
+                                                                   display: -webkit-box;
+                                                                   -webkit-line-clamp: 5; /* number of lines to show */
+                                                                   -webkit-box-orient: vertical;">
+                                    {{$intervention->action}}
+                                </div>
+
 
                         <div class="form-group">
                             <label>Date</label>
@@ -105,10 +130,10 @@
                                 </div>
 
                                 <div class="tab-pane fade show" id={{"extend" . $intervention->id}} role="tabpanel" aria-labelledby="pills-extend-tab">
-                                    <form id={{"statusIntervention" . $intervention->id}} method="post" value = "<?php echo csrf_token(); ?>" action="{{action('App\Http\Controllers\InterventionsController@statusExtend',$intervention->id)}}">
+                                    <form id={{"statusIntervention" . $intervention->id}} method="post" value = "<?php echo csrf_token(); ?>" action="{{action('App\Http\Controllers\InterventionsController@statusExtend',$intervention->id)}}" required>
                                         <input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
                                         <label for="solvedNote">Note</label>
-                                        <input type='date'  data-date-format="DD-MM-YYYY" class="form-control" id='{{"extend_end" . $intervention->id}}' name="{{"extend_end" . $intervention->id}}" value="" />
+                                        <input type='date'  data-date-format="DD-MM-YYYY" class="form-control" id='{{"extend_end" . $intervention->id}}' name="{{"extend_end" . $intervention->id}}" value="" required/>
                                         <textarea type="text" class="form-control" id="extend_note" name="extend_note" rows="4" value="">The deadline of this intervention was extended, the old deadline being on @php echo date("F jS", strtotime($intervention->end_day));@endphp. {{"\n"}}{{$intervention->status_note . "\n"}}</textarea>
 
                                         <button type="submit" class="btn btn-info">Change Status</button>
