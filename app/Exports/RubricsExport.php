@@ -55,10 +55,12 @@ class RubricsExport implements FromCollection, WithHeadings, WithStrictNullCompa
         $collection = new Collection();
         $allRubrics = Rubric::all()->where('course_edition_id', '=', $this->editionId);
         foreach ($allRubrics as $rubric) {
-            $rubric = $rubric->join('course_editions',
-                'rubrics.course_edition_id',
-                '=',
-                'course_editions.id'
+            $rubric = $rubric
+                ->join(
+                    'course_editions',
+                    'rubrics.course_edition_id',
+                    '=',
+                    'course_editions.id'
                 )
                 ->join(
                     'rubric_entries',
