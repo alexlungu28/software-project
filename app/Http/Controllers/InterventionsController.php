@@ -85,13 +85,16 @@ class InterventionsController extends Controller
         ]);
     }
 
+
     /**
+     *
      * Function that returns the list of group notes that
      * do not have interventions related to them.
      * This is needed in the 'problem cases' subview.
      * @param $id group_id
      * @return array
      *
+     * @codeCoverageIgnore
      */
     public function getGroupNotesNoInterventions($groupNotes, $groupInterventions)
     {
@@ -120,6 +123,7 @@ class InterventionsController extends Controller
      * @param $edition_id edition_id
      * @return list of notes that do not have related interventions yet.
      *
+     * @codeCoverageIgnore
      */
     public function getNotesNoInterventions($notes, $interventions)
     {
@@ -139,12 +143,12 @@ class InterventionsController extends Controller
         return $notesNoInterventions;
     }
 
-
     /**
      * sort active interventions by end date,
      * and closed interventions by status (first unsolved, then solved)
      * @return $interventons
      *
+     * @codeCoverageIgnore
      */
     public function sortIndividualInterventions($interventions)
     {
@@ -175,6 +179,12 @@ class InterventionsController extends Controller
         return $interventions;
     }
 
+    /*
+     * Sort interventions: active and extended based on end_day,
+     * solved and unsolved based on status. (first unsolved, then solved).
+     *
+     * @codeCoverageIgnoreStart
+     */
     public function sortGroupInterventions($groupInterventions)
     {
         $gInterventionsActive = [];
@@ -194,7 +204,6 @@ class InterventionsController extends Controller
             }
         }
 
-
         if ($gInterventionsActive == []) {
             $groupInterventions = $gInterventionsClosed;
         } elseif ($gInterventionsClosed == []) {
@@ -205,6 +214,8 @@ class InterventionsController extends Controller
 
         return $groupInterventions;
     }
+    //@codeCoverageIgnoreEnd
+
 
     /**
      * Controller for creating interventions.

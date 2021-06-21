@@ -25,11 +25,11 @@ class GroupInterventionsController extends Controller
      *
      * @param $editionId
      * @return Application|Factory|View
+     *
+     * @codeCoverageIgnore
      */
     public function showAllGroupInterventions($editionId)
     {
-
-
         //fetching the notes and interventions of the current course edition.
         //first, the groupIds of the current course edition are collected,
         // then the notes and interventions are directly selected from the database and passed to the view.
@@ -67,6 +67,7 @@ class GroupInterventionsController extends Controller
      * and closed interventions by status (first unsolved, then solved)
      * @return $interventons
      *
+     * @codeCoverageIgnore
      */
     public function sortGroupInterventions($groupInterventions)
     {
