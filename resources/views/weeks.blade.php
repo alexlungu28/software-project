@@ -9,8 +9,8 @@
 @section('content')
 
     @php
-    $user =auth()->user();
-    $userId = $user->id;
+    $userAux =auth()->user();
+    $userId = $userAux->id;
     $role = \App\Models\CourseEditionUser::where('user_id', '=', $userId)->where('course_edition_id', '=', $edition_id)->first()->role;
     @endphp
 

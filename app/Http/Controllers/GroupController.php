@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Attendance;
 use App\Models\CourseEditionUser;
 use App\Models\Group;
+use App\Models\GroupUser;
 use App\Models\Intervention;
 use App\Models\InterventionGroup;
 use App\Models\Note;
@@ -35,7 +36,7 @@ class GroupController extends Controller
             ->where('course_edition_id', '=', $editionId)
             ->where('user_id', '=', Auth::id())->get()->first()->role;
 
-        $usersFromGroup = DB::table('group_user')->select('user_id')->where('group_id', '=', $id)->get();
+        $usersFromGroup = DB::table('group_user')->where('group_id', '=', $id)->get();
         $gitanalyses = DB::table('gitanalyses')->where('group_id', '=', $id)->get();
 
 
@@ -55,11 +56,11 @@ class GroupController extends Controller
                 'groupInterventions' => $gInterventions]);
     }
 
-    public function userSummary($courseUserId)
+    public function userSummary($groupUserId)
     {
-        $courseUser =CourseEditionUser::find($courseUserId);
-        $editionId = $courseUser->course_edition_id;
-        $userId = $courseUser->user_id;
+        $groupUser =GroupUser::find($groupUserId);
+        $editionId = Group::find($groupUser->group_id)->course_edition_id;
+        $userId = $groupUser->user_id;
 
         $userLoggedIn =auth()->user();
         $userLoggedInId = $userLoggedIn->id;

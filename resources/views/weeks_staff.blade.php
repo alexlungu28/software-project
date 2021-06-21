@@ -109,14 +109,14 @@ if ($latestGitAnalyses != -1) {
                                             <th>View User Summary</th>
                                             </thead>
                                             <tbody>
-                                            @foreach($users as $courseUser)
-                                                @if(DB::table('course_edition_user')->where("user_id","=", $courseUser->user_id)->where('role','=','student')->exists())
+                                            @foreach($users as $groupUser)
+                                                @if(DB::table('course_edition_user')->where("user_id","=", $groupUser->user_id)->where('role','=','student')->exists())
                                                     <tr>
                                                         @php
-                                                        $user = App\Models\User::find($courseUser->user_id);
+                                                        $user = App\Models\User::find($groupUser->user_id);
                                                         @endphp
                                                         <td>
-                                                            {{$user->net_id}}
+                                                            {{$user->net_id }}
                                                         </td>
                                                         <td>
                                                             {{$user->first_name}}
@@ -129,7 +129,7 @@ if ($latestGitAnalyses != -1) {
                                                         </td>
 
                                                         <td>
-                                                            <button type="submit" name="update" class="btn btn-dark rounded-pill" onclick="window.location='{{ route('userSummary', ['courseUserId'=>$courseUser->user_id]) }}'">Summary!</button>
+                                                            <button type="submit" name="update" class="btn btn-dark rounded-pill" onclick="window.location='{{ route('userSummary', ['courseUserId'=>$groupUser->id]) }}'">Summary!</button>
                                                         </td>
                                                     </tr>
                                                 @endif
