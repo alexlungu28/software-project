@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Http\Controllers;
+namespace Tests\Feature;
 
 use App\Http\Controllers\AttendanceController;
 use App\Models\Attendance;
@@ -9,8 +9,6 @@ use App\Models\CourseEdition;
 use App\Models\CourseEditionUser;
 use App\Models\Group;
 use App\Models\GroupUser;
-use App\Models\Note;
-use App\Models\NoteGroup;
 use App\Models\User;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -21,7 +19,7 @@ use Mockery;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
-class NotesControllerTest extends TestCase
+class AttendanceControllerTest extends TestCase
 {
 
     use WithoutMiddleware;
@@ -35,6 +33,7 @@ class NotesControllerTest extends TestCase
     {
         Auth::shouldReceive('check')->andReturn(true);
         Auth::shouldReceive('id')->andReturn(1);
+        Auth::shouldReceive('user')->andReturn(null);
 
         User::insert(
             [
@@ -155,8 +154,8 @@ class NotesControllerTest extends TestCase
             ]
         );
 
-        //adding another group to check if it is added to notes,
-        //if the notes of the group was not accessed yet.
+        //adding another group to check if it is added to attendances,
+        //if the attendance of the group was not accessed yet.
         User::insert(
             [
                 'id' => 4,
@@ -195,32 +194,23 @@ class NotesControllerTest extends TestCase
             ]
         );
 
-        Note::insert(
+        Attendance::insert(
             [
                 'user_id' => 2,
                 'group_id' => 1,
                 'week' => 1,
-                'problem_signal' => 2,
-                'note' => "Not that well!",
+                'status' => 1,
+                'reason' => " ",
             ]
         );
 
-        Note::insert(
+        Attendance::insert(
             [
                 'user_id' => 3,
                 'group_id' => 1,
                 'week' => 1,
-                'problem_signal' => 1,
-                'note' => "Good!",
-            ]
-        );
-
-        NoteGroup::insert(
-            [
-                'group_id' => 1,
-                'week' => 1,
-                'problem_signal' => 2,
-                'note' => "Not amazing!",
+                'status' => 2,
+                'reason' => "Late reason",
             ]
         );
 
@@ -233,60 +223,45 @@ class NotesControllerTest extends TestCase
     public function testWeekGroup()
     {
         $this->before();
-        $this->get('/note/1/1')->assertSeeText(
+        $this->get('/attend/1/1')->assertSeeText(
             array(
                 "testfirstname1",
                 "testlastname1",
-                "Good!",
+                "Present",
                 "testfirstname2",
                 "testlastname2",
-                "Good!",
+                "Late",
+                "Late"
             )
         )->assertDontSee("testname3")->assertStatus(200);
-
-        $this->assertDatabaseHas(
-            'notes_individual',
-            [
-                'group_id' => 1,
-                'week' => 1,
-            ]
-        );
-
-        $this->assertDatabaseHas(
-            'notes_group',
-            [
-                'group_id' => 1,
-                'week' => 1,
-            ]
-        );
     }
 
     /**
-     * Test to check if individual notes are correctly added
+     * Test to check if attendances are correctly added
      * to the database when visiting '/attend/2/1'
      */
-    public function testCreateIndividualNote()
+    public function testCreateAttendance()
     {
         $this->before();
 
         //check that the database does not have entries from group 2, week 1
         $this->assertDatabaseMissing(
-            'notes_individual',
+            'attendances',
             [
                 'group_id' => 2,
                 'week' => 1
             ]
         );
 
-        $this->get('/note/2/1')->
-        assertSee(array(
-            "testfirstname3",
+        $this->get('/attend/2/1')->
+            assertSee(array(
+                "testfirstname3",
             "testfirstname4",
             " "))->assertStatus(200);
 
         //check that the database now has entries from group 2, week 1
         $this->assertDatabaseHas(
-            'notes_individual',
+            'attendances',
             [
                 'group_id' => 2,
                 'week' => 1,
@@ -295,81 +270,29 @@ class NotesControllerTest extends TestCase
     }
 
     /**
-     * Test to check if group notes are correctly added
-     * to the database when visiting '/attend/2/1'
+     * Test to verify if attendance was successfully updated.
      */
-    public function testCreateGroupNote()
-    {
-        $this->before();
-
-        //check that the database does not have entries from group 2, week 1
-        $this->assertDatabaseMissing(
-            'notes_group',
-            [
-                'group_id' => 2,
-                'week' => 1
-            ]
-        );
-
-        $this->get('/note/2/1')->assertStatus(200);
-
-        //check that the database now has entries from group 2, week 1
-        $this->assertDatabaseHas(
-            'notes_individual',
-            [
-                'group_id' => 2,
-                'week' => 1,
-            ]
-        );
-    }
-
-    /**
-     * Test to verify if individual note was successfully updated.
-     */
-    public function testUpdateIndividualNotes()
+    public function testUpdateAttendance()
     {
         $this->before();
         $response = $this->post(
-            '/noteUpdate/1',
+            '/attendanceupdate/1',
             [
-                'reason' => "Updated note!",
-                'update' => 1,
+                'update' => 2,
+                'reason' => "Reason for being late",
             ]
         )->assertStatus(302);
 
         $this->assertDatabaseHas(
-            'notes_individual',
+            'attendances',
             [
                 'id' => 1,
-                'problem_signal' => 1,
-                'note' => "Updated note!",
+                'user_id' => 2,
+                'status' => 2,
+                'reason' => "Reason for being late",
             ]
         );
         $response->assertStatus(302);
     }
 
-    /**
-     * Test to verify if group note was successfully updated.
-     */
-    public function testUpdateGroupNotes()
-    {
-        $this->before();
-        $response = $this->post(
-            '/groupNoteUpdate/1',
-            [
-                'groupNoteUpdate' => 1,
-                'groupNote' => "Updated note!",
-            ]
-        );
-
-        $this->assertDatabaseHas(
-            'notes_group',
-            [
-                'id' => 1,
-                'problem_signal' => 1,
-                'note' => "Updated note!",
-            ]
-        );
-        $response->assertStatus(302);
-    }
 }

@@ -2,9 +2,11 @@
 
 namespace Tests\Unit\Controller;
 
+use App\Http\Controllers\ReportImportController;
 use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Illuminate\Http\UploadedFile;
 use Maatwebsite\Excel\Facades\Excel;
+use PHPMD\Report;
 use Tests\TestCase;
 
 class ImportControllerTest extends TestCase

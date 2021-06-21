@@ -18,6 +18,7 @@ class GroupUser extends Model
     protected $fillable = [
         'group_id',
         'user_id',
+        'student_grade',
     ];
 
     protected $table = 'group_user';

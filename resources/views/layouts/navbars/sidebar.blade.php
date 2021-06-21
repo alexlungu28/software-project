@@ -18,7 +18,7 @@
             </a>
         </li>
       <li class="nav-item{{ $activePage == 'notifications' ? ' active' : '' }}">
-        <a class="nav-link" href="{{ route('notifications') }}">
+        <a class="nav-link" href="{{ route('notifications', [$edition_id]) }}">
           <i class="material-icons">notifications</i>
           <p>{{ __('Notifications') }}</p>
         </a>
@@ -73,7 +73,7 @@
         <li class="nav-item{{ $activePage == 'import' ? ' active' : '' }}">
             <a class="nav-link" href="{{ route('importTAsStudents', [$edition_id]) }}">
                 <i class="material-icons">download</i>
-                <p>{{ __('Import TAs/Students CSVs') }}</p>
+                <p>{{ __('Import') }}</p>
             </a>
         </li>
         <li class="nav-item{{ $activePage == 'export' ? ' active' : '' }}">

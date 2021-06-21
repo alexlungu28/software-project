@@ -2,11 +2,12 @@
 
 namespace App\Exports;
 
-use App\Models\User;
-use Maatwebsite\Excel\Concerns\FromQuery;
+use App\Models\CourseEdition;
+use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\WithHeadings;
+use Maatwebsite\Excel\Concerns\WithStrictNullComparison;
 
-class UsersExport implements FromQuery, WithHeadings
+class UsersExport implements FromCollection, WithHeadings, WithStrictNullComparison
 {
 
     private $editionId;
@@ -30,14 +31,14 @@ class UsersExport implements FromQuery, WithHeadings
     {
         return [
             //from user table
-            'org_defined_id',
-            'net_id',
-            'last_name',
-            'first_name',
-            'email',
-            'affiliation',
+            'OrgDefinedId',
+            'Username',
+            'Last Name',
+            'First Name',
+            'Email',
+            'Affiliation',
             //from course_edition_user table
-            'role',
+            'Role',
         ];
     }
 
@@ -45,11 +46,9 @@ class UsersExport implements FromQuery, WithHeadings
      * Returns a CSV with all the entries in the user list.
      *
      */
-    public function query()
+    public function collection()
     {
-        return User::query()
-            ->join('course_edition_user', 'users.id', '=', 'user_id')
-            ->where('course_edition_id', '=', $this->editionId)
+        return CourseEdition::find($this->editionId)->usersWithRole()
             ->select(
                 'org_defined_id',
                 'net_id',
@@ -58,6 +57,6 @@ class UsersExport implements FromQuery, WithHeadings
                 'email',
                 'affiliation',
                 'role'
-            );
+            )->get();
     }
 }
