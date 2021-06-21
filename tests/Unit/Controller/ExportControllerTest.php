@@ -62,4 +62,18 @@ class ExportControllerTest extends TestCase
         $this->assertEquals(200, $response->getStatusCode());
         $response->assertOk();
     }
+
+    /**
+     * Test to verify a user can export group notes.
+     *
+     * @return void
+     */
+    public function testUserCanExportGroupNotes()
+    {
+        Excel::fake();
+        $response = $this->get(route('exportGroupNotes', [1]));
+        Excel::assertDownloaded('group_notes.csv');
+        $this->assertEquals(200, $response->getStatusCode());
+        $response->assertOk();
+    }
 }

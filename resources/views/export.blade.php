@@ -11,7 +11,7 @@
             <div class="card-body">
                 <a class="btn btn-info" href="{{ route('exportGrades', [$edition_id]) }}">Export Grades</a>
                 <a class="btn btn-info" href="{{ route('exportGrades', [$edition_id]) }}">Export Group Interventions</a>
-                <a class="btn btn-info" href="{{ route('exportGrades', [$edition_id]) }}">Export Group Notes</a>
+                <a class="btn btn-info" href="{{ route('exportGroupNotes', [$edition_id]) }}">Export Group Notes</a>
                 <a class="btn btn-info" href="{{ route('exportGrades', [$edition_id]) }}">Export Individual Interventions</a>
                 <a class="btn btn-info" href="{{ route('exportGrades', [$edition_id]) }}">Export Individual Notes</a>
                 <a class="btn btn-info" href="{{ route('exportRubrics', [$edition_id]) }}">Export Rubrics</a>
