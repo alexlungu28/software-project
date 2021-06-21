@@ -34,11 +34,11 @@
                     <a class="nav-link" href="{{ route('group', [$group_id]) }}">
                         <i class="material-icons">group</i>
                         @if(isset($week))
-                            <p>{{ __('Group ' . $group_id . ': Week ' . $week) }}</p>
+                            <p>{{ __(App\Models\Group::find($group_id)->group_name . ': Week ' . $week) }}</p>
                         @elseif(isset($week_id))
-                            <p>{{ __('Group ' . $group_id . ': Week ' . $week_id) }}</p>
+                            <p>{{ __(App\Models\Group::find($group_id)->group_name . ': Week ' . $week_id) }}</p>
                         @else
-                            <p>{{ __('Group ' . $group_id) }}</p>
+                            <p>{{ __(App\Models\Group::find($group_id)->group_name) }}</p>
                         @endif
                     </a>
                 </li>

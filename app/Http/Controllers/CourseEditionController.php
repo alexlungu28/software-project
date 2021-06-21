@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\CourseEdition;
 use App\Models\Group;
+use App\Models\User;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
@@ -99,11 +100,7 @@ class CourseEditionController extends Controller
 
     public function viewTA($editionId)
     {
-        $groups = DB::table('group_user')->where('user_id', '=', Auth::id())->get()->map(function ($groupUser) {
-            return Group::where('id', '=', $groupUser->group_id)->get()->first();
-        })->filter(function ($group) {
-            return $group != null;
-        });
+        $groups = User::find(Auth::id())->groups()->where('course_edition_id', '=', $editionId)->get();
         $courseId = CourseEdition::find($editionId)->course_id;
         return view('groups.groupTA', [
             "edition_id" => $editionId,
