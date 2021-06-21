@@ -41,7 +41,7 @@
                                     $note = App\Models\Note::find(preg_replace('/[^0-9]/', '', $intervention->reason));
                                 @endphp
 
-                                @include('/interventions/intervention_view_note_from_edit_modal')
+                                @include('/interventions/view_note_from_edit_modal')
                             @else
 
                                     <div style="overflow-x: hidden; overflow-y:auto;

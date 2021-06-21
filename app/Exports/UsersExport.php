@@ -5,8 +5,9 @@ namespace App\Exports;
 use App\Models\CourseEdition;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\WithHeadings;
+use Maatwebsite\Excel\Concerns\WithStrictNullComparison;
 
-class UsersExport implements FromCollection, WithHeadings
+class UsersExport implements FromCollection, WithHeadings, WithStrictNullComparison
 {
 
     private $editionId;

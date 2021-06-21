@@ -1,31 +1,26 @@
     <div class="col-lg-6 col-md-12">
         <div class="card" >
             <div class="card-header card-header-primary">
-                <h4 class="card-title">Problem cases without interventions</h4>
+                <h4 class="card-title">Group problem cases without interventions</h4>
             </div>
             <div class="card-body">
                 <div class="tab-content">
                     <div class="tab-pane active" id="profile">
                         <table class="table" style="table-layout:fixed;">
                             <thead class="text-primary">
-                            <th style="width:25%">Name</th>
                             <th style="width:10%">Week</th>
-                            <th style="width:44%">Note</th>
-                            <th style="width:15%">Signal</th>
-
+                            <th style="width:40%">Note</th>
+                            <th style="width:20%">Signal</th>
+                            <th style="width:30%"></th>
                             </thead>
                             <tbody>
-
                             <!--
-                            $notesNoIntervention are passed through the GroupController.
-                            it contains the notes that do not have related interventions yet.
+                            $groupNotesNoIntervention are passed through the GroupController.
+                            it contains the group notes that do not have interventions related to them.
                              -->
-                            @foreach($notesNoInterventions as $note)
+                            @foreach($groupNotesNoInterventions as $note)
                                 @if($note->problem_signal >= 2)
                                     <tr>
-                                        <td>
-                                            {{$note->user->first_name . ' ' . $note->user->last_name}} Zamfirescu Toma
-                                        </td>
                                         <td>
                                             {{$note->week}}
                                         </td>
@@ -52,7 +47,14 @@
                                             @endif
 
                                         </td>
-
+                                        <td>
+                                            @include ('/group_interventions/create_note_based_modal')
+                                            <button class="btn btn-primary btn-sm rounded-0" type="button" name="update"  data-toggle="modal" data-target="{{"#createGroupInterventionNote" . $note->id}}">
+                                                <span>Create</span>
+                                                <br>
+                                                <span>Intervention</span>
+                                            </button>
+                                        </td>
                                     </tr>
                                 @endif
                             @endforeach

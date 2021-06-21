@@ -1,9 +1,9 @@
-<div class="modal fade" id="{{"viewInterventionTA" . $intervention->id}}">
+<div class="modal fade" id="{{"viewGroupInterventionTA" . $intervention->id}}">
     <div class="modal-dialog">
         <div class="modal-content">
 
             <div class="modal-header">
-                <h4 class="modal-title" align="center"><b>Intervention #{{$intervention->id}}</b></h4>
+                <h4 class="modal-title" align="center"><b>Group Intervention #{{$intervention->id}}</b></h4>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span></button>
             </div>
@@ -12,22 +12,20 @@
                 <div class="box-body">
 
                     <div class="form-group">
-                        <label>Name</label>
-                        <h4 ><b>{{App\Models\User::find($intervention->user_id)->first_name . " " . App\Models\User::find($intervention->user_id)->last_name }}</b></h4>
 
                         <label>Group</label>
-                        <h4 ><b>{{App\Models\Group::find($intervention->group_id)->group_name}}</b></h4>
+                        <h4 ><b>{{$group->group_name}}</b></h4>
                     </div>
 
                     <div class="form-group">
                         <label>Reason</label>
 
-                        @if(preg_match("/^(note)\d+$/i", $intervention->reason))
+                        @if(preg_match("/^(groupNote)\d+$/i", $intervention->reason))
                             @php
                                 $note = App\Models\Note::find(preg_replace('/[^0-9]/', '', $intervention->reason));
                             @endphp
 
-                            @include('/interventions/intervention_view_note_from_status_modal')
+                            @include('/group_interventions/view_note_from_status_modal')
                         @else
                             <h4>
                                 <div style="overflow-x: hidden; overflow-y:auto;
@@ -35,7 +33,7 @@
                                                                    display: -webkit-box;
                                                                    -webkit-line-clamp: 5; /* number of lines to show */
                                                                    -webkit-box-orient: vertical;">
-                                    {{$intervention->action}}
+                                    {{$intervention->reason}}
                                 </div>
                             </h4>
 

@@ -20,24 +20,6 @@
                         </thead>
 
                         <tbody>
-                        <!--
-                        Fetching the notes that do not have interventions related to them.
-                        -->
-                        @php
-                            $notesGood = [];
-                            foreach($notes as $note) {
-                                array_push($notesGood, $note);
-                            }
-                            $interventionNotes = [];
-                            foreach($interventions as $intervention) {
-                                if(preg_match("/^(note)\d+$/i", $intervention->reason)) {
-                                    $note = App\Models\Note::find(preg_replace('/[^0-9]/', '', $intervention->reason));
-                                    array_push($interventionNotes, $note);
-                                }
-                            }
-                            $notesNoInterventions = array_diff($notesGood, $interventionNotes);
-                            //return dd($notesNoInterventions);
-                        @endphp
 
                         @foreach($notesNoInterventions as $note)
                             <tr>
@@ -74,7 +56,7 @@
                                         <button type="button" name="update" class="btn btn-info " value="1"  data-toggle="modal" data-target="{{"#createInterventionNote" . $note->id}}">Create Intervention</button>
                                     </td>
                                 </form>
-                                @include ('/interventions/intervention_create_note_based_modal')
+                                @include ('/interventions/create_note_based_modal')
                             </tr>
                         @endforeach
                         </tbody>
