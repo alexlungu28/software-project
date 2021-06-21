@@ -1,4 +1,3 @@
-<div class="row"  >
     <div class="col-lg-6 col-md-12">
         <div class="card" >
             <div class="card-header card-header-primary">
@@ -18,29 +17,9 @@
                             <tbody>
 
                             <!--
-                             Fetching the individual interventions and notes of the current group.
-                             Also, a list with the interventions that are strictly related to
-                             notes (that have reason of the format 'note1234') is needed,
-                             used to get the list of problematic notes that do not have interventions assigned.
-                            -->
-                            @php
-                                $notes = App\Models\Note::where('group_id', '=', $group->id)->orderBy('week')->get();
-                            $notesGood = [];
-                            foreach($notes as $note) {
-                                array_push($notesGood, $note);
-                            }
-                            $interventions = \App\Models\Intervention::where('group_id','=', $group->id)->get();
-                            $interventionNotes = [];
-                            foreach($interventions as $intervention) {
-                                if(preg_match("/^(note)\d+$/i", $intervention->reason)) {
-                                    $note = App\Models\Note::find(preg_replace('/[^0-9]/', '', $intervention->reason));
-                                    array_push($interventionNotes, $note);
-                                }
-                            }
-
-                            $notesNoInterventions = array_diff($notesGood, $interventionNotes);
-                            @endphp
-
+                            $notesNoIntervention are passed through the GroupController.
+                            it contains the notes that do not have related interventions yet.
+                             -->
                             @foreach($notesNoInterventions as $note)
                                 @if($note->problem_signal >= 2)
                                     <tr>
@@ -74,7 +53,7 @@
 
                                         </td>
                                         <td>
-                                            @include ('/interventions/intervention_create_note_based_modal')
+                                            @include ('/interventions/create_note_based_modal')
                                             <button class="btn btn-primary btn-sm rounded-0" type="button" name="update"  data-toggle="modal" data-target="{{"#createInterventionNote" . $note->id}}">
                                                 <span>Create</span>
                                                 <br>
