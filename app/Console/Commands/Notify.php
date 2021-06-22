@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\Models\GroupUser;
 use App\Models\User;
 use App\Notifications\Deadline;
 use Carbon\Carbon;
@@ -74,6 +75,112 @@ class Notify extends Command
         }
     }
 
+    private function studentDeadlines($users, &$mailPassed, &$mailApproaching)
+    {
+        DB::table('course_edition_user')->get()
+            ->map(function ($editionUser) use ($users, &$mailPassed, &$mailApproaching) {
+                $userInterventions = DB::table('interventions_individual')
+                    ->where('user_id', '=', $editionUser->user_id)->get();
+                $currentDate = Carbon::now();
+                $userInterventions
+                    ->map(function ($intervention) use ($currentDate, $users, &$mailPassed, &$mailApproaching) {
+                        // Send notifications only for interventions that are active or extended
+                        if (in_array($intervention->status, [1, 2])) {
+                            if ($currentDate->gt($intervention->end_day)) {
+                                $notification = DB::table('notifications')
+                                    ->where('data', 'like', '%'
+                                        . 'Deadline passed%'
+                                        . '"user_id":' . $intervention->user_id
+                                        . ',"group_id":' . $intervention->group_id
+                                        . ',"reason":"' . $intervention->reason
+                                        . '","action":"' . $intervention->action
+                                        . '","start_day":"' . $intervention->start_day
+                                        . '","end_day":"' . $intervention->end_day
+                                        . '%')
+                                    ->get()->first();
+                                if ($notification == null) {
+                                    Notification::send($users, new Deadline($intervention, 'passed'));
+                                    if (!in_array($intervention, $mailPassed)) {
+                                        array_push($mailPassed, $intervention);
+                                    }
+                                }
+                            } elseif ($currentDate->lt($intervention->end_day)
+                                && $currentDate->diffInHours($intervention->end_day) <= 48) {
+                                $notification = DB::table('notifications')
+                                    ->where('data', 'like', '%'
+                                        . 'Deadline approaching%'
+                                        . '"user_id":' . $intervention->user_id
+                                        . ',"group_id":' . $intervention->group_id
+                                        . ',"reason":"' . $intervention->reason
+                                        . '","action":"' . $intervention->action
+                                        . '","start_day":"' . $intervention->start_day
+                                        . '","end_day":"' . $intervention->end_day
+                                        . '%')
+                                    ->get()->first();
+                                if ($notification == null) {
+                                    $user = User::where('id', '=', $intervention->user_id)->get()->first();
+                                    Notification::send($user, new Deadline($intervention, 'approaching'));
+                                    if (!in_array($intervention, $mailApproaching)) {
+                                        array_push($mailApproaching, $intervention);
+                                    }
+                                }
+                            }
+                        }
+                    });
+            });
+    }
+
+    private function groupDeadlines($users, &$mailPassed, &$mailApproaching)
+    {
+        $currentDate = Carbon::now();
+        DB::table('interventions_group')->get()
+            ->map(function ($intervention) use ($currentDate, $users, &$mailPassed, &$mailApproaching) {
+                // Send notifications only for interventions that are active or extended
+                if (in_array($intervention->status, [1, 2])) {
+                    if ($currentDate->gt($intervention->end_day)) {
+                        $notification = DB::table('notifications')
+                            ->where('data', 'like', '%'
+                                . 'Deadline passed group%'
+                                . ',"group_id":' . $intervention->group_id
+                                . ',"reason":"' . $intervention->reason
+                                . '","action":"' . $intervention->action
+                                . '","start_day":"' . $intervention->start_day
+                                . '","end_day":"' . $intervention->end_day
+                                . '%')
+                            ->get()->first();
+                        if ($notification == null) {
+                            Notification::send($users, new Deadline($intervention, 'passed group'));
+                            if (!in_array($intervention, $mailPassed)) {
+                                array_push($mailPassed, $intervention);
+                            }
+                        }
+                    } elseif ($currentDate->lt($intervention->end_day)
+                        && $currentDate->diffInHours($intervention->end_day) <= 48) {
+                        $notification = DB::table('notifications')
+                            ->where('data', 'like', '%'
+                                . 'Deadline approaching group%'
+                                . ',"group_id":' . $intervention->group_id
+                                . ',"reason":"' . $intervention->reason
+                                . '","action":"' . $intervention->action
+                                . '","start_day":"' . $intervention->start_day
+                                . '","end_day":"' . $intervention->end_day
+                                . '%')
+                            ->get()->first();
+                        if ($notification == null) {
+                            GroupUser::where('group_id', '=', $intervention->group_id)->get()
+                                ->map(function ($groupUser) use ($intervention) {
+                                    $user = User::find($groupUser->user_id);
+                                    Notification::send($user, new Deadline($intervention, 'approaching group'));
+                                });
+                            if (!in_array($intervention, $mailApproaching)) {
+                                array_push($mailApproaching, $intervention);
+                            }
+                        }
+                    }
+                }
+            });
+    }
+
     /**
      * Execute the console command.
      *
@@ -89,54 +196,10 @@ class Notify extends Command
         })->unique();
         $mailPassed = array();
         $mailApproaching = array();
-        DB::table('course_edition_user')->get()
-            ->map(function ($editionUser) use ($users, &$mailPassed, &$mailApproaching) {
-                $userInterventions = DB::table('interventions_individual')
-                ->where('user_id', '=', $editionUser->user_id)->get();
-                $currentDate = Carbon::now();
-                $userInterventions
-                ->map(function ($intervention) use ($currentDate, $users, &$mailPassed, &$mailApproaching) {
-                    if ($currentDate->gt($intervention->end_day)) {
-                        $notification = DB::table('notifications')
-                        ->where('data', 'like', '%'
-                            . 'Deadline passed%'
-                            . '"user_id":' . $intervention->user_id
-                            . ',"group_id":' . $intervention->group_id
-                            . ',"reason":"' . $intervention->reason
-                            . '","action":"' . $intervention->action
-                            . '","start_day":"' . $intervention->start_day
-                            . '","end_day":"' . $intervention->end_day
-                            . '%')
-                            ->get()->first();
-                        if ($notification == null) {
-                            Notification::send($users, new Deadline($intervention, 'passed'));
-                            if (!in_array($intervention, $mailPassed)) {
-                                array_push($mailPassed, $intervention);
-                            }
-                        }
-                    } elseif ($currentDate->lt($intervention->end_day)
-                    && $currentDate->diffInHours($intervention->end_day) <= 48) {
-                        $notification = DB::table('notifications')
-                        ->where('data', 'like', '%'
-                            . 'Deadline approaching%'
-                            . '"user_id":' . $intervention->user_id
-                            . ',"group_id":' . $intervention->group_id
-                            . ',"reason":"' . $intervention->reason
-                            . '","action":"' . $intervention->action
-                            . '","start_day":"' . $intervention->start_day
-                            . '","end_day":"' . $intervention->end_day
-                            . '%')
-                        ->get()->first();
-                        if ($notification == null) {
-                            $user = User::where('id', '=', $intervention->user_id)->get()->first();
-                            Notification::send($user, new Deadline($intervention, 'approaching'));
-                            if (!in_array($intervention, $mailApproaching)) {
-                                array_push($mailApproaching, $intervention);
-                            }
-                        }
-                    }
-                });
-            });
+        $mailPassedGroup = array();
+        $mailApproachingGroup = array();
+        $this->studentDeadlines($users, $mailPassed, $mailApproaching);
+        $this->groupDeadlines($users, $mailPassedGroup, $mailApproachingGroup);
         $this->mail($users, $mailPassed, $mailApproaching);
     }
 }
