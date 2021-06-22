@@ -2,6 +2,7 @@
 
 namespace App\Exports;
 
+use App\Models\CourseEdition;
 use App\Models\Group;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\WithHeadings;
@@ -49,15 +50,19 @@ class IndividualNotesExport implements FromCollection, WithHeadings, WithStrictN
      */
     public function collection()
     {
-        return Group::where('groups.course_edition_id', '=', $this->editionId)
+        return CourseEdition::find($this->editionId)->students()
             ->join(
-                'notes_group',
-                'groups.id',
+                'notes_individual',
+                'users.id',
                 '=',
-                'notes_group.group_id'
+                'notes_individual.user_id'
             )
             ->select(
-                'group_name',
+                'org_defined_id',
+                'net_id',
+                'last_name',
+                'first_name',
+                'email',
                 'week',
                 'problem_signal',
                 'note',
