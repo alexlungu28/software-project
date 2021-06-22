@@ -2,29 +2,36 @@
 
 namespace Tests\Feature;
 
+use App\Models\CourseEdition;
 use App\Models\CourseEditionUser;
 use App\Models\Group;
-use App\Models\Note;
-use App\Models\User;
+use App\Models\NoteGroup;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Illuminate\Support\Facades\Auth;
-use Mockery;
 use Tests\TestCase;
 
 class GroupTest extends TestCase
 {
     use withoutMiddleware;
     use RefreshDatabase;
-}
+
     /**
      * Insert the specified entries inside the database tables.
-
+     */
     public function before()
     {
 
         Auth::shouldReceive('check')->andReturn(true);
         Auth::shouldReceive('id')->andReturn(1);
+        Auth::shouldReceive('user')->andReturn(null);
+
+        CourseEdition::insert(
+            [
+                'course_id' => 1,
+                'year' => 2021,
+            ]
+        );
 
         CourseEditionUser::insert(
             [
@@ -52,45 +59,45 @@ class GroupTest extends TestCase
                 'course_edition_id' => 1,
             ]
         );
-        Note::insert(
+        NoteGroup::insert(
             [
-                'content' => 'Note 1',
-                'problem_signal' => 0,
-                'noteable_id' => 1,
-                'noteable_type' => 'App\Models\Group',
-            ]
-        );
-        Note::insert(
-            [
-                'content' => 'Note 2',
+                'group_id' => 1,
+                'week' => 1,
                 'problem_signal' => 1,
-                'noteable_id' => 1,
-                'noteable_type' => 'App\Models\Group',
+                'note' => 'Note 1',
             ]
         );
-        Note::insert(
+        NoteGroup::insert(
             [
-                'content' => 'Note 3',
+                'group_id' => 1,
+                'week' => 1,
                 'problem_signal' => 2,
-                'noteable_id' => 1,
-                'noteable_type' => 'App\Models\Group',
+                'note' => 'Note 2',
             ]
         );
-        Note::insert(
+        NoteGroup::insert(
             [
-                'content' => 'Note 4',
-                'problem_signal' => 1,
-                'noteable_id' => 2,
-                'noteable_type' => 'App\Models\Group',
+                'group_id' => 1,
+                'week' => 1,
+                'problem_signal' => 3,
+                'note' => 'Note 3',
+            ]
+        );
+        NoteGroup::insert(
+            [
+                'group_id' => 2,
+                'week' => 1,
+                'problem_signal' => 2,
+                'note' => 'Note 4',
             ]
         );
     }
-*/
+
     /**
      * Test to verify all groups show problems.
      *
      * @return void
-
+     */
     public function testAllGroupsShowProblems()
     {
         $this->before();
@@ -106,23 +113,22 @@ class GroupTest extends TestCase
             )
             ->assertDontSee("0 group problems");
     }
-*/
+
     /**
      * Test to verify an individual group shows problems.
      *
      * @return void
-
+     */
     public function testIndividualGroupShowProblemTable()
     {
         $this->before();
         $this->get('/group/1')->assertSeeInOrder(
             array(
                 "Note 2",
-                "1",
-                "Note 3",
                 "2",
+                "Note 3",
+                "3",
             )
         )->assertDontSee("Note 1");
     }
 }
-*/

@@ -47,16 +47,6 @@ class RubricEntryController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return Application|Factory|View
-     */
-    public function create()
-    {
-        return view('rubricEntry_create', ['rubrics' => Rubric::all()]);
-    }
-
-    /**
      * Store a newly created resource in storage.
      *
      * @param Request $request
@@ -65,7 +55,6 @@ class RubricEntryController extends Controller
     public function store(Request $request)
     {
         $rubricId = $request->input('rubric_id');
-        /*$distance = $request->input('distance');*/
         $isRow = $request->input('is_row');
         $distance = $this->autoIncrementDistance($rubricId, $isRow);
         $description = $request->input('description');
