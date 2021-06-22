@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use App\Exports\GradesExport;
+use App\Exports\GroupNotesExport;
 use App\Exports\RubricsExport;
 use App\Exports\UsersExport;
 use App\Models\Course;
@@ -10,6 +11,7 @@ use App\Models\CourseEdition;
 use App\Models\CourseEditionUser;
 use App\Models\Group;
 use App\Models\GroupUser;
+use App\Models\NoteGroup;
 use App\Models\Rubric;
 use App\Models\RubricData;
 use App\Models\RubricEntry;
@@ -104,6 +106,14 @@ class ExportTest extends TestCase
                 'user_id' => 1
             ]
         );
+        NoteGroup::insert(
+            [
+                'group_id' => 1,
+                'week' => 1,
+                'problem_signal' => 3,
+                'note' => 'test'
+            ]
+        );
     }
 
     /**
@@ -181,6 +191,30 @@ class ExportTest extends TestCase
                 'Note',
             ], $export->headings());
             return $export->collection()->contains('name','=','TestName');
+        });
+    }
+
+    /**
+     * Test to verify GroupNotesExport class.
+     */
+    public function testGroupNotesExport()
+    {
+
+        $this->before();
+
+        Excel::fake();
+
+        $this->get(route('exportGroupNotes', [1]));
+
+        Excel::assertDownloaded('group_notes.csv', function(GroupNotesExport $export) {
+            // Assert that the correct export is downloaded.
+            $this->assertEquals([
+                'Group',
+                'Week',
+                'ProblemSignal',
+                'Note'
+            ], $export->headings());
+            return $export->collection()->contains('note','=','test');
         });
     }
 }
