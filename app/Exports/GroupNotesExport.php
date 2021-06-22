@@ -2,8 +2,7 @@
 
 namespace App\Exports;
 
-use App\Models\Rubric;
-use Illuminate\Database\Eloquent\Collection;
+use App\Models\Group;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Concerns\WithStrictNullComparison;
@@ -33,66 +32,31 @@ class GroupNotesExport implements FromCollection, WithHeadings, WithStrictNullCo
         return [
             //from groups table
             'Group',
-            //from rubrics table
-            'RubricName',
+            //from notes_group table
             'Week',
-            //from rubric_entries table
-            'Description',
-            //from rubric_data table
-            'Value',
-            'Note',
+            'ProblemSignal',
+            'Note'
         ];
     }
 
     /**
-     * Returns a CSV with all rubrics.
+     * Returns a CSV with all group notes.
      *
      */
     public function collection()
     {
-        $collection = new Collection();
-        $allRubrics = Rubric::all()->where('course_edition_id', '=', $this->editionId);
-        foreach ($allRubrics as $rubric) {
-            $rubric = $rubric
-                ->join(
-                    'course_editions',
-                    'rubrics.course_edition_id',
-                    '=',
-                    'course_editions.id'
-                )
-                ->join(
-                    'rubric_entries',
-                    'rubrics.id',
-                    '=',
-                    'rubric_entries.rubric_id'
-                )
-                ->join(
-                    'rubric_data',
-                    'rubrics.id',
-                    '=',
-                    'rubric_data.rubric_id'
-                )
-                ->join(
-                    'groups',
-                    'rubric_data.group_id',
-                    '=',
-                    'groups.id'
-                )
-                ->whereRaw('rubric_entries.distance = rubric_data.row_number')
-                ->where('rubric_entries.is_row', '=', '1')
-                ->select(
-                    'course_editions.year',
-                    'groups.group_name',
-                    'rubrics.name',
-                    'rubrics.week',
-                    'rubric_entries.description',
-                    'rubric_data.value',
-                    'rubric_data.note'
-                )
-                ->get();
-
-            $collection = $collection->concat($rubric);
-        }
-        return $collection;
+        return Group::where('groups.course_edition_id', '=', $this->editionId)
+            ->join(
+                'notes_group',
+                'groups.id',
+                '=',
+                'notes_group.group_id'
+            )
+            ->select(
+                'group_name',
+                'week',
+                'problem_signal',
+                'note',
+            )->get();
     }
 }
