@@ -37,6 +37,8 @@ class IndividualNotesExport implements FromCollection, WithHeadings, WithStrictN
             'Last Name',
             'First Name',
             'Email',
+            //from groups table
+            'Group',
             //from notes_group table
             'Week',
             'ProblemSignal',
@@ -57,12 +59,19 @@ class IndividualNotesExport implements FromCollection, WithHeadings, WithStrictN
                 '=',
                 'notes_individual.user_id'
             )
+            ->join(
+                'groups',
+                'notes_individual.group_id',
+                '=',
+                'groups.id'
+            )
             ->select(
                 'org_defined_id',
                 'net_id',
                 'last_name',
                 'first_name',
                 'email',
+                'group_name',
                 'week',
                 'problem_signal',
                 'note',

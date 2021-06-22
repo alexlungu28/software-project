@@ -4,6 +4,7 @@ namespace Tests\Feature;
 
 use App\Exports\GradesExport;
 use App\Exports\GroupNotesExport;
+use App\Exports\IndividualNotesExport;
 use App\Exports\RubricsExport;
 use App\Exports\UsersExport;
 use App\Models\Course;
@@ -11,6 +12,7 @@ use App\Models\CourseEdition;
 use App\Models\CourseEditionUser;
 use App\Models\Group;
 use App\Models\GroupUser;
+use App\Models\Note;
 use App\Models\NoteGroup;
 use App\Models\Rubric;
 use App\Models\RubricData;
@@ -108,6 +110,15 @@ class ExportTest extends TestCase
         );
         NoteGroup::insert(
             [
+                'group_id' => 1,
+                'week' => 1,
+                'problem_signal' => 3,
+                'note' => 'test'
+            ]
+        );
+        Note::insert(
+            [
+                'user_id' => 1,
                 'group_id' => 1,
                 'week' => 1,
                 'problem_signal' => 3,
@@ -217,4 +228,34 @@ class ExportTest extends TestCase
             return $export->collection()->contains('note','=','test');
         });
     }
+
+    /**
+     * Test to verify IndividualNotesExport class.
+     */
+    public function testIndividualNotesExport()
+    {
+
+        $this->before();
+
+        Excel::fake();
+
+        $this->get(route('exportIndividualNotes', [1]));
+
+        Excel::assertDownloaded('individual_notes.csv', function(IndividualNotesExport $export) {
+            // Assert that the correct export is downloaded.
+            $this->assertEquals([
+                'OrgDefinedId',
+                'Username',
+                'Last Name',
+                'First Name',
+                'Email',
+                'Group',
+                'Week',
+                'ProblemSignal',
+                'Note'
+            ], $export->headings());
+            return $export->collection()->contains('note','=','test');
+        });
+    }
+
 }
