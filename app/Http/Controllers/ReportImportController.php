@@ -56,10 +56,9 @@ class ReportImportController extends Controller
             }
             $timeline = end($gitinspector->timeline->periods);
             $count = 0;
-            $timelineData = array_fill(0, count($authors), null);
+            $timelineData = array_fill(0, count($authors), ".");
             foreach ($timeline->authors as $author) {
-                while ($author->name != $namesData[$count]) {
-                    $timelineData[$count] = ".";
+                while ($count <= count($namesData) && $author->name != $namesData[$count]) {
                     $count++;
                 }
                 $timelineData[$count] = $author->work;
@@ -98,6 +97,7 @@ class ReportImportController extends Controller
 
         while ($row = fgetcsv($fileHandle, 0, ';')) {
             $csvJson[] = json_encode(array_combine($csvHeaders, $row));
+
         }
 
         fclose($fileHandle);
@@ -109,7 +109,6 @@ class ReportImportController extends Controller
     {
         try {
             $users = Group::find($groupId)->users;
-
             foreach ($parsedData as $row) {
                 $jsonRow = json_decode($row);
                 $student = User::where('net_id', '=', $jsonRow->Email)->first();
