@@ -75,7 +75,8 @@ class NotificationControllerTest extends TestCase
                 'action' => '.',
                 'start_day' => '2021-05-31',
                 'end_day' => '2021-06-04',
-                'status' => 1
+                'status' => 1,
+                'visible_ta' => 1
             ]
         );
         Notification::send($user, new Deadline(Intervention::find(1), 'passed'));
