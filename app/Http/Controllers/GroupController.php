@@ -47,12 +47,15 @@ class GroupController extends Controller
             ->where('course_edition_id', '=', $editionId)
             ->where('user_id', '=', Auth::id())->get()->first()->role;
         $gitanalyses = DB::table('gitanalyses')->where('group_id', '=', $id)->where('week_number', '=', $week)->get();
+        $buddychecks = DB::table('buddychecks')->where('group_id', '=', $id)->where('week', '=', $week)->get();
         if ($role === 'lecturer') {
             return view('week', ['edition_id' => $editionId, 'group_id' => $id,
-                'week' => $week, 'rubrics' => $rubrics, 'gitanalyses' => $gitanalyses]);
+                'week' => $week, 'rubrics' => $rubrics, 'gitanalyses' => $gitanalyses,
+                'buddychecks' => $buddychecks]);
         } else {
             return view('weekTA', ['edition_id' => $editionId, 'group_id' => $id,
-                'week' => $week, 'rubrics' => $rubrics, 'gitanalyses' => $gitanalyses]);
+                'week' => $week, 'rubrics' => $rubrics, 'gitanalyses' => $gitanalyses,
+                'buddychecks' => $buddychecks]);
         }
     }
 }
