@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\Models\CourseEdition;
 use App\Models\Group;
 use App\Models\GroupUser;
 use App\Models\User;
@@ -150,6 +151,19 @@ class Notify extends Command
                                     ->get()->first();
                                 if ($notification == null) {
                                     Notification::send($users, new Deadline($intervention, 'passed'));
+                                    GroupUser::where('group_id', '=', $intervention->group_id)->get()
+                                        ->map(function ($groupUser) use ($intervention) {
+                                            $user = User::find($groupUser->user_id);
+                                            $group = Group::find($groupUser->group_id);
+                                            $courseEdition = CourseEdition::find($group->course_edition_id);
+                                            $ceUser = DB::table('course_edition_user')
+                                                ->where('user_id', '=', $user->id)
+                                                ->where('course_edition_id', '=', $courseEdition->id)
+                                                ->get()->first();
+                                            if ($ceUser->role == 'TA') {
+                                                Notification::send($user, new Deadline($intervention, 'passed'));
+                                            }
+                                        });
                                     if (!in_array($intervention, $mailPassed)) {
                                         array_push($mailPassed, $intervention);
                                     }
@@ -168,8 +182,16 @@ class Notify extends Command
                                         . '%')
                                     ->get()->first();
                                 if ($notification == null) {
-                                    $user = User::where('id', '=', $intervention->user_id)->get()->first();
-                                    Notification::send($user, new Deadline($intervention, 'approaching'));
+                                    $user = User::find($intervention->user_id);
+                                    $group = Group::find($intervention->group_id);
+                                    $courseEdition = CourseEdition::find($group->course_edition_id);
+                                    $ceUser = DB::table('course_edition_user')
+                                        ->where('user_id', '=', $user->id)
+                                        ->where('course_edition_id', '=', $courseEdition->id)
+                                        ->get()->first();
+                                    if ($ceUser->role == 'student') {
+                                        Notification::send($user, new Deadline($intervention, 'approaching'));
+                                    }
                                     if (!in_array($intervention, $mailApproaching)) {
                                         array_push($mailApproaching, $intervention);
                                     }
@@ -206,9 +228,22 @@ class Notify extends Command
                                 . ',"status_note":%' . $intervention->status_note
                                 . '%,"visible_ta":' . $intervention->visible_ta
                                 . '%')
-                            ->get()->first();
+                            ->get();
                         if ($notification == null) {
                             Notification::send($users, new Deadline($intervention, 'passed group'));
+                            GroupUser::where('group_id', '=', $intervention->group_id)->get()
+                                ->map(function ($groupUser) use ($intervention) {
+                                    $user = User::find($groupUser->user_id);
+                                    $group = Group::find($groupUser->group_id);
+                                    $courseEdition = CourseEdition::find($group->course_edition_id);
+                                    $ceUser = DB::table('course_edition_user')
+                                        ->where('user_id', '=', $user->id)
+                                        ->where('course_edition_id', '=', $courseEdition->id)
+                                        ->get()->first();
+                                    if ($ceUser->role == 'TA') {
+                                        Notification::send($user, new Deadline($intervention, 'passed group'));
+                                    }
+                                });
                             if (!in_array($intervention, $mailPassed)) {
                                 array_push($mailPassed, $intervention);
                             }
@@ -229,7 +264,15 @@ class Notify extends Command
                             GroupUser::where('group_id', '=', $intervention->group_id)->get()
                                 ->map(function ($groupUser) use ($intervention) {
                                     $user = User::find($groupUser->user_id);
-                                    Notification::send($user, new Deadline($intervention, 'approaching group'));
+                                    $group = Group::find($intervention->group_id);
+                                    $courseEdition = CourseEdition::find($group->course_edition_id);
+                                    $ceUser = DB::table('course_edition_user')
+                                        ->where('user_id', '=', $user->id)
+                                        ->where('course_edition_id', '=', $courseEdition->id)
+                                        ->get()->first();
+                                    if ($ceUser->role == 'student') {
+                                        Notification::send($user, new Deadline($intervention, 'approaching group'));
+                                    }
                                 });
                             if (!in_array($intervention, $mailApproaching)) {
                                 array_push($mailApproaching, $intervention);
