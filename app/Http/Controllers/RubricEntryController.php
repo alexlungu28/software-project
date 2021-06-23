@@ -76,7 +76,7 @@ class RubricEntryController extends Controller
     {
         $rubricEntry = RubricEntry::find($id);
         return view(
-            'rubricEntry_update',
+            'pages.rubricEntry_update',
             [
                 'rubricEntry' => $rubricEntry
             ]

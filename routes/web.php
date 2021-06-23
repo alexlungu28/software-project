@@ -134,8 +134,6 @@ Route::post('importBuddycheck/{group_id}/{week}', [ReportImportController::class
     ->name('importBuddycheck')
     ->middleware(['loggedIn', 'role:lecturer,HeadTA']);
 
-//Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home')->middleware('loggedIn');
-
 Route::get('notifications/{edition_id}', [NotificationController::class, 'view'])
     ->name('notifications')
     ->middleware(['loggedIn']);
@@ -213,7 +211,8 @@ Route::post('/courseEditionStore/{course_id}', [CourseEditionController::class, 
 | Delete Course Edition Routes
 |--------------------------------------------------------------------------
 */
-Route::delete('/courseEditionDestroy', [CourseEditionController::class, 'destroy'])->middleware(['loggedIn', 'employee']);
+Route::delete('/courseEditionDestroy', [CourseEditionController::class, 'destroy'])
+    ->middleware(['loggedIn', 'employee']);
 Route::put('/courseEditionRestore', [CourseEditionController::class, 'restore'])
     ->name('courseEditionRestore')->middleware(['loggedIn', 'employee']);
 
