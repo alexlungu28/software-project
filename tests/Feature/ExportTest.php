@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use App\Exports\GradesExport;
+use App\Exports\GroupInterventionsExport;
 use App\Exports\GroupNotesExport;
 use App\Exports\IndividualInterventionsExport;
 use App\Exports\IndividualNotesExport;
@@ -14,6 +15,7 @@ use App\Models\CourseEditionUser;
 use App\Models\Group;
 use App\Models\GroupUser;
 use App\Models\Intervention;
+use App\Models\InterventionGroup;
 use App\Models\Note;
 use App\Models\NoteGroup;
 use App\Models\Rubric;
@@ -132,6 +134,17 @@ class ExportTest extends TestCase
                 'user_id' => 1,
                 'group_id' => 1,
                 'reason' => 'note1',
+                'start_day' => '2021-06-23',
+                'end_day' => '2021-06-23',
+                'status' => 1,
+                'visible_ta' => 1
+            ]
+        );
+
+        InterventionGroup::insert(
+            [
+                'group_id' => 1,
+                'reason' => 'groupNote1',
                 'start_day' => '2021-06-23',
                 'end_day' => '2021-06-23',
                 'status' => 1,
@@ -301,6 +314,34 @@ class ExportTest extends TestCase
                 'TAVisibility'
             ], $export->headings());
             return $export->collection()->contains('reason','=','note1');
+        });
+    }
+
+    /**
+     * Test to verify GroupInterventionsExport class.
+     */
+    public function testGroupInterventionsExport()
+    {
+
+        $this->before();
+
+        Excel::fake();
+
+        $this->get(route('exportGroupInterventions', [1]));
+
+        Excel::assertDownloaded('group_interventions.csv', function(GroupInterventionsExport $export) {
+            // Assert that the correct export is downloaded.
+            $this->assertEquals([
+                'Group',
+                'Reason',
+                'Action',
+                'StartDate',
+                'EndDate',
+                'Status',
+                'StatusNote',
+                'TAVisibility'
+            ], $export->headings());
+            return $export->collection()->contains('reason','=','groupNote1');
         });
     }
 
