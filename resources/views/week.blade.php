@@ -8,7 +8,6 @@
      * otherwise it initiates the datapoints with dummy data
      */
     if (DB::table('gitanalyses')->where('group_id', "=", $group_id)->where('week_number', '=', $week)->exists()) {
-
         $names = json_decode($gitanalyses[0]->names);
         $emails = json_decode($gitanalyses[0]->emails);
         $blame = json_decode($gitanalyses[0]->blame);
@@ -29,6 +28,13 @@
             array("label"=>"Edge", "y"=>4.29),
             array("label"=>"Others", "y"=>4.59)
         );
+    }
+    if (DB::table('buddychecks')->where('group_id', '=', $group_id)->where('week', '=', $week)->exists()) {
+        $buddyChecksNumber = 0;
+        foreach ($buddychecks as $buddycheck) {
+            $buddyChecksNumber++;
+        }
+        //ddd($buddychecks[0]);
     }
     ?>
 
@@ -62,74 +68,70 @@
                     $(document).ready( function () {
                         $('#table').DataTable();
                     } );
+                    $(document).ready( function () {
+                        $('#second-table').DataTable();
+                    } );
                 </script>
         </head>
 
 
-        <div class="container-fluid">
-            <button type="submit" name="update" class="btn btn-dark rounded-pill" onclick="window.location='{{ route('group', ['group_id'=>$group_id]) }}'">Back!</button>
-            <div class="row">
-                    <div class="col-lg-3 col-md-6 col-sm-6">
-                        <div class="card card-stats" style="width: 120px;">
+        <button style="margin-left: 20px" type="submit" name="update" class="btn btn-dark rounded-pill" onclick="window.location='{{ route('group', ['group_id'=>$group_id]) }}'">Back!</button>
+        <div class="container-fluid" style="display: inline-flex">
+            <div class="container" >
+                <div class="row">
+                            <div class="card card-stats" style="width: 120px; margin-left:10px; margin-right:10px; float:left">
+                                <div class="card-icon">
+                                    <a class="nav-link" href="{{ route('attend', [$group_id, $week]) }}">
+                                        <p>Attendance</p>
+                                    </a>
+                                </div>
+                            </div>
+                        <div class="card card-stats" style="width: 120px; margin-left:10px; margin-right:10px; float:left">
                             <div class="card-icon">
-                                <a class="nav-link" href="{{ route('attend', [$group_id, $week]) }}">
-                                    <p>Attendance</p>
+                                <a class="nav-link" href="{{ route('note', [$group_id, $week]) }}">
+                                    <p>Notes</p>
                                 </a>
                             </div>
                         </div>
-                    </div>
-                @foreach($rubrics as $rubric)
-                    <div class="col-lg-3 col-md-6 col-sm-6">
-                        <div class="card card-stats" style="width: 120px;">
-                            <div class="card-icon">
-                                <a class="nav-link" href="{{ route('rubric', [$rubric->id, $group_id]) }}">
-                                    <p>Rubric {{ $rubric->name }}</p>
-                                </a>
+                    @foreach($rubrics as $rubric)
+                            <div class="card card-stats" style="width: 120px; margin-left:10px; margin-right:10px; float:left">
+                                <div class="card-icon">
+                                    <a class="nav-link" href="{{ route('rubric', [$rubric->id, $group_id]) }}">
+                                        <p>Rubric {{ $rubric->name }}</p>
+                                    </a>
+                                </div>
                             </div>
-                        </div>
+                    @endforeach
+                </div>
+            </div>
+
+            <div class="container" style="display:inline;">
+                <div class="card bg-light" style="color: black; font-size: 1.2rem; width: 500px; margin-right: 20px">
+                    <div class="card-header">
+                        Git analysis importing
                     </div>
-                @endforeach
-            </div>
-
-            <div class="row">
-                <div class="col-lg-3 col-md-6 col-sm-6">
-                    <div class="card card-stats" style="width: 120px;">
-                        <div class="card-icon">
-                            <a class="nav-link" href="{{ route('note', [$group_id, $week]) }}">
-                                <p>Notes</p>
-                            </a>
-                        </div>
+                    <div class="card-body">
+                        <form action="{{ route('importGitanalysis', [$group_id, $week]) }}" method="POST" enctype="multipart/form-data">
+                            @csrf
+                            <input type="file" name="file" class="form-control" required>
+                            <br>
+                            <button class="btn btn-info">Import Git analysis from a txt file containing JSON</button>
+                        </form>
                     </div>
                 </div>
-            </div>
-        </div>
 
-        <div class="container" style="display:inline-flex;">
-            <div class="card bg-light mt-5" style="color: black; font-size: 1.2rem; width: 500px; margin-right: 20px">
-                <div class="card-header">
-                    Git analysis importing
-                </div>
-                <div class="card-body">
-                    <form action="{{ route('importGitanalysis', [$group_id, $week]) }}" method="POST" enctype="multipart/form-data">
-                        @csrf
-                        <input type="file" name="file" class="form-control" required>
-                        <br>
-                        <button class="btn btn-info">Import Git analysis from a txt file containing JSON</button>
-                    </form>
-                </div>
-            </div>
-
-            <div class="card bg-light mt-5" style="color: black; font-size: 1.2rem; width: 500px">
-                <div class="card-header">
-                    Buddycheck importing
-                </div>
-                <div class="card-body">
-                    <form action="{{ route('importBuddycheck', [$group_id, $week]) }}" method="POST" enctype="multipart/form-data">
-                        @csrf
-                        <input type="file" name="file" class="form-control" required>
-                        <br>
-                        <button class="btn btn-info">Import Buddycheck from a .csv file with students in this group</button>
-                    </form>
+                <div class="card bg-light" style="color: black; font-size: 1.2rem; width: 500px">
+                    <div class="card-header">
+                        Buddycheck importing
+                    </div>
+                    <div class="card-body">
+                        <form action="{{ route('importBuddycheck', [$group_id, $week]) }}" method="POST" enctype="multipart/form-data">
+                            @csrf
+                            <input type="file" name="file" class="form-control" required>
+                            <br>
+                            <button class="btn btn-info">Import Buddycheck from a .csv file</button>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
@@ -204,9 +206,110 @@
                     </table>
                 </div>
             </div>
-
         @endif
+            @if(DB::table('buddychecks')->where('group_id', '=', $group_id)->where('week', '=', $week)->exists())
+                <div class="card">
+                    <div class="card-header card-header-primary">
+                        <h4 class="card-title ">Buddycheck Details</h4>
+                    </div>
+                    <div class="card-body">
+                        <table id ="second-table" class="table">
+                            <thead class=" text-primary">
+                            <th>
+                                Net ID
+                            </th>
+                            <th>
+                                Last Name
+                            </th>
+                            <th>
+                                First Name
+                            </th>
+                            <th>
+                                Indicator
+                            </th>
+                            <th>
+                                Average with Self
+                            </th>
+                            <th>
+                                Q1 with self: Job Performance
+                            </th>
+                            <th>
+                                Q2 with self: Attitude
+                            </th>
+                            <th>
+                                Q3 with self: Leadership / Initiative
+                            </th>
+                            <th>
+                                Q4 with self: Management of Resources
+                            </th>
+                            <th>
+                                Q5 with self: Communication
+                            </th>
+                            </thead>
+                            <tbody>
+                            @foreach($buddychecks as $buddycheck)
+                                <tr>
+                                    <td>
+                                        {{DB::table('users')
+                                                ->where('id', '=', $buddycheck->user_id)
+                                                ->value('net_id')}}
+                                    </td>
+                                    <td>
+                                        {{DB::table('users')
+                                                ->where('id', '=', $buddycheck->user_id)
+                                                ->value('last_name')}}
+                                    </td>
+                                    <td>
+                                        {{DB::table('users')
+                                                ->where('id', '=', $buddycheck->user_id)
+                                                ->value('first_name')}}
+                                    </td>
+                                    @php($data = json_decode($buddycheck->data))
+                                    @foreach ($data as $key => $entry)
+                                        @if($key == "Notes")
+                                            <td>
+                                                {{$entry}}
+                                            </td>
+                                        @endif
+                                        @if($key == "Avg with self")
+                                            <td>
+                                                {{$entry}}
+                                            </td>
+                                        @endif
+                                            @if($key == "Q1 with self: Job Performance")
+                                                <td>
+                                                    {{$entry}}
+                                                </td>
+                                            @endif
+                                            @if($key == "Q2 with self: Attitude")
+                                                <td>
+                                                    {{$entry}}
+                                                </td>
+                                            @endif
+                                            @if($key == "Q3 with self: Leadership / Initiative")
+                                                <td>
+                                                    {{$entry}}
+                                                </td>
+                                            @endif
+                                            @if($key == "Q4 with self: Management of Resources")
+                                                <td>
+                                                    {{$entry}}
+                                                </td>
+                                            @endif
+                                            @if($key == "Q5 with self: Communication")
+                                                <td>
+                                                    {{$entry}}
+                                                </td>
+                                            @endif
+                                    @endforeach
+                                </tr>
+                            @endforeach
+
+                            </tbody>
+                        </table>
+                    </div>
         </div>
+                @endif
 
     </div>
 @endsection
