@@ -1,4 +1,4 @@
-<div class="tab-content" id="pills-tabContent">
+<div class="tab-content" id="pills-tabContent1">
     <div class="tab-pane fade show" id={{"noteIntervEdit" . $note->id}} role="tabpanel" aria-labelledby="pills-note-tab">
         <h4 ><b>Problematic Note</b></h4>
         <div class="form-group">

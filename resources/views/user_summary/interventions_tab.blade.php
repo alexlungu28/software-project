@@ -23,7 +23,10 @@
                                 @foreach($interventions as $intervention)
 
                                     <tr>
-
+                                        @php
+                                            $user = App\Models\User::find($intervention->user_id);
+                                            $group = App\Models\Group::find($intervention->group_id);
+                                        @endphp
 
                                         <td>
                                             <div style="overflow-x: hidden; overflow-y:auto;
@@ -85,6 +88,11 @@
                                     $groupInterventions are passed through the GroupController.
                                      -->
                                 @foreach($groupInterventions as $intervention)
+
+                                    @php
+                                        $user = App\Models\User::find($intervention->user_id);
+                                        $group = App\Models\Group::find($intervention->group_id);
+                                    @endphp
 
                                     <tr>
                                         <td>       <div style="overflow-x: hidden; overflow-y:auto;

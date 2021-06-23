@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Attendance;
 use App\Models\CourseEditionUser;
+use App\Models\Gitanalysis;
 use App\Models\Group;
 use App\Models\GroupUser;
 use App\Models\Intervention;
@@ -61,6 +62,7 @@ class GroupController extends Controller
         $groupUser =GroupUser::find($groupUserId);
         $editionId = Group::find($groupUser->group_id)->course_edition_id;
         $userId = $groupUser->user_id;
+        $groupId = $groupUser->group_id;
 
         $userLoggedIn =auth()->user();
         $userLoggedInId = $userLoggedIn->id;
@@ -97,12 +99,15 @@ class GroupController extends Controller
         $groupInterventions = InterventionGroup::where('group_id', '=', $groupId)
                                                     ->orderBy('end_day')->get();
 
+        $gitAnalyses = Gitanalysis::where('group_id', '=', $groupId)
+            ->orderBy('week_number')->get();
+
 
         return view('user_summary', [
                 'attendances' => $attendances, 'user'=> $user, 'edition_id' => $editionId,
                 'notes' => $notes, 'groupNotes'=>$groupNotes,
                 'interventions' => $interventions, 'groupInterventions' => $groupInterventions,
-                'role' => $role
+                'role' => $role, 'groupId' => $groupId, 'gitanalyses'=>$gitAnalyses
             ]);
     }
 

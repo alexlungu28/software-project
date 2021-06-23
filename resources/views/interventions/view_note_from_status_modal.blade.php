@@ -1,5 +1,5 @@
-<div class="tab-content" id="pills-tabContent1">
-    <div class="tab-pane fade show" id={{"noteInterv" . $note->id}} role="tabpanel" aria-labelledby="pills-note-tab">
+<div class="tab-content" id="pills-tabContent10">
+    <div class="tab-pane fade show" id={{"noteIntervStatus" . $note->id}} role="tabpanel" aria-labelledby="pills-noteStatus-tab">
         <h4 ><b>Problematic Note</b></h4>
         <div class="form-group">
             <label for="name">Week</label>
@@ -33,13 +33,13 @@
 
 
 
-        <button type="button" class="btn btn-outline-success btn-block" id="pills-hide-tab" data-toggle="pill" href={{"#hide" . $note->id}} role="tab" aria-controls="active" aria-selected="false">Hide Note</button>
+        <button type="button" class="btn btn-outline-success btn-block" id="pills-hideStatus-tab" data-toggle="pill" href={{"#hideStatus" . $note->id}} role="tab" aria-controls="active" aria-selected="false">Hide Note</button>
 
     </div>
 
-    <div class="tab-pane fade show active" id={{"hide" . $note->id}} role="tabpanel" aria-labelledby="pills-hide-tab">
+    <div class="tab-pane fade show active" id={{"hideStatus" . $note->id}} role="tabpanel" aria-labelledby="pills-hideStatus-tab">
         <div>
-        <button type="button" class="btn btn-default" id="pills-note-tab" data-toggle="pill" href={{"#noteInterv" . $note->id}} role="tab" aria-controls="active" aria-selected="false">Note</button>
+        <button type="button" class="btn btn-default" id="pills-noteStatus-tab" data-toggle="pill" href={{"#noteIntervStatus" . $note->id}} role="tab" aria-controls="active" aria-selected="false">Note</button>
         </div>
         </div>
 </div>

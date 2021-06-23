@@ -65,7 +65,7 @@
                 </script>
         </head>
 
-    <div class="content">
+
         <div class="container-fluid">
             <button type="submit" name="update" class="btn btn-dark rounded-pill" onclick="window.location='{{ route('group', ['group_id'=>$group_id]) }}'">Back!</button>
             <div class="row">
@@ -133,6 +133,7 @@
                 </div>
             </div>
         </div>
+
         <div class="container-fluid">
             @if(DB::table('gitanalyses')->where('group_id', "=", $group_id)->where('week_number', '=', $week)->exists())
                 <div id="chartContainer" style="height: 370px; width: 100%;"></div>
