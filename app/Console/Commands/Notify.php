@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\Models\Group;
 use App\Models\GroupUser;
 use App\Models\User;
 use App\Notifications\Deadline;
@@ -39,20 +40,21 @@ class Notify extends Command
     }
 
     /**
-     * Sends an email notification to users.
+     * Sends an email notification to users regarding individual interventions.
      * @param $users: the users that will receive the notification - only for passed deadlines
      * @param $mailPassed: the interventions with an expired deadline
      * @param $mailApproaching: the interventions with a deadline coming soon
      */
-    private function mail($users, &$mailPassed, $mailApproaching)
+    private function mailStudent($users, &$mailPassed, $mailApproaching)
     {
         if (!empty($mailPassed)) {
             $users->map(function ($user) use (&$mailPassed) {
                 $text = "";
                 foreach ($mailPassed as $intervention) {
                     $interventionUser = User::find($intervention->user_id);
+                    $groupName = Group::find($intervention->group_id)->group_name;
                     $text .= "Intervention deadline passed for student " . $interventionUser->first_name . " "
-                        . $interventionUser->last_name . ", group " . $intervention->group_id . ". Deadline was on "
+                        . $interventionUser->last_name . ", " . $groupName . ". Deadline was on "
                         . $intervention->end_day . "\r\n";
                 }
                 Mail::raw($text, function ($mail) use ($user) {
@@ -69,12 +71,57 @@ class Notify extends Command
                     . ".\r\nAction to be taken: " . $intervention->action;
                 Mail::raw($text, function ($mail) use ($interventionUser) {
                     $mail->to($interventionUser->email)
-                        ->subject('Gradinator: Deadline approaching for individual intervention');
+                        ->subject('Deadline approaching for individual intervention');
                 });
             }
         }
     }
 
+    /**
+     * Sends an email notification to users regarding group interventions.
+     * @param $users: the users that will receive the notification - only for passed deadlines
+     * @param $mailPassed: the interventions with an expired deadline
+     * @param $mailApproaching: the interventions with a deadline coming soon
+     */
+    private function mailGroup($users, &$mailPassed, $mailApproaching)
+    {
+        if (!empty($mailPassed)) {
+            $users->map(function ($user) use (&$mailPassed) {
+                $text = "";
+                foreach ($mailPassed as $intervention) {
+                    $groupName = Group::find($intervention->group_id)->group_name;
+                    $text .= "Intervention deadline passed for ". $groupName . ". Deadline was on "
+                        . $intervention->end_day . "\r\n";
+                }
+                Mail::raw($text, function ($mail) use ($user) {
+                    $mail->to($user->email)->subject('Gradinator: Deadline passed for group intervention');
+                });
+            });
+        }
+        if (!empty($mailApproaching)) {
+            foreach ($mailApproaching as $intervention) {
+                $text = "The deadline for your group's intervention is in "
+                    . Carbon::now()->diffInHours($intervention->end_day)
+                    . " hours, on " . $intervention->end_day
+                    . ".\r\nAction to be taken: " . $intervention->action;
+                GroupUser::where('group_id', '=', $intervention->group_id)->get()
+                    ->map(function ($groupUser) use ($text) {
+                        $user = User::find($groupUser->user_id);
+                        Mail::raw($text, function ($mail) use ($user) {
+                            $mail->to($user->email)
+                                ->subject('Deadline approaching for group intervention');
+                        });
+                    });
+            }
+        }
+    }
+
+    /**
+     * Saves notifications related to individual interventions in the database.
+     * @param $users: the users that will receive the notification
+     * @param $mailPassed: the interventions with an expired deadline
+     * @param $mailApproaching: the interventions with a deadline coming soon
+     */
     private function studentDeadlines($users, &$mailPassed, &$mailApproaching)
     {
         DB::table('course_edition_user')->get()
@@ -130,6 +177,12 @@ class Notify extends Command
             });
     }
 
+    /**
+     * Saves notifications related to group interventions in the database.
+     * @param $users: the users that will receive the notification
+     * @param $mailPassed: the interventions with an expired deadline
+     * @param $mailApproaching: the interventions with a deadline coming soon
+     */
     private function groupDeadlines($users, &$mailPassed, &$mailApproaching)
     {
         $currentDate = Carbon::now();
@@ -200,6 +253,7 @@ class Notify extends Command
         $mailApproachingGroup = array();
         $this->studentDeadlines($users, $mailPassed, $mailApproaching);
         $this->groupDeadlines($users, $mailPassedGroup, $mailApproachingGroup);
-        $this->mail($users, $mailPassed, $mailApproaching);
+        $this->mailStudent($users, $mailPassed, $mailApproaching);
+        $this->mailGroup($users, $mailPassedGroup, $mailApproachingGroup);
     }
 }

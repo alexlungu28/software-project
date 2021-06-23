@@ -3,6 +3,7 @@
 namespace Tests\Unit;
 
 use App\Models\CourseEditionUser;
+use App\Models\Group;
 use App\Models\Intervention;
 use App\Models\User;
 use Carbon\Carbon;
@@ -38,6 +39,12 @@ class NotifyTest extends TestCase
                 'first_name' => 'First',
                 'email' => 'student1@student.tudelft.nl',
                 'affiliation' => 'student'
+            ]
+        );
+        Group::insert(
+            [
+                'group_name' => 'Group 1',
+                'course_edition_id' => 1
             ]
         );
         Intervention::insert(
