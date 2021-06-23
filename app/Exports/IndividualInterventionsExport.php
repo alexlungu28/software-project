@@ -3,7 +3,6 @@
 namespace App\Exports;
 
 use App\Models\CourseEdition;
-use App\Models\Group;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Concerns\WithStrictNullComparison;
@@ -51,7 +50,7 @@ class IndividualInterventionsExport implements FromCollection, WithHeadings, Wit
     }
 
     /**
-     * Returns a CSV with all group notes.
+     * Returns a CSV with all individual interventions.
      *
      */
     public function collection()

@@ -2,18 +2,18 @@
 
 namespace App\Exports;
 
-use App\Models\CourseEdition;
+use App\Models\Group;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Concerns\WithStrictNullComparison;
 
-class IndividualNotesExport implements FromCollection, WithHeadings, WithStrictNullComparison
+class GroupInterventionsExport implements FromCollection, WithHeadings, WithStrictNullComparison
 {
 
     private $editionId;
 
     /**
-     * IndividualNotesExport constructor.
+     * GroupInterventionsExport constructor.
      * @param int $editionId
      */
     public function __construct(int $editionId)
@@ -30,12 +30,6 @@ class IndividualNotesExport implements FromCollection, WithHeadings, WithStrictN
     public function headings(): array
     {
         return [
-            //from user table
-            'OrgDefinedId',
-            'Username',
-            'Last Name',
-            'First Name',
-            'Email',
             //from groups table
             'Group',
             //from notes_group table
@@ -46,30 +40,19 @@ class IndividualNotesExport implements FromCollection, WithHeadings, WithStrictN
     }
 
     /**
-     * Returns a CSV with all individual notes.
+     * Returns a CSV with all group interventions.
      *
      */
     public function collection()
     {
-        return CourseEdition::find($this->editionId)->students()
+        return Group::where('groups.course_edition_id', '=', $this->editionId)
             ->join(
-                'notes_individual',
-                'users.id',
+                'notes_group',
+                'groups.id',
                 '=',
-                'notes_individual.user_id'
-            )
-            ->join(
-                'groups',
-                'notes_individual.group_id',
-                '=',
-                'groups.id'
+                'notes_group.group_id'
             )
             ->select(
-                'org_defined_id',
-                'net_id',
-                'last_name',
-                'first_name',
-                'email',
                 'group_name',
                 'week',
                 'problem_signal',

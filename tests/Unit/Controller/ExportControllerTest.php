@@ -92,7 +92,21 @@ class ExportControllerTest extends TestCase
     }
 
     /**
-     * Test to verify a user can export individual notes.
+     * Test to verify a user can export group interventions.
+     *
+     * @return void
+     */
+    public function testUserCanExportGroupInterventions()
+    {
+        Excel::fake();
+        $response = $this->get(route('exportGroupInterventions', [1]));
+        Excel::assertDownloaded('group_interventions.csv');
+        $this->assertEquals(200, $response->getStatusCode());
+        $response->assertOk();
+    }
+
+    /**
+     * Test to verify a user can export individual interventions.
      *
      * @return void
      */
