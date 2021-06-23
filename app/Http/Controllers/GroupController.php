@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Attendance;
+use App\Models\Buddycheck;
 use App\Models\CourseEditionUser;
 use App\Models\Gitanalysis;
 use App\Models\Group;
@@ -70,16 +71,7 @@ class GroupController extends Controller
                                     ->where('course_edition_id', '=', $editionId)
                                     ->first()->role;
 
-
         $user = User::find($userId);
-
-        $groupId = DB::table('group_user')
-            ->join('course_edition_user', 'group_user.user_id', '=', 'course_edition_user.user_id')
-            ->select('group_user.group_id')
-            ->where('group_user.user_id', '=', $userId)
-            ->where('course_edition_user.course_edition_id', '=', $editionId)
-            ->pluck('group_user.group_id')->first();
-
 
         $attendances = Attendance::where('user_id', '=', $userId)
                                     ->where('group_id', '=', $groupId)
@@ -102,12 +94,15 @@ class GroupController extends Controller
         $gitAnalyses = Gitanalysis::where('group_id', '=', $groupId)
             ->orderBy('week_number')->get();
 
+        $buddyChecks = Buddycheck::where('group_id', '=', $groupId)
+            ->orderBy('week')->get();
+
 
         return view('user_summary', [
                 'attendances' => $attendances, 'user'=> $user, 'edition_id' => $editionId,
                 'notes' => $notes, 'groupNotes'=>$groupNotes,
                 'interventions' => $interventions, 'groupInterventions' => $groupInterventions,
-                'role' => $role, 'groupId' => $groupId, 'gitanalyses'=>$gitAnalyses
+                'role' => $role, 'groupId' => $groupId, 'gitanalyses'=>$gitAnalyses, 'buddychecks' => $buddyChecks
             ]);
     }
 
