@@ -19,28 +19,8 @@
                         </thead>
 
                         <tbody>
-                        <!--
-                        Fetching the notes that do not have interventions related to them.
-                        -->
-                        @php
-                            $groupNotesGood = [];
-                            foreach($groupNotes as $groupNote) {
-                                array_push($groupNotesGood, $groupNote);
-                            }
-                            $interventionNotes = [];
-                           // foreach($interventions as $intervention) {
-                            //    if(preg_match("/^(note)\d+$/i", $intervention->reason)) {
-                            //        $groupNote = App\Models\Note::find(preg_replace('/[^0-9]/', '', $intervention->reason));
-                            //        array_push($interventionNotes, $note);
-                            //    }
-                           // }
-                          //  $notesNoInterventions = [];
-                            //return dd($notesNoInterventions);
-                        @endphp
 
-
-
-                        @foreach($groupNotesGood as $note)
+                        @foreach($groupNotesNoInterventions as $note)
                             <tr>
 
                                 <td>{{App\Models\Group::find($note->group_id)->group_name}}</td>
@@ -74,7 +54,7 @@
                                         <button type="button" name="update" class="btn btn-info " value="1"  data-toggle="modal" data-target="{{"#createGroupInterventionNote" . $note->id}}">Create Group Intervention</button>
                                     </td>
                                 </form>
-                                @include ('/group_interventions/create_intervention_note_based_modal')
+                                @include ('/group_interventions/create_note_based_modal')
                             </tr>
                         @endforeach
                         </tbody>

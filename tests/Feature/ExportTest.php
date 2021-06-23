@@ -3,12 +3,16 @@
 namespace Tests\Feature;
 
 use App\Exports\GradesExport;
+use App\Exports\RubricsExport;
 use App\Exports\UsersExport;
 use App\Models\Course;
 use App\Models\CourseEdition;
 use App\Models\CourseEditionUser;
 use App\Models\Group;
 use App\Models\GroupUser;
+use App\Models\Rubric;
+use App\Models\RubricData;
+use App\Models\RubricEntry;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithoutMiddleware;
@@ -75,6 +79,31 @@ class ExportTest extends TestCase
                 'role' => 'student',
             ]
         );
+        Rubric::insert(
+            [
+                'name' => 'TestName',
+                'course_edition_id' => 1,
+                'week' => 1,
+            ]
+        );
+        RubricEntry::insert(
+            [
+                'rubric_id' => 1,
+                'distance' => 0,
+                'is_row' => 1,
+                'description' => 'Row 1',
+            ]
+        );
+        RubricData::insert(
+            [
+                'rubric_id' => 1,
+                'group_id' => 1,
+                'row_number' => 0,
+                'value' => 2,
+                'note' => 'student is good',
+                'user_id' => 1
+            ]
+        );
     }
 
     /**
@@ -129,4 +158,30 @@ class ExportTest extends TestCase
         });
     }
 
+    /**
+     * Test to verify RubricsExport class.
+     */
+    public function testRubricsExport()
+    {
+
+        $this->before();
+
+        Excel::fake();
+
+        $this->get(route('exportRubrics', [1]));
+
+        Excel::assertDownloaded('rubrics.csv', function(RubricsExport $export) {
+            // Assert that the correct export is downloaded.
+            $this->assertEquals([
+                'CourseEdition',
+                'Group',
+                'RubricName',
+                'Week',
+                'Description',
+                'Value',
+                'Note',
+            ], $export->headings());
+            return $export->collection()->contains('name','=','TestName');
+        });
+    }
 }

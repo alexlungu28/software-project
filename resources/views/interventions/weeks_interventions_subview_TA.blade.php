@@ -15,11 +15,14 @@
                         <th style="width:25%">Status / View</th>
                         </thead>
                         <tbody>
-                        @foreach($group->groupIndividualInterventions->sortBy('end_day')->sortBy('status') as $intervention)
+
+                        <!--
+                            $interventions are passed through the GroupController.
+                        -->
+                        @foreach($interventions as $intervention)
                             @if ($intervention->visible_ta == 1)
                             <tr>
                                 <td>{{App\Models\User::find($intervention->user_id)->first_name . " " . App\Models\User::find($intervention->user_id)->last_name }}</td>
-
 
                                 <td>
                                     <div style="overflow-x: hidden; overflow-y:auto;
@@ -30,10 +33,6 @@
                                         {{$intervention->action}}
                                         </div>
                                 </td>
-
-
-
-
 
                                 <td>@php echo date("F jS", strtotime($intervention->end_day)); @endphp</td>
 
@@ -59,7 +58,7 @@
 
                             </tr>
                             @endif
-                            @include ('/interventions/interventions_TA_modal')
+                            @include ('/interventions/view_intervention_TA')
                         @endforeach
 
                         </tbody>
