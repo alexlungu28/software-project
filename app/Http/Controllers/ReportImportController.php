@@ -31,9 +31,10 @@ class ReportImportController extends Controller
         try {
             $gitinspector = $parsedData->gitinspector;
             $authors = $gitinspector->changes->authors;
-            $namesData = array_fill(0, count($authors), null);
-            $emailsData = array_fill(0, count($authors), null);
-            $activityData = array_fill(0, count($authors), null);
+            $numAuthors = count($authors);
+            $namesData = array_fill(0, $numAuthors, null);
+            $emailsData = array_fill(0, $numAuthors, null);
+            $activityData = array_fill(0, $numAuthors, null);
             foreach ($authors as $key => $author) {
                 $namesData[$key] = $author->name;
                 $emailsData[$key] = strtolower($author->email);
@@ -45,7 +46,7 @@ class ReportImportController extends Controller
                 );
             }
             $blames = $gitinspector->blame->authors;
-            $blameData = array_fill(0, count($authors), null);
+            $blameData = array_fill(0, $numAuthors, null);
             foreach ($blames as $key => $blame) {
                 $blameData[$key] = array(
                     'rows' => $blame->rows,
@@ -56,10 +57,10 @@ class ReportImportController extends Controller
             }
             $timeline = end($gitinspector->timeline->periods);
             $count = 0;
-            $timelineData = array_fill(0, count($authors), null);
+            $timelineData = array_fill(0, $numAuthors, ".");
+
             foreach ($timeline->authors as $author) {
-                while ($author->name != $namesData[$count]) {
-                    $timelineData[$count] = ".";
+                while ($count <= $numAuthors && $author->name != $namesData[$count]) {
                     $count++;
                 }
                 $timelineData[$count] = $author->work;
@@ -109,7 +110,6 @@ class ReportImportController extends Controller
     {
         try {
             $users = Group::find($groupId)->users;
-
             foreach ($parsedData as $row) {
                 $jsonRow = json_decode($row);
                 $student = User::where('net_id', '=', $jsonRow->Email)->first();
