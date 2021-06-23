@@ -40,9 +40,13 @@ class IndividualInterventionsExport implements FromCollection, WithHeadings, Wit
             //from groups table
             'Group',
             //from notes_group table
-            'Week',
-            'ProblemSignal',
-            'Note'
+            'Reason',
+            'Action',
+            'StartDate',
+            'EndDate',
+            'Status',
+            'StatusNote',
+            'TAVisibility'
         ];
     }
 
@@ -54,14 +58,14 @@ class IndividualInterventionsExport implements FromCollection, WithHeadings, Wit
     {
         return CourseEdition::find($this->editionId)->students()
             ->join(
-                'notes_individual',
+                'interventions_individual',
                 'users.id',
                 '=',
-                'notes_individual.user_id'
+                'interventions_individual.user_id'
             )
             ->join(
                 'groups',
-                'notes_individual.group_id',
+                'interventions_individual.group_id',
                 '=',
                 'groups.id'
             )
@@ -72,9 +76,13 @@ class IndividualInterventionsExport implements FromCollection, WithHeadings, Wit
                 'first_name',
                 'email',
                 'group_name',
-                'week',
-                'problem_signal',
-                'note',
+                'reason',
+                'action',
+                'start_day',
+                'end_day',
+                'status',
+                'status_note',
+                'visible_ta'
             )->get();
     }
 }
