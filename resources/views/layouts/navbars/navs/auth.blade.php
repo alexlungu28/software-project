@@ -37,20 +37,37 @@
               @if(auth()->check())
                   @if(auth()->user() != null)
                     @foreach(auth()->user()->unreadNotifications as $notification)
-                        @php
-                            $group_id = $notification->data['Deadline passed']['group_id'];
-                            $group = App\Models\Group::find($group_id);
-                            $edition = App\Models\CourseEdition::find($group->course_edition_id);
-                            $course = App\Models\Course::find($edition->course_id);
-                            $sameEdition = $edition->id == $edition_id;
-                        @endphp
-                        <a class="dropdown-item" href="{{route('group', $group_id)}}">
-                            @if(!$sameEdition)
-                                {{ 'Intervention deadline passed: ' . $course->description . ', ' . $edition->year . ', ' . $group->group_name }}
-                            @else
-                                {{ 'Intervention deadline passed: ' . $group->group_name }}
-                            @endif
-                        </a>
+                        @if(isset($notification->data['Deadline passed']))
+                            @php
+                                $group_id = $notification->data['Deadline passed']['group_id'];
+                                $group = App\Models\Group::find($group_id);
+                                $edition = App\Models\CourseEdition::find($group->course_edition_id);
+                                $course = App\Models\Course::find($edition->course_id);
+                                $sameEdition = $edition->id == $edition_id;
+                            @endphp
+                            <a class="dropdown-item" href="{{route('group', $group_id)}}">
+                                @if(!$sameEdition)
+                                    {{ 'Individual intervention deadline passed: ' . $course->description . ', ' . $edition->year . ', ' . $group->group_name }}
+                                @else
+                                    {{ 'Individual intervention deadline passed: ' . $group->group_name }}
+                                @endif
+                            </a>
+                        @elseif(isset($notification->data['Deadline passed group']))
+                              @php
+                                  $group_id = $notification->data['Deadline passed group']['group_id'];
+                                  $group = App\Models\Group::find($group_id);
+                                  $edition = App\Models\CourseEdition::find($group->course_edition_id);
+                                  $course = App\Models\Course::find($edition->course_id);
+                                  $sameEdition = $edition->id == $edition_id;
+                              @endphp
+                              <a class="dropdown-item" href="{{route('group', $group_id)}}">
+                                  @if(!$sameEdition)
+                                      {{ 'Group intervention deadline passed: ' . $course->description . ', ' . $edition->year . ', ' . $group->group_name }}
+                                  @else
+                                      {{ 'Group intervention deadline passed: ' . $group->group_name }}
+                                  @endif
+                              </a>
+                        @endif
                     @endforeach
                   @endif
               @endif

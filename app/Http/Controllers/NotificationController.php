@@ -26,13 +26,9 @@ class NotificationController extends BaseController
     public function view($editionId)
     {
         $unread = Auth::user()->unreadNotifications;
-        $users = $unread->map(function ($notification) {
-            return User::where('id', '=', $notification->data['Deadline passed']['user_id'])->get()->first();
-        });
         return view('pages.notifications', [
             'edition_id' => $editionId,
-            'notifications' => $unread,
-            'users' => $users
+            'notifications' => $unread
         ]);
     }
 
@@ -62,8 +58,22 @@ class NotificationController extends BaseController
      */
     public function markAllAsRead(Request $request)
     {
-        Auth::user()->unreadNotifications->markAsRead();
         $editionId = $request->input('edition_id');
+        $individual = $request->input('individual');
+        $unread = Auth::user()->unreadNotifications;
+        if ($individual) {
+            foreach($unread as $notification) {
+                if (isset($notification->data['Deadline passed'])) {
+                    $notification->markAsRead();
+                }
+            }
+        } else {
+            foreach($unread as $notification) {
+                if (isset($notification->data['Deadline passed group'])) {
+                    $notification->markAsRead();
+                }
+            }
+        }
         return redirect('/notifications/' . $editionId);
     }
 }
