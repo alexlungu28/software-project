@@ -33,9 +33,13 @@ class GroupInterventionsExport implements FromCollection, WithHeadings, WithStri
             //from groups table
             'Group',
             //from notes_group table
-            'Week',
-            'ProblemSignal',
-            'Note'
+            'Reason',
+            'Action',
+            'StartDate',
+            'EndDate',
+            'Status',
+            'StatusNote',
+            'TAVisibility'
         ];
     }
 
@@ -47,16 +51,20 @@ class GroupInterventionsExport implements FromCollection, WithHeadings, WithStri
     {
         return Group::where('groups.course_edition_id', '=', $this->editionId)
             ->join(
-                'notes_group',
+                'interventions_group',
                 'groups.id',
                 '=',
-                'notes_group.group_id'
+                'interventions_group.group_id'
             )
             ->select(
                 'group_name',
-                'week',
-                'problem_signal',
-                'note',
+                'reason',
+                'action',
+                'start_day',
+                'end_day',
+                'status',
+                'status_note',
+                'visible_ta'
             )->get();
     }
 }
