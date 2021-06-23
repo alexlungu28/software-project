@@ -21,8 +21,13 @@
                         -->
                         @foreach($interventions as $intervention)
                             @if ($intervention->visible_ta == 1)
+
+                                @php
+                                    $user = App\Models\User::find($intervention->user_id);
+                                    $group = App\Models\Group::find($intervention->group_id);
+                                @endphp
                             <tr>
-                                <td>{{App\Models\User::find($intervention->user_id)->first_name . " " . App\Models\User::find($intervention->user_id)->last_name }}</td>
+                                <td>{{$user->first_name . " " . $user->last_name }}</td>
 
                                 <td>
                                     <div style="overflow-x: hidden; overflow-y:auto;

@@ -13,10 +13,10 @@
 
                     <div class="form-group">
                         <label>Name</label>
-                        <h4 ><b>{{App\Models\User::find($intervention->user_id)->first_name . " " . App\Models\User::find($intervention->user_id)->last_name }}</b></h4>
+                        <h4 ><b>{{$user->first_name . " " . $user->last_name }}</b></h4>
 
                         <label>Group</label>
-                        <h4 ><b>{{App\Models\Group::find($intervention->group_id)->group_name}}</b></h4>
+                        <h4 ><b>{{$group->group_name}}</b></h4>
                     </div>
 
                     <div class="form-group">

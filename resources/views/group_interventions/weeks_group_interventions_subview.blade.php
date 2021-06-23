@@ -17,7 +17,14 @@
                             $groupInterventions are passed through the GroupController.
                              -->
                         @foreach($groupInterventions as $intervention)
-                            @if($intervention->visible_ta == 1 && $user -> role == 'TA')
+
+                            @php
+
+                                $group = App\Models\Group::find($intervention->group_id);
+                                if(preg_match("/^(groupNote)\d+$/i", $intervention->reason))
+                                        $note = App\Models\Note::find(preg_replace('/[^0-9]/', '', $intervention->reason));
+                            @endphp
+
                             <tr>
                                 <td>       <div style="overflow-x: hidden; overflow-y:auto;
                                                                    text-overflow: clip;
@@ -50,7 +57,7 @@
                                 </td>
 
                             </tr>
-                            @endif
+
                             @include ('/group_interventions/status_modal')
                         @endforeach
 

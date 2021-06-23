@@ -45,15 +45,19 @@
 
 
                         @foreach($groupInterventions as $intervention)
+                            @php
+                                $group = App\Models\Group::find($intervention->group_id);
+                                if(preg_match("/^(groupNote)\d+$/i", $intervention->reason))
+                                    $note = App\Models\NoteGroup::find(preg_replace('/[^0-9]/', '', $intervention->reason));
+                            @endphp
+
                             <tr>
 
                                 <td>
-                                    {{App\Models\Group::find($intervention->group_id)->group_name}}</td>
+                                    {{$group->group_name}}</td>
                                 <td>
                                     @if(preg_match("/^(groupNote)\d+$/i", $intervention->reason))
-                                        @php
-                                            $note = App\Models\NoteGroup::find(preg_replace('/[^0-9]/', '', $intervention->reason));
-                                        @endphp
+
                                     @include('/group_interventions/view_note')
                                         <button type="button" name="viewGroupNote" class="btn btn-info rounded-pill" data-toggle="modal" data-target="{{"#viewGroupNote" . preg_replace('/[^0-9]/', '', $intervention->reason)}}">Group Note</button>
                                     @else

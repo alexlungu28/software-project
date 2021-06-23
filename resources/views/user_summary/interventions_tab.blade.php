@@ -26,6 +26,8 @@
                                         @php
                                             $user = App\Models\User::find($intervention->user_id);
                                             $group = App\Models\Group::find($intervention->group_id);
+                                            if(preg_match("/^(note)\d+$/i", $intervention->reason))
+                                                $note = App\Models\Note::find(preg_replace('/[^0-9]/', '', $intervention->reason));
                                         @endphp
 
                                         <td>
@@ -58,6 +60,7 @@
                                         </td>
 
                                     </tr>
+
                                     @include ('/interventions/status_modal')
                                 @endforeach
 
@@ -90,8 +93,9 @@
                                 @foreach($groupInterventions as $intervention)
 
                                     @php
-                                        $user = App\Models\User::find($intervention->user_id);
                                         $group = App\Models\Group::find($intervention->group_id);
+                                        if(preg_match("/^(groupNote)\d+$/i", $intervention->reason))
+                                            $note = App\Models\Note::find(preg_replace('/[^0-9]/', '', $intervention->reason));
                                     @endphp
 
                                     <tr>

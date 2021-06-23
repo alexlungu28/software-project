@@ -23,9 +23,6 @@
                             <label>Reason</label>
 
                             @if(preg_match("/^(note)\d+$/i", $intervention->reason))
-                                @php
-                                    $note = App\Models\Note::find(preg_replace('/[^0-9]/', '', $intervention->reason));
-                                @endphp
                                 @include('/interventions/view_note_from_status_modal')
                             @else
 
