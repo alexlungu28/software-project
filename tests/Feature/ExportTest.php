@@ -4,6 +4,7 @@ namespace Tests\Feature;
 
 use App\Exports\GradesExport;
 use App\Exports\GroupNotesExport;
+use App\Exports\IndividualInterventionsExport;
 use App\Exports\IndividualNotesExport;
 use App\Exports\RubricsExport;
 use App\Exports\UsersExport;
@@ -12,6 +13,7 @@ use App\Models\CourseEdition;
 use App\Models\CourseEditionUser;
 use App\Models\Group;
 use App\Models\GroupUser;
+use App\Models\Intervention;
 use App\Models\Note;
 use App\Models\NoteGroup;
 use App\Models\Rubric;
@@ -123,6 +125,17 @@ class ExportTest extends TestCase
                 'week' => 1,
                 'problem_signal' => 3,
                 'note' => 'test'
+            ]
+        );
+        Intervention::insert(
+            [
+                'user_id' => 1,
+                'group_id' => 1,
+                'reason' => 'note1',
+                'start_day' => '2021-06-23',
+                'end_day' => '2021-06-23',
+                'status' => 1,
+                'visible_ta' => 1
             ]
         );
     }
@@ -255,6 +268,39 @@ class ExportTest extends TestCase
                 'Note'
             ], $export->headings());
             return $export->collection()->contains('note','=','test');
+        });
+    }
+
+    /**
+     * Test to verify IndividualInterventionsExport class.
+     */
+    public function testIndividualInterventionsExport()
+    {
+
+        $this->before();
+
+        Excel::fake();
+
+        $this->get(route('exportIndividualInterventions', [1]));
+
+        Excel::assertDownloaded('individual_interventions.csv', function(IndividualInterventionsExport $export) {
+            // Assert that the correct export is downloaded.
+            $this->assertEquals([
+                'OrgDefinedId',
+                'Username',
+                'Last Name',
+                'First Name',
+                'Email',
+                'Group',
+                'Reason',
+                'Action',
+                'StartDate',
+                'EndDate',
+                'Status',
+                'StatusNote',
+                'TAVisibility'
+            ], $export->headings());
+            return $export->collection()->contains('reason','=','note1');
         });
     }
 
