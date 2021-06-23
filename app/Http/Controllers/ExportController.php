@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Exports\GradesExport;
 use App\Exports\GroupNotesExport;
+use App\Exports\IndividualInterventionsExport;
 use App\Exports\IndividualNotesExport;
 use App\Exports\RubricsExport;
 use App\Exports\UsersExport;
@@ -80,5 +81,16 @@ class ExportController extends Controller
     public function exportIndividualNotes($editionId): BinaryFileResponse
     {
         return Excel::download(new IndividualNotesExport($editionId), 'individual_notes.csv');
+    }
+
+    /**
+     * Exports individual interventions.
+     *
+     * @param $editionId
+     * @return BinaryFileResponse
+     */
+    public function exportIndividualInterventions($editionId): BinaryFileResponse
+    {
+        return Excel::download(new IndividualInterventionsExport($editionId), 'individual_interventions.csv');
     }
 }

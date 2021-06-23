@@ -141,6 +141,9 @@ Route::get('/exportGroupNotes/{edition_id}', 'App\Http\Controllers\ExportControl
 Route::get('/exportIndividualNotes/{edition_id}', 'App\Http\Controllers\ExportController@exportIndividualNotes')
     ->name('exportIndividualNotes')
     ->middleware(['loggedIn', 'role:lecturer']);
+Route::get('/exportIndividualInterventions/{edition_id}', 'App\Http\Controllers\ExportController@exportIndividualInterventions')
+    ->name('exportIndividualInterventions')
+    ->middleware(['loggedIn', 'role:lecturer']);
 
 /*
 |--------------------------------------------------------------------------

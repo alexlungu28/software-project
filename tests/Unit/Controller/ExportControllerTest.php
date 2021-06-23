@@ -76,4 +76,32 @@ class ExportControllerTest extends TestCase
         $this->assertEquals(200, $response->getStatusCode());
         $response->assertOk();
     }
+
+    /**
+     * Test to verify a user can export individual notes.
+     *
+     * @return void
+     */
+    public function testUserCanExportIndividualNotes()
+    {
+        Excel::fake();
+        $response = $this->get(route('exportIndividualNotes', [1]));
+        Excel::assertDownloaded('individual_notes.csv');
+        $this->assertEquals(200, $response->getStatusCode());
+        $response->assertOk();
+    }
+
+    /**
+     * Test to verify a user can export individual notes.
+     *
+     * @return void
+     */
+    public function testUserCanExportIndividualInterventions()
+    {
+        Excel::fake();
+        $response = $this->get(route('exportIndividualInterventions', [1]));
+        Excel::assertDownloaded('individual_interventions.csv');
+        $this->assertEquals(200, $response->getStatusCode());
+        $response->assertOk();
+    }
 }
