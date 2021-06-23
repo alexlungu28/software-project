@@ -136,13 +136,16 @@ class Notify extends Command
                             if ($currentDate->gt($intervention->end_day)) {
                                 $notification = DB::table('notifications')
                                     ->where('data', 'like', '%'
-                                        . 'Deadline passed%'
+                                        . 'Deadline passed"%'
                                         . '"user_id":' . $intervention->user_id
                                         . ',"group_id":' . $intervention->group_id
-                                        . ',"reason":"' . $intervention->reason
-                                        . '","action":"' . $intervention->action
-                                        . '","start_day":"' . $intervention->start_day
+                                        . ',"reason":%' . $intervention->reason
+                                        . '%,"action":%' . $intervention->action
+                                        . '%,"start_day":"' . $intervention->start_day
                                         . '","end_day":"' . $intervention->end_day
+                                        . '","status":' . $intervention->status
+                                        . ',"status_note":%' . $intervention->status_note
+                                        . '%,"visible_ta":' . $intervention->visible_ta
                                         . '%')
                                     ->get()->first();
                                 if ($notification == null) {
@@ -155,12 +158,12 @@ class Notify extends Command
                                 && $currentDate->diffInHours($intervention->end_day) <= 48) {
                                 $notification = DB::table('notifications')
                                     ->where('data', 'like', '%'
-                                        . 'Deadline approaching%'
+                                        . 'Deadline approaching"%'
                                         . '"user_id":' . $intervention->user_id
                                         . ',"group_id":' . $intervention->group_id
-                                        . ',"reason":"' . $intervention->reason
-                                        . '","action":"' . $intervention->action
-                                        . '","start_day":"' . $intervention->start_day
+                                        . ',"reason":%' . $intervention->reason
+                                        . '%,"action":%' . $intervention->action
+                                        . '%,"start_day":"' . $intervention->start_day
                                         . '","end_day":"' . $intervention->end_day
                                         . '%')
                                     ->get()->first();
@@ -193,12 +196,15 @@ class Notify extends Command
                     if ($currentDate->gt($intervention->end_day)) {
                         $notification = DB::table('notifications')
                             ->where('data', 'like', '%'
-                                . 'Deadline passed group%'
+                                . 'Deadline passed group"%'
                                 . ',"group_id":' . $intervention->group_id
-                                . ',"reason":"' . $intervention->reason
-                                . '","action":"' . $intervention->action
-                                . '","start_day":"' . $intervention->start_day
+                                . ',"reason":%' . $intervention->reason
+                                . '%,"action":%' . $intervention->action
+                                . '%,"start_day":"' . $intervention->start_day
                                 . '","end_day":"' . $intervention->end_day
+                                . '","status":' . $intervention->status
+                                . ',"status_note":%' . $intervention->status_note
+                                . '%,"visible_ta":' . $intervention->visible_ta
                                 . '%')
                             ->get()->first();
                         if ($notification == null) {
@@ -211,11 +217,11 @@ class Notify extends Command
                         && $currentDate->diffInHours($intervention->end_day) <= 48) {
                         $notification = DB::table('notifications')
                             ->where('data', 'like', '%'
-                                . 'Deadline approaching group%'
+                                . 'Deadline approaching group"%'
                                 . ',"group_id":' . $intervention->group_id
-                                . ',"reason":"' . $intervention->reason
-                                . '","action":"' . $intervention->action
-                                . '","start_day":"' . $intervention->start_day
+                                . ',"reason":%' . $intervention->reason
+                                . '%,"action":%' . $intervention->action
+                                . '%,"start_day":"' . $intervention->start_day
                                 . '","end_day":"' . $intervention->end_day
                                 . '%')
                             ->get()->first();
