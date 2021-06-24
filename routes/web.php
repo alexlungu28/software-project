@@ -38,9 +38,6 @@ Route::get('/', [CourseController::class, 'view'])->name('courses')->middleware(
 |--------------------------------------------------------------------------
 */
 // Create
-//shows the form to create a rubric
-Route::get('/rubricCreate/{edition_id}', [RubricController::class, 'create'])
-    ->name('rubricCreate')->middleware(['loggedIn', 'employee']);
 //post route for the Store method in the controller
 Route::post('/rubricStore', [RubricController::class, 'store'])->middleware(['loggedIn', 'employee']);
 
@@ -50,13 +47,9 @@ Route::get('/viewRubrics/{edition_id}', [RubricController::class, 'view'])->name
     ->middleware(['loggedIn', 'role:lecturer,HeadTA']);
 
 // Update
-Route::get('/rubricEdit', [RubricController::class, 'edit'])
-    ->name('rubricEdit')->middleware(['loggedIn', 'employee']);
 Route::put('/rubricUpdate', [RubricController::class, 'update'])->middleware(['loggedIn', 'employee']);
 
 // Delete
-Route::get('/rubricDelete', [RubricController::class, 'delete'])
-    ->name('rubricDelete')->middleware(['loggedIn', 'employee']);
 Route::delete('/rubricDestroy', [RubricController::class, 'destroy'])
     ->name('rubricDestroy')->middleware(['loggedIn', 'employee']);
 Route::put('/rubricRestore', [RubricController::class, 'restore'])
@@ -68,9 +61,6 @@ Route::put('/rubricRestore', [RubricController::class, 'restore'])
 |--------------------------------------------------------------------------
 */
 // Create
-//shows the form to create a rubric
-Route::get('/rubricEntryCreate', [RubricEntryController::class, 'create'])
-    ->name('rubricEntryCreate')->middleware(['loggedIn', 'employee']);
 //post route for the Store method in the controller
 Route::post('/rubricEntryStore', [RubricEntryController::class, 'store'])
     ->middleware(['loggedIn', 'employee']);
@@ -84,9 +74,6 @@ Route::get('/viewRubricTeacher/{id}/{edition_id}', [RubricEntryController::class
     ->middleware(['loggedIn', 'role:lecturer,HeadTA']);
 
 // Update
-Route::get('/rubricEntryEdit/{id}', [RubricEntryController::class, 'edit'])
-    ->name('rubricEntryEdit')
-    ->middleware(['loggedIn', 'employee']);
 Route::put('/rubricEntryUpdate', [RubricEntryController::class, 'update'])
     ->middleware(['loggedIn', 'employee']);
 
@@ -162,54 +149,9 @@ Route::post('importBuddycheck/{group_id}/{week}', [ReportImportController::class
     ->name('importBuddycheck')
     ->middleware(['loggedIn', 'role:lecturer,HeadTA']);
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home')->middleware('loggedIn');
-
-//Route::get('table-list', function () {
-//    return view('pages.table_list');
-//})->name('table');
-
-Route::get('typography', function () {
-    return view('pages.typography');
-})->name('typography');
-
-Route::get('icons', function () {
-    return view('pages.icons');
-})->name('icons');
-
-Route::get('map', function () {
-    return view('pages.map');
-})->name('map');
-
-Route::get('notificationsOld', function () {
-    return view('pages.notificationsOld', ['edition_id' => 1]);
-})->name('notificationsOld');
-
 Route::get('notifications/{edition_id}', [NotificationController::class, 'view'])
     ->name('notifications')
     ->middleware(['loggedIn']);
-
-Route::get('rtl-support', function () {
-    return view('pages.language');
-})->name('language');
-
-Route::get('upgrade', function () {
-    return view('pages.upgrade');
-})->name('upgrade');
-
-Route::group(['middleware' => 'auth'], function () {
-    Route::resource('user', 'App\Http\Controllers\UserController', ['except' => ['show']]);
-    Route::get('profile', ['as' => 'profile.edit', 'uses' => 'App\Http\Controllers\ProfileController@edit']);
-    Route::put('profile', ['as' => 'profile.update', 'uses' => 'App\Http\Controllers\ProfileController@update']);
-    Route::put(
-        'profile/password',
-        ['as' => 'profile.password', 'uses' => 'App\Http\Controllers\ProfileController@password']
-    );
-});
-
-
-Route::get('unauthorized', function () {
-    echo "You are unauthorized to access this page.";
-})->name('unauthorized');
 
 Route::get('/courses/{id}', [CourseController::class, 'viewCourseById'])
     ->name('course')
@@ -284,7 +226,8 @@ Route::post('/courseEditionStore/{course_id}', [CourseEditionController::class, 
 | Delete Course Edition Routes
 |--------------------------------------------------------------------------
 */
-Route::delete('/courseEditionDestroy', [CourseEditionController::class, 'destroy'])->middleware(['loggedIn', 'employee']);
+Route::delete('/courseEditionDestroy', [CourseEditionController::class, 'destroy'])
+    ->middleware(['loggedIn', 'employee']);
 Route::put('/courseEditionRestore', [CourseEditionController::class, 'restore'])
     ->name('courseEditionRestore')->middleware(['loggedIn', 'employee']);
 
@@ -392,15 +335,15 @@ Route::post('/statusGroupUnsolved/{id}', [GroupInterventionsController::class, '
 Route::post('/statusGroupSolved/{id}', [GroupInterventionsController::class, 'statusGroupSolved'])
     ->name('statusGroupSolved')->middleware(['loggedIn']);
 
-
-
 Route::get('/userSummary/{courseUserId}', [GroupController::class, 'userSummary'])
     ->name('userSummary')->middleware(['loggedIn']);
 
-
-
 Route::get('/group/{group_id}/week/{week_id}', [GroupController::class, 'viewWeek'])->name('week')
     ->middleware(['loggedIn', 'role:lecturer,HeadTA,TA']);
+
+Route::get('unauthorized', function () {
+    echo "You are unauthorized to access this page.";
+})->name('unauthorized');
 
 Route::get('/routeError', function () {
     echo "A routing error has occurred";

@@ -8,9 +8,6 @@ use App\Models\GroupUser;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithoutMiddleware;
-use Illuminate\Http\UploadedFile;
-use Maatwebsite\Excel\Facades\Excel;
-use PHPMD\Report;
 use Tests\TestCase;
 
 class ReportImportControllerTest extends TestCase

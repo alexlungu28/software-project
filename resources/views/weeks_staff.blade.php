@@ -1,5 +1,4 @@
 <?php
-#ddd($gitanalyses);
 $maxWeekNumber = 0;
 $index = 0;
 $latestGitAnalyses = -1;

@@ -21,89 +21,76 @@
                                 <h4 class="card-title ">{{$rubric->name}}</h4>
                         </div>
                         <div class="card-body">
-                                <table id ="table" class="table">
-                                    <thead class=" text-primary">
-                                    <th></th>
-                                    @foreach($rubricColumnEntries as $entry)
-                                        <th>
-                                            {{$entry->description}}
-                                        </th>
-                                    @endforeach
-                                    <th>Note</th>
-                                    <th>Update Row</th>
-                                    <th>Delete Row</th>
-                                    </thead>
-                                    <tbody>
-                                    @foreach($rubricRowEntries as $rowEntry)
-                                        <tr>
-                                            <td>
-                                                {{$rowEntry->description}}
-                                            </td>
-                                            @foreach($rubricColumnEntries as $columnEntry)
-                                                <td> <input type="radio" name={{$loop->parent->index}}  value={{$loop->index}}> </td>
-                                            @endforeach
-                                            <td> <textarea name={{"text".($loop->index)}} form="rubricForm"></textarea> </td>
-                                            <td>
-                                                <form
-                                                    method="get"
-                                                    action="{{route('rubricEntryEdit', $rowEntry->id)}}">
-                                                    @csrf
-                                                    <button
-                                                        type="submit"
-                                                        class="btn btn-primary">Update</button>
-                                                </form>
-                                            </td>
-                                            <td>
-                                                <form
-                                                    method="post"
-                                                    action="{{route('rubricEntryDelete', $rowEntry->id)}}">
-                                                    @csrf
-                                                    @method('DELETE')
-                                                    {{ method_field('DELETE') }}
-                                                    <button
-                                                        type="submit"
-                                                        onclick="return confirm('Are you sure?')"
-                                                        class="btn btn-primary">Remove</button>
-                                                </form>
-                                            </td>
-                                        </tr>
-                                    @endforeach
+                            <table id ="table" class="table">
+                                <thead class=" text-primary">
+                                <th></th>
+                                @foreach($rubricColumnEntries as $entry)
+                                    <th>
+                                        {{$entry->description}}
+                                    </th>
+                                @endforeach
+                                <th>Note</th>
+                                <th>Update Row</th>
+                                <th>Delete Row</th>
+                                </thead>
+                                <tbody>
+                                @foreach($rubricRowEntries as $rubricEntry)
                                     <tr>
-                                        <td>Update Column</td>
+                                        <td>
+                                            {{$rubricEntry->description}}
+                                        </td>
                                         @foreach($rubricColumnEntries as $columnEntry)
-                                            <td>
-                                                <form
-                                                    method="get"
-                                                    action="{{route('rubricEntryEdit', $columnEntry->id)}}">
-                                                    @csrf
-                                                    <button
-                                                        type="submit"
-                                                        class="btn btn-primary">Update</button>
-                                                </form>
-                                            </td>
+                                            <td> <input type="radio" name={{$loop->parent->index}}  value={{$loop->index}}> </td>
                                         @endforeach
+                                        <td> <textarea name={{"text".($loop->index)}} form="rubricForm"></textarea> </td>
+                                        <td>
+                                            <button class="btn btn-primary" type="button" name="update"  data-toggle="modal" data-target="{{"#updateEntry" . $rubricEntry->id}}" >Update</button>
+                                        </td>
+                                        @include ('/pages/rubricEntry_update')
+                                        <td>
+                                            <form
+                                                method="post"
+                                                action="{{route('rubricEntryDelete', $rubricEntry->id)}}">
+                                                @csrf
+                                                @method('DELETE')
+                                                {{ method_field('DELETE') }}
+                                                <button
+                                                    type="submit"
+                                                    onclick="return confirm('Are you sure?')"
+                                                    class="btn btn-primary">Remove</button>
+                                            </form>
+                                        </td>
                                     </tr>
-                                    <tr>
-                                        <td>Delete Column</td>
-                                        @foreach($rubricColumnEntries as $columnEntry)
-                                            <td>
-                                                <form
-                                                    method="post"
-                                                    action="{{route('rubricEntryDelete', $columnEntry->id)}}">
-                                                    @csrf
-                                                    @method('DELETE')
-                                                    {{ method_field('DELETE') }}
-                                                    <button
-                                                        type="submit"
-                                                        onclick="return confirm('Are you sure?')"
-                                                        class="btn btn-primary">Remove</button>
-                                                </form>
-                                            </td>
-{{--                                        <td><button onclick="window.location='{{route('rubricEntryDelete',array('id' => $rubric->id, 'distance' => $columnEntry->distance, 'isRow' => 0))}}';"  type="button" class="btn btn-primary">Delete</button></td>--}}
-                                        @endforeach
-                                    </tr>
-                                    </tbody>
-                                </table>
+                                @endforeach
+                                <tr>
+                                    <td>Update Column</td>
+                                    @foreach($rubricColumnEntries as $rubricEntry)
+                                        <td>
+                                            <button class="btn btn-primary" type="button" name="update"  data-toggle="modal" data-target="{{"#updateEntry" . $rubricEntry->id}}" >Update</button>
+                                        </td>
+                                        @include ('/pages/rubricEntry_update')
+                                    @endforeach
+                                </tr>
+                                <tr>
+                                    <td>Delete Column</td>
+                                    @foreach($rubricColumnEntries as $columnEntry)
+                                        <td>
+                                            <form
+                                                method="post"
+                                                action="{{route('rubricEntryDelete', $columnEntry->id)}}">
+                                                @csrf
+                                                @method('DELETE')
+                                                {{ method_field('DELETE') }}
+                                                <button
+                                                    type="submit"
+                                                    onclick="return confirm('Are you sure?')"
+                                                    class="btn btn-primary">Remove</button>
+                                            </form>
+                                        </td>
+                                    @endforeach
+                                </tr>
+                                </tbody>
+                            </table>
                         </div>
                     </div>
 

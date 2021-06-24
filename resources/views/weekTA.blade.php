@@ -1,4 +1,4 @@
-@extends('layouts.TA', ['activePage' => 'group', 'titlePage' => __('Week')])
+@extends('layouts.app', ['activePage' => 'group', 'titlePage' => __('Week')])
 
 @section('content')
     <?php

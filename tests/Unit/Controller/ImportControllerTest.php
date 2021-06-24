@@ -3,8 +3,11 @@
 namespace Tests\Unit\Controller;
 
 use App\Http\Controllers\ReportImportController;
+use App\Models\CourseEditionUser;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Auth;
 use Maatwebsite\Excel\Facades\Excel;
 use PHPMD\Report;
 use Tests\TestCase;
@@ -13,12 +16,28 @@ class ImportControllerTest extends TestCase
 {
 
     use withoutMiddleware;
+    use RefreshDatabase;
+
+    public function before()
+    {
+        CourseEditionUser::insert(
+            [
+                'user_id' => 2,
+                'course_edition_id' => 1,
+                'role' => 'lecturer',
+            ]
+        );
+        Auth::shouldReceive('user')->andReturn(null);
+        Auth::shouldReceive('check')->andReturn(true);
+        Auth::shouldReceive('id')->andReturn(2);
+    }
 
     /**
      * Test to verify Import view route.
      */
     public function testImportView()
     {
+        $this->before();
         $response = $this->get('/importView/1');
         $response->assertStatus(200);
     }
