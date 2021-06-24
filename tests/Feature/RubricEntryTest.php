@@ -51,18 +51,6 @@ class RubricEntryTest extends TestCase
     }
 
     /**
-     * Test to verify rubric edit route.
-     */
-    public function testRubricEdit()
-    {
-        $this->before();
-        $response = $this->get('/rubricEntryEdit/1')
-            ->assertSee('Rubric Entry Management | Update')
-            ->assertSee('Column 1');
-        $response->assertStatus(200);
-    }
-
-    /**
      * Test to verify rubric view route.
      */
     public function testRubricView()
