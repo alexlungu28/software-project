@@ -13,6 +13,9 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Notification;
 
+/**
+ * @SuppressWarnings(PHPMD.CyclomaticComplexity)
+ */
 class Notify extends Command
 {
     /**
@@ -135,7 +138,7 @@ class Notify extends Command
                         // Send notifications only for interventions that are active or extended
                         if (in_array($intervention->status, [1, 2])) {
                             if ($currentDate->gt($intervention->end_day)) {
-                                $notification = DB::table('notifications')
+                                $notifications = DB::table('notifications')
                                     ->where('data', 'like', '%'
                                         . 'Deadline passed"%'
                                         . '"user_id":' . $intervention->user_id
@@ -148,12 +151,25 @@ class Notify extends Command
                                         . ',"status_note":%' . $intervention->status_note
                                         . '%,"visible_ta":' . $intervention->visible_ta
                                         . '%')
-                                    ->get()->first();
-                                if ($notification == null) {
-                                    Notification::send($users, new Deadline($intervention, 'passed'));
-                                    GroupUser::where('group_id', '=', $intervention->group_id)->get()
-                                        ->map(function ($groupUser) use ($intervention) {
-                                            $user = User::find($groupUser->user_id);
+                                    ->get();
+                                $users->map(function ($user) use ($intervention, $notifications, $mailPassed) {
+                                    $userNotification = $notifications
+                                        ->where('notifiable_id', '=', $user->id)
+                                        ->first();
+                                    if ($userNotification == null) {
+                                        Notification::send($user, new Deadline($intervention, 'passed'));
+                                        if (!in_array($intervention, $mailPassed)) {
+                                            array_push($mailPassed, $intervention);
+                                        }
+                                    }
+                                });
+                                GroupUser::where('group_id', '=', $intervention->group_id)->get()
+                                    ->map(function ($groupUser) use ($intervention, $notifications, $mailPassed) {
+                                        $user = User::find($groupUser->user_id);
+                                        $userNotification = $notifications
+                                            ->where('notifiable_id', '=', $user->id)
+                                            ->first();
+                                        if ($userNotification == null) {
                                             $group = Group::find($groupUser->group_id);
                                             $courseEdition = CourseEdition::find($group->course_edition_id);
                                             $ceUser = DB::table('course_edition_user')
@@ -162,15 +178,15 @@ class Notify extends Command
                                                 ->get()->first();
                                             if ($ceUser->role == 'TA') {
                                                 Notification::send($user, new Deadline($intervention, 'passed'));
+                                                if (!in_array($intervention, $mailPassed)) {
+                                                    array_push($mailPassed, $intervention);
+                                                }
                                             }
-                                        });
-                                    if (!in_array($intervention, $mailPassed)) {
-                                        array_push($mailPassed, $intervention);
-                                    }
-                                }
+                                        }
+                                    });
                             } elseif ($currentDate->lt($intervention->end_day)
                                 && $currentDate->diffInHours($intervention->end_day) <= 48) {
-                                $notification = DB::table('notifications')
+                                $notifications = DB::table('notifications')
                                     ->where('data', 'like', '%'
                                         . 'Deadline approaching"%'
                                         . '"user_id":' . $intervention->user_id
@@ -179,9 +195,16 @@ class Notify extends Command
                                         . '%,"action":%' . $intervention->action
                                         . '%,"start_day":"' . $intervention->start_day
                                         . '","end_day":"' . $intervention->end_day
+                                        . '","status":' . $intervention->status
+                                        . ',"status_note":%' . $intervention->status_note
+                                        . '%,"visible_ta":' . $intervention->visible_ta
                                         . '%')
-                                    ->get()->first();
-                                if ($notification == null) {
+                                    ->get();
+                                $user = User::find($intervention->user_id);
+                                $userNotification = $notifications
+                                    ->where('notifiable_id', '=', $user->id)
+                                    ->first();
+                                if ($userNotification == null) {
                                     $user = User::find($intervention->user_id);
                                     $group = Group::find($intervention->group_id);
                                     $courseEdition = CourseEdition::find($group->course_edition_id);
@@ -191,9 +214,9 @@ class Notify extends Command
                                         ->get()->first();
                                     if ($ceUser->role == 'student') {
                                         Notification::send($user, new Deadline($intervention, 'approaching'));
-                                    }
-                                    if (!in_array($intervention, $mailApproaching)) {
-                                        array_push($mailApproaching, $intervention);
+                                        if (!in_array($intervention, $mailApproaching)) {
+                                            array_push($mailApproaching, $intervention);
+                                        }
                                     }
                                 }
                             }
@@ -216,7 +239,7 @@ class Notify extends Command
                 // Send notifications only for interventions that are active or extended
                 if (in_array($intervention->status, [1, 2])) {
                     if ($currentDate->gt($intervention->end_day)) {
-                        $notification = DB::table('notifications')
+                        $notifications = DB::table('notifications')
                             ->where('data', 'like', '%'
                                 . 'Deadline passed group"%'
                                 . ',"group_id":' . $intervention->group_id
@@ -229,11 +252,24 @@ class Notify extends Command
                                 . '%,"visible_ta":' . $intervention->visible_ta
                                 . '%')
                             ->get();
-                        if ($notification == null) {
-                            Notification::send($users, new Deadline($intervention, 'passed group'));
-                            GroupUser::where('group_id', '=', $intervention->group_id)->get()
-                                ->map(function ($groupUser) use ($intervention) {
-                                    $user = User::find($groupUser->user_id);
+                        $users->map(function ($user) use ($intervention, $notifications, $mailPassed) {
+                            $userNotification = $notifications
+                                ->where('notifiable_id', '=', $user->id)
+                                ->first();
+                            if ($userNotification == null) {
+                                Notification::send($user, new Deadline($intervention, 'passed group'));
+                                if (!in_array($intervention, $mailPassed)) {
+                                    array_push($mailPassed, $intervention);
+                                }
+                            }
+                        });
+                        GroupUser::where('group_id', '=', $intervention->group_id)->get()
+                            ->map(function ($groupUser) use ($intervention, $mailPassed, $notifications) {
+                                $user = User::find($groupUser->user_id);
+                                $userNotification = $notifications
+                                    ->where('notifiable_id', '=', $user->id)
+                                    ->first();
+                                if ($userNotification == null) {
                                     $group = Group::find($groupUser->group_id);
                                     $courseEdition = CourseEdition::find($group->course_edition_id);
                                     $ceUser = DB::table('course_edition_user')
@@ -242,15 +278,15 @@ class Notify extends Command
                                         ->get()->first();
                                     if ($ceUser->role == 'TA') {
                                         Notification::send($user, new Deadline($intervention, 'passed group'));
+                                        if (!in_array($intervention, $mailPassed)) {
+                                            array_push($mailPassed, $intervention);
+                                        }
                                     }
-                                });
-                            if (!in_array($intervention, $mailPassed)) {
-                                array_push($mailPassed, $intervention);
-                            }
-                        }
+                                }
+                            });
                     } elseif ($currentDate->lt($intervention->end_day)
                         && $currentDate->diffInHours($intervention->end_day) <= 48) {
-                        $notification = DB::table('notifications')
+                        $notifications = DB::table('notifications')
                             ->where('data', 'like', '%'
                                 . 'Deadline approaching group"%'
                                 . ',"group_id":' . $intervention->group_id
@@ -258,12 +294,18 @@ class Notify extends Command
                                 . '%,"action":%' . $intervention->action
                                 . '%,"start_day":"' . $intervention->start_day
                                 . '","end_day":"' . $intervention->end_day
+                                . '","status":' . $intervention->status
+                                . ',"status_note":%' . $intervention->status_note
+                                . '%,"visible_ta":' . $intervention->visible_ta
                                 . '%')
-                            ->get()->first();
-                        if ($notification == null) {
-                            GroupUser::where('group_id', '=', $intervention->group_id)->get()
-                                ->map(function ($groupUser) use ($intervention) {
-                                    $user = User::find($groupUser->user_id);
+                            ->get();
+                        GroupUser::where('group_id', '=', $intervention->group_id)->get()
+                            ->map(function ($groupUser) use ($intervention, $mailApproaching, $notifications) {
+                                $user = User::find($groupUser->user_id);
+                                $userNotification = $notifications
+                                    ->where('notifiable_id', '=', $user->id)
+                                    ->first();
+                                if ($userNotification == null) {
                                     $group = Group::find($intervention->group_id);
                                     $courseEdition = CourseEdition::find($group->course_edition_id);
                                     $ceUser = DB::table('course_edition_user')
@@ -272,12 +314,12 @@ class Notify extends Command
                                         ->get()->first();
                                     if ($ceUser->role == 'student') {
                                         Notification::send($user, new Deadline($intervention, 'approaching group'));
+                                        if (!in_array($intervention, $mailApproaching)) {
+                                            array_push($mailApproaching, $intervention);
+                                        }
                                     }
-                                });
-                            if (!in_array($intervention, $mailApproaching)) {
-                                array_push($mailApproaching, $intervention);
-                            }
-                        }
+                                }
+                            });
                     }
                 }
             });

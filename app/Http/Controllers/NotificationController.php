@@ -62,13 +62,13 @@ class NotificationController extends BaseController
         $individual = $request->input('individual');
         $unread = Auth::user()->unreadNotifications;
         if ($individual) {
-            foreach($unread as $notification) {
+            foreach ($unread as $notification) {
                 if (isset($notification->data['Deadline passed'])) {
                     $notification->markAsRead();
                 }
             }
         } else {
-            foreach($unread as $notification) {
+            foreach ($unread as $notification) {
                 if (isset($notification->data['Deadline passed group'])) {
                     $notification->markAsRead();
                 }

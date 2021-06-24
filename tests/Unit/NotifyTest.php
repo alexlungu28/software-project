@@ -2,8 +2,10 @@
 
 namespace Tests\Unit;
 
+use App\Models\CourseEdition;
 use App\Models\CourseEditionUser;
 use App\Models\Group;
+use App\Models\GroupUser;
 use App\Models\Intervention;
 use App\Models\User;
 use Carbon\Carbon;
@@ -76,7 +78,7 @@ class NotifyTest extends TestCase
                 'id' => 1,
                 'user_id' => 1,
                 'course_edition_id' => 1,
-                'role' => 'lecturer',
+                'role' => 'student',
             ]
         );
         User::insert(
@@ -87,6 +89,24 @@ class NotifyTest extends TestCase
                 'first_name' => 'First',
                 'email' => 'student1@student.tudelft.nl',
                 'affiliation' => 'student'
+            ]
+        );
+        CourseEdition::insert(
+            [
+                'course_id' => 1,
+                'year' => 2021
+            ]
+        );
+        Group::insert(
+            [
+                'group_name' => 'Group 1',
+                'course_edition_id' => 1
+            ]
+        );
+        GroupUser::insert(
+            [
+                'user_id' => 1,
+                'group_id' => 1
             ]
         );
         Intervention::insert(
