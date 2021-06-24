@@ -354,7 +354,11 @@ Route::get('/routeError', function () {
 })->name('routeError');
 
 Route::put('/notifications/markAsRead', [NotificationController::class, 'markAsRead'])
-    ->middleware(['loggedIn']);
+    ->name('markAsRead')->middleware(['loggedIn']);
 
 Route::put('/notifications/markAllAsRead', [NotificationController::class, 'markAllAsRead'])
-    ->middleware(['loggedIn']);
+    ->name('markAllAsRead')->middleware(['loggedIn']);
+
+Route::get('/logout', function () {
+    return redirect('/saml2/eipdev/logout');
+})->name('logout')->middleware('loggedIn');
