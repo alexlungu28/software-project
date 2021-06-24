@@ -26,7 +26,7 @@
                                 <table class="table">
                                     <tbody>
                                     @if($individualNotifications != 0)
-                                        <form method="post" action="/notifications/markAllAsRead">
+                                        <form method="post" action="{{ route('markAllAsRead') }}">
                                             {{ method_field('PUT') }}
                                             {{ csrf_field() }}
                                             <input type="hidden" name="edition_id" value="{{$edition_id}}">
@@ -68,7 +68,7 @@
                                                         @endif
                                                     </a>
                                                 </button>
-                                                <form method="post" action="/notifications/markAsRead">
+                                                <form method="post" action="{{ route('markAsRead') }}">
                                                     {{ method_field('PUT') }}
                                                     {{ csrf_field() }}
                                                     <input type="hidden" name="id" value="{{ $notification->id }}">
@@ -99,7 +99,7 @@
                                 <table class="table">
                                     <tbody>
                                     @if($groupNotifications != 0)
-                                        <form method="post" action="/notifications/markAllAsRead">
+                                        <form method="post" action="{{ route('markAllAsRead') }}">
                                             {{ method_field('PUT') }}
                                             {{ csrf_field() }}
                                             <input type="hidden" name="edition_id" value="{{$edition_id}}">
@@ -135,7 +135,7 @@
                                                             @endif
                                                         </a>
                                                     </button>
-                                                    <form method="post" action="/notifications/markAsRead">
+                                                    <form method="post" action="{{ route('markAsRead') }}">
                                                         {{ method_field('PUT') }}
                                                         {{ csrf_field() }}
                                                         <input type="hidden" name="id" value="{{ $notification->id }}">

@@ -359,6 +359,12 @@ Route::put('/notifications/markAsRead', [NotificationController::class, 'markAsR
 Route::put('/notifications/markAllAsRead', [NotificationController::class, 'markAllAsRead'])
     ->name('markAllAsRead')->middleware(['loggedIn']);
 
+Route::get('/notifications/{edition_id}/settings', [NotificationController::class, 'viewSettings'])
+    ->name('notificationSettings')->middleware(['loggedIn']);
+
+Route::put('/updateNotificationSettings', [NotificationController::class, 'updateSettings'])
+    ->name('updateNotificationSettings')->middleware('loggedIn');
+
 Route::get('/logout', function () {
     return redirect('/saml2/eipdev/logout');
 })->name('logout')->middleware('loggedIn');

@@ -12,6 +12,7 @@ use Illuminate\Http\Request;
 use Illuminate\Routing\Redirector;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Routing\Controller as BaseController;
+use Illuminate\Support\Facades\DB;
 
 class NotificationController extends BaseController
 {
@@ -75,5 +76,35 @@ class NotificationController extends BaseController
             }
         }
         return redirect('/notifications/' . $editionId);
+    }
+
+    /**
+     * Returns the notification settings view.
+     * @param $editionId
+     * @return Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
+     */
+    public function viewSettings($editionId)
+    {
+        return view('pages.notificationSettings', ['edition_id' => $editionId]);
+    }
+
+    /**
+     * Updates the notification settings of the logged in user,
+     * or creates them if they do not exist in the database table.
+     * @param Request $request
+     * @return Application|RedirectResponse|Redirector
+     */
+    public function updateSettings(Request $request)
+    {
+        $individual = $request->input('individual');
+        $group = $request->input('group');
+        $editionId = $request->input('edition_id');
+        DB::table('notification_settings')->updateOrInsert([
+            'user_id' => Auth::user()->id
+        ], [
+            'user_deadlines' => $individual,
+            'group_deadlines' => $group
+        ]);
+        return redirect('/notifications/' . $editionId . '/settings');
     }
 }
