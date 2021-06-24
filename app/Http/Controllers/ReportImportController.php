@@ -51,9 +51,10 @@ class ReportImportController extends Controller
             $gitinspector = $parsedData->gitinspector;
             // From the gitinspector field we take the authors and their activity
             $authors = $gitinspector->changes->authors;
-            $namesData = array_fill(0, count($authors), null);
-            $emailsData = array_fill(0, count($authors), null);
-            $activityData = array_fill(0, count($authors), null);
+            $numAuthors = count($authors);
+            $namesData = array_fill(0, $numAuthors, null);
+            $emailsData = array_fill(0, $numAuthors, null);
+            $activityData = array_fill(0, $numAuthors, null);
             foreach ($authors as $key => $author) {
                 $namesData[$key] = $author->name;
                 $emailsData[$key] = strtolower($author->email);
@@ -66,7 +67,7 @@ class ReportImportController extends Controller
             }
             // We take the blame for each author
             $blames = $gitinspector->blame->authors;
-            $blameData = array_fill(0, count($authors), null);
+            $blameData = array_fill(0, $numAuthors, null);
             foreach ($blames as $key => $blame) {
                 $blameData[$key] = array(
                     'rows' => $blame->rows,
@@ -78,11 +79,10 @@ class ReportImportController extends Controller
             // And we take the timeline for each author
             $timeline = end($gitinspector->timeline->periods);
             $count = 0;
-            $timelineData = array_fill(0, count($authors), null);
+            $timelineData = array_fill(0, $numAuthors, ".");
+
             foreach ($timeline->authors as $author) {
-                // If the author is not present in the timeline their entry is filled with '.'
-                while ($author->name != $namesData[$count]) {
-                    $timelineData[$count] = ".";
+                while ($count <= $numAuthors && $author->name != $namesData[$count]) {
                     $count++;
                 }
                 $timelineData[$count] = $author->work;

@@ -14,6 +14,7 @@ use App\Http\Controllers\ReportImportController;
 use App\Http\Controllers\RubricController;
 use App\Http\Controllers\RubricDataController;
 use App\Http\Controllers\RubricEntryController;
+use App\Models\Group;
 use Illuminate\Support\Facades\Route;
 use App\Models\Rubric;
 
@@ -92,7 +93,22 @@ Route::post('/rubricDataStore/{id}', [RubricDataController::class, 'store']);
 
 /*
 |--------------------------------------------------------------------------
-| Import/Export student Routes
+| Import Students/TA Routes
+|--------------------------------------------------------------------------
+*/
+Route::post('/import/{edition_id}', 'App\Http\Controllers\ImportController@import')
+    ->name('import')
+    ->middleware(['loggedIn', 'role:lecturer']);
+Route::get('/importView/{edition_id}', 'App\Http\Controllers\ImportController@importView')
+    ->name('importTAsStudents')
+    ->middleware(['loggedIn', 'role:lecturer']);
+Route::post('/importTA/{edition_id}', 'App\Http\Controllers\ImportController@importTA')
+    ->name('importTA')
+    ->middleware(['loggedIn', 'role:lecturer']);
+
+/*
+|--------------------------------------------------------------------------
+| Export Routes
 |--------------------------------------------------------------------------
 */
 Route::get('/exportView/{edition_id}', 'App\Http\Controllers\ExportController@exportView')
@@ -107,14 +123,17 @@ Route::get('/exportGrades/{edition_id}', 'App\Http\Controllers\ExportController@
 Route::get('/exportRubrics/{edition_id}', 'App\Http\Controllers\ExportController@exportRubrics')
     ->name('exportRubrics')
     ->middleware(['loggedIn', 'role:lecturer']);
-Route::get('/importView/{edition_id}', 'App\Http\Controllers\ImportController@importView')
-    ->name('importTAsStudents')
+Route::get('/exportGroupNotes/{edition_id}', 'App\Http\Controllers\ExportController@exportGroupNotes')
+    ->name('exportGroupNotes')
     ->middleware(['loggedIn', 'role:lecturer']);
-Route::post('/import/{edition_id}', 'App\Http\Controllers\ImportController@import')
-    ->name('import')
+Route::get('/exportIndividualNotes/{edition_id}', 'App\Http\Controllers\ExportController@exportIndividualNotes')
+    ->name('exportIndividualNotes')
     ->middleware(['loggedIn', 'role:lecturer']);
-Route::post('/importTA/{edition_id}', 'App\Http\Controllers\ImportController@importTA')
-    ->name('importTA')
+Route::get('/exportGroupInterventions/{edition_id}', 'App\Http\Controllers\ExportController@exportGroupInterventions')
+    ->name('exportGroupInterventions')
+    ->middleware(['loggedIn', 'role:lecturer']);
+Route::get('/exportIndividualInterventions/{edition_id}', 'App\Http\Controllers\ExportController@exportIndividualInterventions')
+    ->name('exportIndividualInterventions')
     ->middleware(['loggedIn', 'role:lecturer']);
 
 /*
@@ -122,7 +141,6 @@ Route::post('/importTA/{edition_id}', 'App\Http\Controllers\ImportController@imp
 | Import report routes
 |--------------------------------------------------------------------------
 */
-
 Route::post('importGitanalysis/{group_id}/{week}', [ReportImportController::class, 'importGitanalysis'])
     ->name('importGitanalysis')
     ->middleware(['loggedIn', 'role:lecturer,HeadTA,TA']);
@@ -316,6 +334,9 @@ Route::post('/statusGroupUnsolved/{id}', [GroupInterventionsController::class, '
 
 Route::post('/statusGroupSolved/{id}', [GroupInterventionsController::class, 'statusGroupSolved'])
     ->name('statusGroupSolved')->middleware(['loggedIn']);
+
+Route::get('/userSummary/{courseUserId}', [GroupController::class, 'userSummary'])
+    ->name('userSummary')->middleware(['loggedIn']);
 
 Route::get('/group/{group_id}/week/{week_id}', [GroupController::class, 'viewWeek'])->name('week')
     ->middleware(['loggedIn', 'role:lecturer,HeadTA,TA']);

@@ -23,9 +23,15 @@
 
                         @foreach($notesNoInterventions as $note)
                             <tr>
-                                <td>{{App\Models\User::find($note->user_id)->first_name . " " . App\Models\User::find($note->user_id)->last_name }}</td>
 
-                                <td>{{App\Models\Group::find($note->group_id)->group_name}}</td>
+                                @php
+                                    $user = App\Models\User::find($note->user_id);
+                                    $group = App\Models\Group::find($note->group_id);
+                                @endphp
+
+                                <td>{{$user->first_name . " " . $user->last_name }}</td>
+
+                                <td>{{$group->group_name}}</td>
 
                                 <td>Week {{$note->week}}</td>
 

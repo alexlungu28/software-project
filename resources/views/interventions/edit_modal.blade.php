@@ -29,9 +29,9 @@
 
                         <div class="form-group">
                             <label for="name">Name</label>
-                            <h5 ><b>{{App\Models\User::find($intervention->user_id)->first_name . " " . App\Models\User::find($intervention->user_id)->last_name }}</b></h5>
+                            <h5 ><b>{{$user->first_name . " " . $user->last_name }}</b></h5>
                             <label for="group">Group</label>
-                            <h5 ><b>{{App\Models\Group::find($intervention->group_id)->group_name}}</b></h5>
+                            <h5 ><b>{{$group->group_name}}</b></h5>
                         </div>
                         <div class="form-group">
                             <label for="editReason">Reason</label>
