@@ -1,0 +1,35 @@
+[data-theme="dark"] {
+    background-color: #111   !important;
+    color: #eee;
+}
+
+[data-theme="dark"] .bg-black {
+    background-color: #fff !important;
+}
+
+[data-theme="dark"] .bg-dark {
+    background-color: #eee !important;
+}
+
+[data-theme="dark"] .bg-light {
+    background-color: #222 !important;
+}
+
+[data-theme="dark"] .bg-white {
+    background-color: #000 !important;
+}
+
+[data-theme="dark"] a {
+    color: #2394F8;
+}
+
+[data-theme="dark"] a:hover,
+a:focus {
+    color: #0066a2;
+    text-decoration: none;
+}
+
+[data-theme="dark"] a.text-info:hover,
+a.text-info:focus {
+    color: #00a5bb;
+}
