@@ -1,19 +1,21 @@
-<div class="modal fade" id="{{"viewInterventionTA" . $intervention->id}}">
+<div class="modal fade" id="{{"viewGroupInterventionTASummary" . $intervention->id}}">
     <div class="modal-dialog">
         <div class="modal-content">
 
             <div class="modal-header">
-                <h4 class="modal-title" align="center"><b>Intervention #{{$intervention->id}}</b></h4>
+                <h4 class="modal-title" align="center"><b>Group Intervention #{{$intervention->id}}</b></h4>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span></button>
             </div>
+
+            @php
+            $group = App\Models\Group::find($intervention->group_id);
+            @endphp
 
             <div class="modal-body">
                 <div class="box-body">
 
                     <div class="form-group">
-                        <label>Name</label>
-                        <h4 ><b>{{$user->first_name . " " . $user->last_name }}</b></h4>
 
                         <label>Group</label>
                         <h4 ><b>{{$group->group_name}}</b></h4>
@@ -22,14 +24,19 @@
                     <div class="form-group">
                         <label>Reason</label>
 
-                        @if(preg_match("/^(note)\d+$/i", $intervention->reason))
+                        @if(preg_match("/^(groupNote)\d+$/i", $intervention->reason))
                             @php
                                 $note = App\Models\Note::find(preg_replace('/[^0-9]/', '', $intervention->reason));
                             @endphp
+                            <div style="overflow-x: hidden; overflow-y:auto;
+                                                                   text-overflow: clip;
+                                                                   display: -webkit-box;
+                                                                   -webkit-line-clamp: 5; /* number of lines to show */
+                                                                   -webkit-box-orient: vertical;">{{"The problematic note from week " . $note->week . ": " .
+                                $note->note}}
+                            </div>
 
-                            @include('/interventions/view_note_from_status_modal')
-                        @else
-                            <h4>
+                    @else
                                 <div style="overflow-x: hidden; overflow-y:auto;
                                                                    text-overflow: clip;
                                                                    display: -webkit-box;
@@ -37,9 +44,8 @@
                                                                    -webkit-box-orient: vertical;">
                                     {{$intervention->reason}}
                                 </div>
-                            </h4>
-
                         @endif
+
                     </div>
 
                     <div class="form-group">

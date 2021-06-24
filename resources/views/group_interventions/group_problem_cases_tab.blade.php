@@ -21,9 +21,12 @@
                         <tbody>
 
                         @foreach($groupNotesNoInterventions as $note)
+                            @php
+                                $group = App\Models\Group::find($note->group_id);
+                            @endphp
                             <tr>
 
-                                <td>{{App\Models\Group::find($note->group_id)->group_name}}</td>
+                                <td>{{$group->group_name}}</td>
 
                                 <td>Week {{$note->week}}</td>
 

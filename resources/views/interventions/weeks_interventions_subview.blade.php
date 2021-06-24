@@ -19,9 +19,15 @@
                             $interventions are passed through the GroupController.
                         -->
                         @foreach($interventions as $intervention)
+                            @php
+                                $user = App\Models\User::find($intervention->user_id);
+                                $group = App\Models\Group::find($intervention->group_id);
+                                if(preg_match("/^(note)\d+$/i", $intervention->reason))
+                                        $note = App\Models\Note::find(preg_replace('/[^0-9]/', '', $intervention->reason));
+                            @endphp
 
                             <tr>
-                                <td>{{App\Models\User::find($intervention->user_id)->first_name . " " . App\Models\User::find($intervention->user_id)->last_name }}</td>
+                                <td>{{$user->first_name . " " . $user->last_name }}</td>
 
                                 <td>
                                     <div style="overflow-x: hidden; overflow-y:auto;

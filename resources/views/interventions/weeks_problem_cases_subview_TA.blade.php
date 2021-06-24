@@ -24,7 +24,7 @@
                                 @if($note->problem_signal >= 2)
                                     <tr>
                                         <td>
-                                            {{$note->user->first_name . ' ' . $note->user->last_name}} Zamfirescu Toma
+                                            {{$note->user->first_name . ' ' . $note->user->last_name}}
                                         </td>
                                         <td>
                                             {{$note->week}}

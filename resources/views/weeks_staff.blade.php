@@ -102,34 +102,34 @@ if ($latestGitAnalyses != -1) {
                                     <div class="tab-pane active" id="profile">
                                         <table class="table">
                                             <thead class="text-primary">
-                                            <th>Netid</th>
-                                            <th>Last Name</th>
+                                            <th>NetId</th>
                                             <th>First Name</th>
+                                            <th>Last Name</th>
                                             <th>Email</th>
+                                            <th>View User Summary</th>
                                             </thead>
                                             <tbody>
-                                            @foreach($users as $user)
-                                                @if(DB::table('course_edition_user')->where("user_id","=", $user->user_id)->where('role','=','student')->exists())
+                                            @foreach($users as $groupUser)
+                                                @if(DB::table('course_edition_user')->where("user_id","=", $groupUser->user_id)->where('role','=','student')->exists())
                                                     <tr>
+                                                        @php
+                                                        $user = App\Models\User::find($groupUser->user_id);
+                                                        @endphp
                                                         <td>
-                                                            {{DB::table('users')
-                                                                    ->where('id', '=', $user->user_id)
-                                                                    ->value('net_id')}}
+                                                            {{$user->net_id }}
                                                         </td>
                                                         <td>
-                                                            {{DB::table('users')
-                                                                    ->where('id', '=', $user->user_id)
-                                                                    ->value('last_name')}}
+                                                            {{$user->first_name}}
                                                         </td>
                                                         <td>
-                                                            {{DB::table('users')
-                                                                    ->where('id', '=', $user->user_id)
-                                                                    ->value('first_name')}}
+                                                            {{$user->last_name}}
                                                         </td>
                                                         <td>
-                                                            {{DB::table('users')
-                                                                    ->where('id', '=', $user->user_id)
-                                                                    ->value('email')}}
+                                                            {{$user->email}}
+                                                        </td>
+
+                                                        <td>
+                                                            <button type="submit" name="update" class="btn btn-dark rounded-pill" onclick="window.location='{{ route('userSummary', ['courseUserId'=>$groupUser->id]) }}'">Summary!</button>
                                                         </td>
                                                     </tr>
                                                 @endif
