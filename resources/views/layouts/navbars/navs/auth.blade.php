@@ -66,7 +66,7 @@
           </div>
         </li>
           <li class="nav-item">
-              <a class="nav-link" id="darkMode">
+              <a class="nav-link" id="darkMode" style="user-select: none">
                   <i id="themeIcon" class="material-icons">lightbulb</i>
               </a>
           </li>
