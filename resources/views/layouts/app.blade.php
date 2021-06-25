@@ -15,16 +15,13 @@
     <!-- CSS Files -->
     <link href="{{ asset('material') }}/css/material-dashboard.css?v=2.1.1" rel="stylesheet" />
     <link href="{{ asset('material') }}/css/dark-mode.css" rel="stylesheet">
-    <script src="http://127.0.0.1:8000/resources/js/components/rubricView.js"></script>
     </head>
     <body class="{{ $class ?? '' }}">
 
 
             @include('layouts.page_templates.auth')
-            <!--  scripts for rubricView  -->
 
             <!--   Core JS Files   -->
-        <script src="{{asset('resources/js/components/rubricView.js')}}"></script>
         <script src="{{ asset('material') }}/js/core/jquery.min.js"></script>
         <script src="{{ asset('material') }}/js/core/popper.min.js"></script>
         <script src="{{ asset('material') }}/js/core/bootstrap-material-design.min.js"></script>
