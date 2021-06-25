@@ -58,8 +58,16 @@ class NotificationControllerTest extends TestCase
                 'year' => 2020
             ]
         );
+        CourseEditionUser::insert(
+            [
+                'user_id' => 1,
+                'course_edition_id' => 1,
+                'role' => 'TA'
+            ]
+        );
         Auth::shouldReceive('user')->andReturn($user);
         Auth::shouldReceive('check')->andReturn(true);
+        Auth::shouldReceive('id')->andReturn(1);
         Group::insert(
             [
                 'group_name' => 'Group 1',
