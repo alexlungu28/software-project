@@ -342,7 +342,7 @@ class Notify extends Command
                                 . '%')
                             ->get();
                         GroupUser::where('group_id', '=', $intervention->group_id)->get()
-                            ->map(function ($groupUser) use ($intervention, $mailApproaching, $notifications) {
+                            ->map(function ($groupUser) use ($intervention, &$mailApproaching, $notifications) {
                                 $user = User::find($groupUser->user_id);
                                 $userNotification = $notifications
                                     ->where('notifiable_id', '=', $user->id)

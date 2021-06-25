@@ -9,6 +9,7 @@ use App\Models\CourseEditionUser;
 use App\Models\Group;
 use App\Models\GroupUser;
 use App\Models\Intervention;
+use App\Models\InterventionGroup;
 use App\Models\User;
 use App\Notifications\Deadline;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -113,16 +114,91 @@ class NotificationControllerTest extends TestCase
     }
 
     /**
-     * Test to verify that all notifications are marked as read.
+     * Test to verify that all individual notifications are marked as read.
      */
-    public function testMarkAllAsRead()
+    public function testMarkAllAsReadIndividual()
     {
         $this->before();
         $response = $this->put(
             '/notifications/markAllAsRead',
             [
+                'edition_id' => 1,
+                'individual' => 1
+            ],
+        );
+        $response->assertStatus(302);
+    }
+
+    /**
+     * Test to verify that all group notifications are marked as read.
+     */
+    public function testMarkAllAsReadGroup()
+    {
+        User::insert(
+            [
+                'org_defined_id' => 'employee1',
+                'net_id' => 'employee1',
+                'last_name' => 'Last',
+                'first_name' => 'First',
+                'email' => 'employee1@tudelft.nl',
+                'affiliation' => 'employee'
+            ]
+        );
+        $user = User::find(1);
+        Auth::shouldReceive('user')->andReturn($user);
+        Auth::shouldReceive('check')->andReturn(true);
+        InterventionGroup::insert([
+            'group_id' => 1,
+            'reason' => '.',
+            'action' => '.',
+            'start_day' => '2021-05-31',
+            'end_day' => '2021-06-04',
+            'status' => 1,
+            'visible_ta' => 1
+        ]);
+        Notification::send($user, new Deadline(InterventionGroup::find(1), 'passed group'));
+        $response = $this->put(
+            '/notifications/markAllAsRead',
+            [
+                'edition_id' => 1,
+                'individual' => 0
+            ],
+        );
+        $response->assertStatus(302);
+    }
+
+    /**
+     * Test to verify that the notification settings view is returned.
+     */
+    public function testViewNotificationSettings()
+    {
+        $this->before();
+        $response = $this->get('/notifications/1/settings');
+        $response->assertViewIs('pages.notificationSettings');
+    }
+
+    /**
+     * Test to verify that notification settings are updated.
+     */
+    public function testUpdateSettings()
+    {
+        $this->before();
+        $response = $this->put(
+            '/updateNotificationSettings',
+            [
+                'individual' => 1,
+                'group' => 1,
                 'edition_id' => 1
             ],
+        );
+        $this->assertDatabaseHas(
+            'notification_settings',
+            [
+                'id' => 1,
+                'user_id' => 2,
+                'user_deadlines' => 1,
+                'group_deadlines' => 1
+            ]
         );
         $response->assertStatus(302);
     }
