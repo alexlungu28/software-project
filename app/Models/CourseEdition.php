@@ -56,13 +56,23 @@ class CourseEdition extends Model
     }
 
     /**
-     * Returns the teaching assistents for a course edition.
+     * Returns the teaching assistants for a course edition.
      *
      * @return BelongsToMany
      */
     public function teachingAssistants()
     {
         return $this->belongsToMany(User::class, 'course_edition_user')->wherePivot('role', '=', 'TA');
+    }
+
+    /**
+     * Returns the students for a course edition.
+     *
+     * @return BelongsToMany
+     */
+    public function students()
+    {
+        return $this->belongsToMany(User::class, 'course_edition_user')->wherePivot('role', '=', 'student');
     }
 
     /**

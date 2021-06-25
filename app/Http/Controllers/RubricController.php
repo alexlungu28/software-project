@@ -16,21 +16,6 @@ use Illuminate\Support\Facades\DB;
 class RubricController extends Controller
 {
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return Application|Factory|View
-     */
-    public function create($editionId)
-    {
-        return view(
-            'rubric_create',
-            [
-                'edition_id' => $editionId,
-            ]
-        );
-    }
-
-    /**
      * Store a newly created resource in storage.
      *
      * @param Request $request
@@ -53,16 +38,6 @@ class RubricController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
-     *
-     * @return Application|Factory|View
-     */
-    public function edit()
-    {
-        return view('rubric_edit', ['rubrics' => Rubric::all()]);
-    }
-
-    /**
      * Update the specified resource in storage.
      *
      * @param Request $request
@@ -78,19 +53,6 @@ class RubricController extends Controller
         $rubric->week = $week;
         $rubric->save();
         return redirect('/viewRubrics/' . $rubric->course_edition_id);
-    }
-
-    /**
-     * Shows the form to select the rubric to be deleted
-     *
-     * @return Application|Factory|View
-     */
-    public function delete()
-    {
-        $rubrics = Rubric::all();
-        return view('rubric_delete', [
-            "rubrics" => $rubrics,
-        ]);
     }
 
     /**

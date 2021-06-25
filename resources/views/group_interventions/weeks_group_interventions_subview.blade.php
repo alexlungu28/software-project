@@ -18,6 +18,13 @@
                              -->
                         @foreach($groupInterventions as $intervention)
 
+                            @php
+
+                                $group = App\Models\Group::find($intervention->group_id);
+                                if(preg_match("/^(groupNote)\d+$/i", $intervention->reason))
+                                        $note = App\Models\NoteGroup::find(preg_replace('/[^0-9]/', '', $intervention->reason));
+                            @endphp
+
                             <tr>
                                 <td>       <div style="overflow-x: hidden; overflow-y:auto;
                                                                    text-overflow: clip;
@@ -50,6 +57,7 @@
                                 </td>
 
                             </tr>
+
                             @include ('/group_interventions/status_modal')
                         @endforeach
 

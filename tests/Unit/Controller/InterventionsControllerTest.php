@@ -249,6 +249,7 @@ class InterventionsControllerTest extends TestCase
 
     public function testShowAllInterventions()
     {
+        $this->before();
         $this->get('/interventions/1')->assertViewIs('interventions')
             ->assertStatus(200);
     }

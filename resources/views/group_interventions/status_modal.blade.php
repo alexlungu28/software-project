@@ -13,15 +13,12 @@
 
                         <div class="form-group">
                             <label>Group</label>
-                            <h4 ><b>{{App\Models\Group::find($intervention->group_id)->group_name}}</b></h4>
+                            <h4 ><b>{{$group->group_name}}</b></h4>
                         </div>
 
                         <div class="form-group">
                             <label>Reason</label>
                             @if(preg_match("/^(groupNote)\d+$/i", $intervention->reason))
-                                @php
-                                    $note = App\Models\NoteGroup::find(preg_replace('/[^0-9]/', '', $intervention->reason));
-                                @endphp
                                @include('/group_interventions/view_note_from_status_modal')
                             @else
                                     <div style="overflow-x: hidden; overflow-y:auto;

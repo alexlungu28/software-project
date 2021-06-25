@@ -4,10 +4,12 @@ namespace Tests\Feature;
 
 use App\Models\Course;
 use App\Models\CourseEdition;
+use App\Models\CourseEditionUser;
 use App\Models\Rubric;
 use App\Models\RubricEntry;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithoutMiddleware;
+use Illuminate\Support\Facades\Auth;
 use Tests\TestCase;
 
 class RubricEntryTest extends TestCase
@@ -35,28 +37,17 @@ class RubricEntryTest extends TestCase
                 'description' => 'Column 1',
             ]
         );
-    }
-
-    /**
-     * Test to verify rubric create route.
-     */
-    public function testRubricCreate()
-    {
-        $this->before();
-        $response = $this->get('/rubricEntryCreate')->assertSee('Rubric Entry Management | Add');
-        $response->assertStatus(200);
-    }
-
-    /**
-     * Test to verify rubric edit route.
-     */
-    public function testRubricEdit()
-    {
-        $this->before();
-        $response = $this->get('/rubricEntryEdit/1')
-            ->assertSee('Rubric Entry Management | Update')
-            ->assertSee('Column 1');
-        $response->assertStatus(200);
+        CourseEditionUser::insert(
+            [
+                'id' => 2,
+                'user_id' => 2,
+                'course_edition_id' => 1,
+                'role' => 'lecturer',
+            ]
+        );
+        Auth::shouldReceive('user')->andReturn(null);
+        Auth::shouldReceive('check')->andReturn(true);
+        Auth::shouldReceive('id')->andReturn(2);
     }
 
     /**

@@ -9,8 +9,7 @@
 @section('content')
 
     @php
-    $user =auth()->user();
-    $userId = $user->id;
+    $userId = Illuminate\Support\Facades\Auth::id();
     $role = \App\Models\CourseEditionUser::where('user_id', '=', $userId)->where('course_edition_id', '=', $edition_id)->first()->role;
     @endphp
 
