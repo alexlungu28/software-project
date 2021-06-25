@@ -1,4 +1,4 @@
-@extends('layouts.app', ['activePage' => 'rubrics', 'titlePage' => __('Dashboard')])
+@extends('layouts.app', ['activePage' => 'rubrics', 'titlePage' => __('Rubrics')])
 
 @section('content')
     <div class="content" style="display: flex;">

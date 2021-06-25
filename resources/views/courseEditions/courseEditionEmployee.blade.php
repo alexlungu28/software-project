@@ -1,4 +1,4 @@
-@extends('layouts.courses', ['activePage' => 'course_editions', 'titlePage' => __('Dashboard')])
+@extends('layouts.courses', ['activePage' => 'course_editions', 'titlePage' => __('Courses')])
 
 @section('content')
     <div class="content" style="display: flex">
