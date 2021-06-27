@@ -5,7 +5,7 @@
 <body>
 
 <div class="container" style="display:inline-flex;">
-    <div class="card bg-light mt-3" style="color: black; font-size: 1.2rem;">
+    <div class="card bg-light mt-3" style="font-size: 1.2rem;">
         <div class="card-header">
             TA Importing
         </div>
@@ -34,7 +34,7 @@
 </div>
 
 <div class="container" style="display:inline-flex;">
-    <div class="card bg-light mt-3" style="color: black; font-size: 1.2rem;">
+    <div class="card bg-light mt-3" style="font-size: 1.2rem;">
         <div class="card-header">
             Student Importing
         </div>

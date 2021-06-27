@@ -11502,7 +11502,7 @@ fieldset[disabled][disabled] .form-control,
 
 .is-focused [class^='bmd-label'],
 .is-focused [class*=' bmd-label'] {
-  color: #9c27b0;
+  color: #00A6D6;
 }
 
 .is-focused .bmd-label-placeholder {
@@ -13331,6 +13331,13 @@ fieldset[disabled] .form-group .form-control {
   margin-top: -1.1em;
 }
 
+.card {
+    color: black !important;
+    border-bottom-color: initial;
+    background-image: initial;
+    background-color: transparent;
+}
+
 .navbar .collapse .navbar-nav .nav-item .nav-link:not(.btn) .material-icons {
   margin-top: -3px;
   top: 0px;
@@ -13349,7 +13356,7 @@ fieldset[disabled] .form-group .form-control {
   font-size: 12px;
   text-transform: uppercase;
   border-radius: 3px;
-  color: #fff;
+  color: inherit;
   margin: 0 15px;
 }
 

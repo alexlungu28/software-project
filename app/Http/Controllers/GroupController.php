@@ -2,12 +2,18 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Attendance;
+use App\Models\Buddycheck;
+use App\Models\CourseEditionUser;
+use App\Models\Gitanalysis;
 use App\Models\Group;
+use App\Models\GroupUser;
 use App\Models\Intervention;
 use App\Models\InterventionGroup;
 use App\Models\Note;
 use App\Models\NoteGroup;
 use App\Models\Rubric;
+use App\Models\User;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
@@ -15,6 +21,7 @@ use Illuminate\Contracts\View\View;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
+/** *  @SuppressWarnings(PHPMD) */
 class GroupController extends Controller
 {
     /**
@@ -31,7 +38,7 @@ class GroupController extends Controller
             ->where('course_edition_id', '=', $editionId)
             ->where('user_id', '=', Auth::id())->get()->first()->role;
 
-        $usersFromGroup = DB::table('group_user')->select('user_id')->where('group_id', '=', $id)->get();
+        $usersFromGroup = DB::table('group_user')->where('group_id', '=', $id)->get();
         $gitanalyses = DB::table('gitanalyses')->where('group_id', '=', $id)->get();
 
 
@@ -49,6 +56,54 @@ class GroupController extends Controller
                 'notesNoInterventions' => $notesNoInterventions,
                 'interventions' => $interventions,
                 'groupInterventions' => $gInterventions]);
+    }
+
+    public function userSummary($groupUserId)
+    {
+        $groupUser =GroupUser::find($groupUserId);
+        $editionId = Group::find($groupUser->group_id)->course_edition_id;
+        $userId = $groupUser->user_id;
+        $groupId = $groupUser->group_id;
+
+        $userLoggedIn =auth()->user();
+        $userLoggedInId = $userLoggedIn->id;
+        $role = CourseEditionUser::where('user_id', '=', $userLoggedInId)
+                                    ->where('course_edition_id', '=', $editionId)
+                                    ->first()->role;
+
+        $user = User::find($userId);
+
+        $attendances = Attendance::where('user_id', '=', $userId)
+                                    ->where('group_id', '=', $groupId)
+                                    ->orderBy('week')->get();
+
+        $notes = Note::where('user_id', '=', $userId)
+                        ->where('group_id', '=', $groupId)
+                        ->orderBy('week')->get();
+
+        $groupNotes = NoteGroup::where('group_id', '=', $groupId)
+                                    ->orderBy('week')->get();
+
+        $interventions = Intervention::where('user_id', '=', $userId)
+                                        ->where('group_id', '=', $groupId)
+                                        ->orderBy('end_day')->get();
+
+        $groupInterventions = InterventionGroup::where('group_id', '=', $groupId)
+                                                    ->orderBy('end_day')->get();
+
+        $gitAnalyses = Gitanalysis::where('group_id', '=', $groupId)
+            ->orderBy('week_number')->get();
+
+        $buddyChecks = Buddycheck::where('group_id', '=', $groupId)
+            ->orderBy('week')->get();
+
+
+        return view('user_summary', [
+                'attendances' => $attendances, 'user'=> $user, 'edition_id' => $editionId,
+                'notes' => $notes, 'groupNotes'=>$groupNotes,
+                'interventions' => $interventions, 'groupInterventions' => $groupInterventions,
+                'role' => $role, 'groupId' => $groupId, 'gitanalyses'=>$gitAnalyses, 'buddychecks' => $buddyChecks
+            ]);
     }
 
     /**
@@ -122,13 +177,10 @@ class GroupController extends Controller
             ->where('user_id', '=', Auth::id())->get()->first()->role;
 
         $gitanalyses = DB::table('gitanalyses')->where('group_id', '=', $id)->where('week_number', '=', $week)->get();
+        $buddychecks = DB::table('buddychecks')->where('group_id', '=', $id)->where('week', '=', $week)->get();
 
-        if ($role === 'lecturer') {
-            return view('week', ['edition_id' => $editionId, 'group_id' => $id,
-                'week' => $week, 'rubrics' => $rubrics, 'gitanalyses' => $gitanalyses]);
-        } else {
-            return view('weekTA', ['edition_id' => $editionId, 'group_id' => $id,
-                'week' => $week, 'rubrics' => $rubrics, 'gitanalyses' => $gitanalyses]);
-        }
+        return view('week', ['edition_id' => $editionId, 'group_id' => $id,
+            'week' => $week, 'rubrics' => $rubrics, 'gitanalyses' => $gitanalyses,
+            'buddychecks' => $buddychecks]);
     }
 }

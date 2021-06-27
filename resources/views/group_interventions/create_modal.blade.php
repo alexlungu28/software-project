@@ -24,7 +24,7 @@
 
                                 @foreach(App\Models\Group::where('course_edition_id', '=', $edition_id)->get() as $group)
 
-                                    <option value="{{$group->id}}" >{{App\Models\Group::find($group->id)->group_name}}</option>
+                                    <option value="{{$group->id}}" >{{$group->group_name}}</option>
                                 @endforeach
                             </select>
                         </div>

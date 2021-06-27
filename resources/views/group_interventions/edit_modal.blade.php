@@ -28,17 +28,12 @@
 
                         <div class="form-group">
                             <label for="group">Group</label>
-                            <h5 ><b>{{App\Models\Group::find($intervention->group_id)->group_name}}</b></h5>
+                            <h5 ><b>{{$group->group_name}}</b></h5>
                         </div>
                         <div class="form-group">
                             <label for="editReason">Reason</label>
 
                             @if(preg_match("/^(groupNote)\d+$/i", $intervention->reason))
-                                @php
-                                    $note = App\Models\NoteGroup::find(preg_replace('/[^0-9]/', '', $intervention->reason));
-                                    //return dd($note);
-                                @endphp
-
                                 @include('/group_interventions/view_note_from_edit_modal')
                             @else
 

@@ -8,6 +8,18 @@
         <a class="simple-text logo-normal">
             {{ __('Gradinator') }}
         </a>
+        <a class="simple-text logo-normal" style="font-size: 75%; user-select: none">
+            @php
+                $edition = \App\Models\CourseEdition::find($edition_id);
+                if ($edition != null)
+                    $course = \App\Models\Course::find($edition->course_id);
+            @endphp
+            @if (isset($course) && $course != null)
+                {{$course->description}}
+                <br/>
+                {{$edition->year}}
+            @endif
+        </a>
     </div>
     <div class="sidebar-wrapper">
         <ul class="nav">
@@ -34,11 +46,11 @@
                     <a class="nav-link" href="{{ route('group', [$group_id]) }}">
                         <i class="material-icons">group</i>
                         @if(isset($week))
-                            <p>{{ __('Group ' . $group_id . ': Week ' . $week) }}</p>
+                            <p>{{ __(App\Models\Group::find($group_id)->group_name . ': Week ' . $week) }}</p>
                         @elseif(isset($week_id))
-                            <p>{{ __('Group ' . $group_id . ': Week ' . $week_id) }}</p>
+                            <p>{{ __(App\Models\Group::find($group_id)->group_name . ': Week ' . $week_id) }}</p>
                         @else
-                            <p>{{ __('Group ' . $group_id) }}</p>
+                            <p>{{ __(App\Models\Group::find($group_id)->group_name) }}</p>
                         @endif
                     </a>
                 </li>

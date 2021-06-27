@@ -9,6 +9,7 @@ use App\Models\CourseEditionUser;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithoutMiddleware;
+use Illuminate\Support\Facades\Auth;
 use Tests\TestCase;
 
 class CourseEditionUserTest extends TestCase
@@ -60,6 +61,17 @@ class CourseEditionUserTest extends TestCase
                 'role' => 'student',
             ]
         );
+        CourseEditionUser::insert(
+            [
+                'id' => 2,
+                'user_id' => 2,
+                'course_edition_id' => 1,
+                'role' => 'lecturer',
+            ]
+        );
+        Auth::shouldReceive('user')->andReturn(null);
+        Auth::shouldReceive('check')->andReturn(true);
+        Auth::shouldReceive('id')->andReturn(2);
         $this->controller = new CourseEditionUserController();
     }
 

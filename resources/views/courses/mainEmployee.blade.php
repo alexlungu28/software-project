@@ -27,7 +27,7 @@
 
                     <input type = "hidden" name = "_token" value = "<?php echo csrf_token(); ?>"><input type = "hidden" name = "_token" value = "<?php echo csrf_token(); ?>">
 
-                    <input type="text" class ="form-control" placeholder="Course number" name="course_number">
+                    <input type="text" class ="form-control" placeholder="Course number" name="course_number" required>
                     <br/>
                     <input type="text" class ="form-control" placeholder="Description" name="description">
                     <br/>
@@ -44,14 +44,14 @@
 
                     <input type = "hidden" name = "_token" value = "<?php echo csrf_token(); ?>">
                     @method('PUT')
-                    <select class="form-control" name="id">
+                    <select class="form-control" name="id" required>
                         @foreach($courses as $course)
                             <option value="{{$course->id}}">{{$course->course_number}}</option>
                         @endforeach
                     </select>
 
                     <br/>
-                    <input type="text" class="form-control" placeholder="New course number" name="course_number">
+                    <input type="text" class="form-control" placeholder="New course number" name="course_number" required>
                     <br/>
                     <input type="text" class="form-control" placeholder="New description" name="description">
                     <br/>
@@ -72,7 +72,7 @@
                     @csrf
                     @method('DELETE')
                     {{ method_field('DELETE') }}
-                    <select class="form-control" name="id">
+                    <select class="form-control" name="id" required>
                         @foreach($courses as $course)
                             <option value="{{$course->id}}">{{$course->course_number}}</option>
                         @endforeach
@@ -96,7 +96,7 @@
 
                     <input type = "hidden" name = "_token" value = "<?php echo csrf_token(); ?>">
                     @method('PUT')
-                    <select class="form-control" name="id">
+                    <select class="form-control" name="id" required>
                         @foreach($deletedCourses as $course)
                             <option value="{{$course->id}}">{{$course->course_number}}</option>
                         @endforeach

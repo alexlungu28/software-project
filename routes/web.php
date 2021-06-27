@@ -14,6 +14,7 @@ use App\Http\Controllers\ReportImportController;
 use App\Http\Controllers\RubricController;
 use App\Http\Controllers\RubricDataController;
 use App\Http\Controllers\RubricEntryController;
+use App\Models\Group;
 use Illuminate\Support\Facades\Route;
 use App\Models\Rubric;
 
@@ -37,9 +38,6 @@ Route::get('/', [CourseController::class, 'view'])->name('courses')->middleware(
 |--------------------------------------------------------------------------
 */
 // Create
-//shows the form to create a rubric
-Route::get('/rubricCreate/{edition_id}', [RubricController::class, 'create'])
-    ->name('rubricCreate')->middleware(['loggedIn', 'employee']);
 //post route for the Store method in the controller
 Route::post('/rubricStore', [RubricController::class, 'store'])->middleware(['loggedIn', 'employee']);
 
@@ -49,13 +47,9 @@ Route::get('/viewRubrics/{edition_id}', [RubricController::class, 'view'])->name
     ->middleware(['loggedIn', 'role:lecturer,HeadTA']);
 
 // Update
-Route::get('/rubricEdit', [RubricController::class, 'edit'])
-    ->name('rubricEdit')->middleware(['loggedIn', 'employee']);
 Route::put('/rubricUpdate', [RubricController::class, 'update'])->middleware(['loggedIn', 'employee']);
 
 // Delete
-Route::get('/rubricDelete', [RubricController::class, 'delete'])
-    ->name('rubricDelete')->middleware(['loggedIn', 'employee']);
 Route::delete('/rubricDestroy', [RubricController::class, 'destroy'])
     ->name('rubricDestroy')->middleware(['loggedIn', 'employee']);
 Route::put('/rubricRestore', [RubricController::class, 'restore'])
@@ -67,9 +61,6 @@ Route::put('/rubricRestore', [RubricController::class, 'restore'])
 |--------------------------------------------------------------------------
 */
 // Create
-//shows the form to create a rubric
-Route::get('/rubricEntryCreate', [RubricEntryController::class, 'create'])
-    ->name('rubricEntryCreate')->middleware(['loggedIn', 'employee']);
 //post route for the Store method in the controller
 Route::post('/rubricEntryStore', [RubricEntryController::class, 'store'])
     ->middleware(['loggedIn', 'employee']);
@@ -83,9 +74,6 @@ Route::get('/viewRubricTeacher/{id}/{edition_id}', [RubricEntryController::class
     ->middleware(['loggedIn', 'role:lecturer,HeadTA']);
 
 // Update
-Route::get('/rubricEntryEdit/{id}', [RubricEntryController::class, 'edit'])
-    ->name('rubricEntryEdit')
-    ->middleware(['loggedIn', 'employee']);
 Route::put('/rubricEntryUpdate', [RubricEntryController::class, 'update'])
     ->middleware(['loggedIn', 'employee']);
 
@@ -105,7 +93,22 @@ Route::post('/rubricDataStore/{id}', [RubricDataController::class, 'store']);
 
 /*
 |--------------------------------------------------------------------------
-| Import/Export student Routes
+| Import Students/TA Routes
+|--------------------------------------------------------------------------
+*/
+Route::post('/import/{edition_id}', 'App\Http\Controllers\ImportController@import')
+    ->name('import')
+    ->middleware(['loggedIn', 'role:lecturer']);
+Route::get('/importView/{edition_id}', 'App\Http\Controllers\ImportController@importView')
+    ->name('importTAsStudents')
+    ->middleware(['loggedIn', 'role:lecturer']);
+Route::post('/importTA/{edition_id}', 'App\Http\Controllers\ImportController@importTA')
+    ->name('importTA')
+    ->middleware(['loggedIn', 'role:lecturer']);
+
+/*
+|--------------------------------------------------------------------------
+| Export Routes
 |--------------------------------------------------------------------------
 */
 Route::get('/exportView/{edition_id}', 'App\Http\Controllers\ExportController@exportView')
@@ -120,14 +123,17 @@ Route::get('/exportGrades/{edition_id}', 'App\Http\Controllers\ExportController@
 Route::get('/exportRubrics/{edition_id}', 'App\Http\Controllers\ExportController@exportRubrics')
     ->name('exportRubrics')
     ->middleware(['loggedIn', 'role:lecturer']);
-Route::get('/importView/{edition_id}', 'App\Http\Controllers\ImportController@importView')
-    ->name('importTAsStudents')
+Route::get('/exportGroupNotes/{edition_id}', 'App\Http\Controllers\ExportController@exportGroupNotes')
+    ->name('exportGroupNotes')
     ->middleware(['loggedIn', 'role:lecturer']);
-Route::post('/import/{edition_id}', 'App\Http\Controllers\ImportController@import')
-    ->name('import')
+Route::get('/exportIndividualNotes/{edition_id}', 'App\Http\Controllers\ExportController@exportIndividualNotes')
+    ->name('exportIndividualNotes')
     ->middleware(['loggedIn', 'role:lecturer']);
-Route::post('/importTA/{edition_id}', 'App\Http\Controllers\ImportController@importTA')
-    ->name('importTA')
+Route::get('/exportGroupInterventions/{edition_id}', 'App\Http\Controllers\ExportController@exportGroupInterventions')
+    ->name('exportGroupInterventions')
+    ->middleware(['loggedIn', 'role:lecturer']);
+Route::get('/exportIndividualInterventions/{edition_id}', 'App\Http\Controllers\ExportController@exportIndividualInterventions')
+    ->name('exportIndividualInterventions')
     ->middleware(['loggedIn', 'role:lecturer']);
 
 /*
@@ -135,7 +141,6 @@ Route::post('/importTA/{edition_id}', 'App\Http\Controllers\ImportController@imp
 | Import report routes
 |--------------------------------------------------------------------------
 */
-
 Route::post('importGitanalysis/{group_id}/{week}', [ReportImportController::class, 'importGitanalysis'])
     ->name('importGitanalysis')
     ->middleware(['loggedIn', 'role:lecturer,HeadTA,TA']);
@@ -144,54 +149,9 @@ Route::post('importBuddycheck/{group_id}/{week}', [ReportImportController::class
     ->name('importBuddycheck')
     ->middleware(['loggedIn', 'role:lecturer,HeadTA']);
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home')->middleware('loggedIn');
-
-//Route::get('table-list', function () {
-//    return view('pages.table_list');
-//})->name('table');
-
-Route::get('typography', function () {
-    return view('pages.typography');
-})->name('typography');
-
-Route::get('icons', function () {
-    return view('pages.icons');
-})->name('icons');
-
-Route::get('map', function () {
-    return view('pages.map');
-})->name('map');
-
-Route::get('notificationsOld', function () {
-    return view('pages.notificationsOld', ['edition_id' => 1]);
-})->name('notificationsOld');
-
 Route::get('notifications/{edition_id}', [NotificationController::class, 'view'])
     ->name('notifications')
     ->middleware(['loggedIn']);
-
-Route::get('rtl-support', function () {
-    return view('pages.language');
-})->name('language');
-
-Route::get('upgrade', function () {
-    return view('pages.upgrade');
-})->name('upgrade');
-
-Route::group(['middleware' => 'auth'], function () {
-    Route::resource('user', 'App\Http\Controllers\UserController', ['except' => ['show']]);
-    Route::get('profile', ['as' => 'profile.edit', 'uses' => 'App\Http\Controllers\ProfileController@edit']);
-    Route::put('profile', ['as' => 'profile.update', 'uses' => 'App\Http\Controllers\ProfileController@update']);
-    Route::put(
-        'profile/password',
-        ['as' => 'profile.password', 'uses' => 'App\Http\Controllers\ProfileController@password']
-    );
-});
-
-
-Route::get('unauthorized', function () {
-    echo "You are unauthorized to access this page.";
-})->name('unauthorized');
 
 Route::get('/courses/{id}', [CourseController::class, 'viewCourseById'])
     ->name('course')
@@ -266,7 +226,8 @@ Route::post('/courseEditionStore/{course_id}', [CourseEditionController::class, 
 | Delete Course Edition Routes
 |--------------------------------------------------------------------------
 */
-Route::delete('/courseEditionDestroy', [CourseEditionController::class, 'destroy'])->middleware(['loggedIn', 'employee']);
+Route::delete('/courseEditionDestroy', [CourseEditionController::class, 'destroy'])
+    ->middleware(['loggedIn', 'employee']);
 Route::put('/courseEditionRestore', [CourseEditionController::class, 'restore'])
     ->name('courseEditionRestore')->middleware(['loggedIn', 'employee']);
 
@@ -294,8 +255,8 @@ Route::get('/attendance/{edition_id}', [AttendanceController::class, 'index'])
 
 //Route::get('/attendance/{id}/{week}/{present}', [AttendanceController::class, 'create']);
 
-Route::post('/attendanceupdate/{id}', [AttendanceController::class, 'update'])
-    ->name('attendanceupdate')->middleware(['loggedIn']);
+Route::post('/attendanceupdate/{attendance_id}', [AttendanceController::class, 'update'])
+    ->name('attendanceupdate')->middleware(['loggedIn', 'role:lecturer,HeadTA,TA']);
 
 Route::get('/attend/{group_id}/{week_id}', [AttendanceController::class, 'weekGroup'])
     ->name('attend')->middleware(['loggedIn', 'role:lecturer,HeadTA,TA']);
@@ -305,11 +266,11 @@ Route::get('/notes/{edition_id}', [NotesController::class, 'index'])
     ->name('allNotes')->middleware(['loggedIn', 'role:lecturer,HeadTA,TA']);
 
 
-Route::post('/noteUpdate/{id}', [NotesController::class, 'update'])
-    ->name('noteUpdate')->middleware(['loggedIn']);
+Route::post('/noteUpdate/{note_id}', [NotesController::class, 'update'])
+    ->name('noteUpdate')->middleware(['loggedIn', 'role:lecturer,HeadTA,TA']);
 
-Route::post('/groupNoteUpdate/{id}', [NotesController::class, 'groupNoteUpdate'])
-    ->name('groupNoteUpdate')->middleware(['loggedIn']);
+Route::post('/groupNoteUpdate/{group_note_id}', [NotesController::class, 'groupNoteUpdate'])
+    ->name('groupNoteUpdate')->middleware(['loggedIn', 'role:lecturer,HeadTA,TA']);
 
 Route::get('/note/{group_id}/{week_id}', [NotesController::class, 'weekGroup'])
     ->name('note')->middleware(['loggedIn', 'role:lecturer,HeadTA,TA']);
@@ -321,74 +282,85 @@ Route::get('/note/{group_id}/{week_id}', [NotesController::class, 'weekGroup'])
 Route::get('/interventions/{edition_id}', [InterventionsController::class, 'showAllInterventions'])
     ->name('interventions')->middleware(['loggedIn', 'role:lecturer,HeadTA']);
 
-Route::post('/editIntervention/{id}', [InterventionsController::class, 'editIntervention'])
-    ->name('editIntervention')->middleware(['loggedIn']);
+Route::post('/editIntervention/{intervention_id}', [InterventionsController::class, 'editIntervention'])
+    ->name('editIntervention')->middleware(['loggedIn', 'role:lecturer,HeadTA']);
 
-Route::post('/createIntervention/{id}', [InterventionsController::class, 'createIntervention'])
-    ->name('createIntervention')->middleware(['loggedIn']);
+Route::post('/createIntervention/{edition_id}', [InterventionsController::class, 'createIntervention'])
+    ->name('createIntervention')->middleware(['loggedIn', 'role:lecturer,HeadTA']);
 
-Route::post('/createInterventionNote/{id}', [InterventionsController::class, 'createInterventionNote'])
-    ->name('createInterventionNote')->middleware(['loggedIn']);
+Route::post('/createInterventionNote/{note_id}', [InterventionsController::class, 'createInterventionNote'])
+    ->name('createInterventionNote')->middleware(['loggedIn', 'role:lecturer,HeadTA']);
 
-Route::post('/deleteIntervention/{id}', [InterventionsController::class, 'deleteIntervention'])
-    ->name('deleteIntervention')->middleware(['loggedIn']);
+Route::post('/deleteIntervention/{intervention_id}', [InterventionsController::class, 'deleteIntervention'])
+    ->name('deleteIntervention')->middleware(['loggedIn', 'role:lecturer,HeadTA']);
 
-Route::post('/statusActive/{id}', [InterventionsController::class, 'statusActive'])
-    ->name('statusActive')->middleware(['loggedIn']);
+Route::post('/statusActive/{intervention_id}', [InterventionsController::class, 'statusActive'])
+    ->name('statusActive')->middleware(['loggedIn', 'role:lecturer,HeadTA']);
 
-Route::post('/statusExtend/{id}', [InterventionsController::class, 'statusExtend'])
-    ->name('statusExtend')->middleware(['loggedIn']);
+Route::post('/statusExtend/{intervention_id}', [InterventionsController::class, 'statusExtend'])
+    ->name('statusExtend')->middleware(['loggedIn', 'role:lecturer,HeadTA']);
 
-Route::post('/statusUnsolved/{id}', [InterventionsController::class, 'statusUnsolved'])
-    ->name('statusUnsolved')->middleware(['loggedIn']);
+Route::post('/statusUnsolved/{intervention_id}', [InterventionsController::class, 'statusUnsolved'])
+    ->name('statusUnsolved')->middleware(['loggedIn', 'role:lecturer,HeadTA']);
 
-Route::post('/statusSolved/{id}', [InterventionsController::class, 'statusSolved'])
-    ->name('statusSolved')->middleware(['loggedIn']);
+Route::post('/statusSolved/{intervention_id}', [InterventionsController::class, 'statusSolved'])
+    ->name('statusSolved')->middleware(['loggedIn', 'role:lecturer,HeadTA']);
 
 
 //Group Interventions
-Route::post('/createGroupInterventionNote/{id}', [GroupInterventionsController::class, 'createGroupInterventionNote'])
-    ->name('createGroupInterventionNote')->middleware(['loggedIn']);
+Route::post('/createGroupInterventionNote/{group_note_id}', [GroupInterventionsController::class, 'createGroupInterventionNote'])
+    ->name('createGroupInterventionNote')->middleware(['loggedIn', 'role:lecturer,HeadTA']);
 
-Route::post('/createGroupIntervention/{id}', [GroupInterventionsController::class, 'createGroupIntervention'])
-    ->name('createGroupIntervention')->middleware(['loggedIn']);
+Route::post('/createGroupIntervention/{edition_id}', [GroupInterventionsController::class, 'createGroupIntervention'])
+    ->name('createGroupIntervention')->middleware(['loggedIn', 'role:lecturer,HeadTA']);
 
 Route::get('/groupInterventions/{$edition_id}', [GroupInterventionsController::class, 'showAllGroupInterventions'])
     ->name('groupInterventions')->middleware(['loggedIn', 'role:lecturer,HeadTA']);
 
-Route::post('/editGroupIntervention/{id}', [GroupInterventionsController::class, 'editGroupIntervention'])
-    ->name('editGroupIntervention')->middleware(['loggedIn']);
+Route::post('/editGroupIntervention/{intervention_group_id}', [GroupInterventionsController::class, 'editGroupIntervention'])
+    ->name('editGroupIntervention')->middleware(['loggedIn', 'role:lecturer,HeadTA']);
 
-Route::post('/deleteGroupIntervention/{id}', [GroupInterventionsController::class, 'deleteGroupIntervention'])
-    ->name('deleteGroupIntervention')->middleware(['loggedIn']);
+Route::post('/deleteGroupIntervention/{intervention_group_id}', [GroupInterventionsController::class, 'deleteGroupIntervention'])
+    ->name('deleteGroupIntervention')->middleware(['loggedIn', 'role:lecturer,HeadTA']);
 
-Route::post('/statusGroupActive/{id}', [GroupInterventionsController::class, 'statusGroupActive'])
-    ->name('statusGroupActive')->middleware(['loggedIn']);
+Route::post('/statusGroupActive/{intervention_group_id}', [GroupInterventionsController::class, 'statusGroupActive'])
+    ->name('statusGroupActive')->middleware(['loggedIn', 'role:lecturer,HeadTA']);
 
-Route::post('/statusGroupExtend/{id}', [GroupInterventionsController::class, 'statusGroupExtend'])
-    ->name('statusGroupExtend')->middleware(['loggedIn']);
+Route::post('/statusGroupExtend/{intervention_group_id}', [GroupInterventionsController::class, 'statusGroupExtend'])
+    ->name('statusGroupExtend')->middleware(['loggedIn', 'role:lecturer,HeadTA']);
 
-Route::post('/statusGroupUnsolved/{id}', [GroupInterventionsController::class, 'statusGroupUnsolved'])
-    ->name('statusGroupUnsolved')->middleware(['loggedIn']);
+Route::post('/statusGroupUnsolved/{intervention_group_id}', [GroupInterventionsController::class, 'statusGroupUnsolved'])
+    ->name('statusGroupUnsolved')->middleware(['loggedIn', 'role:lecturer,HeadTA']);
 
-Route::post('/statusGroupSolved/{id}', [GroupInterventionsController::class, 'statusGroupSolved'])
-    ->name('statusGroupSolved')->middleware(['loggedIn']);
+Route::post('/statusGroupSolved/{intervention_group_id}', [GroupInterventionsController::class, 'statusGroupSolved'])
+    ->name('statusGroupSolved')->middleware(['loggedIn', 'role:lecturer,HeadTA']);
 
-
-
-
-
-
+Route::get('/userSummary/{courseUserId}', [GroupController::class, 'userSummary'])
+    ->name('userSummary')->middleware(['loggedIn']);
 
 Route::get('/group/{group_id}/week/{week_id}', [GroupController::class, 'viewWeek'])->name('week')
     ->middleware(['loggedIn', 'role:lecturer,HeadTA,TA']);
+
+Route::get('unauthorized', function () {
+    echo "You are unauthorized to access this page.";
+})->name('unauthorized');
 
 Route::get('/routeError', function () {
     echo "A routing error has occurred";
 })->name('routeError');
 
 Route::put('/notifications/markAsRead', [NotificationController::class, 'markAsRead'])
-    ->middleware(['loggedIn']);
+    ->name('markAsRead')->middleware(['loggedIn']);
 
 Route::put('/notifications/markAllAsRead', [NotificationController::class, 'markAllAsRead'])
-    ->middleware(['loggedIn']);
+    ->name('markAllAsRead')->middleware(['loggedIn']);
+
+Route::get('/notifications/{edition_id}/settings', [NotificationController::class, 'viewSettings'])
+    ->name('notificationSettings')->middleware(['loggedIn']);
+
+Route::put('/updateNotificationSettings', [NotificationController::class, 'updateSettings'])
+    ->name('updateNotificationSettings')->middleware('loggedIn');
+
+Route::get('/logout', function () {
+    return redirect('/saml2/eipdev/logout');
+})->name('logout')->middleware('loggedIn');

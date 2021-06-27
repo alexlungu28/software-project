@@ -1,8 +1,13 @@
-@extends('layouts.TA', ['activePage' => 'group', 'titlePage' => __('RubricView')])
+@extends('layouts.app', ['activePage' => 'group', 'titlePage' => __('RubricView')])
 
 @section('content')
 <div class="content">
   <div class="container-fluid">
+      @if($rubric->week == 0)
+          <button type="submit" name="update" class="btn btn-dark rounded-pill" onclick="window.location='{{ route('group', ['group_id'=>$group_id]) }}'">Back!</button>
+      @else
+          <button type="submit" name="update" class="btn btn-dark rounded-pill" onclick="window.location='{{ route('week', ['group_id'=>$group_id, 'week_id' => $rubric->week]) }}'">Back!</button>
+      @endif
     <div class="row">
       <div class="col-md-12">
         <div class="card">

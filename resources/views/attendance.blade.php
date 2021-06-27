@@ -31,7 +31,7 @@
 
                                     <td>
                                         @if($at->status == 1)
-                                            <button class="btn btn-info rounded-pill" cursor="default" >Present</button>
+                                            <button class="btn btn-success rounded-pill" cursor="default" >Present</button>
                                         @elseif($at->status == 2)
                                             <button class="btn btn-warning rounded-pill" cursor="default" >Late</button>
                                         @elseif($at->status == 3)
@@ -48,7 +48,7 @@
                                         <td> <textarea form={{"attend" . $at->id}} type="text" name="reason" class="form-control" >{{$at->reason}}</textarea> </td>
                                         <input type="hidden" name="_method" value="POST">
                                         <td>
-                                            <button type="submit" name="update" class="btn btn-info " value="1">Present</button>
+                                            <button type="submit" name="update" class="btn btn-success " value="1">Present</button>
                                             <button type="submit" name="update" class="btn btn-warning rounded-pill" value="2">Late</button>
                                             <button type="submit" name="update" class="btn btn-danger rounded-pill" value="3">Absent</button>
                                         </td>

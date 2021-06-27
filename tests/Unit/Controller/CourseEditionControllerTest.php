@@ -7,6 +7,7 @@ use App\Models\CourseEdition;
 use App\Models\CourseEditionUser;
 use App\Models\Group;
 use App\Models\GroupUser;
+use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Illuminate\Support\Facades\Auth;
@@ -275,9 +276,19 @@ class CourseEditionControllerTest extends TestCase
      * Test to verify that the correct view is returned according to user role.
      */
     public function testViewTA() {
-        Auth::shouldReceive('id')->twice()->andReturn(1);
+        Auth::shouldReceive('id')->times(3)->andReturn(1);
         Auth::shouldReceive('check')->andReturn(true);
         Auth::shouldReceive('user')->andReturn(null);
+        User::insert(
+            [
+                'org_defined_id' => 'testTA',
+                'net_id' => 'testTA',
+                'last_name' => 'TA',
+                'first_name' => 'test',
+                'email' => 'testTA@tudelft.nl',
+                'affiliation' => 'student'
+            ]
+        );
         Group::insert(
             [
                 'group_name' => 'Group 1',
@@ -292,17 +303,17 @@ class CourseEditionControllerTest extends TestCase
                 'group_id' => 1
             ]
         );
+        CourseEdition::insert(
+            [
+                'course_id' => 1,
+                'year' => 2021
+            ]
+        );
         CourseEditionUser::insert(
             [
                 'user_id' => 1,
                 'course_edition_id' => 1,
                 'role' => 'TA'
-            ]
-        );
-        CourseEdition::insert(
-            [
-                'course_id' => 1,
-                'year' => 2021
             ]
         );
         $response = $this->get('/edition/1');
