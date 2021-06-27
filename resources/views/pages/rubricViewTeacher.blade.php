@@ -116,7 +116,7 @@
                         <option value="0">Column</option>
                     </select>
                     <br>
-                    <input type="text" class="form-control" placeholder="Description" name="description">
+                    <input type="text" class="form-control" placeholder="Description" name="description" required>
 
                     <button type="submit"  value = "Add" class="btn btn-primary">Submit</button>
                 </form>
@@ -130,7 +130,7 @@
                 <form id="rubricEntryRestore" action = "/rubricEntryRollback" method = "post" class="form-group" style="width:70%; margin-left:15%;" action="action_page.php">
                     <input type = "hidden" name = "_token" value = "<?php echo csrf_token(); ?>">
                     @method("PUT")
-                    <select class="form-control" name="id">
+                    <select class="form-control" name="id" required>
                         @foreach($deletedEntries as $deletedEntry)
                             <option value="{{$deletedEntry->id}}">{{$deletedEntry->description}}</option>
                         @endforeach

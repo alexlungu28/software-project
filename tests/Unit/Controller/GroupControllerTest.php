@@ -76,6 +76,6 @@ class GroupControllerTest extends TestCase
             ]
         );
         $response = $this->get('/group/1/week/1');
-        $response->assertViewIs('weekTA');
+        $response->assertViewIs('week');
     }
 }

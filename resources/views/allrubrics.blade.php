@@ -29,7 +29,7 @@
                     <input type = "hidden" name = "edition" value = {{$edition_id}}>
 
                     <br>
-                    <input type="text" class ="form-control" placeholder="Name" name="name">
+                    <input type="text" class ="form-control" placeholder="Name" name="name" required>
                     <br/>
                     <input type="number" class ="form-control" min="0" max="15" placeholder="1" name="week">
                     <br/>
@@ -46,14 +46,14 @@
 
                     <input type = "hidden" name = "_token" value = "<?php echo csrf_token(); ?>">
                     @method('PUT')
-                    <select class="form-control" name="id">
+                    <select class="form-control" name="id" required>
                         @foreach($rubrics as $rubric)
                             <option value="{{$rubric->id}}">{{$rubric->name}}</option>
                         @endforeach
                     </select>
 
                     <br>
-                    <input type="text" class="form-control" placeholder="New name" name="name">
+                    <input type="text" class="form-control" placeholder="New name" name="name" required>
                     <br>
                     <input type="number" class ="form-control" min="0" max="15" placeholder="1" name="week">
                     <br>
@@ -71,7 +71,7 @@
 
                     <input type = "hidden" name = "_token" value = "<?php echo csrf_token(); ?>">
                     @method('DELETE')
-                    <select class="form-control" name="id">
+                    <select class="form-control" name="id" required>
                         @foreach($rubrics as $rubric)
                             <option value="{{$rubric->id}}">{{$rubric->name}}</option>
                         @endforeach
@@ -94,7 +94,7 @@
                 <form id="rubricRestore" action = "{{ route('rubricRestore') }}" method = "post" class="form-group" style="width:70%; margin-left:15%;" action="action_page.php">
                     <input type = "hidden" name = "_token" value = "<?php echo csrf_token(); ?>">
                     @method("PUT")
-                    <select class="form-control" name="id">
+                    <select class="form-control" name="id" required>
                         @foreach($deletedRubrics as $deletedRubric)
                             <option value="{{$deletedRubric->id}}">{{$deletedRubric->name}}</option>
                         @endforeach

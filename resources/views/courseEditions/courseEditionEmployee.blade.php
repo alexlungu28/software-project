@@ -28,7 +28,7 @@
 
                     <input type = "hidden" name = "_token" value = "<?php echo csrf_token(); ?>"><input type = "hidden" name = "_token" value = "<?php echo csrf_token(); ?>">
 
-                    <input type="text" class ="form-control" placeholder="Year" name="year">
+                    <input type="text" class ="form-control" placeholder="Year" name="year" required>
                     <br/>
 
                     <button type="submit"  value = "Add" class="btn btn-primary" style="background-color: #00A6D6;">Submit</button>
@@ -43,14 +43,14 @@
 
                     <input type = "hidden" name = "_token" value = "<?php echo csrf_token(); ?>">
                     @method('PUT')
-                    <select class="form-control" name="id">
+                    <select class="form-control" name="id" required>
                         @foreach($courseEditions as $edition)
                             <option value="{{$edition->id}}">{{$edition->year}}</option>
                         @endforeach
                     </select>
 
                     <br/>
-                    <input type="text" class="form-control" placeholder="New year" name="year">
+                    <input type="text" class="form-control" placeholder="New year" name="year" required>
                     <br/>
 
                     <button type="submit"  value = "Add" class="btn btn-primary" style="background-color: #00A6D6;">Submit</button>
@@ -68,7 +68,7 @@
                     @csrf
                     @method('DELETE')
                     {{ method_field('DELETE') }}
-                    <select class="form-control" name="id">
+                    <select class="form-control" name="id" required>
                         @foreach($courseEditions as $edition)
                             <option value="{{$edition->id}}">{{$edition->year}}</option>
                         @endforeach
@@ -92,7 +92,7 @@
 
                     <input type = "hidden" name = "_token" value = "<?php echo csrf_token(); ?>">
                     @method('PUT')
-                    <select class="form-control" name="id">
+                    <select class="form-control" name="id" required>
                         @foreach($deletedEditions as $edition)
                             <option value="{{$edition->id}}">{{$edition->year}}</option>
                         @endforeach
