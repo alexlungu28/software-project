@@ -8,7 +8,7 @@
     <a class="simple-text logo-normal" style="user-select: none">
         {{ __('Gradinator') }}
     </a>
-      <a class="simple-text logo-normal" style="color: black; font-size: 75%; user-select: none">
+      <a class="simple-text logo-normal" style="font-size: 75%; user-select: none">
           @php
               $edition = \App\Models\CourseEdition::find($edition_id);
               if ($edition != null)

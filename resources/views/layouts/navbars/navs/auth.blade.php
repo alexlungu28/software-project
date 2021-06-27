@@ -82,7 +82,7 @@
           </div>
         </li>
         <li class="nav-item dropdown">
-          <a class="nav-link" href="#pablo" id="navbarDropdownProfile" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          <a class="nav-link" id="navbarDropdownProfile" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="cursor: pointer">
             <i class="material-icons">person</i>
             <p class="d-lg-none d-md-block">
               {{ __('Account') }}
@@ -95,7 +95,7 @@
           </div>
         </li>
           <li class="nav-item">
-              <a class="nav-link" id="darkMode" style="user-select: none">
+              <a class="nav-link" id="darkMode" style="cursor:pointer;">
                   <i id="themeIcon" class="material-icons">lightbulb</i>
               </a>
           </li>
