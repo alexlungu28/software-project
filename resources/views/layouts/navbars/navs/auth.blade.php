@@ -65,6 +65,11 @@
             <a class="dropdown-item" href="" onclick="event.preventDefault();document.getElementById('logout-form').submit();">{{ __('Log out') }}</a>
           </div>
         </li>
+          <li class="nav-item">
+              <a class="nav-link" id="darkMode" style="user-select: none">
+                  <i id="themeIcon" class="material-icons">lightbulb</i>
+              </a>
+          </li>
       </ul>
     </div>
   </div>
