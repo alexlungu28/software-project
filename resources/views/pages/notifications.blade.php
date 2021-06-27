@@ -15,7 +15,7 @@
         @endphp
         <div class="row d-flex">
         <div class="container-fluid col-6 float-left">
-            <div class="row" style="margin-right: 5%">
+            <div class="row" style="margin-right: 5%; margin-left: 5%">
                 <div class="card">
                     <div class="card-header card-header-primary">
                         <h4 class="card-title">Deadline passed - individual interventions</h4>
@@ -88,7 +88,7 @@
             </div>
         </div>
         <div class="container-fluid col-6 float-right">
-            <div class="row" style="margin-left: 5%">
+            <div class="row" style="margin-left: 5%; margin-right: 5%">
                 <div class="card">
                     <div class="card-header card-header-primary">
                         <h4 class="card-title">Deadline passed - group interventions</h4>
