@@ -28,11 +28,13 @@
           </a>
         </li>
           <li class="nav-item dropdown">
-          <a class="nav-link" href="http://example.com" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          <a class="nav-link" href="" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             <i class="material-icons">notifications</i>
               @if(auth()->check())
                   @if(auth()->user() != null)
-                      <span class="notification">{{count(auth()->user()->unreadNotifications)}}</span>
+                      @if(count(auth()->user()->unreadNotifications) > 0)
+                          <span class="notification">{{count(auth()->user()->unreadNotifications)}}</span>
+                      @endif
                   @endif
               @endif
             <p class="d-lg-none d-md-block">
@@ -43,9 +45,37 @@
               @if(auth()->check())
                   @if(auth()->user() != null)
                     @foreach(auth()->user()->unreadNotifications as $notification)
-                        <a class="dropdown-item" href="{{route('group', $notification->data['Deadline passed']['group_id'])}}">
-                            {{ 'Intervention deadline passed: Group ' . $notification->data['Deadline passed']['group_id'] }}
-                        </a>
+                        @if(isset($notification->data['Deadline passed']))
+                            @php
+                                $group_id = $notification->data['Deadline passed']['group_id'];
+                                $group = App\Models\Group::find($group_id);
+                                $edition = App\Models\CourseEdition::find($group->course_edition_id);
+                                $course = App\Models\Course::find($edition->course_id);
+                                $sameEdition = $edition->id == $edition_id;
+                            @endphp
+                            <a class="dropdown-item" href="{{route('group', $group_id)}}">
+                                @if(!$sameEdition)
+                                    {{ 'Individual intervention deadline passed: ' . $course->description . ', ' . $edition->year . ', ' . $group->group_name }}
+                                @else
+                                    {{ 'Individual intervention deadline passed: ' . $group->group_name }}
+                                @endif
+                            </a>
+                        @elseif(isset($notification->data['Deadline passed group']))
+                              @php
+                                  $group_id = $notification->data['Deadline passed group']['group_id'];
+                                  $group = App\Models\Group::find($group_id);
+                                  $edition = App\Models\CourseEdition::find($group->course_edition_id);
+                                  $course = App\Models\Course::find($edition->course_id);
+                                  $sameEdition = $edition->id == $edition_id;
+                              @endphp
+                              <a class="dropdown-item" href="{{route('group', $group_id)}}">
+                                  @if(!$sameEdition)
+                                      {{ 'Group intervention deadline passed: ' . $course->description . ', ' . $edition->year . ', ' . $group->group_name }}
+                                  @else
+                                      {{ 'Group intervention deadline passed: ' . $group->group_name }}
+                                  @endif
+                              </a>
+                        @endif
                     @endforeach
                   @endif
               @endif
@@ -59,10 +89,9 @@
             </p>
           </a>
           <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownProfile">
-{{--            <a class="dropdown-item" href="{{ route('profile.edit') }}">{{ __('Profile') }}</a>--}}
-            <a class="dropdown-item" href="#">{{ __('Settings') }}</a>
+            <a class="dropdown-item" href="{{ route('notificationSettings', [$edition_id]) }}">{{ __('Notification Settings') }}</a>
             <div class="dropdown-divider"></div>
-            <a class="dropdown-item" href="" onclick="event.preventDefault();document.getElementById('logout-form').submit();">{{ __('Log out') }}</a>
+            <a class="dropdown-item" href="{{ route('logout') }}">{{ __('Log out') }}</a>
           </div>
         </li>
           <li class="nav-item">

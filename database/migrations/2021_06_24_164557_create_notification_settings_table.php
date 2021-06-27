@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateCourseEditionUserTable extends Migration
+class CreateNotificationSettingsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,11 @@ class CreateCourseEditionUserTable extends Migration
      */
     public function up()
     {
-        Schema::create('course_edition_user', function (Blueprint $table) {
+        Schema::create('notification_settings', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->references('id')->on('users')->cascadeOnDelete();
-            $table->foreignId('course_edition_id')->references('id')->on('course_editions')->cascadeOnDelete();
-            /*$table->unique(array('user_id','course_edition_id'));*/
-            $table->string('role');
+            $table->integer('user_deadlines');
+            $table->integer('group_deadlines');
             $table->timestamps();
         });
     }
@@ -30,6 +29,6 @@ class CreateCourseEditionUserTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('course_edition_user');
+        Schema::dropIfExists('notification_settings');
     }
 }
